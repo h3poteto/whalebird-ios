@@ -64,7 +64,7 @@
         <!--Root View Controller-->
         <scene sceneID="Ipm-MF-NDl">
             <objects>
-                <tableViewController id="ajq-T5-kYD" sceneMemberID="viewController">
+                <tableViewController id="ajq-T5-kYD" customClass="TimelineTableViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pKe-OS-Sei">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
