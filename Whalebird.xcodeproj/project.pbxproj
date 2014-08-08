@@ -12,6 +12,7 @@
 		E912439E199524E000795EF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E912439C199524E000795EF0 /* Main.storyboard */; };
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
+		E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		E91243A5199524E000795EF0 /* WhalebirdTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhalebirdTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91243AA199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E91243AB199524E000795EF0 /* WhalebirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhalebirdTests.swift; sourceTree = "<group>"; };
+		E91243B5199525C200795EF0 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E912439A199524E000795EF0 /* ViewController.swift */,
 				E912439C199524E000795EF0 /* Main.storyboard */,
+				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9124396199524E000795EF0 /* Supporting Files */,
 			);
@@ -209,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E912439B199524E000795EF0 /* ViewController.swift in Sources */,
+				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
