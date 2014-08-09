@@ -31,8 +31,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.tableView.addSubview(self.refreshTimeline)
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-//        var nibName = UINib(nibName: "TimelineCellDesign", bundle: nil)
-//        self.tableView.registerNib(nibName, forCellReuseIdentifier: "TimelineViewCell")
+
          updateTimeline(0)
         
         
@@ -70,7 +69,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         
         self.timelineCell.insertObject(cell, atIndex: indexPath.row)
         
-        cell.configureCell(self.newTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        cell.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
 
         return cell
     }
@@ -157,7 +156,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                                     self.newTimeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSMutableArray
                                     
                                     if (self.newTimeline.count > 0) {
-                                        self.currentTimeline = self.newTimeline
+                                        for new_tweet in self.newTimeline {
+                                            self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                                        }
                                         self.tableView.reloadData()
                                     } else {
                                         println(jsonError)

@@ -35,13 +35,13 @@ class TimelineViewCell: UITableViewCell {
         
         profileImage = UIImageView(frame: CGRectMake(ImagePadding, ImagePadding, ImageSize, ImageSize))
         self.contentView.addSubview(profileImage)
-        nameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4 , ImagePadding, 100, DefaultLineHeigth))
+        nameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4 , ImagePadding, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
         self.contentView.addSubview(nameLabel)
-        screenNameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4 + 100, ImagePadding, 100, DefaultLineHeigth))
+        screenNameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, DefaultLineHeigth + ImagePadding * 1, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
         self.contentView.addSubview(screenNameLabel)
-        bodyLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, DefaultLineHeigth + ImagePadding * 2, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
+        bodyLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, DefaultLineHeigth * 2 + ImagePadding * 2, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
         self.contentView.addSubview(bodyLabel)
-        postDetailLable = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, 40, 100, DefaultLineHeigth))
+        postDetailLable = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, 40, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
         self.contentView.addSubview(postDetailLable)
     }
     
@@ -65,7 +65,7 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         var error = NSError?()
         var image_url = NSURL.URLWithString(dict.objectForKey("user").objectForKey("profile_image_url") as NSString)
-        profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingUncached, error: &error))
+        profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
         profileImage.sizeToFit()
         //------------------------------------
         //  nameLabel
@@ -74,7 +74,6 @@ class TimelineViewCell: UITableViewCell {
         nameLabel.textColor = UIColor.blackColor()
         nameLabel.text = dict.objectForKey("user").objectForKey("name") as NSString
         nameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
-        nameLabel.sizeToFit()
 
         
         //------------------------------------
@@ -85,8 +84,6 @@ class TimelineViewCell: UITableViewCell {
         let screen_name = dict.objectForKey("user").objectForKey("screen_name") as NSString
         screenNameLabel.text = "@" + screen_name
         screenNameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
-        screenNameLabel.sizeToFit()
-        screenNameLabel.frame.origin.x = nameLabel.frame.origin.x + nameLabel.frame.width + ImagePadding
         //------------------------------------
         //  bodyLabel
         //------------------------------------
@@ -104,10 +101,9 @@ class TimelineViewCell: UITableViewCell {
         postDetailLable.textColor = UIColor.grayColor()
         postDetailLable.text = createdAtToString(dict.objectForKey("created_at") as NSString)
         postDetailLable.font = UIFont.systemFontOfSize(11)
-        postDetailLable.sizeToFit()
         postDetailLable.frame.origin.y = bodyLabel.frame.origin.y + bodyLabel.frame.size.height + ImagePadding
         
-        self.totalHeight  = ImagePadding * 3 + bodyLabel.frame.size.height + nameLabel.frame.size.height + postDetailLable.frame.size.height
+        self.totalHeight  = ImagePadding * 4 + bodyLabel.frame.size.height + nameLabel.frame.size.height + screenNameLabel.frame.size.height + postDetailLable.frame.size.height
     }
     
     func cellHeight() -> CGFloat {
