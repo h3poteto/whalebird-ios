@@ -29,9 +29,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.refreshTimeline = UIRefreshControl()
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshTimeline)
-        
-        var nibName = UINib(nibName: "TimelineCellDesign", bundle: nil)
-        self.tableView.registerNib(nibName, forCellReuseIdentifier: "TimelineViewCell")
+
+        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+//        var nibName = UINib(nibName: "TimelineCellDesign", bundle: nil)
+//        self.tableView.registerNib(nibName, forCellReuseIdentifier: "TimelineViewCell")
          updateTimeline(0)
         
         
@@ -76,7 +77,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         var height: CGFloat!
-        if (self.timelineCell.count > 0 && indexPath.row < self.newTimeline.count) {
+        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
             var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
             height = cell.cellHeight()
         } else {
