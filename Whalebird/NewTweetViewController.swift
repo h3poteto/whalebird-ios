@@ -60,8 +60,14 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //-----------------------------------------
     //  return: status
     //-----------------------------------------
-    func postTweet(tweetBody: NSString) -> Int {
-        return 200
+    func postTweet(tweetBody: NSString) {
+        let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
+        let params: Dictionary<String, String> = [
+            "status": tweetBody
+        ]
+        TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { status in
+            println(status)
+        })
     }
 
     /*

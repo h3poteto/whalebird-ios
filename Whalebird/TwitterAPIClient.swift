@@ -119,6 +119,31 @@ class TwitterAPIClient: NSObject {
         })
     }
     
+    //------------------------------------------
+    //  指定のPOSTアクション
+    //------------------------------------------
+    func postTweetData(target_url: NSURL, params: Dictionary<String, String>, callback:(Int)->Void) {
+        var request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.POST, URL: target_url, parameters: params)
+        
+        if (self.account == nil) {
+            login({() in
+                self.postAction(request, callback: callback)
+            })
+        } else {
+            self.postAction(request, callback: callback)
+        }
+    }
+    
+    func postAction(request: SLRequest, callback:(Int)->Void) {
+        var result = NSMutableArray()
+        request.account = self.account
+        request.performRequestWithHandler({responseData, urlResponse, error in
+            if (responseData != nil) {
+                callback(urlResponse.statusCode)
+            }
+        })
+    }
+    
 }
 
 
