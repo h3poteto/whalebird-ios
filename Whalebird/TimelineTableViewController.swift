@@ -141,60 +141,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             for new_tweet in self.newTimeline {
                 self.currentTimeline.insertObject(new_tweet, atIndex: 0)
             }
-            println(self.newTimeline)
             self.tableView.reloadData()
         })
         
-        /*
-        var flag = SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
-        // なぜかfalseになるので強制的に実行：一時対応
-        if (true) {
-            var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
-            
-            self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {granted, error in
-                if (granted) {
-                    var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
-                    var url: NSURL = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
-                    var params: Dictionary<String, String> = [
-                        "contributor_details" : "true",
-                        "trim_user" : "0",
-                        "count" : "10"
-                    ]
-                    var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: params)
-                    var count = twitterAccounts.count
-                    if (twitterAccounts.count > 0) {
-                        // Lastじゃなくて選択させたい
-                        request.account = twitterAccounts.lastObject as ACAccount
-                        self.account = request.account
-                        
-                        request.performRequestWithHandler({responseData, urlResponse, error in
-                            if (responseData != nil) {
-                                if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
-                                    var jsonError: NSError?
-                                    self.newTimeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSMutableArray
-                                    
-                                    if (self.newTimeline.count > 0) {
-                                        for new_tweet in self.newTimeline {
-                                            self.currentTimeline.insertObject(new_tweet, atIndex: 0)
-                                        }
-                                        self.tableView.reloadData()
-                                    } else {
-                                        println(jsonError)
-                                    }
-                                }
-                            }
-                        })
-                    } else {
-                        var alertController = UIAlertController(title: "Account not found", message: "設定からアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
-                        //var destructiveAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                        //alertController.addAction(destructiveAction)
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        
-                    }
-                }
-                }
-            )}
-*/
     }
     
     func onRefresh(sender: AnyObject) {

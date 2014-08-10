@@ -94,23 +94,29 @@ class TwitterAPIClient: NSObject {
     //  指定のタイムラインを更新
     //----------------------------------------
     func getTimeline(target_timeline: NSURL, params: Dictionary<String, String>, callback:(NSMutableArray)->Void) {
-        var new_timeline = NSMutableArray()
         var request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_timeline, parameters: params)
-        
         if (self.account == nil){
             login({() in
-                request.account = self.account
-                request.performRequestWithHandler({responseData, urlResponse, error in
-                    if (responseData != nil) {
-                        if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
-                            var jsonError: NSError?
-                            new_timeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSMutableArray
-                            callback(new_timeline)
-                        }
-                    }
-                })
+                self.getAction(request, callback: callback)
             })
+        } else {
+            self.getAction(request, callback: callback)
         }
+    }
+    
+    func getAction(request: SLRequest, callback:(NSMutableArray)->Void) {
+        var new_timeline = NSMutableArray()
+        
+        request.account = self.account
+        request.performRequestWithHandler({responseData, urlResponse, error in
+            if (responseData != nil) {
+                if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
+                    var jsonError: NSError?
+                    new_timeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSMutableArray
+                    callback(new_timeline)
+                }
+            }
+        })
     }
     
 }
