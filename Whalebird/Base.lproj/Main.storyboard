@@ -36,11 +36,12 @@
                     <connections>
                         <segue destination="jUQ-UH-QNQ" kind="relationship" relationship="viewControllers" id="gkh-EV-Vbd"/>
                         <segue destination="sO9-2T-Q9H" kind="relationship" relationship="viewControllers" id="EgW-uy-ji2"/>
+                        <segue destination="oAu-w7-T1y" kind="relationship" relationship="viewControllers" id="Ky2-o0-FGK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V6h-IY-rkN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="332" y="295"/>
+            <point key="canvasLocation" x="238" y="1065"/>
         </scene>
         <!--Settings-->
         <scene sceneID="nWR-it-3HU">
@@ -61,7 +62,7 @@
             </objects>
             <point key="canvasLocation" x="1192" y="295"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Timeline-->
         <scene sceneID="Ipm-MF-NDl">
             <objects>
                 <tableViewController id="ajq-T5-kYD" customClass="TimelineTableViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
@@ -82,7 +83,7 @@
                             <outlet property="delegate" destination="ajq-T5-kYD" id="9Jp-16-bG7"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="I8Y-gq-OPL"/>
+                    <navigationItem key="navigationItem" title="Timeline" id="I8Y-gq-OPL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XVi-HE-Weg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -104,6 +105,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zfg-yP-8eE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1206" y="1036"/>
+        </scene>
+        <!--New Tweet View Controller-->
+        <scene sceneID="5YM-Gb-Dnc">
+            <objects>
+                <viewController id="Mpb-fv-nM9" customClass="NewTweetViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wma-oJ-LBn"/>
+                        <viewControllerLayoutGuide type="bottom" id="VFj-Yg-bOp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CJV-Oa-i4d">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="83Z-hC-IJL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sLE-Q7-TZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2080" y="1777"/>
+        </scene>
+        <!--Tweet-->
+        <scene sceneID="tnb-gi-hlv">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oAu-w7-T1y" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Tweet" id="2tx-Nw-nYD"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rg1-JT-YYk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Mpb-fv-nM9" kind="relationship" relationship="rootViewController" id="jDs-zm-Oca"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sEc-mL-9no" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1206" y="1777"/>
         </scene>
     </scenes>
 </document>

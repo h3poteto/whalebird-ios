@@ -14,7 +14,7 @@ import Social
 class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
     var accountStore: ACAccountStore = ACAccountStore()
-    var account: ACAccount?
+    var account: ACAccount = ACAccount()
     var newTimeline: NSMutableArray = NSMutableArray()
     var currentTimeline: NSMutableArray = NSMutableArray()
     
@@ -32,8 +32,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
-         updateTimeline(0)
-        
+        updateTimeline(0)
         
 
         // Uncomment the following line to preserve selection between presentations
@@ -130,6 +129,23 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     */
     func updateTimeline(since_id: Int) {
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
+        var params: Dictionary<String, String> = [
+            "contributor_details" : "true",
+            "trim_user" : "0",
+            "count" : "10"
+        ]
+        TwitterAPIClient.sharedClient()
+        TwitterAPIClient.sharedClient().getTimeline(url, params: params, callback: {new_timeline in
+            self.newTimeline = new_timeline
+            for new_tweet in self.newTimeline {
+                self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+            }
+            println(self.newTimeline)
+            self.tableView.reloadData()
+        })
+        
+        /*
         var flag = SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
         // なぜかfalseになるので強制的に実行：一時対応
         if (true) {
@@ -147,7 +163,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                     var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: params)
                     var count = twitterAccounts.count
                     if (twitterAccounts.count > 0) {
+                        // Lastじゃなくて選択させたい
                         request.account = twitterAccounts.lastObject as ACAccount
+                        self.account = request.account
                         
                         request.performRequestWithHandler({responseData, urlResponse, error in
                             if (responseData != nil) {
@@ -176,6 +194,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 }
                 }
             )}
+*/
     }
     
     func onRefresh(sender: AnyObject) {
