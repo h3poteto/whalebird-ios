@@ -20,6 +20,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     var timelineCell: NSMutableArray = NSMutableArray()
     var refreshTimeline: UIRefreshControl!
+    
+    @IBOutlet var newTweetButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.refreshTimeline = UIRefreshControl()
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshTimeline)
+        
+        newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
@@ -150,6 +155,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.refreshTimeline.beginRefreshing()
         updateTimeline(0)
         self.refreshTimeline.endRefreshing()
+    }
+    
+    func tappedNewTweet(sender: AnyObject) {
+        var newTweetView: NewTweetViewController = self.storyboard.instantiateViewControllerWithIdentifier("newTweet") as NewTweetViewController
+        self.navigationController.pushViewController(newTweetView, animated: true)
+        
     }
 
 }

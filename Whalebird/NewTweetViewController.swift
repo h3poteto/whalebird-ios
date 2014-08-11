@@ -49,6 +49,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     func onCancelTapped() {
         newTweetText.text = ""
+        self.navigationController.popViewControllerAnimated(true)
         
     }
     
@@ -59,12 +60,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     //-----------------------------------------
     //  return: status
+    //  クライアント名はアプリ登録することで表示される
+    //  デバッグ中はvia iOSを変更することはできない
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
         let params: Dictionary<String, String> = [
-            "status": tweetBody,
-            "source": "Whilebird"
+            "status": tweetBody
         ]
         TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { status in
             println(status)

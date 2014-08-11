@@ -36,7 +36,6 @@
                     <connections>
                         <segue destination="jUQ-UH-QNQ" kind="relationship" relationship="viewControllers" id="gkh-EV-Vbd"/>
                         <segue destination="sO9-2T-Q9H" kind="relationship" relationship="viewControllers" id="EgW-uy-ji2"/>
-                        <segue destination="oAu-w7-T1y" kind="relationship" relationship="viewControllers" id="Ky2-o0-FGK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V6h-IY-rkN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -109,7 +108,7 @@
         <!--New Tweet View Controller-->
         <scene sceneID="5YM-Gb-Dnc">
             <objects>
-                <viewController id="Mpb-fv-nM9" customClass="NewTweetViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newTweet" id="Mpb-fv-nM9" customClass="NewTweetViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wma-oJ-LBn"/>
                         <viewControllerLayoutGuide type="bottom" id="VFj-Yg-bOp"/>
@@ -124,25 +123,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sLE-Q7-TZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2080" y="1777"/>
-        </scene>
-        <!--Tweet-->
-        <scene sceneID="tnb-gi-hlv">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oAu-w7-T1y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tweet" id="2tx-Nw-nYD"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rg1-JT-YYk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Mpb-fv-nM9" kind="relationship" relationship="rootViewController" id="jDs-zm-Oca"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sEc-mL-9no" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1206" y="1777"/>
         </scene>
     </scenes>
 </document>
