@@ -54,7 +54,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     }
     
     func onSendTapped() {
-        postTweet(newTweetText.text)
+        if (countElements(newTweetText.text as String) > 0) {
+            postTweet(newTweetText.text)
+            TSMessage.showNotificationWithTitle("Post Success!", type: TSMessageNotificationType.Success)
+            self.navigationController.popViewControllerAnimated(true)
+        }
     }
     
     
