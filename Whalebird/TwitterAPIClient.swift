@@ -47,6 +47,21 @@ class TwitterAPIClient: NSObject {
     }
     
     //---------------------------------------
+    //  アカウントを列挙
+    //---------------------------------------
+    func pickUpAccount(complete:(NSArray)->Void) {
+        var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {granted, error in
+            if (granted) {
+                var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
+                complete(twitterAccounts)
+            } else {
+                complete(NSArray())
+            }
+        })
+    }
+    
+    //---------------------------------------
     //  ログイン確認
     //  return: bool
     //---------------------------------------
@@ -66,16 +81,28 @@ class TwitterAPIClient: NSObject {
                     var count = twitterAccounts.count
                     if (twitterAccounts.count > 0) {
                         // Lastじゃなくて選択させたい
-                        self.account = twitterAccounts.lastObject as ACAccount
-                        request.account = self.account
-                        request.performRequestWithHandler({responseData, urlResponse, error in
-                            if (responseData != nil) {
-                                if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
-                                    result = true
-                                    complete()
-                                }
+                        let user_default = NSUserDefaults.standardUserDefaults()
+                        let username = user_default.stringForKey("username")
+                        var selected_account: ACAccount!
+                        for aclist in twitterAccounts {
+                            if (username == aclist.username) {
+                                selected_account = aclist as ACAccount
                             }
-                        })
+                        }
+                        if (selected_account == nil) {
+                            // alert アカウントを設定させる
+                        } else {
+                            self.account = selected_account
+                            request.account = self.account
+                            request.performRequestWithHandler({responseData, urlResponse, error in
+                                if (responseData != nil) {
+                                    if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
+                                        result = true
+                                        complete()
+                                    }
+                                }
+                            })
+                        }
                     } else {
                         var alertController = UIAlertController(title: "Account not found", message: "設定からアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
                         //var destructiveAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
