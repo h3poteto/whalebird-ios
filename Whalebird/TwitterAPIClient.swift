@@ -61,6 +61,7 @@ class TwitterAPIClient: NSObject {
         })
     }
     
+    
     //---------------------------------------
     //  ログイン確認
     //  return: bool
@@ -80,7 +81,6 @@ class TwitterAPIClient: NSObject {
                     var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: nil)
                     var count = twitterAccounts.count
                     if (twitterAccounts.count > 0) {
-                        // Lastじゃなくて選択させたい
                         let user_default = NSUserDefaults.standardUserDefaults()
                         let username = user_default.stringForKey("username")
                         var selected_account: ACAccount!
@@ -91,6 +91,7 @@ class TwitterAPIClient: NSObject {
                         }
                         if (selected_account == nil) {
                             // alert アカウントを設定させる
+                            println("please select account")
                         } else {
                             self.account = selected_account
                             request.account = self.account
@@ -99,7 +100,12 @@ class TwitterAPIClient: NSObject {
                                     if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
                                         result = true
                                         complete()
+                                    } else {
+                                        // status error
+                                        println("response status error")
                                     }
+                                } else {
+                                    println("response data is nil")
                                 }
                             })
                         }
@@ -109,6 +115,7 @@ class TwitterAPIClient: NSObject {
                         //alertController.addAction(destructiveAction)
                         //self.presentViewController(alertController, animated: true, completion: nil)
                         result = false
+                        println("please submit account")
                     }
                 }
             }
@@ -171,6 +178,40 @@ class TwitterAPIClient: NSObject {
         })
     }
     
+    //---------------------------------------
+    //  ユーザー情報の取得
+    //---------------------------------------
+    func getUserInfo(target_url: NSURL, params: Dictionary<String, String>, callback:(NSDictionary)->Void) {
+        var request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_url, parameters: params)
+        
+        if (self.account == nil) {
+            login({() in
+                self.userInfoAction(request, callback: callback)
+            })
+        } else {
+            self.userInfoAction(request, callback: callback)
+        }
+    }
+    
+    func userInfoAction(request: SLRequest, callback:(NSDictionary)->Void) {
+        var user_info: NSDictionary!
+        request.account = self.account
+        request.performRequestWithHandler({responseData, urlResponse, error in
+            if (responseData != nil) {
+                if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300){
+                    var jsonError: NSError?
+                    user_info = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSDictionary
+                    callback(user_info)
+                } else {
+                    println(urlResponse.statusCode)
+                    callback(NSDictionary())
+                }
+            } else {
+                println(responseData)
+                callback(NSDictionary())
+            }
+        })
+    }
 }
 
 

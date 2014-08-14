@@ -106,10 +106,10 @@
             </objects>
             <point key="canvasLocation" x="1206" y="1036"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="wSb-yV-F1q">
             <objects>
-                <viewController id="ybZ-6I-Ubl" sceneMemberID="viewController">
+                <viewController id="ybZ-6I-Ubl" customClass="ProfileViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ewe-61-qnN"/>
                         <viewControllerLayoutGuide type="bottom" id="zvi-EQ-Kgh"/>

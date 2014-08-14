@@ -53,6 +53,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         
     }
     
+    // to do: fix 成功かどうかを見極めてからアラート表示
     func onSendTapped() {
         if (countElements(newTweetText.text as String) > 0) {
             postTweet(newTweetText.text)
