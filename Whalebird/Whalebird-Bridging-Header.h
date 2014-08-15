@@ -3,3 +3,6 @@
 //
 
 #import <TSMessages/TSMessage.h>
+#import <NoticeView/WBNoticeView.h>
+#import <NoticeView/WBErrorNoticeView.h>
+#import <NoticeView/WBSuccessNoticeView.h>

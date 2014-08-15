@@ -53,12 +53,12 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         
     }
     
-    // to do: fix 成功かどうかを見極めてからアラート表示
+    //-----------------------------------------
+    //  送信ボタンを押した時の処理
+    //-----------------------------------------
     func onSendTapped() {
         if (countElements(newTweetText.text as String) > 0) {
             postTweet(newTweetText.text)
-            TSMessage.showNotificationWithTitle("Post Success!", type: TSMessageNotificationType.Success)
-            self.navigationController.popViewControllerAnimated(true)
         }
     }
     
@@ -67,14 +67,24 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //  return: status
     //  クライアント名はアプリ登録することで表示される
     //  デバッグ中はvia iOSを変更することはできない
+    //  To Do: fix ここだけnoticeが表示されない
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
         let params: Dictionary<String, String> = [
-            "status": tweetBody
+            "status": newTweetText.text
         ]
-        TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { status in
-            println(status)
+        TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { response, status, error in
+            if (response != nil && status >= 200 && status < 300) {
+                var notice = WBSuccessNoticeView.successNoticeInView(self.view, title: "Post Success")
+                notice.alpha = 0.8
+                notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.show()
+            } else {
+                var notice = WBErrorNoticeView.errorNoticeInView(self.navigationController.view, title: "Error", message: "Post Error")
+                notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.show()
+            }
         })
     }
 

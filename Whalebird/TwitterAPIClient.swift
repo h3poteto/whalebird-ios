@@ -42,8 +42,7 @@ class TwitterAPIClient: NSObject {
     //---------------------------------------
     override init() {
         super.init()
-        login({() in
-        })
+
     }
     
     //---------------------------------------
@@ -91,7 +90,12 @@ class TwitterAPIClient: NSObject {
                         }
                         if (selected_account == nil) {
                             // alert アカウントを設定させる
-                            println("please select account")
+                            let alert = UIAlertView()
+                            alert.title = "Account Select"
+                            alert.message = "Please select your account"
+                            alert.addButtonWithTitle("OK")
+                            alert.show()
+                            
                         } else {
                             self.account = selected_account
                             request.account = self.account
@@ -102,20 +106,28 @@ class TwitterAPIClient: NSObject {
                                         complete()
                                     } else {
                                         // status error
-                                        println("response status error")
+                                        let alert = UIAlertView()
+                                        alert.title = "Network Error"
+                                        alert.message = "Status Code:" + String(urlResponse.statusCode)
+                                        alert.addButtonWithTitle("OK")
+                                        alert.show()
                                     }
                                 } else {
-                                    println("response data is nil")
+                                    let alert = UIAlertView()
+                                    alert.title = "Network Error"
+                                    alert.message = "Can not recieve response"
+                                    alert.addButtonWithTitle("OK")
+                                    alert.show()
                                 }
                             })
                         }
                     } else {
-                        var alertController = UIAlertController(title: "Account not found", message: "設定からアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
-                        //var destructiveAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                        //alertController.addAction(destructiveAction)
-                        //self.presentViewController(alertController, animated: true, completion: nil)
+                        let alert = UIAlertView()
+                        alert.title = "Account Not Found"
+                        alert.message = "Please register your account in iPhone"
+                        alert.addButtonWithTitle("OK")
+                        alert.show()
                         result = false
-                        println("please submit account")
                     }
                 }
             }
@@ -156,7 +168,7 @@ class TwitterAPIClient: NSObject {
     //------------------------------------------
     //  指定のPOSTアクション
     //------------------------------------------
-    func postTweetData(target_url: NSURL, params: Dictionary<String, String>, callback:(Int)->Void) {
+    func postTweetData(target_url: NSURL, params: Dictionary<String, String>, callback:(NSData?, Int, NSError?)->Void) {
         var request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.POST, URL: target_url, parameters: params)
         
         if (self.account == nil) {
@@ -168,12 +180,14 @@ class TwitterAPIClient: NSObject {
         }
     }
     
-    func postAction(request: SLRequest, callback:(Int)->Void) {
+    func postAction(request: SLRequest, callback:(NSData?, Int, NSError?)->Void) {
         var result = NSMutableArray()
         request.account = self.account
         request.performRequestWithHandler({responseData, urlResponse, error in
             if (responseData != nil) {
-                callback(urlResponse.statusCode)
+                callback(responseData, urlResponse.statusCode, error)
+            } else {
+                callback(nil, 400, error)
             }
         })
     }
@@ -203,11 +217,9 @@ class TwitterAPIClient: NSObject {
                     user_info = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSDictionary
                     callback(user_info)
                 } else {
-                    println(urlResponse.statusCode)
                     callback(NSDictionary())
                 }
             } else {
-                println(responseData)
                 callback(NSDictionary())
             }
         })

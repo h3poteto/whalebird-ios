@@ -146,6 +146,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             for new_tweet in self.newTimeline {
                 self.currentTimeline.insertObject(new_tweet, atIndex: 0)
             }
+            
+            var notice = WBSuccessNoticeView.successNoticeInView(self.view, title: "Timeline Updated")
+            notice.alpha = 0.8
+            notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+            notice.show()
             self.tableView.reloadData()
         })
         
