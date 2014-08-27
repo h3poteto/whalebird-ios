@@ -23,7 +23,7 @@ class TimelineViewCell: UITableViewCell {
     @IBOutlet var bodyLabel: UILabel!
     @IBOutlet var postDetailLable: UILabel!
     
-    required init(coder aDecoder: NSCoder!) {
+    required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -64,7 +64,7 @@ class TimelineViewCell: UITableViewCell {
         //  profileImageLabel
         //------------------------------------
         var error = NSError?()
-        var image_url = NSURL.URLWithString(dict.objectForKey("user").objectForKey("profile_image_url") as NSString)
+        var image_url = NSURL.URLWithString(dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
         profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
         profileImage.sizeToFit()
         //------------------------------------
@@ -72,7 +72,7 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         nameLabel.textAlignment = NSTextAlignment.Left
         nameLabel.textColor = UIColor.blackColor()
-        nameLabel.text = dict.objectForKey("user").objectForKey("name") as NSString
+        nameLabel.text = dict.objectForKey("user")?.objectForKey("name") as NSString
         nameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
 
         
@@ -81,7 +81,7 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         screenNameLabel.textAlignment = NSTextAlignment.Left
         screenNameLabel.textColor = UIColor.grayColor()
-        let screen_name = dict.objectForKey("user").objectForKey("screen_name") as NSString
+        let screen_name = dict.objectForKey("user")?.objectForKey("screen_name") as NSString
         screenNameLabel.text = "@" + screen_name
         screenNameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
         //------------------------------------
@@ -120,7 +120,7 @@ class TimelineViewCell: UITableViewCell {
         input_format.timeStyle = NSDateFormatterStyle.NoStyle
         input_format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         input_format.locale = NSLocale(localeIdentifier: "en_US")
-        var date: NSDate = input_format.dateFromString(dateStr)
+        var date: NSDate = input_format.dateFromString(dateStr)!
         
         var output_format = NSDateFormatter()
         output_format.dateStyle = NSDateFormatterStyle.LongStyle

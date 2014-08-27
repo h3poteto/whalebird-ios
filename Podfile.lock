@@ -1,7 +1,7 @@
 PODS:
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
-  - TSMessages (0.9.9):
+  - TSMessages (0.9.10):
     - HexColors
 
 DEPENDENCIES:
@@ -11,6 +11,6 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   NoticeView: 357545814931eb92428de54449f405f91c84a1b8
-  TSMessages: 2999ef55e532378692e9d14d32da2bb60e285129
+  TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
 
 COCOAPODS: 0.33.1
