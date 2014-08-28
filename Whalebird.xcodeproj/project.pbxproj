@@ -23,6 +23,7 @@
 		E9797B1E19953231000FC13C /* TimelineCellDesign.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9797B1D19953231000FC13C /* TimelineCellDesign.xib */; };
 		E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
+		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		E9797B1F1995325E000FC13C /* TimelineViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
 		E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whalebird-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
+		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -85,6 +88,7 @@
 		0249136FA29B42BCB7523044 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9A33A2F19AEC6460077B673 /* Foundation.framework */,
 				E9869EE719AE370F009DD99D /* QuartzCore.framework */,
 				F93BA7217F214FE3BC6C20D1 /* libPods.a */,
 			);
@@ -123,6 +127,7 @@
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
 				E9797B1D19953231000FC13C /* TimelineCellDesign.xib */,
 				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
+				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E9446C2B1997493300996333 /* TwitterAPIClient.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
@@ -300,6 +305,7 @@
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */,
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
+				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E91B4237199B2B8600F1C427 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

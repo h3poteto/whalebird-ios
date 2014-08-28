@@ -39,6 +39,13 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
         updateTimeline(0)
         
+        let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
+        let params: Dictionary<String,String> = [
+            "with" : "user"
+        ]
+        UserstreamAPIClient.sharedClient().startStreaming(stream_url, params: params, callback: {data in
+        })
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
