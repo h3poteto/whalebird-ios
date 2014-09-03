@@ -47,19 +47,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         if (application.applicationState == UIApplicationState.Active) {
-            let alert = UIAlertView()
+            var alert = UIAlertView()
             alert.title = "Reply"
             alert.message = notification.alertBody
             alert.addButtonWithTitle(notification.alertAction)
             alert.show()
         }
-
         
         UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
         // ここでBackgroundから復帰したときの処理
+        
+        UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
 
 

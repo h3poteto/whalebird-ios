@@ -125,25 +125,6 @@
             </objects>
             <point key="canvasLocation" x="1962" y="1771"/>
         </scene>
-        <!--New Tweet View Controller-->
-        <scene sceneID="5YM-Gb-Dnc">
-            <objects>
-                <viewController storyboardIdentifier="newTweet" id="Mpb-fv-nM9" customClass="NewTweetViewController" customModule="Whalebird" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wma-oJ-LBn"/>
-                        <viewControllerLayoutGuide type="bottom" id="VFj-Yg-bOp"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="CJV-Oa-i4d">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="83Z-hC-IJL"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sLE-Q7-TZJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2892" y="1777"/>
-        </scene>
         <!--Profile-->
         <scene sceneID="bbU-M9-8u1">
             <objects>

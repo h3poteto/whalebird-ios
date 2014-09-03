@@ -99,7 +99,7 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         postDetailLable.textAlignment = NSTextAlignment.Left
         postDetailLable.textColor = UIColor.grayColor()
-        postDetailLable.text = createdAtToString(dict.objectForKey("created_at") as NSString)
+        postDetailLable.text = TwitterAPIClient.createdAtToString(dict.objectForKey("created_at") as NSString)
         postDetailLable.font = UIFont.systemFontOfSize(11)
         postDetailLable.frame.origin.y = bodyLabel.frame.origin.y + bodyLabel.frame.size.height + ImagePadding
         
@@ -112,22 +112,6 @@ class TimelineViewCell: UITableViewCell {
         } else {
             return 60
         }
-    }
-    
-    func createdAtToString(dateStr: NSString) -> NSString{
-        var input_format = NSDateFormatter()
-        input_format.dateStyle = NSDateFormatterStyle.LongStyle
-        input_format.timeStyle = NSDateFormatterStyle.NoStyle
-        input_format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
-        input_format.locale = NSLocale(localeIdentifier: "en_US")
-        var date: NSDate = input_format.dateFromString(dateStr)!
-        
-        var output_format = NSDateFormatter()
-        output_format.dateStyle = NSDateFormatterStyle.LongStyle
-        output_format.timeStyle = NSDateFormatterStyle.NoStyle
-        output_format.dateFormat = "HH:mm:ss"
-        output_format.locale = NSLocale(localeIdentifier: "ja_JP")
-        return output_format.stringFromDate(date)
     }
     
 

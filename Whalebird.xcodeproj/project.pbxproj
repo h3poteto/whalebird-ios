@@ -18,6 +18,7 @@
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9446C2B1997493300996333 /* TwitterAPIClient.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
+		E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */; };
 		E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
 		E9797B1C199526F6000FC13C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E9797B1E19953231000FC13C /* TimelineCellDesign.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9797B1D19953231000FC13C /* TimelineCellDesign.xib */; };
@@ -52,6 +53,7 @@
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E9446C2B1997493300996333 /* TwitterAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPIClient.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
+		E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		E9797B19199526EF000FC13C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		E9797B1B199526F6000FC13C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E9797B1D19953231000FC13C /* TimelineCellDesign.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineCellDesign.xib; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E91B4236199B2B8600F1C427 /* SettingsViewController.swift */,
 				E912439C199524E000795EF0 /* Main.storyboard */,
+				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
 				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
 				E9797B1D19953231000FC13C /* TimelineCellDesign.xib */,
@@ -312,6 +315,7 @@
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E91B4237199B2B8600F1C427 /* SettingsViewController.swift in Sources */,
+				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

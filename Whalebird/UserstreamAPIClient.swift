@@ -80,7 +80,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 let range: NSRange = message.rangeOfString("@" + username!)
                 
                 if (range.location != NSNotFound ){
-                    let notification = UILocalNotification()
+                    var notification = UILocalNotification()
                     notification.fireDate = NSDate()
                     notification.timeZone = NSTimeZone.defaultTimeZone()
                     notification.alertBody = message

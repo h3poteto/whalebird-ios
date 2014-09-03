@@ -10,10 +10,32 @@ import UIKit
 
 class NewTweetViewController: UIViewController, UITextViewDelegate{
     var maxSize: CGSize!
-    @IBOutlet var newTweetText: UITextView!
-    @IBOutlet var cancelButton: UIBarButtonItem!
-    @IBOutlet var sendButton: UIBarButtonItem!
     
+    var blankView:UIView!
+    var newTweetText: UITextView!
+    var cancelButton: UIBarButtonItem!
+    var sendButton: UIBarButtonItem!
+    
+    //======================================
+    //  instance method
+    //======================================
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init() {
+        super.init()
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.blankView = UIView(frame: self.view.bounds)
+        self.blankView.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(self.blankView)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +51,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
         newTweetText.editable = true
         newTweetText.delegate = self
-        self.view.addSubview(newTweetText)
+        self.blankView.addSubview(newTweetText)
         
         TwitterAPIClient.sharedClient()
         

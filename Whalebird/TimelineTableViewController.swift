@@ -95,6 +95,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
         return height
     }
+    
+    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+        var detail_view = TweetDetailViewController(TweetBody: tweetData.objectForKey("text") as NSString, ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString, ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString, PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+        self.navigationController.pushViewController(detail_view, animated: true)
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -169,8 +175,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
     func tappedNewTweet(sender: AnyObject) {
-        var newTweetView: NewTweetViewController = self.storyboard.instantiateViewControllerWithIdentifier("newTweet") as NewTweetViewController
-        self.navigationController.pushViewController(newTweetView, animated: true)
+        var new_tweet_view = NewTweetViewController()
+        self.navigationController.pushViewController(new_tweet_view, animated: true)
+        
+//        var newTweetView: NewTweetViewController = self.storyboard.instantiateViewControllerWithIdentifier("newTweet") as NewTweetViewController
+//        self.navigationController.pushViewController(newTweetView, animated: true)
         
     }
 

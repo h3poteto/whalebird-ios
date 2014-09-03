@@ -32,6 +32,22 @@ class TwitterAPIClient: NSObject {
         return SharedStruct._sharedClient
     }
     
+    class func createdAtToString(dateStr: NSString) -> NSString{
+        var input_format = NSDateFormatter()
+        input_format.dateStyle = NSDateFormatterStyle.LongStyle
+        input_format.timeStyle = NSDateFormatterStyle.NoStyle
+        input_format.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        input_format.locale = NSLocale(localeIdentifier: "en_US")
+        var date: NSDate = input_format.dateFromString(dateStr)!
+        
+        var output_format = NSDateFormatter()
+        output_format.dateStyle = NSDateFormatterStyle.LongStyle
+        output_format.timeStyle = NSDateFormatterStyle.NoStyle
+        output_format.dateFormat = "HH:mm:ss"
+        output_format.locale = NSLocale(localeIdentifier: "ja_JP")
+        return output_format.stringFromDate(date)
+    }
+    
     
     //=======================================
     //  instance method
@@ -90,7 +106,7 @@ class TwitterAPIClient: NSObject {
                         }
                         if (selected_account == nil) {
                             // alert アカウントを設定させる
-                            let alert = UIAlertView()
+                            var alert = UIAlertView()
                             alert.title = "Account Select"
                             alert.message = "Please select your account"
                             alert.addButtonWithTitle("OK")
@@ -106,14 +122,14 @@ class TwitterAPIClient: NSObject {
                                         complete()
                                     } else {
                                         // status error
-                                        let alert = UIAlertView()
+                                        var alert = UIAlertView()
                                         alert.title = "Network Error"
                                         alert.message = "Status Code:" + String(urlResponse.statusCode)
                                         alert.addButtonWithTitle("OK")
                                         alert.show()
                                     }
                                 } else {
-                                    let alert = UIAlertView()
+                                    var alert = UIAlertView()
                                     alert.title = "Network Error"
                                     alert.message = "Can not recieve response"
                                     alert.addButtonWithTitle("OK")
@@ -122,7 +138,7 @@ class TwitterAPIClient: NSObject {
                             })
                         }
                     } else {
-                        let alert = UIAlertView()
+                        var alert = UIAlertView()
                         alert.title = "Account Not Found"
                         alert.message = "Please register your account in iPhone"
                         alert.addButtonWithTitle("OK")
