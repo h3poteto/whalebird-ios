@@ -9,17 +9,21 @@
 import UIKit
 
 class TweetDetailViewController: UIViewController {
+    let _iconSize = CGFloat(40)
+    let _LabelPadding = CGFloat(10)
+    
     //=====================================
     //  instance variables
     //=====================================
-    let _LabelPadding = CGFloat(10)
     var tweetBody:String?
     var screenName:String!
+    var userName:String!
     var postDetail:String!
     var profileImage:String!
     
     var blankView:UIView!
     var screenNameLabel:UILabel!
+    var userNameLabel:UILabel!
     var tweetBodyLabel:UILabel!
     var postDetailLabel:UILabel!
     var profileImageLabel:UIImageView!
@@ -28,6 +32,8 @@ class TweetDetailViewController: UIViewController {
     var rtButton:UIButton!
     var favButton:UIButton!
     var deleteButton:UIButton!
+    
+    var optionButtonArea:UILabel!
     
     //=====================================
     //  instance method
@@ -44,12 +50,13 @@ class TweetDetailViewController: UIViewController {
         super.init()
     }
     
-    init(TweetBody:String, ScreenName:String, ProfileImage:String, PostDetail:String) {
+    init(TweetBody:String, ScreenName:String, UserName:String, ProfileImage:String, PostDetail:String) {
         super.init()
         self.tweetBody = TweetBody
         self.screenName = ScreenName
         self.postDetail = PostDetail
         self.profileImage = ProfileImage
+        self.userName = UserName
     }
     
     override func loadView() {
@@ -69,8 +76,13 @@ class TweetDetailViewController: UIViewController {
         self.profileImageLabel.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
         self.profileImageLabel.sizeToFit()
         self.blankView.addSubview(self.profileImageLabel)
+
+        self.userNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 15))
+        self.userNameLabel.text = self.userName
+        self.userNameLabel.font = UIFont.systemFontOfSize(13)
+        self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 50, self.navigationController.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, WindowSize.size.width * 0.9, 15))
         self.screenNameLabel.text = self.screenName
         self.screenNameLabel.font = UIFont.systemFontOfSize(13)
         self.blankView.addSubview(self.screenNameLabel)
@@ -87,32 +99,34 @@ class TweetDetailViewController: UIViewController {
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)
         
-        self.replyButton = UIButton(frame: CGRectMake(0, 100, 40, 15))
-        self.replyButton.setTitle("Reply", forState: UIControlState.Normal)
-        self.replyButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        self.replyButton.sizeToFit()
-        self.replyButton.center = CGPoint(x: WindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.replyButton.frame.size.height)
+        self.optionButtonArea = UILabel(frame: CGRectMake(0, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 10, WindowSize.size.width, _iconSize))
+        self.optionButtonArea.backgroundColor = UIColor(red: 0.529, green: 0.808, blue: 0.980, alpha: 1.0)
+        self.blankView.addSubview(self.optionButtonArea)
+        
+        
+        
+        self.replyButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
+        self.replyButton.setBackgroundImage(UIImage(named: "appbar.reply.email.png"), forState: .Normal)
+        self.replyButton.center = CGPoint(x: WindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.replyButton.frame.size.height / 2.0 + 10)
+        self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.replyButton)
         
-        self.rtButton = UIButton(frame: CGRectMake(0, 100, 40, 15))
-        self.rtButton.setTitle("RT", forState: .Normal)
-        self.rtButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        self.rtButton.sizeToFit()
-        self.rtButton.center = CGPoint(x: WindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.rtButton.frame.size.height)
+        self.rtButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
+        self.rtButton.setBackgroundImage(UIImage(named: "appbar.repeat.png"), forState: .Normal)
+        self.rtButton.center = CGPoint(x: WindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.rtButton.frame.size.height / 2.0 + 10)
+        self.rtButton.addTarget(self, action: "tappedRetweet", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.rtButton)
         
-        self.favButton = UIButton(frame: CGRectMake(0, 100, 40, 15))
-        self.favButton.setTitle("Fav", forState: .Normal)
-        self.favButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        self.favButton.sizeToFit()
-        self.favButton.center = CGPoint(x: WindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.favButton.frame.size.height)
+        self.favButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
+        self.favButton.setBackgroundImage(UIImage(named: "appbar.star.png"), forState: .Normal)
+        self.favButton.center = CGPoint(x: WindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.favButton.frame.size.height / 2.0 + 10)
+        self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.favButton)
         
-        self.deleteButton = UIButton(frame: CGRectMake(0, 100, 40, 15))
-        self.deleteButton.setTitle("Delete", forState: .Normal)
-        self.deleteButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        self.deleteButton.sizeToFit()
-        self.deleteButton.center = CGPoint(x: WindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.deleteButton.frame.size.height)
+        self.deleteButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
+        self.deleteButton.setBackgroundImage(UIImage(named: "appbar.delete.png"), forState: .Normal)
+        self.deleteButton.center = CGPoint(x: WindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.deleteButton.frame.size.height / 2.0 + 10)
+        self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.deleteButton)
         
     }
@@ -122,15 +136,22 @@ class TweetDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // TODO イベントの実装
+    // Replyに関してはreply toのidをどこかで取得してくる必要あり．通知から起動したときも入るようにidだけ渡せれば最高
+    
+    func tappedReply() {
+        
     }
-    */
+    
+    func tappedRetweet() {
+        
+    }
+    
+    func tappedFavorite() {
+        
+    }
 
+    func tappedDelete() {
+        
+    }
 }

@@ -98,7 +98,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
-        var detail_view = TweetDetailViewController(TweetBody: tweetData.objectForKey("text") as NSString, ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString, ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString, PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+        var detail_view = TweetDetailViewController(
+            TweetBody: tweetData.objectForKey("text") as NSString,
+            ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
+            UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
+            ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
+            PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
         self.navigationController.pushViewController(detail_view, animated: true)
     }
 

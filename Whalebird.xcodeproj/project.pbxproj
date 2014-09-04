@@ -25,6 +25,10 @@
 		E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
+		E9ADD0FC19B867CC004D6A31 /* appbar.delete.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FB19B867CC004D6A31 /* appbar.delete.png */; };
+		E9ADD0FE19B86B99004D6A31 /* appbar.reply.email.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FD19B86B99004D6A31 /* appbar.reply.email.png */; };
+		E9ADD10019B86BAC004D6A31 /* appbar.repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */; };
+		E9ADD10219B86BCA004D6A31 /* appbar.star.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD10119B86BCA004D6A31 /* appbar.star.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +66,10 @@
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E9ADD0FB19B867CC004D6A31 /* appbar.delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.delete.png; sourceTree = "<group>"; };
+		E9ADD0FD19B86B99004D6A31 /* appbar.reply.email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.reply.email.png; sourceTree = "<group>"; };
+		E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.repeat.png; sourceTree = "<group>"; };
+		E9ADD10119B86BCA004D6A31 /* appbar.star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.star.png; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +144,10 @@
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E91B4234199B153E00F1C427 /* MainTabBarController.swift */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
+				E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */,
+				E9ADD10119B86BCA004D6A31 /* appbar.star.png */,
+				E9ADD0FB19B867CC004D6A31 /* appbar.delete.png */,
+				E9ADD0FD19B86B99004D6A31 /* appbar.reply.email.png */,
 				E9124396199524E000795EF0 /* Supporting Files */,
 			);
 			path = Whalebird;
@@ -254,8 +266,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E912439E199524E000795EF0 /* Main.storyboard in Resources */,
+				E9ADD0FE19B86B99004D6A31 /* appbar.reply.email.png in Resources */,
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
+				E9ADD10019B86BAC004D6A31 /* appbar.repeat.png in Resources */,
 				E9797B1E19953231000FC13C /* TimelineCellDesign.xib in Resources */,
+				E9ADD0FC19B867CC004D6A31 /* appbar.delete.png in Resources */,
+				E9ADD10219B86BCA004D6A31 /* appbar.star.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
