@@ -45,6 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 
+    // TODO: アプリケーションが生きている時はAlertViewじゃなくてWBのNoticeViewの方がいいかもしれない
+    // Alertでやるなら少なくとも「開く」と「閉じる」を作るべき
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         if (application.applicationState == UIApplicationState.Active) {
             var alert = UIAlertView()

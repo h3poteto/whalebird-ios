@@ -99,6 +99,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
         var detail_view = TweetDetailViewController(
+            TweetID: tweetData.objectForKey("id_str") as NSString,
             TweetBody: tweetData.objectForKey("text") as NSString,
             ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
             UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,

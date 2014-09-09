@@ -36,7 +36,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //  instance method
     //=======================================
     
-    func startStreaming(target_stream: NSURL, params: Dictionary<String,String>, callback:(NSMutableArray)->Void) {
+    func startStreaming(target_stream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
         var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_stream, parameters: params)
         var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
         var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
@@ -57,8 +57,16 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 self.connection = NSURLConnection(request: request.preparedURLRequest(), delegate: self)
                 self.connection.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
                 self.connection.start()
+                callback(self.account)
             }
          }
+    }
+    
+    func stopStreaming(callback:()->Void) {
+        if (self.connection != nil) {
+            self.connection.cancel()
+            callback()
+        }
     }
     
     
@@ -79,6 +87,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 let username = NSUserDefaults.standardUserDefaults().stringForKey("username")
                 let range: NSRange = message.rangeOfString("@" + username!)
                 
+                // TODO: ここでreplyを飛ばすのに必要な情報を取得，送る方法を考えて
                 if (range.location != NSNotFound ){
                     var notification = UILocalNotification()
                     notification.fireDate = NSDate()

@@ -10,6 +10,7 @@ import UIKit
 
 class NewTweetViewController: UIViewController, UITextViewDelegate{
     var maxSize: CGSize!
+    var tweetBody: String!
     
     var blankView:UIView!
     var newTweetText: UITextView!
@@ -28,6 +29,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     override init() {
         super.init()
+    }
+    
+    init(TweetBody: String!) {
+        super.init()
+        self.tweetBody = TweetBody
     }
     
     override func loadView() {
@@ -65,7 +71,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         newTweetText.keyboardAppearance = UIKeyboardAppearance.Light
-        newTweetText.text = ""
+        newTweetText.text = self.tweetBody
         newTweetText.becomeFirstResponder()
     }
     
