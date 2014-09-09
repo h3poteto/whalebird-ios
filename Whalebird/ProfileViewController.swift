@@ -15,13 +15,20 @@ class ProfileViewController: UIViewController {
     var windowSize: CGRect!
     var headerHeight: CGFloat!
     
-    @IBOutlet var profileImage: UIImageView!
-    @IBOutlet var profileHeaderImage: UIImageView!
-    @IBOutlet var userNameLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
+    var profileImage: UIImageView!
+    var profileHeaderImage: UIImageView!
+    var userNameLabel: UILabel!
+    var descriptionLabel: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        let user_default = NSUserDefaults.standardUserDefaults()
+        self.twitterScreenName = user_default.objectForKey("username") as NSString
+    }
+    
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "Profile"
         let user_default = NSUserDefaults.standardUserDefaults()
         self.twitterScreenName = user_default.objectForKey("username") as NSString
     }
@@ -53,11 +60,12 @@ class ProfileViewController: UIViewController {
             TwitterAPIClient.sharedClient().getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json"), params: params, callback: { header_data in
                 
                 var error = NSError?()
-                
-                var header_image_url = NSURL.URLWithString(header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
-                self.profileHeaderImage = UIImageView(frame: CGRectMake(0, self.headerHeight, self.windowSize.width, 160))
-                self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
-                self.view.addSubview(self.profileHeaderImage)
+                if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
+                    var header_image_url = NSURL.URLWithString(header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
+                    self.profileHeaderImage = UIImageView(frame: CGRectMake(0, self.headerHeight, self.windowSize.width, 160))
+                    self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
+                    self.view.addSubview(self.profileHeaderImage)
+                }
                 
                 TwitterAPIClient.sharedClient().getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_data in
                     // profile

@@ -26,6 +26,13 @@ class TimelineViewCell: UITableViewCell {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    override init() {
+        super.init()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

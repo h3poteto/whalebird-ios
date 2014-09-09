@@ -21,7 +21,28 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     var timelineCell: NSMutableArray = NSMutableArray()
     var refreshTimeline: UIRefreshControl!
     
-    @IBOutlet var newTweetButton: UIBarButtonItem!
+    var newTweetButton: UIBarButtonItem!
+    
+    //=========================================
+    //  instance method
+    //=========================================
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "Timeline"
+    }
+    
+    override init() {
+        super.init()
+    }
+    
+    override init(style: UITableViewStyle) {
+        super.init(style: UITableViewStyle.Plain)
+        self.view.backgroundColor = UIColor.whiteColor()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,11 +97,14 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
 
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-        var cell: TimelineViewCell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as TimelineViewCell
+        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as TimelineViewCell
+        if (cell == nil) {
+            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+        }
         
-        self.timelineCell.insertObject(cell, atIndex: indexPath.row)
+        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
         
-        cell.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
 
         return cell
     }

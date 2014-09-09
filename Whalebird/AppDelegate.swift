@@ -10,7 +10,7 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-                            
+    var rootController: UITabBarController!
     var window: UIWindow?
 
 
@@ -18,6 +18,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.Sound | UIUserNotificationType.Alert | UIUserNotificationType.Badge, categories: nil))
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window?.backgroundColor = UIColor.whiteColor()
+        
+        self.rootController = UITabBarController()
+        var timelineViewController = TimelineTableViewController()
+        var timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
+        var profileViewController = ProfileViewController()
+        var profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        var settingsViewController = SettingsViewController()
+        var settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
+        let controllers = NSArray(array: [timelineNavigationController, profileNavigationController, settingsNavigationController])
+        self.rootController.setViewControllers(controllers, animated: true)
+        self.window?.addSubview(self.rootController.view)
+        self.window?.makeKeyAndVisible()
         
         return true
     }

@@ -12,7 +12,20 @@ import Accounts
 class SettingsViewController: UIViewController, UIActionSheetDelegate {
     
     var twitterAccounts: NSArray!
-    @IBOutlet var accountSelectButton: UIButton!
+    var accountSelectButton: UIButton!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "Settings"
+    }
+
+    override init() {
+        super.init()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
