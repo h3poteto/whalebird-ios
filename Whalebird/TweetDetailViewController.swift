@@ -73,19 +73,19 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         super.viewDidLoad()
         let WindowSize = UIScreen.mainScreen().bounds
         
-        self.profileImageLabel = UIImageView(frame: CGRectMake(WindowSize.size.width * 0.05, self.navigationController.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 40))
+        self.profileImageLabel = UIImageView(frame: CGRectMake(WindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 40))
         var image_url = NSURL.URLWithString(self.profileImage)
         var error = NSError?()
         self.profileImageLabel.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
         self.profileImageLabel.sizeToFit()
         self.blankView.addSubview(self.profileImageLabel)
 
-        self.userNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 15))
+        self.userNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, WindowSize.size.width * 0.9, 15))
         self.userNameLabel.text = self.userName
         self.userNameLabel.font = UIFont.systemFontOfSize(13)
         self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, WindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UILabel(frame: CGRectMake(WindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, WindowSize.size.width * 0.9, 15))
         self.screenNameLabel.text = self.screenName
         self.screenNameLabel.font = UIFont.systemFontOfSize(13)
         self.blankView.addSubview(self.screenNameLabel)
@@ -155,7 +155,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     
     func tappedReply() {
         var new_tweet_view = NewTweetViewController()
-        self.navigationController.pushViewController(new_tweet_view, animated: true)
+        self.navigationController!.pushViewController(new_tweet_view, animated: true)
     }
     
     func tappedRetweet() {
@@ -178,11 +178,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 "id" : self.tweetID
             ]
             TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {request, status, error in
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController.view, title: "Delete Complete")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
                 notice.alpha = 0.8
-                notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
                 notice.show()
-                self.navigationController.popViewControllerAnimated(true)
+                self.navigationController!.popViewControllerAnimated(true)
             })
         })
         let cancel_action = UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
@@ -210,9 +210,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                     "id" : self.tweetID
                 ]
                 TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {response, status, error in
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController.view, title: "Retweet Complete")
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
                     notice.alpha = 0.8
-                    notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                    notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
                     notice.show()
                 })
             })
@@ -225,7 +225,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             break
         case 2:
             var retweet_view = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!)
-            self.navigationController.pushViewController(retweet_view, animated: true)
+            self.navigationController!.pushViewController(retweet_view, animated: true)
             break
         default:
             break

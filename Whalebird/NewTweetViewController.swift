@@ -77,7 +77,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     func onCancelTapped() {
         newTweetText.text = ""
-        self.navigationController.popViewControllerAnimated(true)
+        self.navigationController!.popViewControllerAnimated(true)
         
     }
     
@@ -104,13 +104,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         ]
         TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { response, status, error in
             if (response != nil && status >= 200 && status < 300) {
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController.view, title: "Post Success")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Post Success")
                 notice.alpha = 0.8
-                notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
                 notice.show()
             } else {
-                var notice = WBErrorNoticeView.errorNoticeInView(self.navigationController.view, title: "Error", message: "Post Error")
-                notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                var notice = WBErrorNoticeView.errorNoticeInView(self.navigationController!.view, title: "Error", message: "Post Error")
+                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
                 notice.show()
             }
         })

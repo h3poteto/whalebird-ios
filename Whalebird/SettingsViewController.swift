@@ -92,7 +92,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
                     UIGraphicsEndImageContext()
                     
                     // 未解決：　labelには表示できるのに，なぜかtabbaritemには表示されない
-                    var view_controllers: NSArray = self.tabBarController.viewControllers
+                    var view_controllers: NSArray = self.tabBarController!.viewControllers!
                     // class名で判定したいけれど，viewControllersからclass名を判定できないのでobjectAtIndexでクリティカル指定
                     var target: UINavigationController! = view_controllers.objectAtIndex(1) as UINavigationController
                     target.tabBarItem = UITabBarItem(title: "Profile", image: resize_image, selectedImage: resize_image)

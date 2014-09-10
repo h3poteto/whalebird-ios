@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             var alert = UIAlertView()
             alert.title = "Reply"
             alert.message = notification.alertBody
-            alert.addButtonWithTitle(notification.alertAction)
+            alert.addButtonWithTitle(notification.alertAction!)
             alert.show()
         }
         

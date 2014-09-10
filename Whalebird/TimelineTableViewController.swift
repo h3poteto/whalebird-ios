@@ -83,21 +83,20 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return currentTimeline.count
     }
 
-
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as TimelineViewCell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
         if (cell == nil) {
             cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
         }
@@ -106,10 +105,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         
         cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
 
-        return cell
+        return cell!
     }
     
-    override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
             var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
@@ -120,7 +119,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         return height
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
         var detail_view = TweetDetailViewController(
             TweetID: tweetData.objectForKey("id_str") as NSString,
@@ -129,7 +128,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
             ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
             PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
-        self.navigationController.pushViewController(detail_view, animated: true)
+        self.navigationController!.pushViewController(detail_view, animated: true)
+
     }
 
     /*
@@ -189,9 +189,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             for new_tweet in self.newTimeline {
                 self.currentTimeline.insertObject(new_tweet, atIndex: 0)
             }
-            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController.view, title: "Timeline Updated")
+            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
             notice.alpha = 0.8
-            notice.originY = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+            notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
             notice.show()
             self.tableView.reloadData()
         })
@@ -206,7 +206,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     func tappedNewTweet(sender: AnyObject) {
         var new_tweet_view = NewTweetViewController()
-        self.navigationController.pushViewController(new_tweet_view, animated: true)
+        self.navigationController!.pushViewController(new_tweet_view, animated: true)
         
 //        var newTweetView: NewTweetViewController = self.storyboard.instantiateViewControllerWithIdentifier("newTweet") as NewTweetViewController
 //        self.navigationController.pushViewController(newTweetView, animated: true)

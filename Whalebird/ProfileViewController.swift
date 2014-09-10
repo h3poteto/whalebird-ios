@@ -49,7 +49,7 @@ class ProfileViewController: UIViewController {
         
         
         self.windowSize = UIScreen.mainScreen().bounds
-        self.headerHeight = self.navigationController.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+        self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
         
         if (self.twitterScreenName.length >= 0) {
             let params:Dictionary<String, String> = [
