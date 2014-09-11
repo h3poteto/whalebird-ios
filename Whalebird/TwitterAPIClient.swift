@@ -106,7 +106,8 @@ class TwitterAPIClient: NSObject {
                         }
                         if (selected_account == nil) {
                             // alert アカウントを設定させる
-                            // settingsに移動
+                            // できればAlertControllerで遷移させたい
+                            // 表示先のViewが確定しない上に，親のtabBarControllerが取得できないので手詰まり
                             var alert = UIAlertView()
                             alert.title = "Account Select"
                             alert.message = "Please select your account"
@@ -130,11 +131,6 @@ class TwitterAPIClient: NSObject {
                                         notice.show()
                                     }
                                 } else {
-                                    var alert = UIAlertView()
-                                    alert.title = "Network Error"
-                                    alert.message = "Can not recieve response"
-                                    alert.addButtonWithTitle("OK")
-                                    alert.show()
                                     var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: "Can not recieve response")
                                     notice.alpha = 0.8
                                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
