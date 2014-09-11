@@ -99,7 +99,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
         // ここでBackgroundから復帰したときの処理
+        var tweetDetailData = notification.userInfo as NSDictionary!
+        if (tweetDetailData != nil) {
+            var detailViewController = TweetDetailViewController(
+                TweetID: tweetDetailData.objectForKey("id") as String,
+                TweetBody: tweetDetailData.objectForKey("text") as String,
+                ScreenName: tweetDetailData.objectForKey("screen_name") as String,
+                UserName: tweetDetailData.objectForKey("name") as String,
+                ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
+                PostDetail: tweetDetailData.objectForKey("created_at") as String)
         
+            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+            (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+        }
         UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
 

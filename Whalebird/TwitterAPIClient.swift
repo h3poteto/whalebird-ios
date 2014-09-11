@@ -106,11 +106,13 @@ class TwitterAPIClient: NSObject {
                         }
                         if (selected_account == nil) {
                             // alert アカウントを設定させる
+                            // settingsに移動
                             var alert = UIAlertView()
                             alert.title = "Account Select"
                             alert.message = "Please select your account"
                             alert.addButtonWithTitle("OK")
                             alert.show()
+                            
                             
                         } else {
                             self.account = selected_account
@@ -122,11 +124,10 @@ class TwitterAPIClient: NSObject {
                                         complete()
                                     } else {
                                         // status error
-                                        var alert = UIAlertView()
-                                        alert.title = "Network Error"
-                                        alert.message = "Status Code:" + String(urlResponse.statusCode)
-                                        alert.addButtonWithTitle("OK")
-                                        alert.show()
+                                        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: ("Status Code:" + String(urlResponse.statusCode)))
+                                        notice.alpha = 0.8
+                                        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                                        notice.show()
                                     }
                                 } else {
                                     var alert = UIAlertView()
@@ -134,15 +135,18 @@ class TwitterAPIClient: NSObject {
                                     alert.message = "Can not recieve response"
                                     alert.addButtonWithTitle("OK")
                                     alert.show()
+                                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: "Can not recieve response")
+                                    notice.alpha = 0.8
+                                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                                    notice.show()
                                 }
                             })
                         }
                     } else {
-                        var alert = UIAlertView()
-                        alert.title = "Account Not Found"
-                        alert.message = "Please register your account in iPhone"
-                        alert.addButtonWithTitle("OK")
-                        alert.show()
+                        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Not Found", message: "Please register your account in iPhone")
+                        notice.alpha = 0.8
+                        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                        notice.show()
                         result = false
                     }
                 }
