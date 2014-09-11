@@ -60,15 +60,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 
-    // TODO: アプリケーションが生きている時はAlertViewじゃなくてWBのNoticeViewの方がいいかもしれない
-    // Alertでやるなら少なくとも「開く」と「閉じる」を作るべき
+    // 設定でカスタマイズさせよう
+    // AlertControllerだと，そのまま開く．NoticeViewだとNoticeだけで
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         if (application.applicationState == UIApplicationState.Active) {
-            var alert = UIAlertView()
-            alert.title = "Reply"
-            alert.message = notification.alertBody
-            alert.addButtonWithTitle(notification.alertAction!)
-            alert.show()
+            var tweetDetailData = notification.userInfo as NSDictionary!
+            if (tweetDetailData != nil) {
+                let title = (tweetDetailData.objectForKey("name") as String) + "からの返信"
+                var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: title)
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
+                
+                var alertController = UIAlertController(title: "Reply", message: tweetDetailData.objectForKey("text") as? String, preferredStyle: .Alert)
+                let openAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
+                    var detailViewController = TweetDetailViewController(
+                        TweetID: tweetDetailData.objectForKey("id") as String,
+                        TweetBody: tweetDetailData.objectForKey("text") as String,
+                        ScreenName: tweetDetailData.objectForKey("screen_name") as String,
+                        UserName: tweetDetailData.objectForKey("name") as String,
+                        ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
+                        PostDetail: tweetDetailData.objectForKey("created_at") as String)
+                    
+                    // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+
+                })
+                let okAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: {action in
+                })
+                alertController.addAction(openAction)
+                alertController.addAction(okAction)
+                self.rootController.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
         
         UIApplication.sharedApplication().cancelLocalNotification(notification)

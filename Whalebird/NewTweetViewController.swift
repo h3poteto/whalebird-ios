@@ -106,11 +106,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
             if (response != nil && status >= 200 && status < 300) {
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Post Success")
                 notice.alpha = 0.8
-                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             } else {
                 var notice = WBErrorNoticeView.errorNoticeInView(self.navigationController!.view, title: "Error", message: "Post Error")
-                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             }
         })

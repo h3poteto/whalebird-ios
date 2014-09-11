@@ -191,7 +191,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             }
             var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
             notice.alpha = 0.8
-            notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+            notice.message = "test"
             notice.show()
             self.tableView.reloadData()
         })

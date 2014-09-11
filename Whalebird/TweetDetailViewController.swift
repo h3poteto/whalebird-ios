@@ -180,7 +180,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {request, status, error in
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
                 notice.alpha = 0.8
-                notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
                 self.navigationController!.popViewControllerAnimated(true)
             })
@@ -212,7 +212,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {response, status, error in
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
                     notice.alpha = 0.8
-                    notice.originY = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
                 })
             })

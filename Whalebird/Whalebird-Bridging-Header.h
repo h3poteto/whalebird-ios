@@ -6,3 +6,4 @@
 #import <NoticeView/WBNoticeView.h>
 #import <NoticeView/WBErrorNoticeView.h>
 #import <NoticeView/WBSuccessNoticeView.h>
+#import <NoticeView/WBStickyNoticeView.h>
