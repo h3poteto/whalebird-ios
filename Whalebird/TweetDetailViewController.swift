@@ -173,7 +173,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
-        TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {data, status, error in
+        TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {data, status, error in
             // これnavigationControllerに表示しようとすると，出ないのであとでなんか考えて
             var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
             notice.alpha = 0.8
@@ -190,7 +190,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             let params:Dictionary<String, String> = [
                 "id" : self.tweetID
             ]
-            TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {request, status, error in
+            TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {request, status, error in
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
@@ -222,7 +222,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 let params:Dictionary<String, String> = [
                     "id" : self.tweetID
                 ]
-                TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: {response, status, error in
+                TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {response, status, error in
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height

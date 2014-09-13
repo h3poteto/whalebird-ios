@@ -10,11 +10,14 @@ import UIKit
 import Social
 import Accounts
 
-class TwitterAPIClient: NSObject {
+final class TwitterAPIClient: NSObject {
     
-    // クラス変数が未実装のため構造体で対応
-    private struct SharedStruct {
-        static var _sharedClient: TwitterAPIClient!
+    // シングルトンにするよ
+    class var sharedClient: TwitterAPIClient {
+        struct sharedStruct {
+            static let _sharedClient = TwitterAPIClient()
+        }
+        return sharedStruct._sharedClient
     }
     
     var account: ACAccount!
@@ -23,14 +26,6 @@ class TwitterAPIClient: NSObject {
     //=======================================
     //  class method
     //=======================================
-    
-    class func sharedClient() -> TwitterAPIClient {
-        if (SharedStruct._sharedClient == nil) {
-            SharedStruct._sharedClient = TwitterAPIClient()
-        }
-        
-        return SharedStruct._sharedClient
-    }
     
     class func createdAtToString(dateStr: NSString) -> NSString{
         var input_format = NSDateFormatter()
@@ -56,9 +51,8 @@ class TwitterAPIClient: NSObject {
     //---------------------------------------
     //  コンストラクタ
     //---------------------------------------
-    override init() {
+    private override init() {
         super.init()
-
     }
     
     //---------------------------------------

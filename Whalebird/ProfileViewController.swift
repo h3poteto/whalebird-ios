@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController {
             ]
             
             // header
-            TwitterAPIClient.sharedClient().getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json"), params: params, callback: { header_data in
+            TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json"), params: params, callback: { header_data in
                 
                 var error = NSError?()
                 if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController {
                     self.view.addSubview(self.profileHeaderImage)
                 }
                 
-                TwitterAPIClient.sharedClient().getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_data in
+                TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_data in
                     // profile
                     var profile_image_url = NSURL.URLWithString(user_data.objectForKey("profile_image_url") as String)
                     self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))

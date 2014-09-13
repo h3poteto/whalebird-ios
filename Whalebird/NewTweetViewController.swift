@@ -61,8 +61,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         newTweetText.delegate = self
         self.blankView.addSubview(newTweetText)
         
-        TwitterAPIClient.sharedClient()
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,7 +110,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
                 "status": newTweetText.text
             ]
         }
-        TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { response, status, error in
+        TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: { response, status, error in
             if (response != nil && status >= 200 && status < 300) {
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
                 notice.alpha = 0.8

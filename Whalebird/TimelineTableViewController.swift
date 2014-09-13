@@ -64,7 +64,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         let params: Dictionary<String,String> = [
             "with" : "user"
         ]
-        UserstreamAPIClient.sharedClient().startStreaming(stream_url, params: params, callback: {data in
+        UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
         })
         
 
@@ -176,8 +176,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             "trim_user" : "0",
             "count" : "10"
         ]
-        TwitterAPIClient.sharedClient()
-        TwitterAPIClient.sharedClient().getTimeline(url, params: params, callback: {new_timeline in
+        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
             self.newTimeline = new_timeline
             for new_tweet in self.newTimeline {
                 self.currentTimeline.insertObject(new_tweet, atIndex: 0)

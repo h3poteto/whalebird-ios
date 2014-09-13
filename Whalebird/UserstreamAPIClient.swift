@@ -11,9 +11,13 @@ import Social
 import Accounts
 
 class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
-    // クラス変数が未実装のため構造体で対応
-    private struct SharedStruct {
-        static var _sharedClient: UserstreamAPIClient!
+
+    // シングルトンにするよ
+    class var sharedClient: UserstreamAPIClient {
+    struct sharedStruct {
+        static let _sharedClient = UserstreamAPIClient()
+        }
+        return sharedStruct._sharedClient
     }
     
     var account: ACAccount!
@@ -23,14 +27,6 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     //  class method
     //=======================================
-    
-    class func sharedClient() -> UserstreamAPIClient {
-        if (SharedStruct._sharedClient == nil) {
-            SharedStruct._sharedClient = UserstreamAPIClient()
-        }
-        
-        return SharedStruct._sharedClient
-    }
     
     //=======================================
     //  instance method
