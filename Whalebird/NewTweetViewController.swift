@@ -95,7 +95,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //  return: status
     //  クライアント名はアプリ登録することで表示される
     //  デバッグ中はvia iOSを変更することはできない
-    //  To Do: fix ここだけnoticeが表示されない
+    //  To Do: fix ここだけnoticeが表示されない，早くしたい
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
@@ -104,16 +104,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         ]
         TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { response, status, error in
             if (response != nil && status >= 200 && status < 300) {
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Post Success")
+                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             } else {
-                var notice = WBErrorNoticeView.errorNoticeInView(self.navigationController!.view, title: "Error", message: "Post Error")
+                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Error", message: "Post Error")
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             }
         })
+        self.navigationController?.popViewControllerAnimated(true)
     }
 
     /*

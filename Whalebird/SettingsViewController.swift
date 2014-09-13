@@ -53,6 +53,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
 
     func stackAccount() {
         TwitterAPIClient.sharedClient().pickUpAccount { (accounts) in
+            // ここ早くしたい
             if (accounts.count > 0) {
                 self.twitterAccounts = accounts
                 var accounts_sheet = UIActionSheet(title: "Select Account", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)

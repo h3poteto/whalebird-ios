@@ -15,7 +15,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     var accountStore: ACAccountStore = ACAccountStore()
     var account: ACAccount = ACAccount()
-    var newTimeline: NSMutableArray = NSMutableArray()
+    var newTimeline: NSArray = NSArray()
     var currentTimeline: NSMutableArray = NSMutableArray()
     
     var timelineCell: NSMutableArray = NSMutableArray()
@@ -167,15 +167,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+    // 速くしたい
     func updateTimeline(since_id: Int) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
         var params: Dictionary<String, String> = [
@@ -208,10 +201,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func tappedNewTweet(sender: AnyObject) {
         var new_tweet_view = NewTweetViewController()
         self.navigationController!.pushViewController(new_tweet_view, animated: true)
-        
-//        var newTweetView: NewTweetViewController = self.storyboard.instantiateViewControllerWithIdentifier("newTweet") as NewTweetViewController
-//        self.navigationController.pushViewController(newTweetView, animated: true)
-        
     }
 
 }

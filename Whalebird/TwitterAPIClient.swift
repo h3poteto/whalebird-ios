@@ -155,7 +155,7 @@ class TwitterAPIClient: NSObject {
     //----------------------------------------
     //  指定のタイムラインを更新
     //----------------------------------------
-    func getTimeline(target_timeline: NSURL, params: Dictionary<String, String>, callback:(NSMutableArray)->Void) {
+    func getTimeline(target_timeline: NSURL, params: Dictionary<String, String>, callback:(NSArray)->Void) {
         var request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_timeline, parameters: params)
         if (self.account == nil){
             login({() in
@@ -166,16 +166,16 @@ class TwitterAPIClient: NSObject {
         }
     }
     
-    func getAction(request: SLRequest, callback:(NSMutableArray)->Void) {
-        var new_timeline = NSMutableArray()
+    func getAction(request: SLRequest, callback:(NSArray)->Void) {
+        //var new_timeline = NSMutableArray()
         
         request.account = self.account
         request.performRequestWithHandler({responseData, urlResponse, error in
             if (responseData != nil) {
                 if (urlResponse.statusCode >= 200 && urlResponse.statusCode < 300) {
                     var jsonError: NSError?
-                    new_timeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSMutableArray
-                    callback(new_timeline)
+                    var new_timeline = NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSArray
+                    callback(new_timeline.reverseObjectEnumerator().allObjects)
                 }
             }
         })
