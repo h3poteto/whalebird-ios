@@ -63,6 +63,11 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
                 accounts_sheet.showInView(self.view)
             } else {
                 // alert表示
+                var alertController = UIAlertController(title: "Account not found", message: "twitterアカウントを設定してください", preferredStyle:
+                    UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alertController.addAction(okAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }

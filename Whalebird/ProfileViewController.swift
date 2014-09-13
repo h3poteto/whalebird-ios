@@ -11,7 +11,7 @@ import QuartzCore
 
 class ProfileViewController: UIViewController {
     
-    var twitterScreenName: NSString!
+    var twitterScreenName: NSString?
     var windowSize: CGRect!
     var headerHeight: CGFloat!
     
@@ -23,14 +23,14 @@ class ProfileViewController: UIViewController {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as NSString
+        self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "Profile"
         let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as NSString
+        self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
     
     override init() {
@@ -51,9 +51,9 @@ class ProfileViewController: UIViewController {
         self.windowSize = UIScreen.mainScreen().bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
         
-        if (self.twitterScreenName.length >= 0) {
+        if (self.twitterScreenName != nil) {
             let params:Dictionary<String, String> = [
-                "screen_name" : self.twitterScreenName
+                "screen_name" : self.twitterScreenName!
             ]
             
             // header
@@ -76,7 +76,7 @@ class ProfileViewController: UIViewController {
                     self.view.addSubview(self.profileImage)
                     
                     self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.headerHeight + 80, self.windowSize.width * 0.8, 15))
-                    self.userNameLabel.text = user_data.objectForKey("screen_name") as String
+                    self.userNameLabel.text = user_data.objectForKey("screen_name") as? String
                     self.userNameLabel.font = UIFont.systemFontOfSize(10)
                     self.userNameLabel.sizeToFit()
                     self.userNameLabel.textAlignment = NSTextAlignment.Center
@@ -92,7 +92,7 @@ class ProfileViewController: UIViewController {
                     
                     self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.headerHeight + 110, self.windowSize.width * 0.8, 15))
                     self.descriptionLabel.numberOfLines = 3
-                    self.descriptionLabel.text = user_data.objectForKey("description") as String
+                    self.descriptionLabel.text = user_data.objectForKey("description") as? String
                     self.descriptionLabel.font = UIFont.systemFontOfSize(9)
                     self.descriptionLabel.sizeToFit()
                     self.descriptionLabel.textAlignment = NSTextAlignment.Center

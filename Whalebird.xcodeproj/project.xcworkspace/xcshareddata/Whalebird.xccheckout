@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2B8C845D-8210-4F93-B2AB-AE5DBEEC77B4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Whalebird</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>77EDBFB11E0877DB5B1A72838B3F24CAEFFB1E57</key>
+		<string>https://github.com/h3poteto/Whalebird.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Whalebird.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>77EDBFB11E0877DB5B1A72838B3F24CAEFFB1E57</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/h3poteto/Whalebird.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>77EDBFB11E0877DB5B1A72838B3F24CAEFFB1E57</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>77EDBFB11E0877DB5B1A72838B3F24CAEFFB1E57</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Whalebird</string>
+		</dict>
+	</array>
+</dict>
+</plist>
