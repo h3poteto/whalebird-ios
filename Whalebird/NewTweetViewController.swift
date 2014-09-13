@@ -11,6 +11,7 @@ import UIKit
 class NewTweetViewController: UIViewController, UITextViewDelegate{
     var maxSize: CGSize!
     var tweetBody: String!
+    var replyToID: String?
     
     var blankView:UIView!
     var newTweetText: UITextView!
@@ -31,9 +32,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         super.init()
     }
     
-    init(TweetBody: String!) {
+    init(TweetBody: String!, ReplyToID: String?) {
         super.init()
         self.tweetBody = TweetBody
+        self.replyToID = ReplyToID
     }
     
     override func loadView() {
@@ -99,9 +101,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
-        let params: Dictionary<String, String> = [
-            "status": newTweetText.text
-        ]
+        var params: Dictionary<String, String>
+        if (self.replyToID != nil) {
+            params = [
+                "status": newTweetText.text,
+                "in_reply_to_status_id": self.replyToID!
+            ]
+        } else {
+            params = [
+                "status": newTweetText.text
+            ]
+        }
         TwitterAPIClient.sharedClient().postTweetData(target_url, params: params, callback: { response, status, error in
             if (response != nil && status >= 200 && status < 300) {
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")

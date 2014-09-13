@@ -154,7 +154,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     // Replyに関してはreply toのidをどこかで取得してくる必要あり．通知から起動したときも入るようにidだけ渡せれば最高
     
     func tappedReply() {
-        var newTweetView = NewTweetViewController()
+        var newTweetView = NewTweetViewController(TweetBody: "@" + self.screenName + " ", ReplyToID: self.tweetID)
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
@@ -237,7 +237,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             presentViewController(alertController, animated: true, completion: nil)
             break
         case 2:
-            var retweetView = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!)
+            var retweetView = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!, ReplyToID: nil)
             self.navigationController!.pushViewController(retweetView, animated: true)
             break
         default:

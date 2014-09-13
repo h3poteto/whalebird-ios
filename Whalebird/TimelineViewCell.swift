@@ -17,11 +17,11 @@ class TimelineViewCell: UITableViewCell {
     let DefaultLineHeigth = CGFloat(15)
     let DefaultFontSize = CGFloat(13)
     
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var screenNameLabel: UILabel!
-    @IBOutlet var profileImage: UIImageView!
-    @IBOutlet var bodyLabel: UILabel!
-    @IBOutlet var postDetailLable: UILabel!
+    var nameLabel: UILabel!
+    var screenNameLabel: UILabel!
+    var profileImage: UIImageView!
+    var bodyLabel: UILabel!
+    var postDetailLable: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
