@@ -12,7 +12,6 @@
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
 		E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
-		E91B4235199B153E00F1C427 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B4234199B153E00F1C427 /* MainTabBarController.swift */; };
 		E91B4237199B2B8600F1C427 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B4236199B2B8600F1C427 /* SettingsViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9446C2B1997493300996333 /* TwitterAPIClient.swift */; };
@@ -50,7 +49,6 @@
 		E91243AA199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E91243AB199524E000795EF0 /* WhalebirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhalebirdTests.swift; sourceTree = "<group>"; };
 		E91243B5199525C200795EF0 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
-		E91B4234199B153E00F1C427 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		E91B4236199B2B8600F1C427 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E9446C2B1997493300996333 /* TwitterAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPIClient.swift; sourceTree = "<group>"; };
@@ -138,7 +136,6 @@
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E9446C2B1997493300996333 /* TwitterAPIClient.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
-				E91B4234199B153E00F1C427 /* MainTabBarController.swift */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */,
 				E9ADD10119B86BCA004D6A31 /* appbar.star.png */,
@@ -320,7 +317,6 @@
 			files = (
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
-				E91B4235199B153E00F1C427 /* MainTabBarController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */,
@@ -434,6 +430,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Whalebird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -449,6 +446,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Whalebird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -111,15 +111,20 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
             ]
         }
         TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: { response, status, error in
+            var q_main = dispatch_get_main_queue()
             if (response != nil && status >= 200 && status < 300) {
-                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
-                notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
+                dispatch_async(q_main, {()->Void in
+                    var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
+                })
             } else {
-                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Error", message: "Post Error")
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
+                dispatch_async(q_main, {()->Void in
+                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Error", message: "Post Error")
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
+                })
             }
         })
         self.navigationController?.popViewControllerAnimated(true)

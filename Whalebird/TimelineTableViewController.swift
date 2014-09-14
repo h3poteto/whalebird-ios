@@ -168,7 +168,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     */
 
     
-    // 速くしたい
     func updateTimeline(since_id: Int) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
         var params: Dictionary<String, String> = [
@@ -177,16 +176,19 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             "count" : "10"
         ]
         TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
-            self.newTimeline = new_timeline
-            for new_tweet in self.newTimeline {
-                self.currentTimeline.insertObject(new_tweet, atIndex: 0)
-            }
-            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
-            notice.alpha = 0.8
-            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-            notice.message = "test"
-            notice.show()
-            self.tableView.reloadData()
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                self.newTimeline = new_timeline
+                for new_tweet in self.newTimeline {
+                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                }
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.message = "test"
+                notice.show()
+                self.tableView.reloadData()
+            })
         })
         
     }

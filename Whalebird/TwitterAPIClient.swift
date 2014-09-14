@@ -60,7 +60,8 @@ final class TwitterAPIClient: NSObject {
     //---------------------------------------
     func pickUpAccount(complete:(NSArray)->Void) {
         var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {granted, error in
+        // selfで呼び出すメソッドのクロージャー内でselfを使う場合は循環参照になってしまうので unowned selfを使うこと
+        self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {[unowned self] granted, error in
             if (granted) {
                 var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
                 complete(twitterAccounts)
@@ -83,7 +84,7 @@ final class TwitterAPIClient: NSObject {
         if (true) {
             var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
 
-            self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {granted, error in
+            self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {[unowned self] granted, error in
                 if (granted) {
                     var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
                     var url: NSURL = NSURL.URLWithString("https://api.twitter.com/1.1/account/settings.json")

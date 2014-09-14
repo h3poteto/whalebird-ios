@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Accounts
 
 class SettingsViewController: UIViewController, UIActionSheetDelegate {
     
@@ -52,30 +51,36 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
     
 
     func stackAccount() {
-        TwitterAPIClient.sharedClient.pickUpAccount { (accounts) in
-            // ここ早くしたい
+        TwitterAPIClient.sharedClient.pickUpAccount({accounts in
+            // クロージャーの処理は終了後実行されているが，画面への描画プロセスがメインのキューに来ていない
+            // 非同期だけどキューを分けて処理をすることで対応
+            var q_main = dispatch_get_main_queue()
             if (accounts.count > 0) {
-                self.twitterAccounts = accounts
-                var accounts_sheet = UIActionSheet(title: "Select Account", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
-                for pick_account in accounts {
-                    accounts_sheet.addButtonWithTitle(pick_account.username)
-                }
-                accounts_sheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-                accounts_sheet.showInView(self.view)
+                dispatch_async(q_main, {()->Void in
+                    self.twitterAccounts = accounts
+                    var accounts_sheet = UIActionSheet(title: "Select Account", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+                    
+                    for pick_account in accounts {
+                        accounts_sheet.addButtonWithTitle(pick_account.username)
+                    }
+                    accounts_sheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
+                    accounts_sheet.showInView(self.view)
+                })
             } else {
-                // alert表示
-                var alertController = UIAlertController(title: "Account not found", message: "twitterアカウントを設定してください", preferredStyle:
-                    UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                alertController.addAction(okAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                dispatch_async(q_main, {()->Void in
+                    // alert表示
+                    var alertController = UIAlertController(title: "Account not found", message: "twitterアカウントを設定してください", preferredStyle: UIAlertControllerStyle.Alert)
+                    let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    alertController.addAction(okAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                })
             }
-        }
+        })
     }
     
     func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
         var user_default = NSUserDefaults.standardUserDefaults()
-        if (buttonIndex > self.twitterAccounts.count) {
+        if (buttonIndex >= self.twitterAccounts.count) {
             user_default.setObject(self.twitterAccounts[buttonIndex - 1].username, forKey: "username")
         
             let params: Dictionary<String, String> = [
