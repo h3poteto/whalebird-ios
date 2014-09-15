@@ -174,11 +174,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             "id" : self.tweetID
         ]
         TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {data, status, error in
-            // これnavigationControllerに表示しようとすると，出ないのであとでなんか考えて
-            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
-            notice.alpha = 0.8
-            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-            notice.show()
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
+            })
         })
     }
 
@@ -191,11 +193,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 "id" : self.tweetID
             ]
             TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {request, status, error in
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
-                notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
-                self.navigationController!.popViewControllerAnimated(true)
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
+                    self.navigationController!.popViewControllerAnimated(true)
+                })
             })
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
@@ -223,10 +228,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                     "id" : self.tweetID
                 ]
                 TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {response, status, error in
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                    var q_main = dispatch_get_main_queue()
+                    dispatch_async(q_main, {()->Void in
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
+                        notice.alpha = 0.8
+                        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                        notice.show()
+                    })
                 })
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in

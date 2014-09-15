@@ -90,6 +90,7 @@ final class TwitterAPIClient: NSObject {
                     var url: NSURL = NSURL.URLWithString("https://api.twitter.com/1.1/account/settings.json")
                     var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: nil)
                     var count = twitterAccounts.count
+                    var q_main = dispatch_get_main_queue()
                     if (twitterAccounts.count > 0) {
                         let user_default = NSUserDefaults.standardUserDefaults()
                         let username = user_default.stringForKey("username")
@@ -100,16 +101,16 @@ final class TwitterAPIClient: NSObject {
                             }
                         }
                         if (selected_account == nil) {
-                            // alert アカウントを設定させる
-                            // できればAlertControllerで遷移させたい
-                            // 表示先のViewが確定しない上に，親のtabBarControllerが取得できないので手詰まり
-                            var alert = UIAlertView()
-                            alert.title = "Account Select"
-                            alert.message = "Please select your account"
-                            alert.addButtonWithTitle("OK")
-                            alert.show()
-                            
-                            
+                            dispatch_async(q_main, {()->Void in
+                                // alert アカウントを設定させる
+                                // できればAlertControllerで遷移させたい
+                                // 表示先のViewが確定しない上に，親のtabBarControllerが取得できないので手詰まり
+                                var alert = UIAlertView()
+                                alert.title = "Account Select"
+                                alert.message = "Please select your account"
+                                alert.addButtonWithTitle("OK")
+                                alert.show()
+                            })
                         } else {
                             self.account = selected_account
                             request.account = self.account
@@ -119,26 +120,32 @@ final class TwitterAPIClient: NSObject {
                                         result = true
                                         complete()
                                     } else {
-                                        // status error
-                                        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: ("Status Code:" + String(urlResponse.statusCode)))
+                                        dispatch_async(q_main, {()->Void in
+                                            // status error
+                                         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: ("Status Code:" + String(urlResponse.statusCode)))
+                                            notice.alpha = 0.8
+                                            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                                            notice.show()
+                                        })
+                                    }
+                                } else {
+                                    dispatch_async(q_main, {()->Void in
+                                        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: "Can not recieve response")
                                         notice.alpha = 0.8
                                         notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                                         notice.show()
-                                    }
-                                } else {
-                                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Erro", message: "Can not recieve response")
-                                    notice.alpha = 0.8
-                                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                                    notice.show()
+                                    })
                                 }
                             })
                         }
                     } else {
-                        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Not Found", message: "Please register your account in iPhone")
-                        notice.alpha = 0.8
-                        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                        notice.show()
-                        result = false
+                        dispatch_async(q_main, {()->Void in
+                            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Not Found", message: "Please register your account in iPhone")
+                            notice.alpha = 0.8
+                            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                            notice.show()
+                            result = false
+                        })
                     }
                 }
             }
