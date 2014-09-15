@@ -19,7 +19,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "Settings"
+        self.title = "設定"
     }
 
     override init() {

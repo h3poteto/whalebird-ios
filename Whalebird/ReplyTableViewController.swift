@@ -1,80 +1,53 @@
-
 //
-//  TimelineTableViewController.swift
+//  ReplyTableViewController.swift
 //  Whalebird
 //
-//  Created by akirafukushima on 2014/08/09.
+//  Created by akirafukushima on 2014/09/15.
 //  Copyright (c) 2014年 AkiraFukushima. All rights reserved.
 //
 
 import UIKit
-import Accounts
-import Social
 
-class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class ReplyTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var accountStore: ACAccountStore = ACAccountStore()
-    var account: ACAccount = ACAccount()
-    var newTimeline: NSArray = NSArray()
-    var currentTimeline: NSMutableArray = NSMutableArray()
+    var newTimeline = NSArray()
+    var currentTimeline = NSMutableArray()
+    var timelineCell = NSMutableArray()
     
-    var timelineCell: NSMutableArray = NSMutableArray()
     var refreshTimeline: UIRefreshControl!
     
-    var newTweetButton: UIBarButtonItem!
     
-    //=========================================
+    //========================================
     //  instance method
-    //=========================================
+    //========================================
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "通知"
+    }
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+    }
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "タイムライン"
-    }
-    
     override init() {
         super.init()
-    }
-    
-    override init(style: UITableViewStyle) {
-        super.init(style: UITableViewStyle.Plain)
-        self.view.backgroundColor = UIColor.whiteColor()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         self.refreshTimeline = UIRefreshControl()
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshTimeline)
-        
-        newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet:")
-        self.navigationItem.rightBarButtonItem = newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-
+        
         updateTimeline(0)
-        
-        let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
-        let params: Dictionary<String,String> = [
-            "with" : "user"
-        ]
-        UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
-        })
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -98,11 +71,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
         if (cell == nil) {
-            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
-        
         self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
-        
         cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
 
         return cell!
@@ -166,40 +137,40 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     */
 
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+    }
+    */
+
     
     func updateTimeline(since_id: Int) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/mentions_timeline.json")
         var params: Dictionary<String, String> = [
-            "contributor_details" : "true",
-            "trim_user" : "0",
             "count" : "10"
         ]
-        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
+        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: { new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                 }
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Reply Updated")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
                 self.tableView.reloadData()
             })
         })
-        
     }
-    
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(0)
         self.refreshTimeline.endRefreshing()
     }
-    
-    func tappedNewTweet(sender: AnyObject) {
-        var new_tweet_view = NewTweetViewController()
-        self.navigationController!.pushViewController(new_tweet_view, animated: true)
-    }
-
 }

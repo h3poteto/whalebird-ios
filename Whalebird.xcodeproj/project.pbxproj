@@ -27,6 +27,7 @@
 		E9ADD0FE19B86B99004D6A31 /* appbar.reply.email.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FD19B86B99004D6A31 /* appbar.reply.email.png */; };
 		E9ADD10019B86BAC004D6A31 /* appbar.repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */; };
 		E9ADD10219B86BCA004D6A31 /* appbar.star.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD10119B86BCA004D6A31 /* appbar.star.png */; };
+		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		E9ADD0FD19B86B99004D6A31 /* appbar.reply.email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.reply.email.png; sourceTree = "<group>"; };
 		E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.repeat.png; sourceTree = "<group>"; };
 		E9ADD10119B86BCA004D6A31 /* appbar.star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.star.png; sourceTree = "<group>"; };
+		E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTableViewController.swift; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -129,6 +131,7 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E91B4236199B2B8600F1C427 /* SettingsViewController.swift */,
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
+				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
 				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
 				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
@@ -317,6 +320,7 @@
 			files = (
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
+				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */,

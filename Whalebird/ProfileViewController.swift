@@ -28,7 +28,7 @@ class ProfileViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "Profile"
+        self.title = "ユーザー"
         let user_default = NSUserDefaults.standardUserDefaults()
         self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
