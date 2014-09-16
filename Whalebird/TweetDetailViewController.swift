@@ -69,6 +69,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.view.addSubview(self.blankView)
     }
 
+    // TODO: ここからもツイートできるようにnavBarに追加しておいて
     override func viewDidLoad() {
         super.viewDidLoad()
         let windowSize = UIScreen.mainScreen().bounds

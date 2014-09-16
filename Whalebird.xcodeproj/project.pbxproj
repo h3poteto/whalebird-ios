@@ -28,6 +28,9 @@
 		E9ADD10019B86BAC004D6A31 /* appbar.repeat.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */; };
 		E9ADD10219B86BCA004D6A31 /* appbar.star.png in Resources */ = {isa = PBXBuildFile; fileRef = E9ADD10119B86BCA004D6A31 /* appbar.star.png */; };
 		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
+		E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */; };
+		E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
+		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		E9ADD0FF19B86BAC004D6A31 /* appbar.repeat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.repeat.png; sourceTree = "<group>"; };
 		E9ADD10119B86BCA004D6A31 /* appbar.star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appbar.star.png; sourceTree = "<group>"; };
 		E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTableViewController.swift; sourceTree = "<group>"; };
+		E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
+		E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
+		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +142,9 @@
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
 				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
 				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
+				E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */,
+				E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */,
+				E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */,
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E9446C2B1997493300996333 /* TwitterAPIClient.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
@@ -319,7 +328,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
+				E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
+				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
 				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
@@ -328,6 +339,7 @@
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E91B4237199B2B8600F1C427 /* SettingsViewController.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
+				E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

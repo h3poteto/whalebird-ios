@@ -53,8 +53,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshTimeline)
         
-        newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet:")
-        self.navigationItem.rightBarButtonItem = newTweetButton
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = self.newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 

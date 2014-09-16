@@ -43,6 +43,7 @@ class ProfileViewController: UIViewController {
     }
     //-----------------------------------------
     //  画像読み込み高速化は後回し
+    //  TODO: ここからもツイートできるようにしておいて
     //-----------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
