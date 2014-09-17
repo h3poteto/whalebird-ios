@@ -10,7 +10,16 @@ import UIKit
 
 class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var streamList = NSMutableArray()
+    struct Stream {
+        var image: String?
+        var name: String
+        var type: String
+        var uri: String
+        var id: String?
+    }
+    
+    
+    var streamList: Array<Stream> = [Stream(image: nil, name: "Home", type: "statuses", uri: "/statuses/home_timeline", id: nil)]
     var addItemButton: UIBarButtonItem!
     
     //==============================================
@@ -37,11 +46,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //-----------------------------
-        // for debugging code
-        streamList.addObject("Home")
-        streamList.addObject("Reply")
-        //------------------------------
+        self.streamList.append(Stream(image: nil, name: "Reply", type: "statuses", uri: "/statuses/mentions_timeline", id: nil))
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -73,7 +78,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = self.streamList.objectAtIndex(indexPath.row) as? String
+        cell.textLabel?.text = self.streamList[indexPath.row].name
 
         return cell
     }
@@ -91,20 +96,31 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            self.streamList.removeAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        // streamListを入れ替える
+        var fromCellData = self.streamList[fromIndexPath.row]
+        var toCellData = self.streamList[toIndexPath.row]
+        self.streamList[fromIndexPath.row] = toCellData
+        self.streamList[toIndexPath.row] = fromCellData
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var streamTableView = StreamTableViewController(StreamElement: self.streamList[indexPath.row])
+        self.navigationController?.pushViewController(streamTableView, animated: true)
     }
 
     /*
@@ -115,15 +131,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     func addNewItem(sender: AnyObject) {
         var stackListTableView = StackListTableViewController(StackTarget: NSURL.URLWithString("https://api.twitter.com/1.1/lists/list.json"))

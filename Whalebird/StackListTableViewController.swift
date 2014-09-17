@@ -140,10 +140,17 @@ class StackListTableViewController: UITableViewController {
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        let viewControllers = self.navigationController!.viewControllers as NSArray
-        let viewControllersCount = viewControllers.count as Int
-        let parentController: ListTableViewController = viewControllers.objectAtIndex(viewControllersCount - 1) as ListTableViewController
-        parentController.streamList.addObject(self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("uri") as String)
+        if (self.selectedIndex != nil) {
+            let viewControllers = self.navigationController!.viewControllers as NSArray
+            let viewControllersCount = viewControllers.count as Int
+            let parentController: ListTableViewController = viewControllers.objectAtIndex(viewControllersCount - 1) as ListTableViewController
+            var streamElement = ListTableViewController.Stream(
+                image: nil,
+                name: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("full_name") as String,
+                type: "list", uri: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("uri") as String,
+                id: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("id_str") as? String)
+            parentController.streamList.append(streamElement)
+        }
     }
 
     func decideSelected(sender: AnyObject) {

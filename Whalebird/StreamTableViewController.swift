@@ -10,7 +10,10 @@ import UIKit
 
 class StreamTableViewController: UITableViewController {
     
-    var streamName: String!
+    var streamElement: ListTableViewController.Stream!
+    var currentTimeline = NSMutableArray()
+    var newTimeline = NSArray()
+    var timelineCell = NSMutableArray()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -28,8 +31,10 @@ class StreamTableViewController: UITableViewController {
         super.init()
     }
     
-    init(StreamName: String) {
+    init(StreamElement: ListTableViewController.Stream) {
         super.init()
+        self.streamElement = StreamElement
+        self.title = self.streamElement.name
     }
 
     override func viewDidLoad() {
@@ -40,6 +45,10 @@ class StreamTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        
+        updateTimeline(0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,24 +61,39 @@ class StreamTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return self.currentTimeline.count
     }
 
-    /*
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as UITableViewCell
-
-        // Configure the cell...
-
-        return cell
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+        if (cell == nil) {
+            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+        }
+        
+        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
+        
+        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        
+        return cell!
     }
-    */
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height: CGFloat!
+        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
+            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            height = cell.cellHeight()
+        } else {
+            height = 60.0
+        }
+        return height
+    }
 
     /*
     // Override to support conditional editing of the table view.
@@ -106,14 +130,44 @@ class StreamTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    
+    
+    func updateTimeline(since_id: Int) {
+        var url: NSURL!
+        var params: Dictionary<String, String>!
+        switch self.streamElement.type {
+        case "statuses":
+            url = NSURL.URLWithString("https://api.twitter.com/1.1" + self.streamElement.uri + ".json")
+            params = [
+                "count" : "10"
+            ]
+            break
+        case "list":
+            url = NSURL.URLWithString("https://api.twitter.com/1.1/lists/statuses.json")
+            params = [
+                "list_id" : self.streamElement.id as String!,
+                "count" : "10"
+            ]
+            break
+        default:
+            break
+        }
+        
+        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                self.newTimeline = new_timeline
+                for new_tweet in self.newTimeline {
+                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                }
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
+                self.tableView.reloadData()
+            })
+        })
+        
     }
-    */
 
 }
