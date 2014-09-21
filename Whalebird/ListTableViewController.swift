@@ -119,7 +119,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var streamTableView = StreamTableViewController(StreamElement: self.streamList[indexPath.row])
+        var streamTableView = StreamTableViewController(StreamElement: self.streamList[indexPath.row], PageIndex: indexPath.row, ParentController: self)
         self.navigationController?.pushViewController(streamTableView, animated: true)
     }
 
