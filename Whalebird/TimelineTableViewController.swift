@@ -198,8 +198,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
     func tappedNewTweet(sender: AnyObject) {
-        var new_tweet_view = NewTweetViewController()
-        self.navigationController!.pushViewController(new_tweet_view, animated: true)
+        var newTweetView = NewTweetViewController()
+        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
 
 }

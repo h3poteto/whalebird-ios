@@ -41,7 +41,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     init(StreamElement: ListTableViewController.Stream, PageIndex: Int, ParentController: ListTableViewController) {
         super.init()
         self.streamElement = StreamElement
-        self.title = self.streamElement.name
         self.pageIndex = PageIndex
         self.parentController = ParentController
         self.title = self.streamElement.name
@@ -49,12 +48,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
+        
         let windowSize = UIScreen.mainScreen().bounds
         
     
@@ -84,8 +82,19 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshTimeline)
         
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = self.newTweetButton
+        
         
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        // delegateを消してやらないとオブジェクト消失に時にスクロールイベントが呼ばれて落ちる
+        if(!(self.navigationController!.viewControllers as NSArray).containsObject(self)) {
+            self.tableView.delegate = nil
+        }
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -265,5 +274,10 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.refreshTimeline.beginRefreshing()
         updateTimeline(0)
         self.refreshTimeline.endRefreshing()
+    }
+    
+    func tappedNewTweet(sender: AnyObject) {
+        var newTweetView = NewTweetViewController()
+        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
 }
