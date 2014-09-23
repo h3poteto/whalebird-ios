@@ -100,14 +100,15 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
                     dispatch_async(q_main, {() in
                         UIGraphicsBeginImageContext(CGSizeMake(30, 30))
                         image.drawInRect(CGRectMake(0, 0, 30, 30))
-                        var resize_image = UIGraphicsGetImageFromCurrentImageContext()
+                        var resizeImage = UIGraphicsGetImageFromCurrentImageContext()
                         UIGraphicsEndImageContext()
 
                         // 未解決：　labelには表示できるのに，なぜかtabbaritemには表示されない
                         var view_controllers: NSArray = self.tabBarController!.viewControllers!
                         // class名で判定したいけれど，viewControllersからclass名を判定できないのでobjectAtIndexでクリティカル指定
-                        var target: UINavigationController! = view_controllers.objectAtIndex(1) as UINavigationController
-                        target.tabBarItem = UITabBarItem(title: "Profile", image: resize_image, selectedImage: resize_image)
+                        var target: UINavigationController! = view_controllers.objectAtIndex(3) as UINavigationController
+                        var iconImage = resizeImage.imageWithRenderingMode(.AlwaysOriginal)
+                        target.tabBarItem = UITabBarItem(title: "ユーザー", image: iconImage, selectedImage: iconImage)
                     })
                 })
 
