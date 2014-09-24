@@ -29,6 +29,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リスト"
+        self.tabBarItem.image = UIImage(named: "List-Boxes.png")
     }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

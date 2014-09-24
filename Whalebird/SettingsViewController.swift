@@ -20,6 +20,7 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "設定"
+        self.tabBarItem.image = UIImage(named: "Settings-Line.png")
     }
 
     override init() {
@@ -103,7 +104,6 @@ class SettingsViewController: UIViewController, UIActionSheetDelegate {
                         var resizeImage = UIGraphicsGetImageFromCurrentImageContext()
                         UIGraphicsEndImageContext()
 
-                        // 未解決：　labelには表示できるのに，なぜかtabbaritemには表示されない
                         var view_controllers: NSArray = self.tabBarController!.viewControllers!
                         // class名で判定したいけれど，viewControllersからclass名を判定できないのでobjectAtIndexでクリティカル指定
                         var target: UINavigationController! = view_controllers.objectAtIndex(3) as UINavigationController

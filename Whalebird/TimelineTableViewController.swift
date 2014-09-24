@@ -33,6 +33,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "タイムライン"
+        self.tabBarItem.image = UIImage(named: "Home.png")
     }
     
     override init() {

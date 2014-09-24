@@ -30,10 +30,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     var profileImageLabel:UIImageView!
     
     var replyButton:UIButton!
-    var rtButton:UIButton!
+    var conversationButton:UIButton!
     var favButton:UIButton!
     var deleteButton:UIButton!
-    var detailButton:UIButton!
+    var moreButton:UIButton!
     
     var optionButtonArea:UILabel!
     
@@ -103,27 +103,28 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)
         
-        self.optionButtonArea = UILabel(frame: CGRectMake(0, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 10, windowSize.size.width, _iconSize))
-        self.optionButtonArea.backgroundColor = UIColor(red: 0.529, green: 0.808, blue: 0.980, alpha: 1.0)
-        self.blankView.addSubview(self.optionButtonArea)
         
+
+        // TODO: アイコンの位置調節，および操作領域の明示的な分離
         
-        
-        self.replyButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
-        self.replyButton.setBackgroundImage(UIImage(named: "appbar.reply.email.png"), forState: .Normal)
-        self.replyButton.center = CGPoint(x: windowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.replyButton.frame.size.height / 2.0 + 10)
+        let importImage = UIImage(named: "Import-Line.png")
+        self.replyButton = UIButton(frame: CGRectMake(0, 100, importImage.size.width, importImage.size.height))
+        self.replyButton.setBackgroundImage(importImage, forState: .Normal)
+        self.replyButton.center = CGPoint(x: windowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
         self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.replyButton)
         
-        self.rtButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
-        self.rtButton.setBackgroundImage(UIImage(named: "appbar.repeat.png"), forState: .Normal)
-        self.rtButton.center = CGPoint(x: windowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.rtButton.frame.size.height / 2.0 + 10)
-        self.rtButton.addTarget(self, action: "tappedRetweet", forControlEvents: .TouchDown)
-        self.blankView.addSubview(self.rtButton)
+        let conversationImage = UIImage(named: "Conversation-Line.png")
+        self.conversationButton = UIButton(frame: CGRectMake(0, 100, conversationImage.size.width, conversationImage.size.height))
+        self.conversationButton.setBackgroundImage(conversationImage, forState: .Normal)
+        self.conversationButton.center = CGPoint(x: windowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+        self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
+        self.blankView.addSubview(self.conversationButton)
         
-        self.favButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
-        self.favButton.setBackgroundImage(UIImage(named: "appbar.star.png"), forState: .Normal)
-        self.favButton.center = CGPoint(x: windowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.favButton.frame.size.height / 2.0 + 10)
+        let starImage = UIImage(named: "Star-Line.png")
+        self.favButton = UIButton(frame: CGRectMake(0, 100, starImage.size.width, starImage.size.height))
+        self.favButton.setBackgroundImage(starImage, forState: .Normal)
+        self.favButton.center = CGPoint(x: windowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.favButton)
         
@@ -131,17 +132,19 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         let username = user_default.stringForKey("username")
         
         if (username == self.screenName) {
-            self.deleteButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
-            self.deleteButton.setBackgroundImage(UIImage(named: "appbar.delete.png"), forState: .Normal)
-            self.deleteButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.deleteButton.frame.size.height / 2.0 + 10)
+            let trashImage = UIImage(named: "Trash-Line.png")
+            self.deleteButton = UIButton(frame: CGRectMake(0, 100, trashImage.size.width, trashImage.size.height))
+            self.deleteButton.setBackgroundImage(trashImage, forState: .Normal)
+            self.deleteButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
             self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.deleteButton)
         } else {
-            self.detailButton = UIButton(frame: CGRectMake(0, 100, _iconSize, _iconSize))
-            self.detailButton.setBackgroundImage(UIImage(named: "appbar.list.png"), forState: .Normal)
-            self.detailButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.detailButton.frame.size.height / 2.0 + 10)
-            self.detailButton.addTarget(self, action: "tappedDetail", forControlEvents: .TouchDown)
-            self.blankView.addSubview(self.detailButton)
+            let moreImage = UIImage(named: "More-Line.png")
+            self.moreButton = UIButton(frame: CGRectMake(0, 100, moreImage.size.width, moreImage.size.height))
+            self.moreButton.setBackgroundImage(moreImage, forState: .Normal)
+            self.moreButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+            self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
+            self.blankView.addSubview(self.moreButton)
         }
         
     }
@@ -151,25 +154,23 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    // TODO イベントの実装
-    // Replyに関してはreply toのidをどこかで取得してくる必要あり．通知から起動したときも入るようにidだけ渡せれば最高
     
+    //---------------------------------------------------
+    // TODO: 複数人の会話の場合全員をターゲットにしているか確認
+    //---------------------------------------------------
     func tappedReply() {
         var newTweetView = NewTweetViewController(TweetBody: "@" + self.screenName + " ", ReplyToID: self.tweetID)
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
-    func tappedRetweet() {
-        var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
-        retweetSelectSheet.addButtonWithTitle("公式RT")
-        retweetSelectSheet.addButtonWithTitle("非公式RT")
-        retweetSelectSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-        retweetSelectSheet.showInView(self.view)
+    // TODO: 会話内容取得アクション＋専用View作成
+    func tappedConversation() {
     }
     
+    //-------------------------------------------------
+    //  memo: favDeleteアクションに関しては初期段階では不要
+    //-------------------------------------------------
     func tappedFavorite() {
-        // TODO: Delete側のアクションも作る必要あり．favの情報も必要である
-        
         let target_url = NSURL(string: "https://api.twitter.com/1.1/favorites/create.json")
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
@@ -213,7 +214,15 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         
     }
     
-    func tappedDetail() {
+    //-----------------------------------------
+    // TODO: RT以外にも何かあれば
+    //-----------------------------------------
+    func tappedMore() {
+        var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        retweetSelectSheet.addButtonWithTitle("公式RT")
+        retweetSelectSheet.addButtonWithTitle("非公式RT")
+        retweetSelectSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
+        retweetSelectSheet.showInView(self.view)
         
     }
     
@@ -246,6 +255,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             presentViewController(alertController, animated: true, completion: nil)
             break
         case 2:
+            // TODO: RTの場合もreplyidは必要？
             var retweetView = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!, ReplyToID: nil)
             self.navigationController!.pushViewController(retweetView, animated: true)
             break
