@@ -15,7 +15,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     var timelineCell = NSMutableArray()
     
     var refreshTimeline: UIRefreshControl!
-    
+    var newTweetButton: UIBarButtonItem!
     
     //========================================
     //  instance method
@@ -46,6 +46,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.tableView.addSubview(self.refreshTimeline)
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         updateTimeline(0)
     }
@@ -173,5 +176,10 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.refreshTimeline.beginRefreshing()
         updateTimeline(0)
         self.refreshTimeline.endRefreshing()
+    }
+    
+    func tappedNewTweet(sender: AnyObject) {
+        var newTweetView = NewTweetViewController()
+        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
 }

@@ -37,6 +37,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     
     var optionButtonArea:UILabel!
     
+    var newTweetButton: UIBarButtonItem!
+    
     //=====================================
     //  instance method
     //=====================================
@@ -72,6 +74,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     // TODO: ここからもツイートできるようにnavBarに追加しておいて
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = self.newTweetButton
+        
         let windowSize = UIScreen.mainScreen().bounds
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
@@ -262,5 +268,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         default:
             break
         }
+    }
+    
+    func tappedNewTweet(sender: AnyObject) {
+        var newTweetView = NewTweetViewController()
+        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
 }
