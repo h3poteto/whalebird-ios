@@ -7,3 +7,4 @@
 #import <NoticeView/WBErrorNoticeView.h>
 #import <NoticeView/WBSuccessNoticeView.h>
 #import <NoticeView/WBStickyNoticeView.h>
+#import <OHAttributedLabel/OHAttributedLabel.h>

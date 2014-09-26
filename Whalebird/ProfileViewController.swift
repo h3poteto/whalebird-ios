@@ -11,6 +11,17 @@ import QuartzCore
 
 class ProfileViewController: UIViewController {
     
+    
+    //===================================
+    //  class variable
+    //===================================
+    let _headerImageHeight = CGFloat(160)
+    let _statusHeight = CGFloat(40)
+    
+    //===================================
+    //  instance variable
+    //===================================
+    
     var twitterScreenName: NSString?
     var windowSize: CGRect!
     var headerHeight: CGFloat!
@@ -19,6 +30,14 @@ class ProfileViewController: UIViewController {
     var profileHeaderImage: UIImageView!
     var userNameLabel: UILabel!
     var descriptionLabel: UILabel!
+    
+    var tweetNumLabel: UILabel!
+    var followNumLabel: UILabel!
+    var followerNumLabel: UILabel!
+    
+    //==========================================
+    //  instance method
+    //==========================================
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -44,7 +63,6 @@ class ProfileViewController: UIViewController {
     }
     //-----------------------------------------
     //  画像読み込み高速化は後回し
-    //  TODO: ここからもツイートできるようにしておいて
     //-----------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,14 +76,16 @@ class ProfileViewController: UIViewController {
                 "screen_name" : self.twitterScreenName!
             ]
             
-            // header
+            //-------------------------
+            //  header
+            //-------------------------
             TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json"), params: params, callback: { header_data in
                 var q_main = dispatch_get_main_queue()
                 var error = NSError?()
                 dispatch_async(q_main, {()->Void in
                     if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                         var header_image_url = NSURL.URLWithString(header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
-                        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, self.headerHeight, self.windowSize.width, 160))
+                        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, self.headerHeight, self.windowSize.width, self._headerImageHeight))
                         self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
                         self.view.addSubview(self.profileHeaderImage)
                     }
@@ -106,10 +126,57 @@ class ProfileViewController: UIViewController {
                         self.descriptionLabel.clipsToBounds = true
                         self.descriptionLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5)
                         self.view.addSubview(self.descriptionLabel)
+                        
+                        //-----------------------------
+                        //  status
+                        //-----------------------------
+                        
+                        // TODO: ここOHAttributedLabel使おう
+                        
+                        var tweetNumText = ("ツイート：" + String(user_data.objectForKey("statuses_count") as Int)) as NSString
+                        var tweetNumAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
+                        tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
+                        
+                        self.tweetNumLabel = UILabel(frame: CGRectMake(0, self._headerImageHeight + self.headerHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                        self.tweetNumLabel.attributedText = tweetNumAttributedString
+                        self.tweetNumLabel.textAlignment = NSTextAlignment.Center
+                        self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                        self.tweetNumLabel.layer.borderWidth = 0.5
+                        self.view.addSubview(self.tweetNumLabel)
+                        
+                        
+                        var followText = ("フォロー：" + String(user_data.objectForKey("friends_count") as Int)) as NSString
+                        var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var followRange: NSRange = followText.rangeOfString("フォロー：")
+                        followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
+                        
+                        self.followNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width / 3.0, self._headerImageHeight + self.headerHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                        self.followNumLabel.attributedText = followAttributedString
+                        self.followNumLabel.textAlignment = NSTextAlignment.Center
+                        self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                        self.followNumLabel.layer.borderWidth = 0.5
+                        self.view.addSubview(self.followNumLabel)
+                        
+                        
+                        var followerText = ("フォロワー：" + String(user_data.objectForKey("followers_count") as Int)) as NSString
+                        var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
+                        followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
+                        
+                        self.followerNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self._headerImageHeight + self.headerHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                        self.followerNumLabel.attributedText = followerAttributedString
+                        self.followerNumLabel.textAlignment = NSTextAlignment.Center
+                        self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                        self.followerNumLabel.layer.borderWidth = 0.5
+                        self.view.addSubview(self.followerNumLabel)
+
                     })
                 })
-                    
             })
+            //-----------------------------
+            //  body
+            //-----------------------------
         }
     }
     

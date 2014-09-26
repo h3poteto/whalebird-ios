@@ -111,7 +111,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         
         
 
-        // TODO: アイコンの位置調節，および操作領域の明示的な分離
         
         let importImage = UIImage(named: "Import-Line.png")
         self.replyButton = UIButton(frame: CGRectMake(0, 100, importImage.size.width, importImage.size.height))
