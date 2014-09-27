@@ -45,7 +45,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.parentController = ParentController
         self.title = self.streamElement.name
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,11 +87,15 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         
         
     }
+
     
     override func viewWillDisappear(animated: Bool) {
         // delegateを消してやらないとオブジェクト消失に時にスクロールイベントが呼ばれて落ちる
-        if(!(self.navigationController!.viewControllers as NSArray).containsObject(self)) {
-            self.tableView.delegate = nil
+        // だけどpush遷移のときにこれ呼ばれるの困る
+        if(self.navigationController != nil) {
+            if(!(self.navigationController!.viewControllers as NSArray).containsObject(self)) {
+                self.tableView.delegate = nil
+            }
         }
     }
     
@@ -149,12 +153,14 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         let windowSize = UIScreen.mainScreen().bounds
         let scrollOffset = scrollView.contentOffset.y as CGFloat
         
-        self.pageControl.frame = CGRectMake(
-            0,
-            scrollOffset + windowSize.size.height - self.tabBarController!.tabBar.frame.height - self.pageControlViewHeight,
-            windowSize.size.width,
-            self.pageControlViewHeight)
-        self.navigationController!.view.bringSubviewToFront(self.pageControl)
+        if (self.tabBarController != nil) {
+            self.pageControl.frame = CGRectMake(
+                0,
+                scrollOffset + windowSize.size.height - self.tabBarController!.tabBar.frame.height - self.pageControlViewHeight,
+                windowSize.size.width,
+                self.pageControlViewHeight)
+            self.navigationController?.view.bringSubviewToFront(self.pageControl)
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -235,7 +241,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                 }
                 
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: self.title! + "Updated")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()

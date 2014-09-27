@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
     var rootController: UITabBarController!
     var window: UIWindow?
 
@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.backgroundColor = UIColor.whiteColor()
         
         self.rootController = UITabBarController()
+        self.rootController.delegate = self
         var timelineViewController = TimelineTableViewController()
         var timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
         var replyViewController = ReplyTableViewController()
@@ -62,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication!) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
 
     // 設定でカスタマイズさせよう
     // AlertControllerだと，そのまま開く．NoticeViewだとNoticeだけで
