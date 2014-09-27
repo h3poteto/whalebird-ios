@@ -202,5 +202,4 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
-
 }
