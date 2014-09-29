@@ -228,7 +228,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
-        
+        cell!.cleanCell()
         cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
         
         return cell!

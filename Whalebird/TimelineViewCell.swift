@@ -40,22 +40,6 @@ class TimelineViewCell: UITableViewCell {
         let WindowSize = UIScreen.mainScreen().bounds
         self.maxSize = WindowSize.size
         
-        profileImage = UIImageView(frame: CGRectMake(ImagePadding, ImagePadding, ImageSize, ImageSize))
-        self.contentView.addSubview(profileImage)
-        nameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4 , ImagePadding, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
-        self.contentView.addSubview(nameLabel)
-        screenNameLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, DefaultLineHeigth + ImagePadding * 1, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
-        self.contentView.addSubview(screenNameLabel)
-        bodyLabel = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, DefaultLineHeigth * 2 + ImagePadding * 2, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
-        self.contentView.addSubview(bodyLabel)
-        postDetailLable = UILabel(frame: CGRectMake(ImageSize + ImagePadding * 4, 40, self.maxSize.width - (ImagePadding * 5 + ImageSize), DefaultLineHeigth))
-        self.contentView.addSubview(postDetailLable)
-    }
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -64,7 +48,48 @@ class TimelineViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    //--------------------------------------
+    // Cellは使いまわされるので，描画されるたびに消去処理をしておかないといけない
+    //--------------------------------------
+    func cleanCell() {
+        if (self.profileImage != nil) {
+            self.profileImage.removeFromSuperview()
+        }
+        if (self.nameLabel != nil) {
+            self.nameLabel.removeFromSuperview()
+        }
+        if (self.screenNameLabel != nil) {
+            self.screenNameLabel.removeFromSuperview()
+        }
+        if (self.bodyLabel != nil) {
+            self.bodyLabel.removeFromSuperview()
+        }
+        if (self.postDetailLable != nil) {
+            self.postDetailLable.removeFromSuperview()
+        }
+        
+        self.profileImage = nil
+        self.nameLabel = nil
+        self.screenNameLabel = nil
+        self.bodyLabel = nil
+        self.postDetailLable = nil
+    }
+    //--------------------------------------------
+    // cell は再利用される
+    // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
+    //--------------------------------------------
     func configureCell(dict: NSDictionary) {
+        
+        self.profileImage = UIImageView(frame: CGRectMake(self.ImagePadding, self.ImagePadding, self.ImageSize, self.ImageSize))
+        self.contentView.addSubview(self.profileImage)
+        self.nameLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4 , self.ImagePadding, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
+        self.contentView.addSubview(self.nameLabel)
+        self.screenNameLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, self.DefaultLineHeigth + self.ImagePadding * 1, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
+        self.contentView.addSubview(self.screenNameLabel)
+        self.bodyLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, self.DefaultLineHeigth * 2 + self.ImagePadding * 2, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
+        self.contentView.addSubview(self.bodyLabel)
+        self.postDetailLable = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, 40, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
+        self.contentView.addSubview(self.postDetailLable)
         
         
         //------------------------------------
@@ -72,45 +97,46 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         var error = NSError?()
         var image_url = NSURL.URLWithString(dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
-        profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
-        profileImage.sizeToFit()
+        self.profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
+        self.profileImage.sizeToFit()
         //------------------------------------
         //  nameLabel
         //------------------------------------
-        nameLabel.textAlignment = NSTextAlignment.Left
-        nameLabel.textColor = UIColor.blackColor()
-        nameLabel.text = dict.objectForKey("user")?.objectForKey("name") as NSString
-        nameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
+        self.nameLabel.textAlignment = NSTextAlignment.Left
+        self.nameLabel.textColor = UIColor.blackColor()
+        self.nameLabel.text = dict.objectForKey("user")?.objectForKey("name") as NSString
+        self.nameLabel.font = UIFont.systemFontOfSize(self.DefaultFontSize)
 
         
         //------------------------------------
         //  screenNameLabel
         //------------------------------------
-        screenNameLabel.textAlignment = NSTextAlignment.Left
-        screenNameLabel.textColor = UIColor.grayColor()
+        self.screenNameLabel.textAlignment = NSTextAlignment.Left
+        self.screenNameLabel.textColor = UIColor.grayColor()
         let screen_name = dict.objectForKey("user")?.objectForKey("screen_name") as NSString
-        screenNameLabel.text = "@" + screen_name
-        screenNameLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
+        self.screenNameLabel.text = "@" + screen_name
+        self.screenNameLabel.font = UIFont.systemFontOfSize(self.DefaultFontSize)
         //------------------------------------
         //  bodyLabel
         //------------------------------------
-        bodyLabel.numberOfLines = 0
-        bodyLabel.textAlignment = NSTextAlignment.Left
-        bodyLabel.textColor = UIColor.blackColor()
-        bodyLabel.text = dict.objectForKey("text") as NSString
-        bodyLabel.font = UIFont.systemFontOfSize(DefaultFontSize)
-        bodyLabel.sizeToFit()
+        self.bodyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        self.bodyLabel.numberOfLines = 0
+        self.bodyLabel.textAlignment = NSTextAlignment.Left
+        self.bodyLabel.textColor = UIColor.blackColor()
+        self.bodyLabel.text = dict.objectForKey("text") as NSString
+        self.bodyLabel.font = UIFont.systemFontOfSize(self.DefaultFontSize)
+        self.bodyLabel.sizeToFit()
         
         //------------------------------------
         //  postDetail
         //------------------------------------
-        postDetailLable.textAlignment = NSTextAlignment.Left
-        postDetailLable.textColor = UIColor.grayColor()
-        postDetailLable.text = TwitterAPIClient.createdAtToString(dict.objectForKey("created_at") as NSString)
-        postDetailLable.font = UIFont.systemFontOfSize(11)
-        postDetailLable.frame.origin.y = bodyLabel.frame.origin.y + bodyLabel.frame.size.height + ImagePadding
+        self.postDetailLable.textAlignment = NSTextAlignment.Left
+        self.postDetailLable.textColor = UIColor.grayColor()
+        self.postDetailLable.text = TwitterAPIClient.createdAtToString(dict.objectForKey("created_at") as NSString)
+        self.postDetailLable.font = UIFont.systemFontOfSize(11)
+        self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height + self.ImagePadding
         
-        self.totalHeight  = ImagePadding * 4 + bodyLabel.frame.size.height + nameLabel.frame.size.height + screenNameLabel.frame.size.height + postDetailLable.frame.size.height
+        self.totalHeight  = self.ImagePadding * 4 + self.bodyLabel.frame.size.height + self.nameLabel.frame.size.height + self.screenNameLabel.frame.size.height + self.postDetailLable.frame.size.height
     }
     
     func cellHeight() -> CGFloat {

@@ -78,6 +78,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
+        cell!.cleanCell()
         cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
 
         return cell!
