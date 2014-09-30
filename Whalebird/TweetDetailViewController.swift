@@ -9,8 +9,7 @@
 import UIKit
 
 class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
-    let _iconSize = CGFloat(40)
-    let _LabelPadding = CGFloat(10)
+    let LabelPadding = CGFloat(10)
     
     //=====================================
     //  instance variables
@@ -97,14 +96,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.screenNameLabel.font = UIFont.systemFontOfSize(13)
         self.blankView.addSubview(self.screenNameLabel)
         
-        self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + _LabelPadding, windowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.text = self.tweetBody
         self.tweetBodyLabel.numberOfLines = 0
         self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
         self.tweetBodyLabel.sizeToFit()
         self.blankView.addSubview(self.tweetBodyLabel)
         
-        self.postDetailLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + _LabelPadding, windowSize.size.width * 0.9, 15))
+        self.postDetailLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
         self.postDetailLabel.text = self.postDetail
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)

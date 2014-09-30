@@ -12,16 +12,12 @@ import QuartzCore
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
-    //===================================
-    //  class variable
-    //===================================
-    let _headerImageHeight = CGFloat(160)
-    let _statusHeight = CGFloat(40)
-    
     //===================================
     //  instance variable
     //===================================
+    
+    let HeaderImageHeight = CGFloat(160)
+    let StatusHeight = CGFloat(40)
     
     var twitterScreenName: NSString?
     var windowSize: CGRect!
@@ -81,7 +77,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.windowSize = UIScreen.mainScreen().bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
         
-        self.tableView = UITableView(frame: CGRectMake(0, self._headerImageHeight + self._statusHeight, self.windowSize.size.width, 2000))
+        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 2000))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.scrollEnabled = false
@@ -106,7 +102,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 dispatch_async(q_main, {()->Void in
                     if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                         var header_image_url = NSURL.URLWithString(header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
-                        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self._headerImageHeight))
+                        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
                         self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
@@ -159,7 +155,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                         tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                         
-                        self.tweetNumLabel = UILabel(frame: CGRectMake(0, self._headerImageHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                        self.tweetNumLabel = UILabel(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
                         self.tweetNumLabel.attributedText = tweetNumAttributedString
                         self.tweetNumLabel.textAlignment = NSTextAlignment.Center
                         self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
@@ -172,7 +168,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var followRange: NSRange = followText.rangeOfString("フォロー：")
                         followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
                         
-                        self.followNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width / 3.0, self._headerImageHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                        self.followNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
                         self.followNumLabel.attributedText = followAttributedString
                         self.followNumLabel.textAlignment = NSTextAlignment.Center
                         self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
@@ -184,8 +180,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                         followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
-                        
-                        self.followerNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self._headerImageHeight, self.windowSize.size.width / 3.0, self._statusHeight))
+                    
+                        self.followerNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
                         self.followerNumLabel.attributedText = followerAttributedString
                         self.followerNumLabel.textAlignment = NSTextAlignment.Center
                         self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
@@ -240,7 +236,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
             height = cell.cellHeight()
         }
-        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self._headerImageHeight + self._statusHeight + self.tabBarController!.tabBar.frame.size.height)
+        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
         return height
     }
     
