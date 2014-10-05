@@ -43,7 +43,17 @@ final class TwitterAPIClient: NSObject {
         return output_format.stringFromDate(date)
     }
     
-    
+    func cleanDictionary(dict: NSMutableDictionary)->NSMutableDictionary {
+        var mutableDict: NSMutableDictionary = dict.mutableCopy() as NSMutableDictionary
+        mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
+            if (obj.isKindOfClass(NSNull.classForCoder())) {
+                mutableDict.setObject("", forKey: (key as NSString))
+            } else if (obj.isKindOfClass(NSDictionary.classForCoder())) {
+                mutableDict.setObject(self.cleanDictionary(obj as NSMutableDictionary), forKey: (key as NSString))
+            }
+        }
+        return mutableDict
+    }
     //=======================================
     //  instance method
     //=======================================

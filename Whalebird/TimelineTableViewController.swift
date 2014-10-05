@@ -44,6 +44,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.init(style: UITableViewStyle.Plain)
         self.view.backgroundColor = UIColor.whiteColor()
     }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +60,14 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
-        updateTimeline(0)
+        // updateTimeline(0)
+        var usersDefaults = NSUserDefaults.standardUserDefaults()
+        var homeTimeline = usersDefaults.arrayForKey("homeTimeline") as Array?
+        if (homeTimeline != nil) {
+            for tweet in homeTimeline! {
+                self.currentTimeline.insertObject(tweet, atIndex: 0)
+            }
+        }
         
         let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
         let params: Dictionary<String,String> = [
@@ -201,5 +209,31 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func tappedNewTweet(sender: AnyObject) {
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
+    }
+    
+    
+    //---------------------------------------
+    //  デストラクタはXcode内ではメモリ管理の都合上呼ばれないため，destroyを別定義
+    //---------------------------------------
+    deinit {
+        destroy()
+    }
+    
+    // 上記理由によりテストコードとしてdissapearでdestroyを呼ぶ
+    /*
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        destroy()
+    }
+*/
+    
+    func destroy() {
+        var usersDefaults = NSUserDefaults.standardUserDefaults()
+        var cleanTimelineArray: Array<NSMutableDictionary> = []
+        for timeline in self.currentTimeline {
+            var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            cleanTimelineArray.append(dic)
+        }
+        usersDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")
     }
 }
