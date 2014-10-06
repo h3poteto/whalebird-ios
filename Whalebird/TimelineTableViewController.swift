@@ -22,6 +22,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     var refreshTimeline: UIRefreshControl!
     
     var newTweetButton: UIBarButtonItem!
+    var sinceId: String?
     
     //=========================================
     //  instance method
@@ -62,6 +63,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
         // updateTimeline(0)
         var usersDefaults = NSUserDefaults.standardUserDefaults()
+        var getSinceId = usersDefaults.stringForKey("homeTimelineSinceId") as String?
+        self.sinceId = getSinceId
+        
         var homeTimeline = usersDefaults.arrayForKey("homeTimeline") as Array?
         if (homeTimeline != nil) {
             for tweet in homeTimeline! {
@@ -176,19 +180,30 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     */
 
     
-    func updateTimeline(since_id: Int) {
+    func updateTimeline(since_id: String!) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
-        var params: Dictionary<String, String> = [
-            "contributor_details" : "true",
-            "trim_user" : "0",
-            "count" : "10"
-        ]
+        var params: Dictionary<String, String>
+        if (since_id != nil) {
+            params = [
+                "contributor_details" : "true",
+                "trim_user" : "0",
+                "count" : "20",
+                "since_id" : since_id
+            ]
+        } else {
+            params = [
+                "contributor_details" : "true",
+                "trim_user" : "0",
+                "count" : "20"
+            ]
+        }
         TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
                 notice.alpha = 0.8
@@ -202,7 +217,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
-        updateTimeline(0)
+        updateTimeline(self.sinceId)
         self.refreshTimeline.endRefreshing()
     }
     
@@ -220,12 +235,13 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
     // 上記理由によりテストコードとしてdissapearでdestroyを呼ぶ
-    /*
+/*
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         destroy()
     }
 */
+
     
     func destroy() {
         var usersDefaults = NSUserDefaults.standardUserDefaults()
@@ -235,5 +251,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             cleanTimelineArray.append(dic)
         }
         usersDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")
+        usersDefaults.setObject(self.sinceId, forKey: "homeTimelineSinceId")
     }
 }
