@@ -11,15 +11,15 @@ import UIKit
 class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
     
     struct Stream {
-        var image: String?
-        var name: String
-        var type: String
-        var uri: String
-        var id: String?
+        var image: String = ""
+        var name: String = ""
+        var type: String = ""
+        var uri: String = ""
+        var id: String = ""
     }
     
     
-    var streamList: Array<Stream> = [Stream(image: nil, name: "Home", type: "statuses", uri: "/statuses/home_timeline", id: nil)]
+    var streamList: Array<Stream> = [Stream(image: "", name: "Home", type: "statuses", uri: "/statuses/home_timeline", id: "")]
     var addItemButton: UIBarButtonItem!
     
     //==============================================
@@ -47,7 +47,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.streamList.append(Stream(image: nil, name: "Reply", type: "statuses", uri: "/statuses/mentions_timeline", id: nil))
+        self.streamList.append(Stream(image: "", name: "Reply", type: "statuses", uri: "/statuses/mentions_timeline", id: ""))
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -55,11 +55,46 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addNewItem:")
         self.navigationItem.leftBarButtonItem = self.addItemButton
+        
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var userStreamList = userDefaults.arrayForKey("streamList") as Array?
+        if (userStreamList != nil) {
+            self.streamList.removeAll()
+            for streamList in userStreamList! {
+                self.streamList.insert(Stream(
+                    image: streamList.objectForKey("image") as String,
+                    name: streamList.objectForKey("name") as String,
+                    type: streamList.objectForKey("type") as String,
+                    uri: streamList.objectForKey("uri") as String,
+                    id: streamList.objectForKey("id") as String),
+                    atIndex: 0)
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        
+        var safeArray = NSMutableArray()
+        for i in 0...self.streamList.count-1 {
+            var list = self.streamList[i]
+            var dictionary = NSMutableDictionary()
+            dictionary.setObject((list.image as String), forKey: "image")
+            dictionary.setObject((list.name as String), forKey: "name")
+            dictionary.setObject((list.type as String), forKey: "type")
+            dictionary.setObject((list.uri as String), forKey: "uri")
+            dictionary.setObject((list.id as String), forKey: "id")
+            safeArray.insertObject(dictionary, atIndex: 0)
+        }
+        userDefaults.setObject(safeArray, forKey: "streamList")
     }
 
     // MARK: - Table view data source

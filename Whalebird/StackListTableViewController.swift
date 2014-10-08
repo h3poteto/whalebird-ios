@@ -145,10 +145,10 @@ class StackListTableViewController: UITableViewController {
             let viewControllersCount = viewControllers.count as Int
             let parentController: ListTableViewController = viewControllers.objectAtIndex(viewControllersCount - 1) as ListTableViewController
             var streamElement = ListTableViewController.Stream(
-                image: nil,
+                image: "",
                 name: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("full_name") as String,
                 type: "list", uri: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("uri") as String,
-                id: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("id_str") as? String)
+                id: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("id_str") as String)
             parentController.streamList.append(streamElement)
         }
     }
