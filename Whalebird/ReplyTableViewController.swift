@@ -17,6 +17,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     var refreshTimeline: UIRefreshControl!
     var newTweetButton: UIBarButtonItem!
     
+    var sinceId: String?
+    
     //========================================
     //  instance method
     //========================================
@@ -50,7 +52,17 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
         
-        updateTimeline(0)
+        //updateTimeline(0)
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var getSinceId = userDefaults.stringForKey("replyTimelineSinceId") as String?
+        self.sinceId = getSinceId
+        
+        var replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
+        if (replyTimeline != nil) {
+            for tweet in replyTimeline! {
+                self.currentTimeline.insertObject(tweet, atIndex: 0)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -153,17 +165,26 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     */
 
     
-    func updateTimeline(since_id: Int) {
+    func updateTimeline(since_id: String!) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/mentions_timeline.json")
-        var params: Dictionary<String, String> = [
-            "count" : "10"
-        ]
+        var params: Dictionary<String, String>
+        if (since_id != nil) {
+            params = [
+                "count" : "20",
+                "since_id" : since_id
+            ]
+        } else {
+            params = [
+                "count" : "20"
+            ]
+        }
         TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: { new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Reply Updated")
                 notice.alpha = 0.8
@@ -175,7 +196,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     }
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
-        updateTimeline(0)
+        updateTimeline(self.sinceId)
         self.refreshTimeline.endRefreshing()
     }
     
@@ -183,4 +204,20 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
+    
+    deinit {
+        destroy()
+    }
+    
+    func destroy() {
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var cleanTimelineArray: Array<NSMutableDictionary> = []
+        for timeline in self.currentTimeline {
+            var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            cleanTimelineArray.append(dic)
+        }
+        userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "replyTimeline")
+        userDefaults.setObject(self.sinceId, forKey: "replyTimelineSinceId")
+    }
 }
+

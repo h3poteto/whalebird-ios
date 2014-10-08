@@ -62,11 +62,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
         // updateTimeline(0)
-        var usersDefaults = NSUserDefaults.standardUserDefaults()
-        var getSinceId = usersDefaults.stringForKey("homeTimelineSinceId") as String?
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var getSinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
         self.sinceId = getSinceId
         
-        var homeTimeline = usersDefaults.arrayForKey("homeTimeline") as Array?
+        var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
         if (homeTimeline != nil) {
             for tweet in homeTimeline! {
                 self.currentTimeline.insertObject(tweet, atIndex: 0)
@@ -244,13 +244,13 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     
     func destroy() {
-        var usersDefaults = NSUserDefaults.standardUserDefaults()
+        var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         for timeline in self.currentTimeline {
             var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }
-        usersDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")
-        usersDefaults.setObject(self.sinceId, forKey: "homeTimelineSinceId")
+        userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")
+        userDefaults.setObject(self.sinceId, forKey: "homeTimelineSinceId")
     }
 }
