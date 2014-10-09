@@ -87,9 +87,14 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
-        self.sinceId = userDefaults.stringForKey(self.streamElement.name) as String?
+        self.sinceId = userDefaults.stringForKey(self.streamElement.name + "SinceId") as String?
         
-        
+        var streamTimeline = userDefaults.arrayForKey(self.streamElement.name) as Array?
+        if (streamTimeline != nil) {
+            for tweet in streamTimeline! {
+                self.currentTimeline.insertObject(tweet, atIndex: 0)
+            }
+        }
     }
 
     
@@ -101,6 +106,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 self.tableView.delegate = nil
             }
         }
+        
+        destroy()
     }
     
 
@@ -305,5 +312,17 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     func tappedNewTweet(sender: AnyObject) {
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
+    }
+    
+    
+    func destroy() {
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var cleanTimelineArray: Array<NSMutableDictionary> = []
+        for timeline in self.currentTimeline {
+            var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            cleanTimelineArray.append(dic)
+        }
+        userDefaults.setObject(cleanTimelineArray.reverse(), forKey: self.streamElement.name)
+        userDefaults.setObject(self.sinceId, forKey: self.streamElement.name + "SinceId")
     }
 }
