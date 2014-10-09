@@ -18,6 +18,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var parentController: ListTableViewController!
     var refreshTimeline: UIRefreshControl!
     var newTweetButton: UIBarButtonItem!
+    var sinceId: String?
     
     let pageControlViewHeight = CGFloat(20)
     
@@ -84,6 +85,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
+        
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        self.sinceId = userDefaults.stringForKey(self.streamElement.name) as String?
         
         
     }
@@ -212,22 +216,37 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
 
     
     
-    func updateTimeline(since_id: Int) {
+    func updateTimeline(since_id: String?) {
         var url: NSURL!
         var params: Dictionary<String, String>!
         switch self.streamElement.type {
         case "statuses":
             url = NSURL.URLWithString("https://api.twitter.com/1.1" + self.streamElement.uri + ".json")
-            params = [
-                "count" : "10"
-            ]
+            if (since_id != nil) {
+                params = [
+                    "count" : "20",
+                    "since_id" : since_id as String!
+                ]
+            } else {
+                params = [
+                    "count" : "20"
+                ]
+            }
             break
         case "list":
             url = NSURL.URLWithString("https://api.twitter.com/1.1/lists/statuses.json")
-            params = [
-                "list_id" : self.streamElement.id as String!,
-                "count" : "10"
-            ]
+            if (since_id != nil) {
+                params = [
+                    "list_id" : self.streamElement.id as String!,
+                    "count" : "20",
+                    "since_id" : since_id as String!
+                ]
+            } else {
+                params = [
+                    "list_id" : self.streamElement.id as String!,
+                    "count" : "20"
+                ]
+            }
             break
         default:
             break
@@ -239,6 +258,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: self.title! + "Updated")
@@ -278,7 +298,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
-        updateTimeline(0)
+        updateTimeline(self.sinceId)
         self.refreshTimeline.endRefreshing()
     }
     

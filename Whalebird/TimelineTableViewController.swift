@@ -180,7 +180,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     */
 
     
-    func updateTimeline(since_id: String!) {
+    func updateTimeline(since_id: String?) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
@@ -188,7 +188,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 "contributor_details" : "true",
                 "trim_user" : "0",
                 "count" : "20",
-                "since_id" : since_id
+                "since_id" : since_id as String!
             ]
         } else {
             params = [

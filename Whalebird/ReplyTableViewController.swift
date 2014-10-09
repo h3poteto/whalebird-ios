@@ -165,13 +165,13 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     */
 
     
-    func updateTimeline(since_id: String!) {
+    func updateTimeline(since_id: String?) {
         var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/mentions_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
             params = [
                 "count" : "20",
-                "since_id" : since_id
+                "since_id" : since_id as String!
             ]
         } else {
             params = [
