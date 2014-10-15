@@ -22,8 +22,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     var profileImage:String!
     
     var blankView:UIView!
-    var screenNameLabel:UILabel!
-    var userNameLabel:UILabel!
+    var screenNameLabel:UIButton!
+    var userNameLabel:UIButton!
     var tweetBodyLabel:UILabel!
     var postDetailLabel:UILabel!
     var profileImageLabel:UIImageView!
@@ -86,14 +86,26 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.profileImageLabel.sizeToFit()
         self.blankView.addSubview(self.profileImageLabel)
 
-        self.userNameLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
-        self.userNameLabel.text = self.userName
-        self.userNameLabel.font = UIFont.systemFontOfSize(13)
+        self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
+        self.userNameLabel.setTitle(self.userName, forState: .Normal)
+        self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        self.userNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
+        self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
+        self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
+        self.userNameLabel.sizeToFit()
+        self.userNameLabel.frame.size.height = self.userNameLabel.titleLabel!.frame.size.height
+        self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
-        self.screenNameLabel.text = self.screenName
-        self.screenNameLabel.font = UIFont.systemFontOfSize(13)
+        self.screenNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
+        self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+        self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
+        self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
+        self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
+        self.screenNameLabel.sizeToFit()
+        self.screenNameLabel.frame.size.height = self.screenNameLabel.titleLabel!.frame.size.height
+        self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
         self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
@@ -271,5 +283,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     func tappedNewTweet(sender: AnyObject) {
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
+    }
+    
+    func tappedUserProfile() {
+        var userProfileView = ProfileViewController(screenName: self.screenName)
+        self.navigationController!.pushViewController(userProfileView, animated: true)
     }
 }
