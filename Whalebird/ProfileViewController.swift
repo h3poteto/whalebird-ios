@@ -28,18 +28,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var userNameLabel: UILabel!
     var descriptionLabel: UILabel!
     
-    var tweetNumLabel: UILabel!
-    var followNumLabel: UILabel!
-    var followerNumLabel: UILabel!
+    var tweetNumLabel: UIButton!
+    var followNumLabel: UIButton!
+    var followerNumLabel: UIButton!
     
     var tableView: UITableView!
     var scrollView: UIScrollView!
     
     var newTimeline: NSArray = NSArray()
     var currentTimeline: NSMutableArray = NSMutableArray()
+    var followUsers: NSMutableArray = NSMutableArray()
+    var followerUsers: NSMutableArray = NSMutableArray()
     
     var timelineCell: NSMutableArray = NSMutableArray()
     var refreshTimeline: UIRefreshControl!
+    
+    var tableType: Int = Int(0)
     
     //==========================================
     //  instance method
@@ -111,7 +115,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_data in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
-                    // profile
+                        // TODO: APIが尽きたときの処理も念のため書いておく
+                        
                         var profile_image_url = NSURL.URLWithString(user_data.objectForKey("profile_image_url") as String)
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                         self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40 + 10)
@@ -155,11 +160,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                         tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                         
-                        self.tweetNumLabel = UILabel(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
-                        self.tweetNumLabel.attributedText = tweetNumAttributedString
-                        self.tweetNumLabel.textAlignment = NSTextAlignment.Center
+                        self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                        self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: .Normal)
+                        self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.tweetNumLabel.layer.borderWidth = 0.5
+                        self.tweetNumLabel.addTarget(self, action: "tappedTweetNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.tweetNumLabel)
                         
                         
@@ -168,11 +174,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var followRange: NSRange = followText.rangeOfString("フォロー：")
                         followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
                         
-                        self.followNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
-                        self.followNumLabel.attributedText = followAttributedString
-                        self.followNumLabel.textAlignment = NSTextAlignment.Center
+                        self.followNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                        self.followNumLabel.setAttributedTitle(followAttributedString, forState: .Normal)
+                        self.followNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.followNumLabel.layer.borderWidth = 0.5
+                        self.followNumLabel.addTarget(self, action: "tappedFollowNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.followNumLabel)
                         
                         
@@ -181,11 +188,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                         followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
                     
-                        self.followerNumLabel = UILabel(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
-                        self.followerNumLabel.attributedText = followerAttributedString
-                        self.followerNumLabel.textAlignment = NSTextAlignment.Center
+                        self.followerNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                        self.followerNumLabel.setAttributedTitle(followerAttributedString, forState: .Normal)
+                        self.followerNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.followerNumLabel.layer.borderWidth = 0.5
+                        self.followerNumLabel.addTarget(self, action: "tappedFollowerNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.followerNumLabel)
 
                     })
@@ -195,7 +203,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //  body
             //-----------------------------
             // ここでtableのupdate
-            updateTimeline(0)
+            // 呼び出し回数が多すぎる
+            //updateTimeline(0)
             
         }
     }
@@ -214,43 +223,92 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.currentTimeline.count
+        
+        var row = 0
+        switch(self.tableType){
+        case 0:
+            row = self.currentTimeline.count
+            break
+        case 1:
+            row = self.followUsers.count
+            break
+        default:
+            row = self.currentTimeline.count
+            break
+        }
+        return row
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
-        if (cell == nil) {
-            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+        var cell: UITableViewCell?
+        //var timeline_cell: TimelineViewCell
+        switch(self.tableType) {
+        case 0:
+            var timeline_cell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+            if (timeline_cell == nil) {
+                timeline_cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            }
+            
+            self.timelineCell.insertObject(timeline_cell!, atIndex: indexPath.row)
+            timeline_cell!.cleanCell()
+            timeline_cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+            return timeline_cell!
+        case 1:
+            var error = NSError?()
+            var profileImageURL = NSURL.URLWithString((self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
+            cell?.textLabel?.text = (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            
+            cell?.imageView?.image = UIImage(data: NSData(
+                contentsOfURL: profileImageURL,
+                options: NSDataReadingOptions.DataReadingMappedAlways,
+                error: &error))
+            break
+        default:
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
+            break
         }
-        
-        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
-        cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
         
         return cell!
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
-            height = cell.cellHeight()
+        switch(self.tableType) {
+        case 0:
+            if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
+                var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+                height = cell.cellHeight()
+            }
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            break
+        case 1:
+            break
+        default:
+            break
         }
-        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
         return height
     }
     
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
-        var detail_view = TweetDetailViewController(
-            TweetID: tweetData.objectForKey("id_str") as NSString,
-            TweetBody: tweetData.objectForKey("text") as NSString,
-            ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
-            UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
-            ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-            PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
-        self.navigationController!.pushViewController(detail_view, animated: true)
+        switch(self.tableType){
+        case 0:
+            let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+            var detail_view = TweetDetailViewController(
+                TweetID: tweetData.objectForKey("id_str") as NSString,
+                TweetBody: tweetData.objectForKey("text") as NSString,
+                ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
+                UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
+                ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
+                PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+            self.navigationController!.pushViewController(detail_view, animated: true)
+            break
+        case 1:
+            break
+        default:
+            break
+        }
     }
     
 
@@ -278,5 +336,54 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         })
         
     }
+    
+    func updateFollowUser() {
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/followers/list.json")
+        var params: Dictionary<String, String> = [
+            "screen_name" : self.twitterScreenName!
+        ]
+        TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                var user = follows as NSDictionary
+                self.followUsers = user.objectForKey("users") as NSMutableArray
+                self.tableView.reloadData()
+            })
+        })
+    }
+    
+    func updateFollowerUser() {
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/friends/list.json")
+        var params: Dictionary<String, String> = [
+            "screen_name" : self.twitterScreenName!
+        ]
+        TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                var user = follows as NSDictionary
+                self.followUsers = user.objectForKey("users") as NSMutableArray
+                self.tableView.reloadData()
+            })
+        })
+    }
+    
+    func tappedTweetNum() {
+        self.tableType = 0
+        //updateTimeline(0)
+        
+    }
+    
+    func tappedFollowNum() {
+        self.tableType = 1
+        updateFollowUser()
+        
+    }
+    
+    func tappedFollowerNum() {
+        self.tableType = 1
+        updateFollowerUser()
+    }
+    
+    // TODO: 追加読み込み機能の実装．typeで分ける
 
 }
