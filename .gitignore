@@ -1,0 +1,4 @@
+build/*
+Pods/*
+Whalebird.xcodeproj/xcuserdata/*
+Whalebird.xcworkspace/xcuserdata/*
