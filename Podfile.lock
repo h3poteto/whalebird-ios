@@ -2,18 +2,21 @@ PODS:
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
   - OHAttributedLabel (3.5.4)
+  - SVPullToRefresh (HEAD based on 0.4.1)
   - TSMessages (0.9.10):
     - HexColors
 
 DEPENDENCIES:
   - NoticeView
   - OHAttributedLabel
+  - SVPullToRefresh (HEAD)
   - TSMessages
 
 SPEC CHECKSUMS:
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   NoticeView: 357545814931eb92428de54449f405f91c84a1b8
   OHAttributedLabel: fcf1d1245b4c8d2df94da91369b1474901d7fb14
+  SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
   TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4

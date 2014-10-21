@@ -38,7 +38,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var newTimeline: NSArray = NSArray()
     var currentTimeline: NSMutableArray = NSMutableArray()
     var followUsers: NSMutableArray = NSMutableArray()
+    var followUsersNextCursor: String?
     var followerUsers: NSMutableArray = NSMutableArray()
+    var followerUsersNextCursor: String?
     
     var timelineCell: NSMutableArray = NSMutableArray()
     var refreshControl: UIRefreshControl!
@@ -89,6 +91,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView.scrollEnabled = true
         self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 1000)
         
+        self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
+            self.userTableRefresh()
+        }, position: SVPullToRefreshPosition.Bottom)
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
@@ -232,6 +237,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             row = self.followUsers.count
             break
+        case 2:
+            row = self.followerUsers.count
+            break
         default:
             row = self.currentTimeline.count
             break
@@ -264,6 +272,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 options: NSDataReadingOptions.DataReadingMappedAlways,
                 error: &error))
             break
+        case 2:
+            var error = NSError?()
+            var profileImageURL = NSURL.URLWithString((self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
+            cell?.textLabel?.text = (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            
+            cell?.imageView?.image = UIImage(data: NSData(
+                contentsOfURL: profileImageURL,
+                options: NSDataReadingOptions.DataReadingMappedAlways,
+                error: &error))
+            break
         default:
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             break
@@ -283,6 +302,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         case 1:
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            break
+        case 2:
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         default:
@@ -306,6 +328,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.navigationController!.pushViewController(detail_view, animated: true)
             break
         case 1:
+            break
+        case 2:
             break
         default:
             break
@@ -338,32 +362,56 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func updateFollowUser() {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/followers/list.json")
-        var params: Dictionary<String, String> = [
-            "screen_name" : self.twitterScreenName!
-        ]
+    func updateFollowUser(nextCursor: String?) {
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/friends/list.json")
+        var params: Dictionary<String, String>
+        if (nextCursor == nil) {
+            params = [
+                "screen_name" : self.twitterScreenName!
+            ]
+        } else {
+            params = [
+                "screen_name" : self.twitterScreenName!,
+                "cursor" : nextCursor!
+            ]
+        }
         TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
-                self.followUsers = user.objectForKey("users") as NSMutableArray
+                self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
+                self.followUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
+                self.tableView.frame.size.height = CGFloat(self.followUsers.count * 60.0)
                 self.tableView.reloadData()
+                self.scrollView.pullToRefreshView.stopAnimating()
+                self.scrollView.contentInset.top = self.headerHeight
             })
         })
     }
     
-    func updateFollowerUser() {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/friends/list.json")
-        var params: Dictionary<String, String> = [
-            "screen_name" : self.twitterScreenName!
-        ]
+    func updateFollowerUser(nextCursor: String?) {
+        var url = NSURL.URLWithString("https://api.twitter.com/1.1/followers/list.json")
+        var params: Dictionary<String, String>
+        if (nextCursor == nil) {
+            params = [
+                "screen_name" : self.twitterScreenName!
+            ]
+        } else {
+            params = [
+                "screen_name" : self.twitterScreenName!,
+                "cursor" : nextCursor!
+            ]
+        }
         TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
-                self.followUsers = user.objectForKey("users") as NSMutableArray
+                self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
+                self.followerUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
+                self.tableView.frame.size.height = CGFloat(self.followerUsers.count * 60.0) + self.headerHeight
                 self.tableView.reloadData()
+                self.scrollView.pullToRefreshView.stopAnimating()
+                self.scrollView.contentInset.top = self.headerHeight
             })
         })
     }
@@ -371,20 +419,44 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tappedTweetNum() {
         self.tableType = 0
         self.tableView.reloadData()
+        self.scrollView.contentInset.top = self.headerHeight
         
     }
     
     func tappedFollowNum() {
         self.tableType = 1
-        updateFollowUser()
+        if (self.followUsers.count == 0) {
+            self.updateFollowUser(nil)
+        } else {
+            self.tableView.reloadData()
+        }
         
     }
     
     func tappedFollowerNum() {
-        self.tableType = 1
-        updateFollowerUser()
+        self.tableType = 2
+        if (self.followerUsers.count == 0) {
+            self.updateFollowerUser(nil)
+        } else {
+            self.tableView.reloadData()
+        }
     }
     
-    // TODO: 追加読み込み機能の実装．typeで分ける
+    // 更新は下方向（過去を遡る方向）にのみ実装する
+    func userTableRefresh() {
+        switch(self.tableType) {
+        case 0:
+            self.scrollView.pullToRefreshView.stopAnimating()
+            break
+        case 1:
+            self.updateFollowUser(self.followUsersNextCursor)
+            break
+        case 2:
+            self.updateFollowerUser(self.followerUsersNextCursor)
+            break
+        default:
+            break
+        }
+    }
 
 }
