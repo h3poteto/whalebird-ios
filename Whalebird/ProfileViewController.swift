@@ -41,7 +41,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var followerUsers: NSMutableArray = NSMutableArray()
     
     var timelineCell: NSMutableArray = NSMutableArray()
-    var refreshTimeline: UIRefreshControl!
+    var refreshControl: UIRefreshControl!
     
     var tableType: Int = Int(0)
     
@@ -204,7 +204,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //-----------------------------
             // ここでtableのupdate
             // 呼び出し回数が多すぎる
-            //updateTimeline(0)
+            updateTimeline(0)
             
         }
     }
@@ -283,6 +283,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         case 1:
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         default:
             break
@@ -327,7 +328,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                 }
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Get Timeline")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
@@ -369,7 +370,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tappedTweetNum() {
         self.tableType = 0
-        //updateTimeline(0)
+        self.tableView.reloadData()
         
     }
     
