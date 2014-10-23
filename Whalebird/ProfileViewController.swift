@@ -41,6 +41,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var followUsersNextCursor: String?
     var followerUsers: NSMutableArray = NSMutableArray()
     var followerUsersNextCursor: String?
+    var selectedButtonColor = UIColor(red: 0.863, green: 0.863, blue: 0.863, alpha: 1.0)
     
     var timelineCell: NSMutableArray = NSMutableArray()
     var refreshControl: UIRefreshControl!
@@ -166,10 +167,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                         
                         self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
-                        self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: .Normal)
+                        
+                        self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Normal)
+                        self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Selected)
                         self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.tweetNumLabel.layer.borderWidth = 0.5
+                        self.tweetNumLabel.backgroundColor = self.selectedButtonColor
                         self.tweetNumLabel.addTarget(self, action: "tappedTweetNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.tweetNumLabel)
                         
@@ -328,8 +332,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.navigationController!.pushViewController(detail_view, animated: true)
             break
         case 1:
+            var userProfileView = ProfileViewController(screenName: (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as String)
+            self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         case 2:
+            var userProfileView = ProfileViewController(screenName: (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as String)
+            self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         default:
             break
@@ -420,11 +428,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableType = 0
         self.tableView.reloadData()
         self.scrollView.contentInset.top = self.headerHeight
+        self.tweetNumLabel.backgroundColor = self.selectedButtonColor
+        self.followNumLabel.backgroundColor = UIColor.whiteColor()
+        self.followerNumLabel.backgroundColor = UIColor.whiteColor()
         
     }
     
     func tappedFollowNum() {
         self.tableType = 1
+        self.tweetNumLabel.backgroundColor = UIColor.whiteColor()
+        self.followNumLabel.backgroundColor = self.selectedButtonColor
+        self.followerNumLabel.backgroundColor = UIColor.whiteColor()
         if (self.followUsers.count == 0) {
             self.updateFollowUser(nil)
         } else {
@@ -435,6 +449,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tappedFollowerNum() {
         self.tableType = 2
+        self.tweetNumLabel.backgroundColor = UIColor.whiteColor()
+        self.followNumLabel.backgroundColor = UIColor.whiteColor()
+        self.followerNumLabel.backgroundColor = self.selectedButtonColor
         if (self.followerUsers.count == 0) {
             self.updateFollowerUser(nil)
         } else {
