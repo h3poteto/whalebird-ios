@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         var listNavigationController = UINavigationController(rootViewController: listViewController)
         var profileViewController = ProfileViewController()
         var profileNavigationController = UINavigationController(rootViewController: profileViewController)
-        var settingsViewController = SettingsViewController()
+        var settingsViewController = SettingsTableViewController(style: UITableViewStyle.Grouped)
         var settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
         let controllers = NSArray(array: [timelineNavigationController, replyNavigationController, listNavigationController,profileNavigationController, settingsNavigationController])
         self.rootController.setViewControllers(controllers, animated: true)
