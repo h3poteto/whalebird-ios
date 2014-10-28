@@ -23,6 +23,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     var account: ACAccount!
     var accountStore = ACAccountStore()
     var connection: NSURLConnection!
+    var userNotification: Bool = false
+    var timelineTable: TimelineTableViewController?
     
     //=======================================
     //  class method
@@ -33,6 +35,9 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     
     func startStreaming(target_stream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
+        if (params["with"] == "user") {
+            self.userNotification = true
+        }
         var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_stream, parameters: params)
         var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
         var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
@@ -75,46 +80,66 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
         println(jsonObject)
         
-        // TODO: timelineと通知の場合分け
         if (jsonObject != nil) {
             let object: NSDictionary! = jsonObject as NSDictionary
             if (object.objectForKey("text") != nil) {
-                let message = object.objectForKey("text") as NSString
-                let username = NSUserDefaults.standardUserDefaults().stringForKey("username")
-                let range: NSRange = message.rangeOfString("@" + username!)
                 
-                if (range.location != NSNotFound ){
-                    // The userInfo dictionary on a UILocalNotification must contain only "plist types".
-                    // http://stackoverflow.com/questions/4680137/uilocalnotification-userinfo-not-serializing-nsurl
+                if (self.userNotification) {
+                    let message = object.objectForKey("text") as NSString
+                    let username = NSUserDefaults.standardUserDefaults().stringForKey("username")
+                    let range: NSRange = message.rangeOfString("@" + username!)
+                
+                    // TODO: 設定項目に応じてRTなのかFavなのかReplyなのか判定
+                    if (range.location != NSNotFound ){
+                        self.addNotificationReply(object)
+                    }
                     
-                    // TODO: ここの時刻はちゃんとJSTに変換しましょう
-                    let created_at: String = object.objectForKey("created_at") as String
-                    let id: String = object.objectForKey("id_str") as String
-                    let text: String = object.objectForKey("text") as String
-                    let screen_name: String = (object.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
-                    let name: String = (object.objectForKey("user") as NSDictionary).objectForKey("name") as String
-                    let profile_image_url: String = (object.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
-                    var userInfoDictionary: Dictionary<String, String> = [
-                        "created_at" : created_at,
-                        "id" : id,
-                        "text" : text,
-                        "screen_name" : screen_name,
-                        "name" : name,
-                        "profile_image_url" : profile_image_url
-                    ]
+                } else {
+                    self.timelineTable?.currentTimeline.insertObject(object, atIndex: 0)
+                    self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
+                    self.timelineTable?.tableView.reloadData()
                     
-                    var notification = UILocalNotification()
-                    notification.fireDate = NSDate()
-                    notification.timeZone = NSTimeZone.defaultTimeZone()
-                    notification.alertBody = message
-                    notification.alertAction = "OK"
-                    notification.userInfo = userInfoDictionary
-                    notification.soundName = UILocalNotificationDefaultSoundName
-                    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                    let message = object.objectForKey("text") as NSString
+                    let username = NSUserDefaults.standardUserDefaults().stringForKey("username")
+                    let range: NSRange = message.rangeOfString("@" + username!)
                     
+                    if (range.location != NSNotFound ){
+                        self.addNotificationReply(object)
+                    }
                 }
             }
         }
+    }
+    
+    func addNotificationReply(object: NSDictionary) {
+        // The userInfo dictionary on a UILocalNotification must contain only "plist types".
+        // http://stackoverflow.com/questions/4680137/uilocalnotification-userinfo-not-serializing-nsurl
+        
+        // TODO: ここの時刻はちゃんとJSTに変換しましょう
+        let message = object.objectForKey("text") as NSString
+        let created_at: String = object.objectForKey("created_at") as String
+        let id: String = object.objectForKey("id_str") as String
+        let text: String = object.objectForKey("text") as String
+        let screen_name: String = (object.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
+        let name: String = (object.objectForKey("user") as NSDictionary).objectForKey("name") as String
+        let profile_image_url: String = (object.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
+        var userInfoDictionary: Dictionary<String, String> = [
+            "created_at" : created_at,
+            "id" : id,
+            "text" : text,
+            "screen_name" : screen_name,
+            "name" : name,
+            "profile_image_url" : profile_image_url
+        ]
+        
+        var notification = UILocalNotification()
+        notification.fireDate = NSDate()
+        notification.timeZone = NSTimeZone.defaultTimeZone()
+        notification.alertBody = message
+        notification.alertAction = "OK"
+        notification.userInfo = userInfoDictionary
+        notification.soundName = UILocalNotificationDefaultSoundName
+        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
     }
     
     

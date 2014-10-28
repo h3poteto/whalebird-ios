@@ -81,6 +81,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             let params: Dictionary<String,String> = [
                 "with" : "followings"
             ]
+            UserstreamAPIClient.sharedClient.timelineTable = self
             UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
             })
         }

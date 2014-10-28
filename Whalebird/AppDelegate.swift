@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     }
 
 
-    // foregounrdにいるときの通知
+    // 通知を受け取った時
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (application.applicationState == UIApplicationState.Active && (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag"))) {
@@ -119,14 +119,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 
                 }
             }
+        } else if (userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
+            // TODO: 最新の通知のみあればよい
+            var tweetDetailData = notification.userInfo as NSDictionary!
+            if (tweetDetailData != nil) {
+                var detailViewController = TweetDetailViewController(
+                    TweetID: tweetDetailData.objectForKey("id") as String,
+                    TweetBody: tweetDetailData.objectForKey("text") as String,
+                    ScreenName: tweetDetailData.objectForKey("screen_name") as String,
+                    UserName: tweetDetailData.objectForKey("name") as String,
+                    ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
+                    PostDetail: tweetDetailData.objectForKey("created_at") as String)
+                
+                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+            }
         }
         
         UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
     
     
-    // バックグランドから通知を受け取った時の処理
+    // 2014/10/28 通知の受け取り方が変わったみたいなので上記メソッドで対応
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+/*
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
             // TODO: 最新の通知のみあればよい
@@ -145,6 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             }
             UIApplication.sharedApplication().cancelLocalNotification(notification)
         }
+*/
     }
 
 
