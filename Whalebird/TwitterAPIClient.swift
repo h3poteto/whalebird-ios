@@ -97,7 +97,7 @@ final class TwitterAPIClient: NSObject {
             self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil, completion: {[unowned self] granted, error in
                 if (granted) {
                     var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
-                    var url: NSURL = NSURL.URLWithString("https://api.twitter.com/1.1/account/settings.json")
+                    var url: NSURL = NSURL(string: "https://api.twitter.com/1.1/account/settings.json")!
                     var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: url, parameters: nil)
                     var count = twitterAccounts.count
                     var q_main = dispatch_get_main_queue()

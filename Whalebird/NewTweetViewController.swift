@@ -110,7 +110,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
                 "status": newTweetText.text
             ]
         }
-        TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: { response, status, error in
+        TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: { response, status, error in
             var q_main = dispatch_get_main_queue()
             if (response != nil && status >= 200 && status < 300) {
                 dispatch_async(q_main, {()->Void in

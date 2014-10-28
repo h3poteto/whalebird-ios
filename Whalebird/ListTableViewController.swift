@@ -114,7 +114,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = self.streamList[indexPath.row].name
+        cell.textLabel.text = self.streamList[indexPath.row].name
 
         return cell
     }
@@ -169,7 +169,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
 
 
     func addNewItem(sender: AnyObject) {
-        var stackListTableView = StackListTableViewController(StackTarget: NSURL.URLWithString("https://api.twitter.com/1.1/lists/list.json"))
+        var stackListTableView = StackListTableViewController(StackTarget: NSURL(string: "https://api.twitter.com/1.1/lists/list.json")!)
         self.navigationController?.pushViewController(stackListTableView, animated: true)
     }
 }

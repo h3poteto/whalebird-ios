@@ -96,8 +96,8 @@ class TimelineViewCell: UITableViewCell {
         //  profileImageLabel
         //------------------------------------
         var error = NSError?()
-        var image_url = NSURL.URLWithString(dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
-        self.profileImage.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
+        var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+        self.profileImage.image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
         self.profileImage.sizeToFit()
         //------------------------------------
         //  nameLabel

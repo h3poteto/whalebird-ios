@@ -106,27 +106,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //-------------------------
             //  header
             //-------------------------
-            TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json"), params: params, callback: { header_data in
+            TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json")!, params: params, callback: { header_data in
                 var q_main = dispatch_get_main_queue()
                 var error = NSError?()
                 dispatch_async(q_main, {()->Void in
                     if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
-                        var header_image_url = NSURL.URLWithString(header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
+                        var header_image_url = NSURL(string: header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
                         self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
-                        self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
+                        self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
                 })
                 
-                TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_data in
+                TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json")!, params: params, callback: { user_data in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
                         // TODO: APIが尽きたときの処理も念のため書いておく
                         
-                        var profile_image_url = NSURL.URLWithString(user_data.objectForKey("profile_image_url") as String)
+                        var profile_image_url = NSURL(string: user_data.objectForKey("profile_image_url") as String)
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                         self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40 + 10)
-                        self.profileImage.image = UIImage(data: NSData(contentsOfURL: profile_image_url, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error))
+                        self.profileImage.image = UIImage(data: NSData(contentsOfURL: profile_image_url!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
                         self.scrollView.addSubview(self.profileImage)
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
@@ -267,25 +267,25 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             return timeline_cell!
         case 1:
             var error = NSError?()
-            var profileImageURL = NSURL.URLWithString((self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel.text = (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
             
-            cell?.imageView?.image = UIImage(data: NSData(
-                contentsOfURL: profileImageURL,
+            cell?.imageView.image = UIImage(data: NSData(
+                contentsOfURL: profileImageURL!,
                 options: NSDataReadingOptions.DataReadingMappedAlways,
-                error: &error))
+                error: &error)!)
             break
         case 2:
             var error = NSError?()
-            var profileImageURL = NSURL.URLWithString((self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel.text = (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
             
-            cell?.imageView?.image = UIImage(data: NSData(
-                contentsOfURL: profileImageURL,
+            cell?.imageView.image = UIImage(data: NSData(
+                contentsOfURL: profileImageURL!,
                 options: NSDataReadingOptions.DataReadingMappedAlways,
-                error: &error))
+                error: &error)!)
             break
         default:
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
@@ -346,14 +346,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 
     func updateTimeline(since_id: Int) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/user_timeline.json")
+        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")
         var params: Dictionary<String, String> = [
             "contributor_details" : "true",
             "trim_user" : "0",
             "count" : "10",
             "screen_name" : self.twitterScreenName!
         ]
-        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
+        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: {new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
@@ -371,7 +371,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func updateFollowUser(nextCursor: String?) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/friends/list.json")
+        var url = NSURL(string: "https://api.twitter.com/1.1/friends/list.json")
         var params: Dictionary<String, String>
         if (nextCursor == nil) {
             params = [
@@ -383,13 +383,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 "cursor" : nextCursor!
             ]
         }
-        TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
+        TwitterAPIClient.sharedClient.getUserInfo(url!, params: params, callback: {follows in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
                 self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
                 self.followUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
-                self.tableView.frame.size.height = CGFloat(self.followUsers.count * 60.0)
+                self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
@@ -398,7 +398,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func updateFollowerUser(nextCursor: String?) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/followers/list.json")
+        var url = NSURL(string: "https://api.twitter.com/1.1/followers/list.json")
         var params: Dictionary<String, String>
         if (nextCursor == nil) {
             params = [
@@ -410,13 +410,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 "cursor" : nextCursor!
             ]
         }
-        TwitterAPIClient.sharedClient.getUserInfo(url, params: params, callback: {follows in
+        TwitterAPIClient.sharedClient.getUserInfo(url!, params: params, callback: {follows in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
                 self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
                 self.followerUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
-                self.tableView.frame.size.height = CGFloat(self.followerUsers.count * 60.0) + self.headerHeight
+                self.tableView.frame.size.height = CGFloat(self.followerUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight

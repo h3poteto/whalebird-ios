@@ -80,9 +80,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         let windowSize = UIScreen.mainScreen().bounds
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
-        var image_url = NSURL.URLWithString(self.profileImage)
+        var image_url = NSURL(string: self.profileImage)
         var error = NSError?()
-        self.profileImageLabel.image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
+        self.profileImageLabel.image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
         self.profileImageLabel.sizeToFit()
         self.blankView.addSubview(self.profileImageLabel)
 
@@ -124,21 +124,21 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
 
         
         let importImage = UIImage(named: "Import-Line.png")
-        self.replyButton = UIButton(frame: CGRectMake(0, 100, importImage.size.width, importImage.size.height))
+        self.replyButton = UIButton(frame: CGRectMake(0, 100, importImage!.size.width, importImage!.size.height))
         self.replyButton.setBackgroundImage(importImage, forState: .Normal)
         self.replyButton.center = CGPoint(x: windowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
         self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.replyButton)
         
         let conversationImage = UIImage(named: "Conversation-Line.png")
-        self.conversationButton = UIButton(frame: CGRectMake(0, 100, conversationImage.size.width, conversationImage.size.height))
+        self.conversationButton = UIButton(frame: CGRectMake(0, 100, conversationImage!.size.width, conversationImage!.size.height))
         self.conversationButton.setBackgroundImage(conversationImage, forState: .Normal)
         self.conversationButton.center = CGPoint(x: windowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
         self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.conversationButton)
         
         let starImage = UIImage(named: "Star-Line.png")
-        self.favButton = UIButton(frame: CGRectMake(0, 100, starImage.size.width, starImage.size.height))
+        self.favButton = UIButton(frame: CGRectMake(0, 100, starImage!.size.width, starImage!.size.height))
         self.favButton.setBackgroundImage(starImage, forState: .Normal)
         self.favButton.center = CGPoint(x: windowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
@@ -149,14 +149,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         
         if (username == self.screenName) {
             let trashImage = UIImage(named: "Trash-Line.png")
-            self.deleteButton = UIButton(frame: CGRectMake(0, 100, trashImage.size.width, trashImage.size.height))
+            self.deleteButton = UIButton(frame: CGRectMake(0, 100, trashImage!.size.width, trashImage!.size.height))
             self.deleteButton.setBackgroundImage(trashImage, forState: .Normal)
             self.deleteButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
             self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.deleteButton)
         } else {
             let moreImage = UIImage(named: "More-Line.png")
-            self.moreButton = UIButton(frame: CGRectMake(0, 100, moreImage.size.width, moreImage.size.height))
+            self.moreButton = UIButton(frame: CGRectMake(0, 100, moreImage!.size.width, moreImage!.size.height))
             self.moreButton.setBackgroundImage(moreImage, forState: .Normal)
             self.moreButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
             self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
@@ -191,7 +191,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
-        TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {data, status, error in
+        TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {data, status, error in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
@@ -210,7 +210,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             let params:Dictionary<String, String> = [
                 "id" : self.tweetID
             ]
-            TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {request, status, error in
+            TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {request, status, error in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
@@ -253,7 +253,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 let params:Dictionary<String, String> = [
                     "id" : self.tweetID
                 ]
-                TwitterAPIClient.sharedClient.postTweetData(target_url, params: params, callback: {response, status, error in
+                TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {response, status, error in
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in
                         var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")

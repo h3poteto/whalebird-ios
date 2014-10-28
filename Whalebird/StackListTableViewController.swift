@@ -87,7 +87,7 @@ class StackListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("uri") as? String
+        cell.textLabel.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("uri") as? String
         
         return cell
     }

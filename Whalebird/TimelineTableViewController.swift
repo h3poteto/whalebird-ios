@@ -77,12 +77,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         // TODO: オンのときはcurrentTimelineの更新をすべてこいつで行う
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.boolForKey("userstreamFlag")) {
-            let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
+            let stream_url = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
             let params: Dictionary<String,String> = [
                 "with" : "followings"
             ]
             UserstreamAPIClient.sharedClient.timelineTable = self
-            UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
+            UserstreamAPIClient.sharedClient.startStreaming(stream_url!, params: params, callback: {data in
             })
         }
         
@@ -187,7 +187,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     
     func updateTimeline(since_id: String?) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/home_timeline.json")
+        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
             params = [
@@ -203,7 +203,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 "count" : "20"
             ]
         }
-        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: {new_timeline in
+        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: {new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline

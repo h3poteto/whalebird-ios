@@ -45,11 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // userstreamがonになっているときはtimeline側で通知も全て行う
         if (!userDefault.boolForKey("userstreamFlag")) {
             if (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag") || userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
-                let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
+                let stream_url = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
                 let params: Dictionary<String,String> = [
                     "with" : "user"
                 ]
-                UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
+                UserstreamAPIClient.sharedClient.startStreaming(stream_url!, params: params, callback: {data in
                 })
             }
         }

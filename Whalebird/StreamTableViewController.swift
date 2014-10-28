@@ -228,7 +228,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         var params: Dictionary<String, String>!
         switch self.streamElement.type {
         case "statuses":
-            url = NSURL.URLWithString("https://api.twitter.com/1.1" + self.streamElement.uri + ".json")
+            url = NSURL(string: "https://api.twitter.com/1.1" + self.streamElement.uri + ".json")
             if (since_id != nil) {
                 params = [
                     "count" : "20",
@@ -241,7 +241,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             }
             break
         case "list":
-            url = NSURL.URLWithString("https://api.twitter.com/1.1/lists/statuses.json")
+            url = NSURL(string: "https://api.twitter.com/1.1/lists/statuses.json")
             if (since_id != nil) {
                 params = [
                     "list_id" : self.streamElement.id as String!,

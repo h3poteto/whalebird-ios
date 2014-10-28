@@ -166,7 +166,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
 
     
     func updateTimeline(since_id: String?) {
-        var url = NSURL.URLWithString("https://api.twitter.com/1.1/statuses/mentions_timeline.json")
+        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/mentions_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
             params = [
@@ -178,7 +178,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 "count" : "20"
             ]
         }
-        TwitterAPIClient.sharedClient.getTimeline(url, params: params, callback: { new_timeline in
+        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: { new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
