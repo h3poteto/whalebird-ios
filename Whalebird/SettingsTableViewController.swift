@@ -14,6 +14,9 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     var userstreamFlag: Bool = false
     var notificationForegroundFlag: Bool = true
     var notificationBackgroundFlag: Bool = true
+    var notificationReplyFlag: Bool = true
+    var notificationFavFlag: Bool = false
+    var notificationRTFlag: Bool = false
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -50,20 +53,26 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 3
+        return 5
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cellCount = Int(0)
         switch(section) {
         case 0:
-            cellCount = 2
+            cellCount = 1
             break
         case 1:
-            cellCount = 3
+            cellCount = 2
             break
         case 2:
+            cellCount = 4
+            break
+        case 3:
             cellCount = 2
+            break
+        case 4:
+            cellCount = 1
             break
         default:
             break
@@ -80,7 +89,13 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             sectionTitle = "通知設定"
             break
         case 2:
+            sectionTitle = "通知詳細設定"
+            break
+        case 3:
             sectionTitle = "表示設定"
+            break
+        case 4:
+            sectionTitle = "Userstream"
             break
         default:
             sectionTitle = ""
@@ -89,6 +104,27 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         return sectionTitle
     }
     
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        var sectionTitle = String?()
+        switch(section) {
+        case 0:
+            break
+        case 1:
+            sectionTitle = "※再起動後に反映されます"
+            break
+        case 2:
+            break
+        case 3:
+            break
+        case 4:
+            sectionTitle = "※再起動後に反映されます"
+            break
+        default:
+            sectionTitle = ""
+            break
+        }
+        return sectionTitle
+    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
@@ -102,17 +138,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 cellTitle = "アカウント"
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 cellDetailTitle = userDefault.stringForKey("username")
-                break
-            case 1:
-                cellTitle = "Userstream"
-                var userstreamSwitch = UISwitch(frame: CGRect.zeroRect)
-                var userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("userstreamFlag") != nil) {
-                    self.userstreamFlag = userDefault.boolForKey("userstreamFlag")
-                }
-                userstreamSwitch.on = self.userstreamFlag
-                userstreamSwitch.addTarget(self, action: "tappedUserstreamSwitch", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.accessoryView = userstreamSwitch
                 break
             default:
                 break
@@ -142,7 +167,13 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 notificationForegroundSwitch.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationForegroundSwitch
                 break
-            case 2:
+            default:
+                break
+            }
+            break
+        case 2:
+            switch(indexPath.row) {
+            case 0:
                 cellTitle = "起動中の通知方法"
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 var notificationType = userDefault.integerForKey("notificationType") as Int
@@ -158,11 +189,40 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                     break
                 }
                 break
+            case 1:
+                cellTitle = "リプライ通知"
+                var notificationReplySwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                if (userDefault.objectForKey("notificationReplyFlag") != nil) {
+                    self.notificationReplyFlag = userDefault.boolForKey("notificationReplyFlag")
+                }
+                notificationReplySwitch.on = self.notificationReplyFlag
+                notificationReplySwitch.addTarget(self, action: "tappedNotificationReplySwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = notificationReplySwitch
+                break
+            case 2:
+                cellTitle = "Fav通知"
+                var notificationFavSwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                self.notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+                notificationFavSwitch.on = self.notificationFavFlag
+                notificationFavSwitch.addTarget(self, action: "tappedNotificationFavSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = notificationFavSwitch
+                break
+            case 3:
+                cellTitle = "RT通知"
+                var notificationRTSwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                self.notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+                notificationRTSwitch.on = self.notificationRTFlag
+                notificationRTSwitch.addTarget(self, action: "tappedNotificationRTSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = notificationRTSwitch
+                break
             default:
                 break
             }
             break
-        case 2:
+        case 3:
             switch(indexPath.row) {
             case 0:
                 cellTitle = "表示名"
@@ -200,6 +260,23 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 break
             }
             break
+        case 4:
+            switch(indexPath.row) {
+            case 0:
+                cellTitle = "Userstream"
+                var userstreamSwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                if (userDefault.objectForKey("userstreamFlag") != nil) {
+                    self.userstreamFlag = userDefault.boolForKey("userstreamFlag")
+                }
+                userstreamSwitch.on = self.userstreamFlag
+                userstreamSwitch.addTarget(self, action: "tappedUserstreamSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = userstreamSwitch
+                break
+            default:
+                break
+            }
+            break
         default:
             break
         }
@@ -229,14 +306,20 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 break
             case 1:
                 break
-            case 2:
+            default:
+                break
+            }
+            break
+        case 2:
+            switch(indexPath.row) {
+            case 0:
                 self.stackNotificationType()
                 break
             default:
                 break
             }
             break
-        case 2:
+        case 3:
             switch(indexPath.row) {
             case 0:
                 self.stackDisplayNameType()
@@ -396,5 +479,20 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func tappedNotificationBackgroundSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
+    }
+    
+    func tappedNotificationReplySwitch() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        userDefault.setBool(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
+    }
+    
+    func tappedNotificationFavSwitch() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        userDefault.setBool(!self.notificationFavFlag, forKey: "notificationFavFlag")
+    }
+    
+    func tappedNotificationRTSwitch() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        userDefault.setBool(!self.notificationRTFlag, forKey: "notificationRTFlag")
     }
 }
