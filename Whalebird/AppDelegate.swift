@@ -39,6 +39,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
         
+        
+        // Reply用のUserstream
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        // userstreamがonになっているときはtimeline側で通知も全て行う
+        if (!userDefault.boolForKey("userstreamFlag")) {
+            if (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag") || userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
+                let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
+                let params: Dictionary<String,String> = [
+                    "with" : "user"
+                ]
+                UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
+                })
+            }
+        }
+        
         return true
     }
 
@@ -64,59 +79,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    // 設定でカスタマイズさせよう
-    // AlertControllerだと，そのまま開く．NoticeViewだとNoticeだけで
+
+    // foregounrdにいるときの通知
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        if (application.applicationState == UIApplicationState.Active) {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if (application.applicationState == UIApplicationState.Active && (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag"))) {
+            
+            // TODO: 最新の通知のみ出せばよい
             var tweetDetailData = notification.userInfo as NSDictionary!
             if (tweetDetailData != nil) {
                 let title = (tweetDetailData.objectForKey("name") as String) + "からの返信"
-                var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: title)
-                notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
                 
-                var alertController = UIAlertController(title: "Reply", message: tweetDetailData.objectForKey("text") as? String, preferredStyle: .Alert)
-                let openAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
-                    var detailViewController = TweetDetailViewController(
-                        TweetID: tweetDetailData.objectForKey("id") as String,
-                        TweetBody: tweetDetailData.objectForKey("text") as String,
-                        ScreenName: tweetDetailData.objectForKey("screen_name") as String,
-                        UserName: tweetDetailData.objectForKey("name") as String,
-                        ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
-                        PostDetail: tweetDetailData.objectForKey("created_at") as String)
-                    
-                    // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
-
-                })
-                let okAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: {action in
-                })
-                alertController.addAction(openAction)
-                alertController.addAction(okAction)
-                self.rootController.presentViewController(alertController, animated: true, completion: nil)
+                if (userDefault.integerForKey("notificationType") == 2) {
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: title)
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
+                } else {
+                
+                    var alertController = UIAlertController(title: "Reply", message: tweetDetailData.objectForKey("text") as? String, preferredStyle: .Alert)
+                    let openAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
+                        var detailViewController = TweetDetailViewController(
+                            TweetID: tweetDetailData.objectForKey("id") as String,
+                            TweetBody: tweetDetailData.objectForKey("text") as String,
+                            ScreenName: tweetDetailData.objectForKey("screen_name") as String,
+                            UserName: tweetDetailData.objectForKey("name") as String,
+                            ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
+                            PostDetail: tweetDetailData.objectForKey("created_at") as String)
+                        
+                        // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                        (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                        
+                    })
+                    let okAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: {action in
+                    })
+                    alertController.addAction(openAction)
+                    alertController.addAction(okAction)
+                    self.rootController.presentViewController(alertController, animated: true, completion: nil)
+                
+                }
             }
         }
         
         UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
     
+    
+    // バックグランドから通知を受け取った時の処理
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-        // ここでBackgroundから復帰したときの処理
-        var tweetDetailData = notification.userInfo as NSDictionary!
-        if (tweetDetailData != nil) {
-            var detailViewController = TweetDetailViewController(
-                TweetID: tweetDetailData.objectForKey("id") as String,
-                TweetBody: tweetDetailData.objectForKey("text") as String,
-                ScreenName: tweetDetailData.objectForKey("screen_name") as String,
-                UserName: tweetDetailData.objectForKey("name") as String,
-                ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
-                PostDetail: tweetDetailData.objectForKey("created_at") as String)
-        
-            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-            (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if (userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
+            // TODO: 最新の通知のみあればよい
+            var tweetDetailData = notification.userInfo as NSDictionary!
+            if (tweetDetailData != nil) {
+                var detailViewController = TweetDetailViewController(
+                    TweetID: tweetDetailData.objectForKey("id") as String,
+                    TweetBody: tweetDetailData.objectForKey("text") as String,
+                    ScreenName: tweetDetailData.objectForKey("screen_name") as String,
+                    UserName: tweetDetailData.objectForKey("name") as String,
+                    ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
+                    PostDetail: tweetDetailData.objectForKey("created_at") as String)
+                
+                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+            }
+            UIApplication.sharedApplication().cancelLocalNotification(notification)
         }
-        UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
 
 

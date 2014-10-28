@@ -73,12 +73,17 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             }
         }
         
-        let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
-        let params: Dictionary<String,String> = [
-            "with" : "user"
-        ]
-        UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
-        })
+        // Home用のUserstream
+        // TODO: オンのときはcurrentTimelineの更新をすべてこいつで行う
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if (userDefault.boolForKey("userstreamFlag")) {
+            let stream_url = NSURL.URLWithString("https://userstream.twitter.com/1.1/user.json")
+            let params: Dictionary<String,String> = [
+                "with" : "followings"
+            ]
+            UserstreamAPIClient.sharedClient.startStreaming(stream_url, params: params, callback: {data in
+            })
+        }
         
 
         // Uncomment the following line to preserve selection between presentations

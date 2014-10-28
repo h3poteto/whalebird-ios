@@ -11,7 +11,7 @@ import UIKit
 class SettingsTableViewController: UITableViewController, UIActionSheetDelegate {
     
     var twitterAccounts: NSArray!
-    var userstreamFlag: Bool = true
+    var userstreamFlag: Bool = false
     var notificationForegroundFlag: Bool = true
     var notificationBackgroundFlag: Bool = true
     
@@ -60,7 +60,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             cellCount = 2
             break
         case 1:
-            cellCount = 2
+            cellCount = 3
             break
         case 2:
             cellCount = 2
@@ -121,6 +121,17 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         case 1:
             switch(indexPath.row) {
             case 0:
+                cellTitle = "バックグラウンド時の通知"
+                var notificationBackgroundSwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                if (userDefault.objectForKey("notificationBackgroundFlag") != nil) {
+                    self.notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
+                }
+                notificationBackgroundSwitch.on = self.notificationBackgroundFlag
+                notificationBackgroundSwitch.addTarget(self, action: "tappedNotificationBackgroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = notificationBackgroundSwitch
+                break
+            case 1:
                 cellTitle = "起動中の通知"
                 var notificationForegroundSwitch = UISwitch(frame: CGRect.zeroRect)
                 var userDefault = NSUserDefaults.standardUserDefaults()
@@ -131,16 +142,21 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 notificationForegroundSwitch.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationForegroundSwitch
                 break
-            case 1:
-                cellTitle = "バックグラウンド時の通知"
-                var notificationBackgroundSwitch = UISwitch(frame: CGRect.zeroRect)
+            case 2:
+                cellTitle = "起動中の通知方法"
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationBackgroundFlag") != nil) {
-                    self.notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
+                var notificationType = userDefault.integerForKey("notificationType") as Int
+                switch(notificationType) {
+                case 1:
+                    cellDetailTitle = "アラート表示"
+                    break
+                case 2:
+                    cellDetailTitle = "ヘッダー通知"
+                    break
+                default:
+                    cellDetailTitle = "アラート表示"
+                    break
                 }
-                notificationBackgroundSwitch.on = self.notificationBackgroundFlag
-                notificationBackgroundSwitch.addTarget(self, action: "tappedNotificationBackgroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.accessoryView = notificationBackgroundSwitch
                 break
             default:
                 break
@@ -208,6 +224,17 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             }
             break
         case 1:
+            switch(indexPath.row) {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                self.stackNotificationType()
+                break
+            default:
+                break
+            }
             break
         case 2:
             switch(indexPath.row) {
@@ -257,9 +284,18 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         })
     }
     
+    func stackNotificationType() {
+        var notificationTypeSheet = UIActionSheet(title: "通知方法選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
+        notificationTypeSheet.tag = 1
+        notificationTypeSheet.addButtonWithTitle("アラート表示")
+        notificationTypeSheet.addButtonWithTitle("ヘッダー通知")
+        notificationTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
+        notificationTypeSheet.showInView(self.view)
+    }
+    
     func stackDisplayNameType() {
         var nameTypeSheet = UIActionSheet(title: "表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        nameTypeSheet.tag = 1
+        nameTypeSheet.tag = 2
         nameTypeSheet.addButtonWithTitle("スクリーンネーム")
         nameTypeSheet.addButtonWithTitle("名前")
         nameTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
@@ -268,12 +304,13 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     
     func stackDisplayTimeType() {
         var timeTypeSheet = UIActionSheet(title: "時刻表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        timeTypeSheet.tag = 2
+        timeTypeSheet.tag = 3
         timeTypeSheet.addButtonWithTitle("絶対時刻")
         timeTypeSheet.addButtonWithTitle("相対時刻")
         timeTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
         timeTypeSheet.showInView(self.view)
     }
+    
     
     func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
         switch(actionSheet.tag) {
@@ -323,11 +360,18 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         case 1:
             if (buttonIndex > 0 && buttonIndex <= 2) {
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                userDefault.setInteger(buttonIndex, forKey: "displayNameType")
+                userDefault.setInteger(buttonIndex, forKey: "notificationType")
                 tableView.reloadData()
             }
             break
         case 2:
+            if (buttonIndex > 0 && buttonIndex <= 2) {
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                userDefault.setInteger(buttonIndex, forKey: "displayNameType")
+                tableView.reloadData()
+            }
+            break
+        case 3:
             if (buttonIndex > 0 && buttonIndex <= 2) {
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 userDefault.setInteger(buttonIndex, forKey: "displayTimeType")

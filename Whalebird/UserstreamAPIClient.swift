@@ -75,7 +75,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
         println(jsonObject)
         
-        
+        // TODO: timelineと通知の場合分け
         if (jsonObject != nil) {
             let object: NSDictionary! = jsonObject as NSDictionary
             if (object.objectForKey("text") != nil) {
@@ -87,6 +87,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                     // The userInfo dictionary on a UILocalNotification must contain only "plist types".
                     // http://stackoverflow.com/questions/4680137/uilocalnotification-userinfo-not-serializing-nsurl
                     
+                    // TODO: ここの時刻はちゃんとJSTに変換しましょう
                     let created_at: String = object.objectForKey("created_at") as String
                     let id: String = object.objectForKey("id_str") as String
                     let text: String = object.objectForKey("text") as String
@@ -101,6 +102,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                         "name" : name,
                         "profile_image_url" : profile_image_url
                     ]
+                    
                     var notification = UILocalNotification()
                     notification.fireDate = NSDate()
                     notification.timeZone = NSTimeZone.defaultTimeZone()

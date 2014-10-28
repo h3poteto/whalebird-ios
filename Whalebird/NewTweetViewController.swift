@@ -118,6 +118,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
+                    self.navigationController?.popViewControllerAnimated(true)
                 })
             } else {
                 dispatch_async(q_main, {()->Void in
@@ -127,7 +128,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
                 })
             }
         })
-        self.navigationController?.popViewControllerAnimated(true)
     }
 
     /*
