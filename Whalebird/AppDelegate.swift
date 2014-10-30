@@ -41,6 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         
         // Reply用のUserstream
+        // TODO:　通知に関してはすべてサーバーを用意する必要がある．
+        // TODO: ログインに関して，omuniauth twitterを利用したWebViewログインを行う必要がでてきてしまった．
+        // アカウント管理方法をすべて変更しなければならない．
+        // userstream機能に関してはできるだけ現状で維持したい．
+        // TODO: WhalebirdAPIClientの作成
         var userDefault = NSUserDefaults.standardUserDefaults()
         // userstreamがonになっているときはtimeline側で通知も全て行う
         if (!userDefault.boolForKey("userstreamFlag")) {
@@ -139,10 +144,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         UIApplication.sharedApplication().cancelLocalNotification(notification)
     }
     
-    
+/*
     // 2014/10/28 通知の受け取り方が変わったみたいなので上記メソッドで対応
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-/*
+
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
             // TODO: 最新の通知のみあればよい
@@ -161,9 +166,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             }
             UIApplication.sharedApplication().cancelLocalNotification(notification)
         }
-*/
-    }
 
+    }
+*/
 
 }
 

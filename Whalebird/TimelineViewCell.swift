@@ -94,11 +94,19 @@ class TimelineViewCell: UITableViewCell {
         
         //------------------------------------
         //  profileImageLabel
+        // TODO: SDWebImageによるキャッシュ
         //------------------------------------
-        var error = NSError?()
-        var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
-        self.profileImage.image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
-        self.profileImage.sizeToFit()
+        var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        var q_main = dispatch_get_main_queue()
+        dispatch_async(q_global, { () -> Void in
+            var error = NSError?()
+            var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            var image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
+            dispatch_async(q_main, { () -> Void in
+                self.profileImage.image = image
+                self.profileImage.sizeToFit()
+            })
+        })
         //------------------------------------
         //  nameLabel
         //------------------------------------
