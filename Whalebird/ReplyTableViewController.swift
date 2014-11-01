@@ -180,6 +180,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/mentions.json", params: parameter) { (new_timeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -193,6 +194,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
                 self.tableView.reloadData()
+                SVProgressHUD.dismiss()
             })
         }
     }

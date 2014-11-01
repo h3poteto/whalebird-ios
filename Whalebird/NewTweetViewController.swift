@@ -112,10 +112,12 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
             "status" : newTweetText.text,
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
+                SVProgressHUD.dismiss()
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()

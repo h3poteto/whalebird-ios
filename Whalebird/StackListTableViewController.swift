@@ -57,12 +57,14 @@ class StackListTableViewController: UITableViewController {
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: parameter) { (stackList) -> Void in
             var q_main = dispatch_get_main_queue()
             println(stackList)
             dispatch_async(q_main, {()->Void in
                 self.stackListArray = stackList
                 self.tableView.reloadData()
+                SVProgressHUD.dismiss()
             })
         }
     }

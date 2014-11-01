@@ -193,9 +193,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
+                SVProgressHUD.dismiss()
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
@@ -214,9 +216,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             let parameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
+            SVProgressHUD.show()
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: parameter, callback: { (operation) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
+                    SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
@@ -259,9 +263,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 let parameter: Dictionary<String, AnyObject> = [
                     "settings" : params
                 ]
+                SVProgressHUD.show()
                 WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: parameter, callback: { (operation) -> Void in
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in
+                        SVProgressHUD.dismiss()
                         var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
                         notice.alpha = 0.8
                         notice.originY = UIApplication.sharedApplication().statusBarFrame.height

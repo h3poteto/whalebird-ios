@@ -105,6 +105,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let parameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
+            SVProgressHUD.show()
             //-------------------------
             //  header
             //-------------------------
@@ -205,6 +206,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.followerNumLabel.layer.borderWidth = 0.5
                         self.followerNumLabel.addTarget(self, action: "tappedFollowerNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.followerNumLabel)
+                        SVProgressHUD.dismiss()
 
                     })
                 })
@@ -384,6 +386,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (follows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -394,6 +397,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
+                SVProgressHUD.dismiss()
             })
         }
     }
@@ -414,6 +418,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: parameter) { (follows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -424,6 +429,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
+                SVProgressHUD.dismiss()
             })
         }
     }

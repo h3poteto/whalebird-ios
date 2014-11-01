@@ -246,6 +246,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
+        SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/list_timeline.json", params: parameter) { (new_timeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -260,6 +261,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
                 self.tableView.reloadData()
+                SVProgressHUD.dismiss()
             })
         }
         

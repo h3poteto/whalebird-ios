@@ -39,6 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
         
+        
+        // SVProgressHUDの表示スタイル設定
+        SVProgressHUD.appearance().hudBackgroundColor = UIColor.blackColor()
+        SVProgressHUD.appearance().hudForegroundColor = UIColor.whiteColor()
+        
 /*
         // Reply用のUserstream
         // TODO:　通知に関してはすべてサーバーを用意する必要がある．
