@@ -73,6 +73,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             }
         }
         
+        /*
         // Home用のUserstream
         // TODO: オンのときはcurrentTimelineの更新をすべてこいつで行う
         var userDefault = NSUserDefaults.standardUserDefaults()
@@ -85,7 +86,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             UserstreamAPIClient.sharedClient.startStreaming(stream_url!, params: params, callback: {data in
             })
         }
-        
+        */
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -147,7 +148,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
             UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
             ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-            PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+            PostDetail: tweetData.objectForKey("created_at") as NSString)
         self.navigationController!.pushViewController(detail_view, animated: true)
     }
 
@@ -188,7 +189,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     
     func updateTimeline(since_id: String?) {
-        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
             params = [
@@ -204,7 +204,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 "count" : "20"
             ]
         }
-        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: {new_timeline in
+        var parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/home_timeline.json", params: parameter, callback: {new_timeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
@@ -254,7 +257,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         for timeline in self.currentTimeline {
-            var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")

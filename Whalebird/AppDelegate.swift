@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
         
-        
+/*
         // Reply用のUserstream
         // TODO:　通知に関してはすべてサーバーを用意する必要がある．
         // TODO: ログインに関して，omuniauth twitterを利用したWebViewログインを行う必要がでてきてしまった．
@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 })
             }
         }
+*/
         
         return true
     }

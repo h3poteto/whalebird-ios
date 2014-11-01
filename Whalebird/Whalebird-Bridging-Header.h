@@ -9,3 +9,4 @@
 #import <NoticeView/WBStickyNoticeView.h>
 #import <OHAttributedLabel/OHAttributedLabel.h>
 #import <SVPullToRefresh/SVPullToRefresh.h>
+#import <AFNetworking/AFNetworking.h>

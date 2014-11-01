@@ -292,7 +292,8 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         case 0:
             switch(indexPath.row) {
             case 0:
-                self.stackAccount()
+                var loginViewController = LoginViewController()
+                self.navigationController!.pushViewController(loginViewController, animated: true)
                 break
             case 1:
                 break
@@ -337,7 +338,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     }
 
 
-    
+    /*
     func stackAccount() {
         TwitterAPIClient.sharedClient.pickUpAccount({accounts in
             // クロージャーの処理は終了後実行されているが，画面への描画プロセスがメインのキューに来ていない
@@ -366,6 +367,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             }
         })
     }
+*/
     
     func stackNotificationType() {
         var notificationTypeSheet = UIActionSheet(title: "通知方法選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)

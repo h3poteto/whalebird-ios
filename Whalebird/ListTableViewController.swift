@@ -19,7 +19,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     
-    var streamList: Array<Stream> = [Stream(image: "", name: "Home", type: "statuses", uri: "/statuses/home_timeline", id: "")]
+    var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     
     //==============================================
@@ -47,7 +47,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.streamList.append(Stream(image: "", name: "Reply", type: "statuses", uri: "/statuses/mentions_timeline", id: ""))
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -84,15 +83,17 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         var userDefaults = NSUserDefaults.standardUserDefaults()
         
         var safeArray = NSMutableArray()
-        for i in 0...self.streamList.count-1 {
-            var list = self.streamList[i]
-            var dictionary = NSMutableDictionary()
-            dictionary.setObject((list.image as String), forKey: "image")
-            dictionary.setObject((list.name as String), forKey: "name")
-            dictionary.setObject((list.type as String), forKey: "type")
-            dictionary.setObject((list.uri as String), forKey: "uri")
-            dictionary.setObject((list.id as String), forKey: "id")
-            safeArray.insertObject(dictionary, atIndex: 0)
+        if (self.streamList.count > 0) {
+            for i in 0...self.streamList.count-1 {
+                var list = self.streamList[i]
+                var dictionary = NSMutableDictionary()
+                dictionary.setObject((list.image as String), forKey: "image")
+                dictionary.setObject((list.name as String), forKey: "name")
+                dictionary.setObject((list.type as String), forKey: "type")
+                dictionary.setObject((list.uri as String), forKey: "uri")
+                dictionary.setObject((list.id as String), forKey: "id")
+                safeArray.insertObject(dictionary, atIndex: 0)
+            }
         }
         userDefaults.setObject(safeArray, forKey: "streamList")
     }

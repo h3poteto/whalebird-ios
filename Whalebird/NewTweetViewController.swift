@@ -98,36 +98,30 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //  To Do: fix ここだけnoticeが表示されない，早くしたい
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
-        let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/update.json")
         var params: Dictionary<String, String>
         if (self.replyToID != nil) {
             params = [
-                "status": newTweetText.text,
                 "in_reply_to_status_id": self.replyToID!
             ]
         } else {
             params = [
-                "status": newTweetText.text
+            "" : ""
             ]
         }
-        TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: { response, status, error in
+        let parameter: Dictionary<String, AnyObject> = [
+            "status" : newTweetText.text,
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
-            if (response != nil && status >= 200 && status < 300) {
-                dispatch_async(q_main, {()->Void in
-                    var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
-                    self.navigationController?.popViewControllerAnimated(true)
-                })
-            } else {
-                dispatch_async(q_main, {()->Void in
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Error", message: "Post Error")
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
-                })
-            }
-        })
+            dispatch_async(q_main, {()->Void in
+                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+        }
     }
 
     /*

@@ -115,7 +115,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
             UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
             ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-            PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+            PostDetail: tweetData.objectForKey("created_at") as NSString)
         self.navigationController!.pushViewController(detail_view, animated: true)
     }
 
@@ -166,7 +166,6 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
 
     
     func updateTimeline(since_id: String?) {
-        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/mentions_timeline.json")
         var params: Dictionary<String, String>
         if (since_id != nil) {
             params = [
@@ -178,7 +177,10 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 "count" : "20"
             ]
         }
-        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: { new_timeline in
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/mentions.json", params: parameter) { (new_timeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
@@ -192,8 +194,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 notice.show()
                 self.tableView.reloadData()
             })
-        })
+        }
     }
+    
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId)
@@ -213,7 +216,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         for timeline in self.currentTimeline {
-            var dic = TwitterAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "replyTimeline")

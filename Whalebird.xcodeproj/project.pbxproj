@@ -12,6 +12,8 @@
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
 		E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
+		E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
+		E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9446C2B1997493300996333 /* TwitterAPIClient.swift */; };
@@ -69,6 +71,8 @@
 		E91243AA199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E91243AB199524E000795EF0 /* WhalebirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhalebirdTests.swift; sourceTree = "<group>"; };
 		E91243B5199525C200795EF0 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
+		E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhalebirdAPIClient.swift; sourceTree = "<group>"; };
+		E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E9446C2B1997493300996333 /* TwitterAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPIClient.swift; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 				E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */,
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E9446C2B1997493300996333 /* TwitterAPIClient.swift */,
+				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
+				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9956AE419D1E12500E15D7C /* Home.png */,
@@ -400,9 +406,11 @@
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
 				E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
+				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
 				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
+				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */,
@@ -513,6 +521,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				APIURL = "http://192.168.33.14:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -529,6 +538,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6302B3575397933379859006 /* Pods.release.xcconfig */;
 			buildSettings = {
+				APIURL = "http://whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;

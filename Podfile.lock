@@ -1,4 +1,25 @@
 PODS:
+  - AFNetworking (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.4.1)
+  - AFNetworking/Security (2.4.1)
+  - AFNetworking/Serialization (2.4.1)
+  - AFNetworking/UIKit (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
   - OHAttributedLabel (3.5.4)
@@ -7,12 +28,14 @@ PODS:
     - HexColors
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.0)
   - NoticeView
   - OHAttributedLabel
   - SVPullToRefresh (HEAD)
   - TSMessages
 
 SPEC CHECKSUMS:
+  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   NoticeView: 357545814931eb92428de54449f405f91c84a1b8
   OHAttributedLabel: fcf1d1245b4c8d2df94da91369b1474901d7fb14

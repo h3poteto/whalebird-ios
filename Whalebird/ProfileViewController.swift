@@ -102,11 +102,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let params:Dictionary<String, String> = [
                 "screen_name" : self.twitterScreenName!
             ]
-            
+            let parameter: Dictionary<String, AnyObject> = [
+                "settings" : params
+            ]
             //-------------------------
             //  header
             //-------------------------
-            TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/profile_banner.json")!, params: params, callback: { header_data in
+            WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: parameter, callback: { (header_data) -> Void in
                 var q_main = dispatch_get_main_queue()
                 var error = NSError?()
                 dispatch_async(q_main, {()->Void in
@@ -117,8 +119,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
                 })
-                
-                TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json")!, params: params, callback: { user_data in
+                WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: parameter, callback: { (user_data) -> Void in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
                         // TODO: APIが尽きたときの処理も念のため書いておく
@@ -328,7 +329,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
                 UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
                 ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-                PostDetail: TwitterAPIClient.createdAtToString(tweetData.objectForKey("created_at") as NSString))
+                PostDetail: tweetData.objectForKey("created_at") as NSString)
             self.navigationController!.pushViewController(detail_view, animated: true)
             break
         case 1:
@@ -346,32 +347,29 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 
     func updateTimeline(since_id: Int) {
-        var url = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")
         var params: Dictionary<String, String> = [
             "contributor_details" : "true",
             "trim_user" : "0",
-            "count" : "10",
+            "count" : "10"
+        ]
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
-        TwitterAPIClient.sharedClient.getTimeline(url!, params: params, callback: {new_timeline in
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: parameter) { (new_timeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                 }
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Get Timeline")
-                notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
                 self.tableView.reloadData()
             })
-        })
+        }
         
     }
     
     func updateFollowUser(nextCursor: String?) {
-        var url = NSURL(string: "https://api.twitter.com/1.1/friends/list.json")
         var params: Dictionary<String, String>
         if (nextCursor == nil) {
             params = [
@@ -383,7 +381,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 "cursor" : nextCursor!
             ]
         }
-        TwitterAPIClient.sharedClient.getUserInfo(url!, params: params, callback: {follows in
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (follows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
@@ -394,11 +395,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
             })
-        })
+        }
     }
     
     func updateFollowerUser(nextCursor: String?) {
-        var url = NSURL(string: "https://api.twitter.com/1.1/followers/list.json")
         var params: Dictionary<String, String>
         if (nextCursor == nil) {
             params = [
@@ -410,7 +410,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 "cursor" : nextCursor!
             ]
         }
-        TwitterAPIClient.sharedClient.getUserInfo(url!, params: params, callback: {follows in
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params,
+            "screen_name" : self.twitterScreenName!
+        ]
+        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: parameter) { (follows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
@@ -421,7 +425,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
             })
-        })
+        }
     }
     
     func tappedTweetNum() {

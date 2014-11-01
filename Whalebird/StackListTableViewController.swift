@@ -54,15 +54,17 @@ class StackListTableViewController: UITableViewController {
         let params: Dictionary<String, String> = [
             "screen_name" : self.twitterScreenName
         ]
-        
-        TwitterAPIClient.sharedClient.getTimeline(self.stackTarget, params: params, callback: {stackList in
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: parameter) { (stackList) -> Void in
             var q_main = dispatch_get_main_queue()
             println(stackList)
             dispatch_async(q_main, {()->Void in
                 self.stackListArray = stackList
                 self.tableView.reloadData()
             })
-        })
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,7 +89,7 @@ class StackListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("uri") as? String
+        cell.textLabel.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("full_name") as? String
         
         return cell
     }

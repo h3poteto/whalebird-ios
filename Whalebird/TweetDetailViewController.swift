@@ -187,11 +187,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     //  memo: favDeleteアクションに関しては初期段階では不要
     //-------------------------------------------------
     func tappedFavorite() {
-        let target_url = NSURL(string: "https://api.twitter.com/1.1/favorites/create.json")
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
-        TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {data, status, error in
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
@@ -199,18 +201,20 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             })
-        })
+        }
     }
 
     func tappedDelete() {
         var alertController = UIAlertController(title: "ツイート削除", message: "削除していい？", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: {action in
             println("OK")
-            let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/destroy/" + self.tweetID + ".json")
             let params:Dictionary<String, String> = [
                 "id" : self.tweetID
             ]
-            TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {request, status, error in
+            let parameter: Dictionary<String, AnyObject> = [
+                "settings" : params
+            ]
+            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: parameter, callback: { (operation) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
@@ -249,11 +253,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             var alertController = UIAlertController(title: "公式RT", message: "RTしていい？", preferredStyle: .Alert)
             let okAction = UIAlertAction(title: "OK", style: .Default, handler: {action in
                 println("OK")
-                let target_url = NSURL(string: "https://api.twitter.com/1.1/statuses/retweet/" + self.tweetID + ".json")
                 let params:Dictionary<String, String> = [
                     "id" : self.tweetID
                 ]
-                TwitterAPIClient.sharedClient.postTweetData(target_url!, params: params, callback: {response, status, error in
+                let parameter: Dictionary<String, AnyObject> = [
+                    "settings" : params
+                ]
+                WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: parameter, callback: { (operation) -> Void in
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in
                         var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
