@@ -45,6 +45,7 @@ class WhalebirdAPIClient: NSObject {
         var requestURL = self.whalebirdAPIURL + "users/apis.json"
         self.sessionManager.GET(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
             println(responseObject)
+            self.saveCookie()
         }) { (operation, error) -> Void in
             println(error)
             var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: ("Status Code:" + String(operation.response.statusCode)))
@@ -56,6 +57,7 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func getArrayAPI(path: String, params: Dictionary<String, AnyObject>, callback: (NSArray) ->Void) {
+        self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
@@ -72,11 +74,12 @@ class WhalebirdAPIClient: NSObject {
                 notice.show()
             })
         } else {
-            
+            self.regenerateSession()
         }
     }
     
     func getDictionaryAPI(path: String, params: Dictionary<String, AnyObject>, callback: (NSDictionary) ->Void) {
+        self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
@@ -92,10 +95,13 @@ class WhalebirdAPIClient: NSObject {
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             })
+        } else {
+            self.regenerateSession()
         }
     }
     
     func postAnyObjectAPI(path: String, params: Dictionary<String, AnyObject>, callback: (AnyObject) ->Void) {
+        self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.POST(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
@@ -112,6 +118,31 @@ class WhalebirdAPIClient: NSObject {
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
             })
+        } else {
+            self.regenerateSession()
         }
+    }
+    
+    func regenerateSession() {
+        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Erro", message: "アカウントを設定してください")
+        notice.alpha = 0.8
+        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+        notice.show()
+    }
+    
+    func loadCookie() {
+        var cookiesData = NSUserDefaults.standardUserDefaults().objectForKey("cookiesKey") as? NSData
+        if (cookiesData != nil) {
+            var cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData!) as NSArray
+            for cookie in cookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as NSHTTPCookie)
+            }
+            self.sessionManager = AFHTTPRequestOperationManager()
+        }
+    }
+    
+    func saveCookie() {
+        var cookiesData = NSKeyedArchiver.archivedDataWithRootObject(NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies!)
+        NSUserDefaults.standardUserDefaults().setObject(cookiesData, forKey: "cookiesKey")
     }
 }
