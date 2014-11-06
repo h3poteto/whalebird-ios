@@ -23,8 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         application.registerUserNotificationSettings(notificationSettings)
         
         
-        // TODO: RemoteNotificationからの復帰処理
-        
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.backgroundColor = UIColor.whiteColor()
         
@@ -44,6 +42,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.rootController.setViewControllers(controllers, animated: true)
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
+        
+        // RemoteNotificationからの復帰処理
+        // TODO: ここバグる
+        if (launchOptions != nil) {
+            var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
+            println(userInfo)
+            if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
+                var detailViewController = TweetDetailViewController(
+                    TweetID: userInfo.objectForKey("id") as String,
+                    TweetBody: userInfo.objectForKey("text") as String,
+                    ScreenName: userInfo.objectForKey("screen_name") as String,
+                    UserName: userInfo.objectForKey("name") as String,
+                    ProfileImage: userInfo.objectForKey("profile_image_url") as String,
+                    PostDetail: userInfo.objectForKey("created_at") as String)
+                
+                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+            }
+        }
         
         
         // SVProgressHUDの表示スタイル設定
@@ -123,6 +140,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 self.rootController.presentViewController(alertController, animated: true, completion: nil)
                 
             }
+        } else {
+            // TODO: ここで遷移
+            var detailViewController = TweetDetailViewController(
+                TweetID: userInfo["id"] as String,
+                TweetBody: userInfo["text"] as String,
+                ScreenName: userInfo["screen_name"] as String,
+                UserName: userInfo["name"] as String,
+                ProfileImage: userInfo["profile_image_url"] as String,
+                PostDetail: userInfo["created_at"] as String)
+            
+            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+            (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
         }
     }
 
