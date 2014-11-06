@@ -17,6 +17,8 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     var notificationReplyFlag: Bool = true
     var notificationFavFlag: Bool = false
     var notificationRTFlag: Bool = false
+    var notificationDMFlag: Bool = false
+    var deviceToken = String?()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -496,5 +498,30 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func tappedNotificationRTSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationRTFlag, forKey: "notificationRTFlag")
+    }
+    
+    
+    func syncWhalebirdServer() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        self.deviceToken = userDefault.stringForKey("deviceToken")
+        var params: Dictionary<String, AnyObject> = [
+            "notification" : self.notificationBackgroundFlag,
+            "reply" : self.notificationReplyFlag,
+            "retweet" : self.notificationRTFlag,
+            "favorite" : self.notificationFavFlag,
+            "direct_message" : self.notificationDMFlag,
+            "device_token" : self.deviceToken!
+        ]
+        let parameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        SVProgressHUD.show()
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: parameter) { (operation) -> Void in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                println(operation)
+                SVProgressHUD.dismiss()
+            })
+        }
     }
 }

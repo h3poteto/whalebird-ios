@@ -55,9 +55,11 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         println(request)
         if (self.redirectedTwitter && request.URL.host == self.whalebirdAPIURL.host && (request.URL.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession()
+            
+            var index = self.navigationController!.viewControllers.count
+            var parent = (self.navigationController!.viewControllers as NSArray).objectAtIndex(index - 2) as SettingsTableViewController
+            parent.syncWhalebirdServer()
             self.navigationController!.popViewControllerAnimated(true)
-            // TODO: ここでAPI側にrequestを投げてsessionを確立させる
-            // TODO: ついでにログイン成功通知も作る
             return false
         } else if ((request.URL.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {
             self.redirectedTwitter = true
