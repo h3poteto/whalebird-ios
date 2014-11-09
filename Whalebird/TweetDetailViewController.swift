@@ -198,7 +198,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Add Favorite")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り追加")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
@@ -221,7 +221,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Delete Complete")
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "削除完了")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
@@ -268,7 +268,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in
                         SVProgressHUD.dismiss()
-                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Retweet Complete")
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "リツイートしました")
                         notice.alpha = 0.8
                         notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                         notice.show()

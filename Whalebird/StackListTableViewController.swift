@@ -10,7 +10,7 @@ import UIKit
 
 class StackListTableViewController: UITableViewController {
     
-    var twitterScreenName: String!
+    var twitterScreenName: String?
     var stackTarget: NSURL!
     var stackListArray = NSArray()
     var selectedIndex: Int?
@@ -19,7 +19,7 @@ class StackListTableViewController: UITableViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リストを選択"
         let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as NSString
+        self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -51,22 +51,26 @@ class StackListTableViewController: UITableViewController {
         
         self.tableView.allowsMultipleSelection = false
         
-        let params: Dictionary<String, String> = [
-            "screen_name" : self.twitterScreenName
-        ]
-        let parameter: Dictionary<String, AnyObject> = [
-            "settings" : params
-        ]
-        SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: parameter) { (stackList) -> Void in
-            var q_main = dispatch_get_main_queue()
-            println(stackList)
-            dispatch_async(q_main, {()->Void in
-                self.stackListArray = stackList
-                self.tableView.reloadData()
-                SVProgressHUD.dismiss()
-            })
+        
+        if (self.twitterScreenName != nil) {
+            let params: Dictionary<String, String> = [
+                "screen_name" : self.twitterScreenName!
+            ]
+            let parameter: Dictionary<String, AnyObject> = [
+                "settings" : params
+            ]
+            SVProgressHUD.show()
+            WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: parameter) { (stackList) -> Void in
+                var q_main = dispatch_get_main_queue()
+                println(stackList)
+                dispatch_async(q_main, {()->Void in
+                    self.stackListArray = stackList
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
+                })
+            }
         }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -107,40 +111,6 @@ class StackListTableViewController: UITableViewController {
         cell.accessoryType = UITableViewCellAccessoryType.None
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView!, moveRowAtIndexPath fromIndexPath: NSIndexPath!, toIndexPath: NSIndexPath!) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView!, canMoveRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)

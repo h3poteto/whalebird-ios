@@ -92,10 +92,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     
     //-----------------------------------------
-    //  return: status
-    //  クライアント名はアプリ登録することで表示される
-    //  デバッグ中はvia iOSを変更することはできない
-    //  To Do: fix ここだけnoticeが表示されない，早くしたい
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         var params: Dictionary<String, String>
@@ -116,7 +112,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Success")
+                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "投稿しました")
                 SVProgressHUD.dismiss()
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
@@ -126,14 +122,5 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         }
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

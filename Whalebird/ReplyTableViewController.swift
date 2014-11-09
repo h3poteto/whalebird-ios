@@ -119,50 +119,6 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.navigationController!.pushViewController(detail_view, animated: true)
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView!, moveRowAtIndexPath fromIndexPath: NSIndexPath!, toIndexPath: NSIndexPath!) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView!, canMoveRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     
     func updateTimeline(since_id: String?) {
@@ -189,7 +145,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                     self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Reply Updated")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(self.newTimeline.count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
@@ -210,7 +166,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
-    deinit {
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         destroy()
     }
     

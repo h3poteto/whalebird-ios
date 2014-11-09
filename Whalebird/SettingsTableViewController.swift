@@ -68,7 +68,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             cellCount = 2
             break
         case 2:
-            cellCount = 4
+            cellCount = 5
             break
         case 3:
             cellCount = 2
@@ -112,7 +112,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         case 0:
             break
         case 1:
-            sectionTitle = "※再起動後に反映されます"
             break
         case 2:
             break
@@ -219,6 +218,15 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 notificationRTSwitch.on = self.notificationRTFlag
                 notificationRTSwitch.addTarget(self, action: "tappedNotificationRTSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationRTSwitch
+                break
+            case 4:
+                cellTitle = "DM通知"
+                var notificationDMSwitch = UISwitch(frame: CGRect.zeroRect)
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                self.notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+                notificationDMSwitch.on = self.notificationDMFlag
+                notificationDMSwitch.addTarget(self, action: "tappedNotificationDMSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = notificationDMSwitch
                 break
             default:
                 break
@@ -473,45 +481,72 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func tappedUserstreamSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+        self.userstreamFlag = !self.userstreamFlag
     }
     
     func tappedNotificationForegroundSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationForegroundFlag, forKey: "notificationForegroundFlag")
+        self.notificationForegroundFlag = !self.notificationForegroundFlag
     }
     
     func tappedNotificationBackgroundSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
+        self.notificationBackgroundFlag = !self.notificationBackgroundFlag
+        self.syncWhalebirdServer()
     }
     
     func tappedNotificationReplySwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
+        self.notificationReplyFlag = !self.notificationReplyFlag
+        self.syncWhalebirdServer()
     }
     
     func tappedNotificationFavSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationFavFlag, forKey: "notificationFavFlag")
+        self.notificationFavFlag = !self.notificationFavFlag
+        self.syncWhalebirdServer()
     }
     
     func tappedNotificationRTSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationRTFlag, forKey: "notificationRTFlag")
+        self.notificationRTFlag = !self.notificationRTFlag
+        self.syncWhalebirdServer()
     }
     
+    func tappedNotificationDMSwitch() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        userDefault.setBool(!self.notificationDMFlag, forKey: "notificationDMFlag")
+        self.notificationDMFlag = !self.notificationDMFlag
+        self.syncWhalebirdServer()
+    }
     
     func syncWhalebirdServer() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         self.deviceToken = userDefault.stringForKey("deviceToken")
-        var params: Dictionary<String, AnyObject> = [
-            "notification" : self.notificationBackgroundFlag,
-            "reply" : self.notificationReplyFlag,
-            "retweet" : self.notificationRTFlag,
-            "favorite" : self.notificationFavFlag,
-            "direct_message" : self.notificationDMFlag,
-            "device_token" : self.deviceToken!
-        ]
+        var params: Dictionary<String, AnyObject>
+        if (self.deviceToken != nil) {
+            params = [
+                "notification" : self.notificationBackgroundFlag,
+                "reply" : self.notificationReplyFlag,
+                "retweet" : self.notificationRTFlag,
+                "favorite" : self.notificationFavFlag,
+                "direct_message" : self.notificationDMFlag,
+                "device_token" : self.deviceToken!
+            ]
+        } else {
+            params = [
+                "notification" : self.notificationBackgroundFlag,
+                "reply" : self.notificationReplyFlag,
+                "retweet" : self.notificationRTFlag,
+                "favorite" : self.notificationFavFlag,
+                "direct_message" : self.notificationDMFlag
+            ]
+        }
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
@@ -520,6 +555,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 println(operation)
+                self.tableView.reloadData()
                 SVProgressHUD.dismiss()
             })
         }

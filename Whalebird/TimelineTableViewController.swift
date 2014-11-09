@@ -152,40 +152,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.navigationController!.pushViewController(detail_view, animated: true)
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView!, moveRowAtIndexPath fromIndexPath: NSIndexPath!, toIndexPath: NSIndexPath!) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView!, canMoveRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     
     func updateTimeline(since_id: String?) {
@@ -216,7 +183,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                     self.currentTimeline.insertObject(new_tweet, atIndex: 0)
                     self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "Timeline Updated")
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(self.newTimeline.count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
@@ -240,19 +207,17 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     
     //---------------------------------------
-    //  デストラクタはXcode内ではメモリ管理の都合上呼ばれないため，destroyを別定義
+    //  TODO: deinitが呼ばれない？
     //---------------------------------------
+/*
     deinit {
         destroy()
     }
-    
-    // 上記理由によりテストコードとしてdissapearでdestroyを呼ぶ
-/*
+*/
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         destroy()
     }
-*/
 
     
     func destroy() {

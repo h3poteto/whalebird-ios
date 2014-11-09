@@ -44,10 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.makeKeyAndVisible()
         
         // RemoteNotificationからの復帰処理
-        // TODO: ここバグる
         if (launchOptions != nil) {
             var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
-            println(userInfo)
             if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
                 var detailViewController = TweetDetailViewController(
                     TweetID: userInfo.objectForKey("id") as String,
@@ -141,7 +139,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 
             }
         } else {
-            // TODO: ここで遷移
             var detailViewController = TweetDetailViewController(
                 TweetID: userInfo["id"] as String,
                 TweetBody: userInfo["text"] as String,
@@ -154,33 +151,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
         }
     }
-
-    
-/*
-    // 2014/10/28 通知の受け取り方が変わったみたいなので上記メソッドで対応
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        if (userDefault.objectForKey("notificationBackgroundFlag") == nil || userDefault.boolForKey("notificationBackgroundFlag")) {
-            // TODO: 最新の通知のみあればよい
-            var tweetDetailData = notification.userInfo as NSDictionary!
-            if (tweetDetailData != nil) {
-                var detailViewController = TweetDetailViewController(
-                    TweetID: tweetDetailData.objectForKey("id") as String,
-                    TweetBody: tweetDetailData.objectForKey("text") as String,
-                    ScreenName: tweetDetailData.objectForKey("screen_name") as String,
-                    UserName: tweetDetailData.objectForKey("name") as String,
-                    ProfileImage: tweetDetailData.objectForKey("profile_image_url") as String,
-                    PostDetail: tweetDetailData.objectForKey("created_at") as String)
-                
-                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
-            }
-            UIApplication.sharedApplication().cancelLocalNotification(notification)
-        }
-
-    }
-*/
 
 }
 

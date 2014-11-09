@@ -46,12 +46,15 @@ class WhalebirdAPIClient: NSObject {
         self.sessionManager.GET(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
             println(responseObject)
             self.saveCookie()
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setObject(responseObject["screen_name"], forKey: "username")
         }) { (operation, error) -> Void in
             println(error)
             var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: ("Status Code:" + String(operation.response.statusCode)))
             notice.alpha = 0.8
             notice.originY = UIApplication.sharedApplication().statusBarFrame.height
             notice.show()
+            SVProgressHUD.dismiss()
         }
         
     }
@@ -72,6 +75,7 @@ class WhalebirdAPIClient: NSObject {
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
+                SVProgressHUD.dismiss()
             })
         } else {
             self.regenerateSession()
@@ -94,6 +98,7 @@ class WhalebirdAPIClient: NSObject {
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
+                SVProgressHUD.dismiss()
             })
         } else {
             self.regenerateSession()
@@ -113,10 +118,11 @@ class WhalebirdAPIClient: NSObject {
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Erro", message: ("Status Code:" + String(operation.response.statusCode)))
+                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post Error", message: ("Status Code:" + String(operation.response.statusCode)))
                 notice.alpha = 0.8
                 notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                 notice.show()
+                SVProgressHUD.dismiss()
             })
         } else {
             self.regenerateSession()
@@ -124,10 +130,11 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func regenerateSession() {
-        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Erro", message: "アカウントを設定してください")
+        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
         notice.alpha = 0.8
         notice.originY = UIApplication.sharedApplication().statusBarFrame.height
         notice.show()
+        SVProgressHUD.dismiss()
     }
     
     func loadCookie() {
