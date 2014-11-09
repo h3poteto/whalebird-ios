@@ -260,6 +260,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId)
         self.refreshTimeline.endRefreshing()
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     func tappedNewTweet(sender: AnyObject) {

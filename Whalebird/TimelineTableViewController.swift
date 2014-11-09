@@ -198,6 +198,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId)
         self.refreshTimeline.endRefreshing()
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     func tappedNewTweet(sender: AnyObject) {
