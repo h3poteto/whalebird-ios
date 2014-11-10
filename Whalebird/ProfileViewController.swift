@@ -60,8 +60,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "ユーザー"
-        self.tabBarItem.image = UIImage(named: "Profile-Line.png")
         let user_default = NSUserDefaults.standardUserDefaults()
         self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
