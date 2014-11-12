@@ -15,6 +15,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     var messageCell = NSMutableArray()
     
     var refreshMessage: UIRefreshControl!
+    var newMessageButton: UIBarButtonItem!
     
     var sinceId: String?
     
@@ -49,6 +50,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         self.tableView.addSubview(self.refreshMessage)
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        
+        self.newMessageButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewMessage")
+        self.navigationItem.rightBarButtonItem = self.newMessageButton
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var getSinceId = userDefaults.stringForKey("directMessageSinceId") as String?
@@ -104,6 +108,18 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         return height
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let messageData = self.currentMessage.objectAtIndex(indexPath.row) as NSDictionary
+        var detailView = MessageDetailViewController(
+            MessageID: messageData.objectForKey("id_str") as NSString,
+            MessageBody: messageData.objectForKey("text") as NSString,
+            ScreeName: messageData.objectForKey("user")?.objectForKey("screen_name") as NSString,
+            UserName: messageData.objectForKey("user")?.objectForKey("name") as NSString,
+            ProfileImage: messageData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
+            PostDetail: messageData.objectForKey("created_at") as NSString)
+        self.navigationController!.pushViewController(detailView, animated: true)
+    }
+    
     func updateMessage(since_id: String?) {
         var params: Dictionary<String, String>
         if (since_id != nil) {
@@ -144,6 +160,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         updateMessage(self.sinceId)
         self.refreshMessage.endRefreshing()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
+    
+    func tappedNewMessage() {
     }
     
     override func viewWillDisappear(animated: Bool) {

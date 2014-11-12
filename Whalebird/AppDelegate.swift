@@ -57,6 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "direct_message") {
+                // TODO: direct message open
             }
         }
         
