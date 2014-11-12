@@ -24,6 +24,7 @@ class MessageDetailViewController: UIViewController {
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
     
+    var replyMessageButton: UIBarButtonItem!
 
     //===============================================
     //  instance method
@@ -95,6 +96,9 @@ class MessageDetailViewController: UIViewController {
         self.postDetailLabel.text = self.postDetail
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.view.addSubview(self.postDetailLabel)
+        
+        self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedReplyMessage")
+        self.navigationItem.rightBarButtonItem = self.replyMessageButton
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,5 +116,10 @@ class MessageDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func tappedReplyMessage() {
+        var newMessage = NewDirectMessageViewController(ReplyToUser: self.screenName)
+        self.navigationController!.pushViewController(newMessage, animated: true)
+    }
 
 }

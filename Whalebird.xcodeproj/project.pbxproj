@@ -16,6 +16,7 @@
 		E91B20381A111844008BF1ED /* Mail.png in Resources */ = {isa = PBXBuildFile; fileRef = E91B20371A111844008BF1ED /* Mail.png */; };
 		E91B203A1A11184C008BF1ED /* Mail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E91B20391A11184C008BF1ED /* Mail@2x.png */; };
 		E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */; };
+		E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */; };
 		E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
 		E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
@@ -77,6 +78,7 @@
 		E91B20371A111844008BF1ED /* Mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mail.png; sourceTree = "<group>"; };
 		E91B20391A11184C008BF1ED /* Mail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mail@2x.png"; sourceTree = "<group>"; };
 		E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
+		E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDirectMessageViewController.swift; sourceTree = "<group>"; };
 		E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhalebirdAPIClient.swift; sourceTree = "<group>"; };
 		E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
 				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
 				E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */,
+				E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */,
 				E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */,
 				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
@@ -425,6 +428,7 @@
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
+				E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */,
 				E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

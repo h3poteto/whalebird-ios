@@ -51,8 +51,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
-        self.newMessageButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewMessage")
-        self.navigationItem.rightBarButtonItem = self.newMessageButton
+        //self.newMessageButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewMessage")
+        //self.navigationItem.rightBarButtonItem = self.newMessageButton
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var getSinceId = userDefaults.stringForKey("directMessageSinceId") as String?
