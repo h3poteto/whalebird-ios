@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Accounts
+import Social
 
 class SettingsTableViewController: UITableViewController, UIActionSheetDelegate {
     
@@ -19,6 +21,9 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     var notificationRTFlag: Bool = false
     var notificationDMFlag: Bool = false
     var deviceToken = String?()
+    
+    var account: ACAccount!
+    var accountStore: ACAccountStore!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -353,37 +358,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         }
     }
 
-
-    /*
-    func stackAccount() {
-        TwitterAPIClient.sharedClient.pickUpAccount({accounts in
-            // クロージャーの処理は終了後実行されているが，画面への描画プロセスがメインのキューに来ていない
-            // 非同期だけどキューを分けて処理をすることで対応
-            var q_main = dispatch_get_main_queue()
-            if (accounts.count > 0) {
-                dispatch_async(q_main, {()->Void in
-                    self.twitterAccounts = accounts
-                    var accountsSheet = UIActionSheet(title: "アカウント選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-                    accountsSheet.tag = 0
-                    
-                    for pick_account in accounts {
-                        accountsSheet.addButtonWithTitle(pick_account.username)
-                    }
-                    accountsSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-                    accountsSheet.showInView(self.view)
-                })
-            } else {
-                dispatch_async(q_main, {()->Void in
-                    // alert表示
-                    var alertController = UIAlertController(title: "アカウントが見つかりません", message: "twitterアカウントを設定してください", preferredStyle: UIAlertControllerStyle.Alert)
-                    let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                    alertController.addAction(okAction)
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                })
-            }
-        })
-    }
-*/
     
     func stackNotificationType() {
         var notificationTypeSheet = UIActionSheet(title: "通知方法選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
@@ -416,47 +390,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
         switch(actionSheet.tag) {
         case 0:
-            var user_default = NSUserDefaults.standardUserDefaults()
-            if (buttonIndex <= self.twitterAccounts.count) {
-                user_default.setObject(self.twitterAccounts[buttonIndex - 1].username, forKey: "username")
-                tableView.reloadData()
-/*
-                let params: Dictionary<String, String> = [
-                    "screen_name" : self.twitterAccounts[buttonIndex - 1].username
-                ]
-                
-                TwitterAPIClient.sharedClient.getUserInfo(NSURL(string: "https://api.twitter.com/1.1/users/show.json"), params: params, callback: { user_info in
-                    
-                    var error = NSError?()
-                    let image_url:NSURL = NSURL.URLWithString(user_info.objectForKey("profile_image_url") as NSString)
-                    
-                    var q_global: dispatch_queue_t = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-                    var q_main: dispatch_queue_t = dispatch_get_main_queue()
-                    dispatch_async(q_global, {() in
-                        var image = UIImage(data: NSData.dataWithContentsOfURL(image_url, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error))
-
-                        dispatch_async(q_main, {() in
-
-                            
-                            //  デザイン的に微妙なのでアイコンをtabのメニューに表示するのは廃止
-                            UIGraphicsBeginImageContext(CGSizeMake(30, 30))
-                            image.drawInRect(CGRectMake(0, 0, 30, 30))
-                            var resizeImage = UIGraphicsGetImageFromCurrentImageContext()
-                            UIGraphicsEndImageContext()
-                            
-                            var view_controllers: NSArray = self.tabBarController!.viewControllers!
-                            // class名で判定したいけれど，viewControllersからclass名を判定できないのでobjectAtIndexでクリティカル指定
-                            var target: UINavigationController! = view_controllers.objectAtIndex(3) as UINavigationController
-                            var iconImage = resizeImage.imageWithRenderingMode(.AlwaysOriginal)
-                            target.tabBarItem = UITabBarItem(title: "ユーザー", image: iconImage, selectedImage: iconImage)
-
-                        })
-
-                    })
-                    
-                })
-*/
-            }
             break
         case 1:
             if (buttonIndex > 0 && buttonIndex <= 2) {
@@ -485,9 +418,42 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     }
 
     func tappedUserstreamSwitch() {
+        // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
         var userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
-        self.userstreamFlag = !self.userstreamFlag
+        self.accountStore = ACAccountStore()
+        var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
+        self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
+            if (error != nil) {
+                println(error)
+            }
+            if (!granted) {
+                var alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
+                var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
+                alertController.addAction(closeAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                return
+            }
+            var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
+            if (twitterAccounts.count > 0) {
+                let username = userDefault.stringForKey("username")
+                var selected_account: ACAccount!
+                for aclist in twitterAccounts {
+                    if (username == aclist.username) {
+                        selected_account = aclist as ACAccount
+                    }
+                }
+                if (selected_account == nil) {
+                    self.tableView.reloadData()
+                    self.accountAlert()
+                } else {
+                    userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+                    self.userstreamFlag = !self.userstreamFlag
+                }
+            } else {
+                self.tableView.reloadData()
+                self.accountAlert()
+            }
+         }
     }
     
     func tappedNotificationForegroundSwitch() {
@@ -565,5 +531,13 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 SVProgressHUD.dismiss()
             })
         }
+    }
+    
+    func accountAlert() {
+        var alertController = UIAlertController(title: "Account not found", message: "iPhoneの設定からtwitterアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
+        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        alertController.addAction(closeAction)
+        presentViewController(alertController, animated: true, completion: nil)
     }
 }
