@@ -418,42 +418,51 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     }
 
     func tappedUserstreamSwitch() {
-        // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
         var userDefault = NSUserDefaults.standardUserDefaults()
-        self.accountStore = ACAccountStore()
-        var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
-        self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
-            if (error != nil) {
-                println(error)
-            }
-            if (!granted) {
-                var alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
-                var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
-                alertController.addAction(closeAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
-                return
-            }
-            var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
-            if (twitterAccounts.count > 0) {
-                let username = userDefault.stringForKey("username")
-                var selected_account: ACAccount!
-                for aclist in twitterAccounts {
-                    if (username == aclist.username) {
-                        selected_account = aclist as ACAccount
-                    }
+        if (self.userstreamFlag) {
+            // trueだった場合は問答無用で切る
+            userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+            self.userstreamFlag = !self.userstreamFlag
+            UserstreamAPIClient.sharedClient.stopStreaming({ () -> Void in
+            })
+        } else {
+            // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
+            self.accountStore = ACAccountStore()
+            var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
+            self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
+                if (error != nil) {
+                    println(error)
                 }
-                if (selected_account == nil) {
+                if (!granted) {
+                    var alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
+                    var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
+                    alertController.addAction(closeAction)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    return
+                }
+                var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
+                if (twitterAccounts.count > 0) {
+                    let username = userDefault.stringForKey("username")
+                    var selected_account: ACAccount!
+                    for aclist in twitterAccounts {
+                        if (username == aclist.username) {
+                            selected_account = aclist as ACAccount
+                        }
+                    }
+                    if (selected_account == nil) {
+                        self.tableView.reloadData()
+                        self.accountAlert()
+                    } else {
+                        userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+                        self.userstreamFlag = !self.userstreamFlag
+                    }
+                } else {
                     self.tableView.reloadData()
                     self.accountAlert()
-                } else {
-                    userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
-                    self.userstreamFlag = !self.userstreamFlag
                 }
-            } else {
-                self.tableView.reloadData()
-                self.accountAlert()
             }
-         }
+
+        }
     }
     
     func tappedNotificationForegroundSwitch() {
@@ -538,6 +547,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel) { (action) -> Void in
         }
         alertController.addAction(closeAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
