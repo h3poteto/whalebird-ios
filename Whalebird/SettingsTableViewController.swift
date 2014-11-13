@@ -62,7 +62,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         var cellCount = Int(0)
         switch(section) {
         case 0:
-            cellCount = 1
+            cellCount = 2
             break
         case 1:
             cellCount = 2
@@ -139,6 +139,10 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 cellTitle = "アカウント"
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 cellDetailTitle = userDefault.stringForKey("username")
+                break
+            case 1:
+                cellTitle = "プロフィール"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break
             default:
                 break
@@ -306,6 +310,8 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 self.navigationController!.pushViewController(loginViewController, animated: true)
                 break
             case 1:
+                var profileViewController = ProfileViewController()
+                self.navigationController!.pushViewController(profileViewController, animated: true)
                 break
             default:
                 break
