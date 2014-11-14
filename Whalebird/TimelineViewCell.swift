@@ -80,13 +80,18 @@ class TimelineViewCell: UITableViewCell {
     //--------------------------------------------
     // TODO: RTの表示設定
     func configureCell(dict: NSDictionary) {
+        var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImage = UIImageView(frame: CGRectMake(self.ImagePadding, self.ImagePadding, self.ImageSize, self.ImageSize))
         self.contentView.addSubview(self.profileImage)
         self.nameLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4 , self.ImagePadding, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
-        self.contentView.addSubview(self.nameLabel)
+        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 3 ) {
+            self.contentView.addSubview(self.nameLabel)
+        }
         self.screenNameLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, self.DefaultLineHeigth + self.ImagePadding * 1, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
-        self.contentView.addSubview(self.screenNameLabel)
+        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 2 ) {
+            self.contentView.addSubview(self.screenNameLabel)
+        }
         self.bodyLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, self.DefaultLineHeigth * 2 + self.ImagePadding * 2, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
         self.contentView.addSubview(self.bodyLabel)
         self.postDetailLable = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, 40, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))

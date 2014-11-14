@@ -78,6 +78,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         let windowSize = UIScreen.mainScreen().bounds
+        var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
         var image_url = NSURL(string: self.profileImage)
@@ -95,7 +96,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.userNameLabel.sizeToFit()
         self.userNameLabel.frame.size.height = self.userNameLabel.titleLabel!.frame.size.height
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
-        self.blankView.addSubview(self.userNameLabel)
+        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 3 ) {
+            self.blankView.addSubview(self.userNameLabel)
+        }
         
         self.screenNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
         self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
@@ -106,7 +109,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.screenNameLabel.sizeToFit()
         self.screenNameLabel.frame.size.height = self.screenNameLabel.titleLabel!.frame.size.height
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
-        self.blankView.addSubview(self.screenNameLabel)
+        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 2 ) {
+            self.blankView.addSubview(self.screenNameLabel)
+        }
         
         self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.text = self.tweetBody

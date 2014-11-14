@@ -249,13 +249,16 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 var nameType = userDefault.integerForKey("displayNameType") as Int
                 switch(nameType) {
                 case 1:
-                    cellDetailTitle = "スクリーンネーム"
+                    cellDetailTitle = "名前+スクリーンネーム"
                     break
                 case 2:
+                    cellDetailTitle = "スクリーンネーム"
+                    break
+                case 3:
                     cellDetailTitle = "名前"
                     break
                 default:
-                    cellDetailTitle = "スクリーンネーム"
+                    cellDetailTitle = "名前+スクリーンネーム"
                     break
                 }
                 break
@@ -372,6 +375,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         // TODO: 設定をviewに反映させる
         var nameTypeSheet = UIActionSheet(title: "表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
         nameTypeSheet.tag = 2
+        nameTypeSheet.addButtonWithTitle("名前+スクリーンネーム")
         nameTypeSheet.addButtonWithTitle("スクリーンネーム")
         nameTypeSheet.addButtonWithTitle("名前")
         nameTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
@@ -401,7 +405,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             }
             break
         case 2:
-            if (buttonIndex > 0 && buttonIndex <= 2) {
+            if (buttonIndex > 0 && buttonIndex <= 3) {
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 userDefault.setInteger(buttonIndex, forKey: "displayNameType")
                 tableView.reloadData()
