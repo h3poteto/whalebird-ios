@@ -58,7 +58,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.tweetID = TweetID
         self.tweetBody = TweetBody
         self.screenName = ScreenName
-        self.postDetail = PostDetail
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(PostDetail)
         self.profileImage = ProfileImage
         self.userName = UserName
     }

@@ -146,7 +146,7 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         self.postDetailLable.textAlignment = NSTextAlignment.Left
         self.postDetailLable.textColor = UIColor.grayColor()
-        self.postDetailLable.text = dict.objectForKey("created_at") as NSString
+        self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(dict.objectForKey("created_at") as NSString)
         self.postDetailLable.font = UIFont.systemFontOfSize(11)
         self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height + self.ImagePadding
         

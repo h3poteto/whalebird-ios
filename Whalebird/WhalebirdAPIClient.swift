@@ -21,9 +21,25 @@ class WhalebirdAPIClient: NSObject {
         return sharedStruct._sharedClient
     }
     
-    //========================================
+    //===========================================
     //  class method
-    //========================================
+    //===========================================
+    class func convertLocalTime(utctime: String) -> String {
+        var utcDateFormatter = NSDateFormatter()
+        utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+        utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        utcDateFormatter.dateFormat = "MM-dd HH:mm"
+        utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        var utcDate = utcDateFormatter.dateFromString(utctime)
+        
+        // TODO: 相対時刻にも対応できるように
+        var jstDateFormatter =  NSDateFormatter()
+        jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+        jstDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        jstDateFormatter.dateFormat = "MM月dd日 HH:mm"
+        var jstDate = jstDateFormatter.stringFromDate(utcDate!)
+        return jstDate
+    }
     //===========================================
     //  instance method
     //===========================================

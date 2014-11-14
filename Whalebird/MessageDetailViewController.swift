@@ -48,7 +48,7 @@ class MessageDetailViewController: UIViewController {
         self.screenName = ScreeName
         self.userName = UserName
         self.profileImage = ProfileImage
-        self.postDetail = PostDetail
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(PostDetail)
     }
     
     override func viewDidLoad() {

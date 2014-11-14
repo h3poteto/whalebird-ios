@@ -28,6 +28,17 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     //  class method
     //=======================================
+    class func convertUTCTime(srctime: String) -> String {
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        var srcDate = dateFormatter.dateFromString(srctime)
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        var dstDate = dateFormatter.stringFromDate(srcDate!)
+        return dstDate
+    }
     
     //=======================================
     //  instance method
@@ -77,9 +88,10 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         println(jsonObject)
         
         if (jsonObject != nil) {
-            let object: NSDictionary! = jsonObject as NSDictionary
+            var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // TODO: created_atだけ修正
+                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
                 self.timelineTable?.currentTimeline.insertObject(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
                 self.timelineTable?.tableView.reloadData()
