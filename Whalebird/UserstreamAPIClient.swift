@@ -35,7 +35,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         var srcDate = dateFormatter.dateFromString(srctime)
-        dateFormatter.dateFormat = "MM-dd HH:mm"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         var dstDate = dateFormatter.stringFromDate(srcDate!)
         return dstDate
     }

@@ -28,7 +28,7 @@ class WhalebirdAPIClient: NSObject {
         var utcDateFormatter = NSDateFormatter()
         utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        utcDateFormatter.dateFormat = "MM-dd HH:mm"
+        utcDateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         var utcDate = utcDateFormatter.dateFromString(utctime)
         
@@ -37,7 +37,23 @@ class WhalebirdAPIClient: NSObject {
         jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         jstDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         jstDateFormatter.dateFormat = "MM月dd日 HH:mm"
-        var jstDate = jstDateFormatter.stringFromDate(utcDate!)
+        var jstDate = String()
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if (userDefault.objectForKey("displayTimeType") != nil && userDefault.integerForKey("displayTimeType") == 2) {
+            var current = NSDate(timeIntervalSinceNow: 0)
+            var timeInterval = current.timeIntervalSinceDate(utcDate!)
+            if (timeInterval < 60) {
+                jstDate = String(Int(timeInterval)) + "秒前"
+            } else if(timeInterval < 3600) {
+                jstDate = String(Int(timeInterval / 60.0)) + "分前"
+            } else if(timeInterval < 3600 * 24) {
+                jstDate = String(Int(timeInterval / 3600.0)) + "時間前"
+            } else {
+                jstDate = String(Int(timeInterval / (3600.0 * 24.0))) + "日前"
+            }
+        } else {
+            jstDate = jstDateFormatter.stringFromDate(utcDate!)
+        }
         return jstDate
     }
     //===========================================
