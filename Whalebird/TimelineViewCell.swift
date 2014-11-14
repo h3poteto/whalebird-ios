@@ -78,6 +78,7 @@ class TimelineViewCell: UITableViewCell {
     // cell は再利用される
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
+    // TODO: RTの表示設定
     func configureCell(dict: NSDictionary) {
         
         self.profileImage = UIImageView(frame: CGRectMake(self.ImagePadding, self.ImagePadding, self.ImageSize, self.ImageSize))

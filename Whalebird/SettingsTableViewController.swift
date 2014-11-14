@@ -369,6 +369,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     }
     
     func stackDisplayNameType() {
+        // TODO: 設定をviewに反映させる
         var nameTypeSheet = UIActionSheet(title: "表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
         nameTypeSheet.tag = 2
         nameTypeSheet.addButtonWithTitle("スクリーンネーム")
@@ -378,6 +379,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     }
     
     func stackDisplayTimeType() {
+        // TODO: 設定をViewに反映させる
         var timeTypeSheet = UIActionSheet(title: "時刻表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
         timeTypeSheet.tag = 3
         timeTypeSheet.addButtonWithTitle("絶対時刻")

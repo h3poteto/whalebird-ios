@@ -69,8 +69,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.blankView.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(self.blankView)
     }
-
-    // TODO: ここからもツイートできるようにnavBarに追加しておいて
+    
+    // TODO: RTの表示設定
     override func viewDidLoad() {
         super.viewDidLoad()
         

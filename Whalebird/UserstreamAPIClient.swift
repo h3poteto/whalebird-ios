@@ -79,6 +79,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         if (jsonObject != nil) {
             let object: NSDictionary! = jsonObject as NSDictionary
             if (object.objectForKey("text") != nil) {
+                // TODO: created_atだけ修正
                 self.timelineTable?.currentTimeline.insertObject(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
                 self.timelineTable?.tableView.reloadData()
