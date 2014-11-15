@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.backgroundColor = UIColor.whiteColor()
         
+        
+        // TODO: 各種Viewにタイトルをつけよう
         self.rootController = UITabBarController()
         self.rootController.delegate = self
         var timelineViewController = TimelineTableViewController()

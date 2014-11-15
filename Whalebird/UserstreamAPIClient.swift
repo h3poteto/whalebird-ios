@@ -90,7 +90,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         if (jsonObject != nil) {
             var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
             if (object.objectForKey("text") != nil) {
-                // TODO: created_atだけ修正
+                // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
                 self.timelineTable?.currentTimeline.insertObject(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?

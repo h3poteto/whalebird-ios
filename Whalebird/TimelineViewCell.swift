@@ -100,7 +100,6 @@ class TimelineViewCell: UITableViewCell {
         
         //------------------------------------
         //  profileImageLabel
-        // TODO: SDWebImageによるキャッシュ
         //------------------------------------
         var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
         var q_main = dispatch_get_main_queue()

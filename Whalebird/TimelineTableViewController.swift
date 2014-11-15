@@ -202,15 +202,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
-    
-    //---------------------------------------
-    //  TODO: deinitが呼ばれない？
-    //---------------------------------------
-/*
-    deinit {
-        destroy()
-    }
-*/
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         destroy()

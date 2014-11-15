@@ -55,13 +55,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as? NSString
     }
     
     override init() {
@@ -71,6 +69,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     init(screenName: NSString) {
         super.init()
         self.twitterScreenName = screenName
+        self.title = "@" + screenName
     }
     
     override func viewDidLoad() {
@@ -121,7 +120,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: parameter, callback: { (user_data) -> Void in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
-                        // TODO: APIが尽きたときの処理も念のため書いておく
                         
                         var profile_image_url = NSURL(string: user_data.objectForKey("profile_image_url") as String)
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
@@ -130,36 +128,39 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.scrollView.addSubview(self.profileImage)
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
-                        self.userNameLabel.text = user_data.objectForKey("screen_name") as? String
-                        self.userNameLabel.font = UIFont.systemFontOfSize(10)
+                        self.userNameLabel.text = "@" + (user_data.objectForKey("screen_name") as String!)
+                        self.userNameLabel.font = UIFont.systemFontOfSize(12)
+                        self.userNameLabel.textColor = UIColor.blueColor()
                         self.userNameLabel.sizeToFit()
                         self.userNameLabel.textAlignment = NSTextAlignment.Center
-                        var name_frame:CGRect = self.userNameLabel.frame
-                        name_frame.size.width += 10
-                        name_frame.size.height += 5
-                        self.userNameLabel.frame = name_frame
+                        var nameFrame:CGRect = self.userNameLabel.frame
+                        nameFrame.size.width += 10
+                        nameFrame.size.height += 5
+                        self.userNameLabel.frame = nameFrame
                         self.userNameLabel.layer.cornerRadius = 5
                         self.userNameLabel.clipsToBounds = true
                         self.userNameLabel.center = CGPointMake(self.windowSize.width / 2.0, 90)
-                        self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5)
+                        self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
                         self.scrollView.addSubview(self.userNameLabel)
                     
                         self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 110, self.windowSize.width * 0.8, 15))
                         self.descriptionLabel.numberOfLines = 3
                         self.descriptionLabel.text = user_data.objectForKey("description") as? String
-                        self.descriptionLabel.font = UIFont.systemFontOfSize(9)
+                        self.descriptionLabel.font = UIFont.systemFontOfSize(11)
                         self.descriptionLabel.sizeToFit()
                         self.descriptionLabel.textAlignment = NSTextAlignment.Center
+                        var descriptionFrame: CGRect = self.descriptionLabel.frame
+                        descriptionFrame.size.width += 10
+                        descriptionFrame.size.height += 5
+                        self.descriptionLabel.frame = descriptionFrame
                         self.descriptionLabel.layer.cornerRadius = 5
                         self.descriptionLabel.clipsToBounds = true
-                        self.descriptionLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5)
+                        self.descriptionLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
                         self.scrollView.addSubview(self.descriptionLabel)
                         
                         //-----------------------------
                         //  status
                         //-----------------------------
-                        
-                        // TODO: ここOHAttributedLabel使おう
                         
                         var tweetNumText = ("ツイート：" + String(user_data.objectForKey("statuses_count") as Int)) as NSString
                         var tweetNumAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
@@ -471,6 +472,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func userTableRefresh() {
         switch(self.tableType) {
         case 0:
+            // TODO: タイムラインも更新したい
+            // でもこれあとでいい
             self.scrollView.pullToRefreshView.stopAnimating()
             break
         case 1:

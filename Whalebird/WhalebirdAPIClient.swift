@@ -32,7 +32,6 @@ class WhalebirdAPIClient: NSObject {
         utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         var utcDate = utcDateFormatter.dateFromString(utctime)
         
-        // TODO: 相対時刻にも対応できるように
         var jstDateFormatter =  NSDateFormatter()
         jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         jstDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle

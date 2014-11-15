@@ -243,9 +243,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         
     }
     
-    //-----------------------------------------
-    // TODO: RT以外にも何かあれば
-    //-----------------------------------------
     func tappedMore() {
         var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
         retweetSelectSheet.addButtonWithTitle("公式RT")
@@ -288,8 +285,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             presentViewController(alertController, animated: true, completion: nil)
             break
         case 2:
-            // TODO: RTの場合もreplyidは必要？
-            var retweetView = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!, ReplyToID: nil)
+            var retweetView = NewTweetViewController(TweetBody: "RT @" + self.userName + " " + self.tweetBody!, ReplyToID: self.tweetID)
             self.navigationController!.pushViewController(retweetView, animated: true)
             break
         default:
