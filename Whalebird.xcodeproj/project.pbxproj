@@ -21,7 +21,6 @@
 		E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
-		E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9446C2B1997493300996333 /* TwitterAPIClient.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */; };
 		E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
@@ -83,7 +82,6 @@
 		E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		E9446C2B1997493300996333 /* TwitterAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterAPIClient.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
 		E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
 		E9797B19199526EF000FC13C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -199,7 +197,6 @@
 				E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */,
 				E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */,
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
-				E9446C2B1997493300996333 /* TwitterAPIClient.swift */,
 				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
@@ -424,7 +421,6 @@
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
-				E9446C2C1997493300996333 /* TwitterAPIClient.swift in Sources */,
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,

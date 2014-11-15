@@ -23,6 +23,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //======================================
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "ツイート送信"
     }
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
