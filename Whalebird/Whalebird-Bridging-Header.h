@@ -11,3 +11,4 @@
 #import <SVPullToRefresh/SVPullToRefresh.h>
 #import <AFNetworking/AFNetworking.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <TTTAttributedLabel/TTTAttributedLabel.h>

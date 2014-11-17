@@ -96,19 +96,20 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //-----------------------------------------
     func postTweet(tweetBody: NSString) {
         var params: Dictionary<String, String>
+        var parameter: Dictionary<String, AnyObject>
         if (self.replyToID != nil) {
             params = [
                 "in_reply_to_status_id": self.replyToID!
             ]
+            parameter = [
+                "status" : newTweetText.text,
+                "settings" : params
+            ]
         } else {
-            params = [
-            "" : ""
+            parameter = [
+                "status" : newTweetText.text
             ]
         }
-        let parameter: Dictionary<String, AnyObject> = [
-            "status" : newTweetText.text,
-            "settings" : params
-        ]
         SVProgressHUD.show()
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()

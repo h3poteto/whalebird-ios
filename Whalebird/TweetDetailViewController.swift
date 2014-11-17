@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
+class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAttributedLabelDelegate {
     let LabelPadding = CGFloat(10)
     
     //=====================================
@@ -24,7 +24,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     var blankView:UIView!
     var screenNameLabel:UIButton!
     var userNameLabel:UIButton!
-    var tweetBodyLabel:UILabel!
+    var tweetBodyLabel:TTTAttributedLabel!
     var postDetailLabel:UILabel!
     var profileImageLabel:UIImageView!
     
@@ -71,8 +71,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     }
     
     // TODO: RTの表示設定
-    // TODO: URLの強調表示，ブラウザオープン
-    // TODO: スクリーンネームの強調表示，プロフィール
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,8 +83,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
         var image_url = NSURL(string: self.profileImage)
         var error = NSError?()
-        self.profileImageLabel.image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
-        self.profileImageLabel.sizeToFit()
+        var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+        if (error == nil) {
+            self.profileImageLabel.image = UIImage(data: imageData!)
+            self.profileImageLabel.sizeToFit()
+        }
         self.blankView.addSubview(self.profileImageLabel)
 
         self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
@@ -115,10 +116,12 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
             self.blankView.addSubview(self.screenNameLabel)
         }
         
-        self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.text = self.tweetBody
+        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel.delegate = self
+        self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0
         self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
+        self.tweetBodyLabel.text = self.tweetBody
         self.tweetBodyLabel.sizeToFit()
         self.blankView.addSubview(self.tweetBodyLabel)
         
@@ -304,5 +307,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     func tappedUserProfile() {
         var userProfileView = ProfileViewController(screenName: self.screenName)
         self.navigationController!.pushViewController(userProfileView, animated: true)
+    }
+    
+    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
+        UIApplication.sharedApplication().openURL(url)
     }
 }

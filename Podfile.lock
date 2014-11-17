@@ -27,6 +27,7 @@ PODS:
   - SVPullToRefresh (HEAD based on 0.4.1)
   - TSMessages (0.9.10):
     - HexColors
+  - TTTAttributedLabel (1.10.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - SVProgressHUD
   - SVPullToRefresh (HEAD)
   - TSMessages
+  - TTTAttributedLabel
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
@@ -44,5 +46,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
   TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
+  TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
 
 COCOAPODS: 0.34.4

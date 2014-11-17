@@ -79,8 +79,6 @@ class TimelineViewCell: UITableViewCell {
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
     // TODO: RTの表示設定
-    // TODO: URLの強調表示，ブラウザオープン
-    // TODO: スクリーンネームの強調表示，プロフィール表示
     func configureCell(dict: NSDictionary) {
         var userDefault = NSUserDefaults.standardUserDefaults()
         
@@ -105,13 +103,19 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
         var q_main = dispatch_get_main_queue()
-        var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
         dispatch_async(q_global, { () -> Void in
             var error = NSError?()
-            var image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
+            var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+            var image: UIImage?
+            if (error == nil) {
+                image = UIImage(data: imageData!)
+            }
             dispatch_async(q_main, { () -> Void in
-                self.profileImage.image = image
-                self.profileImage.sizeToFit()
+                if (image != nil) {
+                    self.profileImage.image = image
+                    self.profileImage.sizeToFit()
+                }
             })
         })
         //------------------------------------
@@ -134,6 +138,9 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         //  bodyLabel
         //------------------------------------
+        
+        var error = NSError?()
+        
         self.bodyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         self.bodyLabel.numberOfLines = 0
         self.bodyLabel.textAlignment = NSTextAlignment.Left
@@ -141,6 +148,7 @@ class TimelineViewCell: UITableViewCell {
         self.bodyLabel.text = dict.objectForKey("text") as NSString
         self.bodyLabel.font = UIFont.systemFontOfSize(self.DefaultFontSize)
         self.bodyLabel.sizeToFit()
+            
         
         //------------------------------------
         //  postDetail

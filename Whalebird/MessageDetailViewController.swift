@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageDetailViewController: UIViewController {
+class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate {
     let LabelPadding = CGFloat(10)
     
     var messageID: String!
@@ -20,7 +20,7 @@ class MessageDetailViewController: UIViewController {
     
     var screenNameLabel: UIButton!
     var userNameLabel: UIButton!
-    var tweetBodyLabel: UILabel!
+    var tweetBodyLabel: TTTAttributedLabel!
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
     
@@ -61,8 +61,11 @@ class MessageDetailViewController: UIViewController {
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
         var image_url = NSURL(string: self.profileImage)
         var error = NSError?()
-        self.profileImageLabel.image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
-        self.profileImageLabel.sizeToFit()
+        var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+        if (error != nil) {
+            self.profileImageLabel.image = UIImage(data: imageData!)
+            self.profileImageLabel.sizeToFit()
+        }
         self.view.addSubview(self.profileImageLabel)
         
         self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
@@ -91,10 +94,11 @@ class MessageDetailViewController: UIViewController {
             self.view.addSubview(self.screenNameLabel)
         }
         
-        self.tweetBodyLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.text = self.messageBody
+        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0
         self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
+        self.tweetBodyLabel.text = self.messageBody
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
         
@@ -113,19 +117,13 @@ class MessageDetailViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
     func tappedReplyMessage() {
         var newMessage = NewDirectMessageViewController(ReplyToUser: self.screenName)
         self.navigationController!.pushViewController(newMessage, animated: true)
+    }
+    
+    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
+        UIApplication.sharedApplication().openURL(url)
     }
 
 }
