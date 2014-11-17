@@ -46,6 +46,7 @@
 		E9956B2219D1EDBA00E15D7C /* Conversation-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956B2019D1EDBA00E15D7C /* Conversation-Line.png */; };
 		E9956B2319D1EDBA00E15D7C /* Conversation-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956B2119D1EDBA00E15D7C /* Conversation-Line@2x.png */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
+		E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
 		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
 		E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */; };
 		E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
@@ -109,6 +110,7 @@
 		E9956B2119D1EDBA00E15D7C /* Conversation-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Conversation-Line@2x.png"; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
+				E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */,
 				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
 				E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */,
 				E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */,
@@ -417,6 +420,7 @@
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
 				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
+				E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */,
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,

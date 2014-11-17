@@ -79,6 +79,8 @@ class TimelineViewCell: UITableViewCell {
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
     // TODO: RTの表示設定
+    // TODO: URLの強調表示，ブラウザオープン
+    // TODO: スクリーンネームの強調表示，プロフィール表示
     func configureCell(dict: NSDictionary) {
         var userDefault = NSUserDefaults.standardUserDefaults()
         
@@ -103,9 +105,9 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
         var q_main = dispatch_get_main_queue()
+        var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
         dispatch_async(q_global, { () -> Void in
             var error = NSError?()
-            var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
             var image = UIImage(data: NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)!)
             dispatch_async(q_main, { () -> Void in
                 self.profileImage.image = image

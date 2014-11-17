@@ -41,6 +41,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         super.init()
     }
     
+    
+    // TODO: URLの強調表示，ブラウザオープン
+    // TODO: スクリーンネームの強調表示，プロフィール
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self

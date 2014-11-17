@@ -71,6 +71,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
     }
     
     // TODO: RTの表示設定
+    // TODO: URLの強調表示，ブラウザオープン
+    // TODO: スクリーンネームの強調表示，プロフィール
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -184,8 +186,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate {
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
-    // TODO: 会話内容取得アクション＋専用View作成
     func tappedConversation() {
+        var conversationView = ConversationTableViewController(tweetID: self.tweetID)
+        self.navigationController!.pushViewController(conversationView, animated: true)
     }
     
     //-------------------------------------------------
