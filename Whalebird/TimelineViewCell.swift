@@ -12,7 +12,7 @@ class TimelineViewCell: UITableViewCell {
     
     var totalHeight = CGFloat(60)
     var maxSize = CGSize()
-    let ImagePadding  = CGFloat(5)
+    let ImagePadding  = CGFloat(7)
     let ImageSize = CGFloat(40)
     let DefaultLineHeigth = CGFloat(15)
     let DefaultFontSize = CGFloat(13)
@@ -90,7 +90,6 @@ class TimelineViewCell: UITableViewCell {
     // cell は再利用される
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
-    // TODO: RTの表示設定
     // TODO: 移動するとheightの値がずれる
     func configureCell(dict: NSDictionary) {
         
@@ -101,6 +100,10 @@ class TimelineViewCell: UITableViewCell {
         
         self.profileImage = UIImageView(frame: CGRectMake(self.ImagePadding, self.ImagePadding, self.ImageSize, self.ImageSize))
         self.contentView.addSubview(self.profileImage)
+        self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.ImagePadding + self.ImageSize * 3.0 / 4.0, self.ImagePadding + self.ImageSize * 3.0 / 4.0, self.ImageSize * 2.0 / 3.0, self.ImageSize * 2.0 / 3.0))
+        if (self.retweeted) {
+            self.contentView.addSubview(self.retweetedProfileImageLabel!)
+        }
         self.nameLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4 , self.ImagePadding, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
         if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 3 ) {
             self.contentView.addSubview(self.nameLabel)
@@ -124,8 +127,8 @@ class TimelineViewCell: UITableViewCell {
         var q_main = dispatch_get_main_queue()
         dispatch_async(q_global, { () -> Void in
             var error = NSError?()
-            var image_url = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
-            var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+            var imageURL = NSURL(string: dict.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
             var image: UIImage?
             if (error == nil) {
                 image = UIImage(data: imageData!)
@@ -137,6 +140,26 @@ class TimelineViewCell: UITableViewCell {
                 }
             })
         })
+        //------------------------------------
+        //  retweetedProfileImageLabel
+        //------------------------------------
+        if (retweeted) {
+            dispatch_async(q_global, { () -> Void in
+                var error = NSError?()
+                var imageURL = NSURL(string: dict.objectForKey("retweeted")?.objectForKey("profile_image_url") as NSString)
+                var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+                var image: UIImage?
+                if (error == nil) {
+                    image = UIImage(data: imageData!)
+                }
+                dispatch_async(q_main, { () -> Void in
+                    if (image != nil) {
+                        self.retweetedProfileImageLabel!.image = image
+                    }
+                })
+            
+            })
+        }
         //------------------------------------
         //  nameLabel
         //------------------------------------

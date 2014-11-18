@@ -112,7 +112,6 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     }
 */
     
-    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {

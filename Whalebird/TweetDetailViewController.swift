@@ -30,6 +30,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
     var retweetedNameLabel: UILabel?
+    var retweetedProfileImageLabel: UIImageView?
     
     var replyButton: UIButton!
     var conversationButton: UIButton!
@@ -76,7 +77,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.view.addSubview(self.blankView)
     }
     
-    // TODO: RTの表示設定
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,16 +87,27 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
-        var image_url = NSURL(string: self.profileImage)
+        var imageURL = NSURL(string: self.profileImage)
         var error = NSError?()
-        var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+        var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
         if (error == nil) {
             self.profileImageLabel.image = UIImage(data: imageData!)
             self.profileImageLabel.sizeToFit()
         }
         self.blankView.addSubview(self.profileImageLabel)
+        
+        if (self.retweetedProfileImage != nil) {
+            self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
+            var imageURL = NSURL(string: self.retweetedProfileImage!)
+            var error = NSError?()
+            var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+            if (error == nil) {
+                self.retweetedProfileImageLabel!.image = UIImage(data: imageData!)
+                self.blankView.addSubview(self.retweetedProfileImageLabel!)
+            }
+        }
 
-        self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 70, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
         self.userNameLabel.setTitle(self.userName, forState: .Normal)
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.userNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
@@ -109,7 +120,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.blankView.addSubview(self.userNameLabel)
         }
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 70, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
         self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
@@ -122,7 +133,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.blankView.addSubview(self.screenNameLabel)
         }
         
-        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 10, windowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0

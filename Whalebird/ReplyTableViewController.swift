@@ -110,7 +110,6 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         return height
     }
 */
-    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
