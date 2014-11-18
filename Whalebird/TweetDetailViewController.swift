@@ -14,27 +14,30 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     //=====================================
     //  instance variables
     //=====================================
-    var tweetID:String!
-    var tweetBody:String?
-    var screenName:String!
-    var userName:String!
-    var postDetail:String!
-    var profileImage:String!
+    var tweetID: String!
+    var tweetBody: String?
+    var screenName: String!
+    var userName: String!
+    var postDetail: String!
+    var profileImage: String!
+    var retweetedName: String?
+    var retweetedProfileImage: String?
     
-    var blankView:UIView!
-    var screenNameLabel:UIButton!
-    var userNameLabel:UIButton!
-    var tweetBodyLabel:TTTAttributedLabel!
-    var postDetailLabel:UILabel!
-    var profileImageLabel:UIImageView!
+    var blankView: UIView!
+    var screenNameLabel: UIButton!
+    var userNameLabel: UIButton!
+    var tweetBodyLabel: TTTAttributedLabel!
+    var postDetailLabel: UILabel!
+    var profileImageLabel: UIImageView!
+    var retweetedNameLabel: UILabel?
     
-    var replyButton:UIButton!
-    var conversationButton:UIButton!
-    var favButton:UIButton!
-    var deleteButton:UIButton!
-    var moreButton:UIButton!
+    var replyButton: UIButton!
+    var conversationButton: UIButton!
+    var favButton: UIButton!
+    var deleteButton: UIButton!
+    var moreButton: UIButton!
     
-    var optionButtonArea:UILabel!
+    var optionButtonArea: UILabel!
     
     var newTweetButton: UIBarButtonItem!
     
@@ -53,14 +56,17 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         super.init()
     }
     
-    init(TweetID:String, TweetBody:String, ScreenName:String, UserName:String, ProfileImage:String, PostDetail:String) {
+    init(tweet_id: String, tweet_body: String, screen_name: String, user_name: String, profile_image: String, post_detail: String, retweeted_name: String?, retweeted_profile_image: String?) {
         super.init()
-        self.tweetID = TweetID
-        self.tweetBody = TweetBody
-        self.screenName = ScreenName
-        self.postDetail = WhalebirdAPIClient.convertLocalTime(PostDetail)
-        self.profileImage = ProfileImage
-        self.userName = UserName
+        self.tweetID = tweet_id
+        self.tweetBody = tweet_body
+        self.screenName = screen_name
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(post_detail)
+        self.profileImage = profile_image
+        self.userName = user_name
+        self.retweetedName = retweeted_name
+        self.retweetedProfileImage = retweeted_profile_image
+        
     }
     
     override func loadView() {
@@ -126,9 +132,17 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.blankView.addSubview(self.tweetBodyLabel)
         
         self.postDetailLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.postDetailLabel.textAlignment = NSTextAlignment.Right
         self.postDetailLabel.text = self.postDetail
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)
+        
+        if (self.retweetedName != nil) {
+            self.retweetedNameLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+            self.retweetedNameLabel?.text = "Retweeted by @" + self.retweetedName!
+            self.retweetedNameLabel?.font = UIFont.systemFontOfSize(13)
+            self.blankView.addSubview(self.retweetedNameLabel!)
+        }
         
         
 
@@ -136,21 +150,21 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         let importImage = UIImage(named: "Import-Line.png")
         self.replyButton = UIButton(frame: CGRectMake(0, 100, importImage!.size.width, importImage!.size.height))
         self.replyButton.setBackgroundImage(importImage, forState: .Normal)
-        self.replyButton.center = CGPoint(x: windowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+        self.replyButton.center = CGPoint(x: windowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
         self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.replyButton)
         
         let conversationImage = UIImage(named: "Conversation-Line.png")
         self.conversationButton = UIButton(frame: CGRectMake(0, 100, conversationImage!.size.width, conversationImage!.size.height))
         self.conversationButton.setBackgroundImage(conversationImage, forState: .Normal)
-        self.conversationButton.center = CGPoint(x: windowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+        self.conversationButton.center = CGPoint(x: windowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
         self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.conversationButton)
         
         let starImage = UIImage(named: "Star-Line.png")
         self.favButton = UIButton(frame: CGRectMake(0, 100, starImage!.size.width, starImage!.size.height))
         self.favButton.setBackgroundImage(starImage, forState: .Normal)
-        self.favButton.center = CGPoint(x: windowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+        self.favButton.center = CGPoint(x: windowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
         self.blankView.addSubview(self.favButton)
         
@@ -161,14 +175,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             let trashImage = UIImage(named: "Trash-Line.png")
             self.deleteButton = UIButton(frame: CGRectMake(0, 100, trashImage!.size.width, trashImage!.size.height))
             self.deleteButton.setBackgroundImage(trashImage, forState: .Normal)
-            self.deleteButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+            self.deleteButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.deleteButton)
         } else {
             let moreImage = UIImage(named: "More-Line.png")
             self.moreButton = UIButton(frame: CGRectMake(0, 100, moreImage!.size.width, moreImage!.size.height))
             self.moreButton.setBackgroundImage(moreImage, forState: .Normal)
-            self.moreButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 30)
+            self.moreButton.center = CGPoint(x: windowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.moreButton)
         }

@@ -22,6 +22,9 @@ class TimelineViewCell: UITableViewCell {
     var profileImage: UIImageView!
     var bodyLabel: UILabel!
     var postDetailLable: UILabel!
+    var retweetedLabel: UILabel?
+    var retweetedProfileImageLabel: UIImageView?
+    var retweeted = false
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -67,19 +70,33 @@ class TimelineViewCell: UITableViewCell {
         if (self.postDetailLable != nil) {
             self.postDetailLable.removeFromSuperview()
         }
+        if (self.retweetedLabel != nil) {
+            self.retweetedLabel?.removeFromSuperview()
+        }
+        if (self.retweetedProfileImageLabel != nil) {
+            self.retweetedProfileImageLabel?.removeFromSuperview()
+        }
         
         self.profileImage = nil
         self.nameLabel = nil
         self.screenNameLabel = nil
         self.bodyLabel = nil
         self.postDetailLable = nil
+        self.retweetedLabel = nil
+        self.retweetedProfileImageLabel = nil
+        self.retweeted = false
     }
     //--------------------------------------------
     // cell は再利用される
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
     // TODO: RTの表示設定
+    // TODO: 移動するとheightの値がずれる
     func configureCell(dict: NSDictionary) {
+        
+        if (dict.objectForKey("retweeted") != nil) {
+            self.retweeted = true
+        }
         var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImage = UIImageView(frame: CGRectMake(self.ImagePadding, self.ImagePadding, self.ImageSize, self.ImageSize))
@@ -97,6 +114,8 @@ class TimelineViewCell: UITableViewCell {
         self.postDetailLable = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, 40, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
         self.contentView.addSubview(self.postDetailLable)
         
+        self.retweetedLabel = UILabel(frame: CGRectMake(self.ImageSize + self.ImagePadding * 4, 40, self.maxSize.width - (self.ImagePadding * 5 + self.ImageSize), self.DefaultLineHeigth))
+        self.contentView.addSubview(self.retweetedLabel!)
         
         //------------------------------------
         //  profileImageLabel
@@ -153,22 +172,42 @@ class TimelineViewCell: UITableViewCell {
         //------------------------------------
         //  postDetail
         //------------------------------------
-        self.postDetailLable.textAlignment = NSTextAlignment.Left
+        self.postDetailLable.textAlignment = NSTextAlignment.Right
         self.postDetailLable.textColor = UIColor.grayColor()
         self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(dict.objectForKey("created_at") as NSString)
         self.postDetailLable.font = UIFont.systemFontOfSize(11)
         self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height + self.ImagePadding
-        
         self.totalHeight  = self.ImagePadding * 4 + self.bodyLabel.frame.size.height + self.nameLabel.frame.size.height + self.screenNameLabel.frame.size.height + self.postDetailLable.frame.size.height
+        
+        //-------------------------------------
+        //  retweeted
+        //-------------------------------------
+        if (retweeted) {
+            self.retweetedLabel?.textAlignment = NSTextAlignment.Left
+            self.retweetedLabel?.textColor = UIColor.grayColor()
+            self.retweetedLabel?.text = "Retweeted by @" + (dict.objectForKey("retweeted")?.objectForKey("screen_name") as String)
+            self.retweetedLabel?.font = UIFont.systemFontOfSize(13)
+            self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height
+            self.totalHeight += self.retweetedLabel!.frame.size.height + self.ImagePadding
+        }
     }
-    
+
     func cellHeight() -> CGFloat {
         if (self.totalHeight > 60) {
             return self.totalHeight
         } else {
-            return 60
+            return 60.0
         }
     }
     
 
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        let windowSize = UIScreen.mainScreen().bounds
+        var totalSize = CGSize(width: windowSize.size.width, height: 60)
+        if (self.totalHeight > 60) {
+            totalSize.height = self.totalHeight
+        }   
+        
+        return totalSize
+    }
 }

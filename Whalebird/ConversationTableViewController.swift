@@ -40,6 +40,8 @@ class ConversationTableViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 60.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
@@ -77,7 +79,7 @@ class ConversationTableViewController: UITableViewController {
 
         return cell!
     }
-
+/*
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
@@ -89,16 +91,33 @@ class ConversationTableViewController: UITableViewController {
         
         return height
     }
+
+*/
+    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height: CGFloat!
+        if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
+            var cell: TimelineViewCell  = self.conversationCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            height = cell.cellHeight()
+        } else {
+            height = 60.0
+        }
+        return height
+    }
+    
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tweetData = self.newConversation.objectAtIndex(indexPath.row) as NSDictionary
         var detailView = TweetDetailViewController(
-            TweetID: tweetData.objectForKey("id_str") as String,
-            TweetBody: tweetData.objectForKey("text") as String,
-            ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-            UserName: tweetData.objectForKey("user")?.objectForKey("name") as String,
-            ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-            PostDetail: tweetData.objectForKey("created_at") as String)
+            tweet_id: tweetData.objectForKey("id_str") as String,
+            tweet_body: tweetData.objectForKey("text") as String,
+            screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+            user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
+            profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+            post_detail: tweetData.objectForKey("created_at") as String,
+            retweeted_name: nil,
+            retweeted_profile_image: nil
+        )
         self.navigationController!.pushViewController(detailView, animated: true)
     }
     

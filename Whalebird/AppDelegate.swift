@@ -48,16 +48,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if (launchOptions != nil) {
             var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
             if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
-                var detailViewController = TweetDetailViewController(
-                    TweetID: userInfo.objectForKey("id") as String,
-                    TweetBody: userInfo.objectForKey("text") as String,
-                    ScreenName: userInfo.objectForKey("screen_name") as String,
-                    UserName: userInfo.objectForKey("name") as String,
-                    ProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                    PostDetail: userInfo.objectForKey("created_at") as String)
+                var detailView = TweetDetailViewController(
+                    tweet_id: userInfo.objectForKey("id_str") as String,
+                    tweet_body: userInfo.objectForKey("text") as String,
+                    screen_name: userInfo.objectForKey("screen_name") as String,
+                    user_name: userInfo.objectForKey("name") as String,
+                    profile_image: userInfo.objectForKey("profile_image_url") as String,
+                    post_detail: userInfo.objectForKey("created_at") as String,
+                    retweeted_name: nil,
+                    retweeted_profile_image: nil
+                )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailView, animated: true)
             } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "direct_message") {
                 var messageViewController = MessageDetailViewController(
                     MessageID: userInfo.objectForKey("id") as String,
@@ -137,12 +140,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     var alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
                     let openAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
                         var detailViewController = TweetDetailViewController(
-                            TweetID: userInfo["id"] as String,
-                            TweetBody: userInfo["text"] as String,
-                            ScreenName: userInfo["screen_name"] as String,
-                            UserName: userInfo["name"] as String,
-                            ProfileImage: userInfo["profile_image_url"] as String,
-                            PostDetail: userInfo["created_at"] as String)
+                            tweet_id: userInfo["id"] as String,
+                            tweet_body: userInfo["text"] as String,
+                            screen_name: userInfo["screen_name"] as String,
+                            user_name: userInfo["name"] as String,
+                            profile_image: userInfo["profile_image_url"] as String,
+                            post_detail: userInfo["created_at"] as String,
+                            retweeted_name: nil,
+                            retweeted_profile_image: nil
+                        )
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
@@ -180,12 +186,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             switch(category) {
             case "reply":
                 var detailViewController = TweetDetailViewController(
-                    TweetID: userInfo["id"] as String,
-                    TweetBody: userInfo["text"] as String,
-                    ScreenName: userInfo["screen_name"] as String,
-                    UserName: userInfo["name"] as String,
-                    ProfileImage: userInfo["profile_image_url"] as String,
-                    PostDetail: userInfo["created_at"] as String)
+                    tweet_id: userInfo["id"] as String,
+                    tweet_body: userInfo["text"] as String,
+                    screen_name: userInfo["screen_name"] as String,
+                    user_name: userInfo["name"] as String,
+                    profile_image: userInfo["profile_image_url"] as String,
+                    post_detail: userInfo["created_at"] as String,
+                    retweeted_name: nil,
+                    retweeted_profile_image: nil
+                )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)

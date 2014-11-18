@@ -46,6 +46,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 60.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         self.refreshMessage = UIRefreshControl()
         self.refreshMessage.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshMessage)
@@ -97,11 +99,24 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
         return cell!
     }
-
+/*
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
             var cell: TimelineViewCell = self.messageCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            height = cell.cellHeight()
+        } else {
+            height = 60.0
+        }
+        return height
+    }
+*/
+    
+    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height: CGFloat!
+        if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
+            var cell: TimelineViewCell  = self.messageCell.objectAtIndex(indexPath.row) as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -174,7 +189,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanMessageArray: Array<NSMutableDictionary> = []
-        for message in self.currentMessage {
+        for message in self.newMessage {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSMutableDictionary)
             cleanMessageArray.append(dic)
         }

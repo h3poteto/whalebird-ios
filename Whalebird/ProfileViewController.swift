@@ -296,7 +296,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         return cell!
     }
-    
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
         switch(self.tableType) {
@@ -318,20 +318,23 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return height
     }
-    
+   
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
             let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
-            var detail_view = TweetDetailViewController(
-                TweetID: tweetData.objectForKey("id_str") as NSString,
-                TweetBody: tweetData.objectForKey("text") as NSString,
-                ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
-                UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
-                ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-                PostDetail: tweetData.objectForKey("created_at") as NSString)
-            self.navigationController!.pushViewController(detail_view, animated: true)
+            var detailView = TweetDetailViewController(
+                tweet_id: tweetData.objectForKey("id_str") as String,
+                tweet_body: tweetData.objectForKey("text") as String,
+                screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+                user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
+                profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+                post_detail: tweetData.objectForKey("created_at") as String,
+                retweeted_name: tweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                retweeted_profile_image: tweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
+            )
+            self.navigationController!.pushViewController(detailView, animated: true)
             break
         case 1:
             var userProfileView = ProfileViewController(screenName: (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as String)

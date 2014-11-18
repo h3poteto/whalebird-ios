@@ -51,6 +51,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 60.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.refreshTimeline = UIRefreshControl()
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
@@ -90,7 +92,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             })
         }
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -125,6 +126,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         return cell!
     }
     
+/*
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
@@ -135,19 +137,35 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
         return height
     }
+
+*/
+    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var height: CGFloat!
+        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
+            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            height = cell.cellHeight()
+        } else {
+            height = 60.0
+        }
+        return height
+    }
+
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
-        var detail_view = TweetDetailViewController(
-            TweetID: tweetData.objectForKey("id_str") as NSString,
-            TweetBody: tweetData.objectForKey("text") as NSString,
-            ScreenName: tweetData.objectForKey("user")?.objectForKey("screen_name") as NSString,
-            UserName: tweetData.objectForKey("user")?.objectForKey("name") as NSString,
-            ProfileImage: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-            PostDetail: tweetData.objectForKey("created_at") as NSString)
-        self.navigationController!.pushViewController(detail_view, animated: true)
+        var detailView = TweetDetailViewController(
+            tweet_id: tweetData.objectForKey("id_str") as String,
+            tweet_body: tweetData.objectForKey("text") as String,
+            screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+            user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
+            profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+            post_detail: tweetData.objectForKey("created_at") as String,
+            retweeted_name: tweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+            retweeted_profile_image: tweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
+        )
+        self.navigationController!.pushViewController(detailView, animated: true)
     }
-
 
 
     
@@ -207,11 +225,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         destroy()
     }
 
-    
+    // TODO: 20件だけ残せばイイ
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        for timeline in self.currentTimeline {
+        for timeline in self.newTimeline {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }
