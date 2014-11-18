@@ -87,6 +87,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.scrollEnabled = false
         self.scrollView.addSubview(self.tableView)
         self.scrollView.scrollEnabled = true
+        self.scrollView.delegate = self
         self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 1000)
         
         self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
@@ -488,6 +489,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             break
         }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.scrollView.contentInset = UIEdgeInsetsMake(self.tabBarController!.tabBar.frame.size.height, 0, 0, 0)
     }
 
 }

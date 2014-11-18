@@ -47,6 +47,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
 
+    // TODO: 下方向への更新，未読分を実装
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
