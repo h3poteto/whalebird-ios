@@ -11,8 +11,8 @@ import UIKit
 class ConversationTableViewController: UITableViewController {
     
     var rootTweetID: String!
-    var newConversation: NSArray = NSArray()
-    var conversationCell: NSMutableArray = NSMutableArray()
+    var newConversation: Array<AnyObject> = []
+    var conversationCell: Array<AnyObject> = []
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -73,9 +73,9 @@ class ConversationTableViewController: UITableViewController {
             cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.conversationCell.insertObject(cell!, atIndex: indexPath.row)
+        self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.newConversation.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.newConversation[indexPath.row] as NSDictionary)
 
         return cell!
     }
@@ -97,7 +97,7 @@ class ConversationTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            var cell: TimelineViewCell  = self.conversationCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            var cell: TimelineViewCell  = self.conversationCell[indexPath.row] as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -107,7 +107,7 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.newConversation.objectAtIndex(indexPath.row) as NSDictionary
+        let tweetData = self.newConversation[indexPath.row] as NSDictionary
         var detailView = TweetDetailViewController(
             tweet_id: tweetData.objectForKey("id_str") as String,
             tweet_body: tweetData.objectForKey("text") as String,

@@ -10,9 +10,9 @@ import UIKit
 
 class DirectMessageTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var newMessage = NSArray()
-    var currentMessage = NSMutableArray()
-    var messageCell = NSMutableArray()
+    var newMessage: Array<AnyObject> = []
+    var currentMessage: Array<AnyObject> = []
+    var messageCell: Array<AnyObject> = []
     
     var refreshMessage: UIRefreshControl!
     var newMessageButton: UIBarButtonItem!
@@ -64,7 +64,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         var directMessage = userDefaults.arrayForKey("directMessage") as Array?
         if (directMessage != nil) {
             for message in directMessage! {
-                self.currentMessage.insertObject(message, atIndex: 0)
+                self.currentMessage.insert(message, atIndex: 0)
             }
         }
 
@@ -92,9 +92,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         if (cell == nil) {
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
-        self.messageCell.insertObject(cell!, atIndex: indexPath.row)
+        self.messageCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.currentMessage.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.currentMessage[indexPath.row] as NSDictionary)
 
 
         return cell!
@@ -116,7 +116,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
-            var cell: TimelineViewCell  = self.messageCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            var cell: TimelineViewCell  = self.messageCell[indexPath.row] as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -125,7 +125,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let messageData = self.currentMessage.objectAtIndex(indexPath.row) as NSDictionary
+        let messageData = self.currentMessage[indexPath.row] as NSDictionary
         var detailView = MessageDetailViewController(
             MessageID: messageData.objectForKey("id_str") as NSString,
             MessageBody: messageData.objectForKey("text") as NSString,
@@ -157,7 +157,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             dispatch_async(q_main, { () -> Void in
                 self.newMessage = new_message
                 for message in self.newMessage {
-                    self.currentMessage.insertObject(message, atIndex: 0)
+                    self.currentMessage.insert(message, atIndex: 0)
                     self.sinceId = (message as NSDictionary).objectForKey("id_str") as String?
                 }
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(self.newMessage.count) + "件更新")
@@ -189,7 +189,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanMessageArray: Array<NSMutableDictionary> = []
-        for message in self.newMessage {
+        let messageMin = min(self.currentMessage.count, 20)
+        for message in self.currentMessage[0...(messageMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSMutableDictionary)
             cleanMessageArray.append(dic)
         }

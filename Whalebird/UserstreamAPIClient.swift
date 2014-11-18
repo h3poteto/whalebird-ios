@@ -92,7 +92,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
-                self.timelineTable?.currentTimeline.insertObject(object, atIndex: 0)
+                self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
                 self.timelineTable?.tableView.reloadData()
             }

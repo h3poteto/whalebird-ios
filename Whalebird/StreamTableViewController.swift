@@ -10,9 +10,9 @@ import UIKit
 
 class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     var streamElement: ListTableViewController.Stream!
-    var currentTimeline = NSMutableArray()
-    var newTimeline = NSArray()
-    var timelineCell = NSMutableArray()
+    var currentTimeline: Array<AnyObject> = []
+    var newTimeline: Array<AnyObject> = []
+    var timelineCell: Array<AnyObject> = []
     var pageControl: UIPageControl!
     var pageIndex: Int!
     var parentController: ListTableViewController!
@@ -93,7 +93,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         var streamTimeline = userDefaults.arrayForKey(self.streamElement.name) as Array?
         if (streamTimeline != nil) {
             for tweet in streamTimeline! {
-                self.currentTimeline.insertObject(tweet, atIndex: 0)
+                self.currentTimeline.insert(tweet, atIndex: 0)
             }
         }
     }
@@ -137,9 +137,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
+        self.timelineCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
         
         return cell!
     }
@@ -159,7 +159,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -187,7 +187,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+        let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
         var detailView = TweetDetailViewController(
             tweet_id: tweetData.objectForKey("id_str") as String,
             tweet_body: tweetData.objectForKey("text") as String,
@@ -232,7 +232,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
-                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.currentTimeline.insert(new_tweet, atIndex: 0)
                     self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 
@@ -288,7 +288,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        for timeline in self.newTimeline {
+        let timelineMin = min(self.currentTimeline.count, 20)
+        for timeline in self.currentTimeline[0...(timelineMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }

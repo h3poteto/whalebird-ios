@@ -10,9 +10,9 @@ import UIKit
 
 class ReplyTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var newTimeline = NSArray()
-    var currentTimeline = NSMutableArray()
-    var timelineCell = NSMutableArray()
+    var newTimeline: Array<AnyObject> = []
+    var currentTimeline: Array<AnyObject> = []
+    var timelineCell: Array<AnyObject> = []
     
     var refreshTimeline: UIRefreshControl!
     var newTweetButton: UIBarButtonItem!
@@ -62,7 +62,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         var replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
         if (replyTimeline != nil) {
             for tweet in replyTimeline! {
-                self.currentTimeline.insertObject(tweet, atIndex: 0)
+                self.currentTimeline.insert(tweet, atIndex: 0)
             }
         }
     }
@@ -91,9 +91,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         if (cell == nil) {
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
-        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
+        self.timelineCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
 
         return cell!
     }
@@ -114,7 +114,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -123,7 +123,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+        let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
         var detailView = TweetDetailViewController(
             tweet_id: tweetData.objectForKey("id_str") as String,
             tweet_body: tweetData.objectForKey("text") as String,
@@ -160,7 +160,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
-                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.currentTimeline.insert(new_tweet, atIndex: 0)
                     self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(self.newTimeline.count) + "件更新")
@@ -193,7 +193,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        for timeline in self.newTimeline {
+        let timelineMin = min(self.currentTimeline.count, 20)
+        for timeline in self.currentTimeline[0...(timelineMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }

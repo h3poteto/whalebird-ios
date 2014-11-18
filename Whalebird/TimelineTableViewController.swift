@@ -15,10 +15,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     var accountStore: ACAccountStore = ACAccountStore()
     var account: ACAccount = ACAccount()
-    var newTimeline: NSArray = NSArray()
-    var currentTimeline: NSMutableArray = NSMutableArray()
+    var newTimeline: Array<AnyObject> = []
+    var currentTimeline: Array<AnyObject> = []
     
-    var timelineCell: NSMutableArray = NSMutableArray()
+    var timelineCell: Array<AnyObject> = []
     var refreshTimeline: UIRefreshControl!
     
     var newTweetButton: UIBarButtonItem!
@@ -71,7 +71,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
         if (homeTimeline != nil) {
             for tweet in homeTimeline! {
-                self.currentTimeline.insertObject(tweet, atIndex: 0)
+                self.currentTimeline.insert(tweet, atIndex: 0)
             }
         }
 
@@ -118,10 +118,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.timelineCell.insertObject(cell!, atIndex: indexPath.row)
+        self.timelineCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+        cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
 
         return cell!
     }
@@ -143,7 +143,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+            var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
             height = cell.cellHeight()
         } else {
             height = 60.0
@@ -153,7 +153,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+        let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
         var detailView = TweetDetailViewController(
             tweet_id: tweetData.objectForKey("id_str") as String,
             tweet_body: tweetData.objectForKey("text") as String,
@@ -194,7 +194,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
-                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.currentTimeline.insert(new_tweet, atIndex: 0)
                     self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
                 }
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(self.newTimeline.count) + "件更新")
@@ -225,11 +225,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         destroy()
     }
 
-    // TODO: 20件だけ残せばイイ
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        for timeline in self.newTimeline {
+        let timelineMin = min(self.currentTimeline.count, 20)
+        for timeline in self.currentTimeline[0...(timelineMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }

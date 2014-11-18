@@ -35,15 +35,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var tableView: UITableView!
     var scrollView: UIScrollView!
     
-    var newTimeline: NSArray = NSArray()
-    var currentTimeline: NSMutableArray = NSMutableArray()
-    var followUsers: NSMutableArray = NSMutableArray()
+    var newTimeline: Array<AnyObject> = []
+    var currentTimeline: Array<AnyObject> = []
+    var followUsers: Array<AnyObject> = []
     var followUsersNextCursor: String?
-    var followerUsers: NSMutableArray = NSMutableArray()
+    var followerUsers: Array<AnyObject> = []
     var followerUsersNextCursor: String?
     var selectedButtonColor = UIColor(red: 0.863, green: 0.863, blue: 0.863, alpha: 1.0)
     
-    var timelineCell: NSMutableArray = NSMutableArray()
+    var timelineCell: Array<AnyObject> = []
     var refreshControl: UIRefreshControl!
     
     var tableType: Int = Int(0)
@@ -263,15 +263,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 timeline_cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
             }
             
-            self.timelineCell.insertObject(timeline_cell!, atIndex: indexPath.row)
+            self.timelineCell.insert(timeline_cell!, atIndex: indexPath.row)
             timeline_cell!.cleanCell()
-            timeline_cell!.configureCell(self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary)
+            timeline_cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
             return timeline_cell!
         case 1:
             var error = NSError?()
-            var profileImageURL = NSURL(string: (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel.text = (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
             
             cell?.imageView.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
@@ -280,9 +280,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             break
         case 2:
             var error = NSError?()
-            var profileImageURL = NSURL(string: (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel.text = (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
             
             cell?.imageView.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
@@ -302,7 +302,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch(self.tableType) {
         case 0:
             if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-                var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
+                var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
                 height = cell.cellHeight()
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
@@ -323,7 +323,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            let tweetData = self.currentTimeline.objectAtIndex(indexPath.row) as NSDictionary
+            let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
             var detailView = TweetDetailViewController(
                 tweet_id: tweetData.objectForKey("id_str") as String,
                 tweet_body: tweetData.objectForKey("text") as String,
@@ -337,11 +337,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.navigationController!.pushViewController(detailView, animated: true)
             break
         case 1:
-            var userProfileView = ProfileViewController(screenName: (self.followUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(screenName: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         case 2:
-            var userProfileView = ProfileViewController(screenName: (self.followerUsers.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(screenName: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         default:
@@ -365,7 +365,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 for new_tweet in self.newTimeline {
-                    self.currentTimeline.insertObject(new_tweet, atIndex: 0)
+                    self.currentTimeline.insert(new_tweet, atIndex: 0)
                 }
                 self.tableView.reloadData()
             })
@@ -394,7 +394,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
                 self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
+                self.followUsers = self.followUsers + (user.objectForKey("users") as Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
@@ -426,7 +426,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 var user = follows as NSDictionary
                 self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followerUsers.addObjectsFromArray(user.objectForKey("users") as NSMutableArray)
+                self.followerUsers = self.followerUsers + (user.objectForKey("users") as Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followerUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
