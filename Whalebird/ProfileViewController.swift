@@ -89,11 +89,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView.scrollEnabled = true
         self.scrollView.delegate = self
         self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 1000)
-        
+
         self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
             self.userTableRefresh()
         }, position: SVPullToRefreshPosition.Bottom)
-        
+
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         if (self.twitterScreenName != nil) {
@@ -479,6 +479,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             // TODO: タイムラインも更新したい
             // でもこれあとでいい
             self.scrollView.pullToRefreshView.stopAnimating()
+            self.scrollView.contentInset = UIEdgeInsetsMake(self.tabBarController!.tabBar.frame.size.height, 0, self.tabBarController!.tabBar.frame.size.height, 0)
             break
         case 1:
             self.updateFollowUser(self.followUsersNextCursor)

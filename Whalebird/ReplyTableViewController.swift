@@ -193,6 +193,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         let timelineMin = min(self.currentTimeline.count, 20)
+        if (timelineMin <= 0) {
+            return
+        }
         for timeline in self.currentTimeline[0...(timelineMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)

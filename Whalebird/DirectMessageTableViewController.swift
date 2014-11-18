@@ -189,6 +189,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanMessageArray: Array<NSMutableDictionary> = []
         let messageMin = min(self.currentMessage.count, 20)
+        if (messageMin <= 0) {
+            return
+        }
         for message in self.currentMessage[0...(messageMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSMutableDictionary)
             cleanMessageArray.append(dic)
