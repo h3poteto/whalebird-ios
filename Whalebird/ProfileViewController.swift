@@ -303,8 +303,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch(self.tableType) {
         case 0:
             if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-                var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
-                height = cell.cellHeight()
+                height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break

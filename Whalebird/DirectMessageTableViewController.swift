@@ -46,8 +46,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.estimatedRowHeight = 60.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
         self.refreshMessage = UIRefreshControl()
         self.refreshMessage.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(self.refreshMessage)
@@ -99,24 +98,22 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
         return cell!
     }
-/*
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
-            var cell: TimelineViewCell = self.messageCell.objectAtIndex(indexPath.row) as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }
         return height
     }
-*/
+
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
-            var cell: TimelineViewCell  = self.messageCell[indexPath.row] as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }

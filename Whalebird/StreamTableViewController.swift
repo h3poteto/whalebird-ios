@@ -143,24 +143,23 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         
         return cell!
     }
-    /*
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }
         return height
     }
-*/
+
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
             var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }

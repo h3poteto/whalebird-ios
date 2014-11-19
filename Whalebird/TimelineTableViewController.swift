@@ -52,8 +52,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.estimatedRowHeight = 60.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         self.refreshTimeline = UIRefreshControl()
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
@@ -127,25 +125,21 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         return cell!
     }
     
-/*
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell.objectAtIndex(indexPath.row) as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }
         return height
     }
 
-*/
-    // TODO: 遷移して戻ってきた時に上手くestimateできないため位置がずれる
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }

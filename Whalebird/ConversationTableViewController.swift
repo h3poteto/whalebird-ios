@@ -40,8 +40,6 @@ class ConversationTableViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.estimatedRowHeight = 60.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
@@ -79,26 +77,24 @@ class ConversationTableViewController: UITableViewController {
 
         return cell!
     }
-/*
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            var cell: TimelineViewCell = self.conversationCell.objectAtIndex(indexPath.row) as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as NSDictionary)
         } else {
-            height = 30.0
+            height = 60.0
         }
         
         return height
     }
 
-*/
+
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            var cell: TimelineViewCell  = self.conversationCell[indexPath.row] as TimelineViewCell
-            height = cell.cellHeight()
+            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as NSDictionary)
         } else {
             height = 60.0
         }
