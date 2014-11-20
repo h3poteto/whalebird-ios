@@ -121,9 +121,9 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         case 2:
             break
         case 3:
+            sectionTitle = "※再起動後に反映されます"
             break
         case 4:
-            sectionTitle = "※再起動後に反映されます"
             break
         default:
             sectionTitle = ""

@@ -86,7 +86,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         // Home用のUserstream
         // TODO: 遷移して戻ってきた時も呼ばれてるのでここで呼ぶのはダメ
         var userDefault = NSUserDefaults.standardUserDefaults()
-        if (userDefault.boolForKey("userstreamFlag")) {
+        if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
             let stream_url = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
             let params: Dictionary<String,String> = [
                 "with" : "followings"

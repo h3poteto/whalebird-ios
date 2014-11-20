@@ -125,7 +125,6 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
         var jsonError:NSError?
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
-        //println(jsonObject)
         
         if (jsonObject != nil) {
             var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
