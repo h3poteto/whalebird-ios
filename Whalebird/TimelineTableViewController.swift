@@ -47,7 +47,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
 
-    // TODO: 下方向への更新，未読分を実装
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
@@ -62,7 +61,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
-        // updateTimeline(0)
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var getSinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
         self.sinceId = getSinceId
@@ -202,7 +200,30 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = new_timeline
                 if (self.newTimeline.count > 0) {
-                    if (more_index != nil) {
+                    if (more_index == nil) {
+                        // refreshによる更新
+                        if (self.newTimeline.count >= 20) {
+                            var moreID = self.newTimeline.first?.objectForKey("id_str") as String
+                            var readMoreDictionary = NSMutableDictionary()
+                            if (self.currentTimeline.count > 0) {
+                                var sinceID = self.currentTimeline.first?.objectForKey("id_str") as String
+                                readMoreDictionary = NSMutableDictionary(dictionary: [
+                                    "moreID" : moreID,
+                                    "sinceID" : sinceID
+                                ])
+                            } else {
+                                readMoreDictionary = NSMutableDictionary(dictionary: [
+                                    "moreID" : moreID,
+                                    "sinceID" : "sinceID"
+                                ])
+                            }
+                            self.newTimeline.insert(readMoreDictionary, atIndex: 0)
+                        }
+                        for new_tweet in self.newTimeline {
+                            self.currentTimeline.insert(new_tweet, atIndex: 0)
+                            self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
+                        }
+                    } else {
                         // readMoreを押した場合
                         // tableの途中なのかbottomなのかの判定
                         if (more_index == self.currentTimeline.count - 1) {
@@ -232,29 +253,15 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                             }
                             
                         }
-                    } else {
-                        // refreshによる更新
-                        if (self.newTimeline.count >= 20) {
-                            var moreID = self.newTimeline.first?.objectForKey("id_str") as String
-                            var sinceID = self.currentTimeline.first?.objectForKey("id_str") as String
-                            var readMoreDictionary = NSMutableDictionary(dictionary: [
-                                "moreID" : moreID,
-                                "sinceID" : sinceID
-                                ])
-                            self.newTimeline.insert(readMoreDictionary, atIndex: 0)
-                        }
-                        for new_tweet in self.newTimeline {
-                            self.currentTimeline.insert(new_tweet, atIndex: 0)
-                            self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
-                        }
                     }
+                
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(new_timeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
                     self.tableView.reloadData()
                 } else {
-                    
+                
                 }
                 SVProgressHUD.dismiss()
             })
@@ -287,7 +294,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         if (timelineMin <= 0) {
             return
         }
-        for timeline in self.currentTimeline[0...(timelineMin - 1)] {
+        for timeline in self.currentTimeline[0...(timelineMin - 2)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }
