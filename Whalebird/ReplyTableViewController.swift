@@ -223,16 +223,20 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                             
                         }
                     }
-                    
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(new_timeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
-                    self.tableView.reloadData()
+
                 } else {
-                    
+                    SVProgressHUD.dismiss()
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
                 }
-                SVProgressHUD.dismiss()
             })
         })
 

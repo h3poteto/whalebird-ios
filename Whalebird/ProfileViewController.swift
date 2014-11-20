@@ -352,7 +352,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func updateTimeline(since_id: Int) {
         var params: Dictionary<String, String> = [
-            "contributor_details" : "true",
+            "contributor_details" : "false",
             "trim_user" : "0",
             "count" : "10"
         ]

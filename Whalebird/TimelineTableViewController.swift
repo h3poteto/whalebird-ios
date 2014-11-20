@@ -84,6 +84,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.viewDidAppear(animated)
         
         // Home用のUserstream
+        // TODO: 遷移して戻ってきた時も呼ばれてるのでここで呼ぶのはダメ
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.boolForKey("userstreamFlag")) {
             let stream_url = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
@@ -178,7 +179,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     func updateTimeline(since_id: String?, more_index: Int?) {
         var params: Dictionary<String, String> = [
-            "contributor_details" : "true",
+            "contributor_details" : "false",
             "trim_user" : "0",
             "count" : "20"
         ]
@@ -255,15 +256,19 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                         }
                     }
                 
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(new_timeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
-                    self.tableView.reloadData()
                 } else {
-                
+                    SVProgressHUD.dismiss()
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
                 }
-                SVProgressHUD.dismiss()
             })
         })
         
@@ -272,7 +277,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId, more_index: nil)
-        // TODO: endはupdateTimelineのcompleteブロックに渡したいなぁ
         self.refreshTimeline.endRefreshing()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }

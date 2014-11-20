@@ -40,6 +40,38 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         return dstDate
     }
     
+    class func convertRetweet(src_dict: NSMutableDictionary) -> NSMutableDictionary {
+        var mutableDictionary = src_dict.mutableCopy() as NSMutableDictionary
+        let originalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as String
+        let originalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String)
+        let originalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("name") as String
+        let originalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
+        let originalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
+        let postName = mutableDictionary.objectForKey("user")?.objectForKey("name") as String
+        let postScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as String
+        let postProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as String
+        
+        mutableDictionary.setValue(originalText, forKey: "text")
+        mutableDictionary.setValue(originalCreatedAt, forKey: "created_at")
+    
+        var userDictionay = NSMutableDictionary(dictionary: [
+            "name" : originalName,
+            "screen_name" : originalScreenName,
+            "profile_image_url" : originalProfileImageURL
+        ])
+        mutableDictionary.setValue(userDictionay, forKey: "user")
+        
+        var retweetedDictionary = NSMutableDictionary(dictionary: [
+            "name" : postName,
+            "screen_name" : postScreenName,
+            "profile_image_url" : postProfileImageURL
+        ])
+        mutableDictionary.setValue(retweetedDictionary, forKey: "retweeted")
+        
+        
+        return mutableDictionary
+    }
+    
     //=======================================
     //  instance method
     //=======================================
@@ -77,6 +109,14 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         }
     }
     
+    func livingStream() -> Bool {
+        if (self.connection != nil) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     
     func connection(connection: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
         println(response)
@@ -85,13 +125,21 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
         var jsonError:NSError?
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
-        println(jsonObject)
+        //println(jsonObject)
         
         if (jsonObject != nil) {
             var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
+                // TODO: retweetedの部分も加工しないとTimelineViewCellと合致していない
+                // retwetedフラグはつねに入ってくるので，強制的にnilにしておかないとretweet判定されてしまう
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
+                println(object.objectForKey("user")?.objectForKey("screen_name"))
+                if (object.objectForKey("retweeted_status") == nil) {
+                    object.setValue(nil, forKey: "retweeted")
+                } else {
+                    object = UserstreamAPIClient.convertRetweet(object) as NSMutableDictionary
+                }
                 self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
                 self.timelineTable?.tableView.reloadData()

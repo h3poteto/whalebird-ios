@@ -165,7 +165,7 @@ class TimelineViewCell: UITableViewCell {
             
         } else{
         
-            if (dict.objectForKey("retweeted") != nil) {
+            if (dict.objectForKey("retweeted") != nil ) {
                 self.retweeted = true
             }
             var userDefault = NSUserDefaults.standardUserDefaults()

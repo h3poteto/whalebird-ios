@@ -24,6 +24,7 @@ class WhalebirdAPIClient: NSObject {
     //===========================================
     //  class method
     //===========================================
+    // TODO: 相対時刻，ずれがある気がするので確認
     class func convertLocalTime(utctime: String) -> String {
         var utcDateFormatter = NSDateFormatter()
         utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
@@ -42,7 +43,7 @@ class WhalebirdAPIClient: NSObject {
             var current = NSDate(timeIntervalSinceNow: 0)
             var timeInterval = current.timeIntervalSinceDate(utcDate!)
             if (timeInterval < 60) {
-                jstDate = String(Int(timeInterval)) + "秒前"
+                jstDate = "1分以内"
             } else if(timeInterval < 3600) {
                 jstDate = String(Int(timeInterval / 60.0)) + "分前"
             } else if(timeInterval < 3600 * 24) {
