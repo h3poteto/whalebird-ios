@@ -227,6 +227,12 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             if (since_id != nil) {
                 params["since_id"] = since_id as String!
             }
+            if (more_index != nil) {
+                var strMoreID = (self.currentTimeline[more_index!] as NSDictionary).objectForKey("moreID") as String
+                // max_idは「以下」という判定になるので自身を含めない
+                var intMoreID = strMoreID.toInt()! - 1
+                params["max_id"] = String(intMoreID)
+            }
             break
         default:
             break

@@ -62,7 +62,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         var image_url = NSURL(string: self.profileImage)
         var error = NSError?()
         var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-        if (error != nil) {
+        if (error == nil) {
             self.profileImageLabel.image = UIImage(data: imageData!)
             self.profileImageLabel.sizeToFit()
         }
