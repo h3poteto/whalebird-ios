@@ -158,9 +158,9 @@ class TimelineViewCell: UITableViewCell {
             self.bodyLabel = UILabel(frame: CGRectMake(0, 0, self.maxSize.width, 40))
             self.bodyLabel.font = UIFont.systemFontOfSize(15)
             self.bodyLabel.textAlignment = NSTextAlignment.Center
-            self.bodyLabel.textColor = UIColor.blueColor()
+            self.bodyLabel.textColor = UIColor.grayColor()
             self.bodyLabel.text = "もっと読む"
-            self.bodyLabel.backgroundColor = UIColor.lightGrayColor()
+            self.bodyLabel.backgroundColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
             self.contentView.addSubview(self.bodyLabel)
             
         } else{

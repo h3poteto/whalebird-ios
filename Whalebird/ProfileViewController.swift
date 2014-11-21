@@ -129,9 +129,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.scrollView.addSubview(self.profileImage)
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
-                        self.userNameLabel.text = "@" + (user_data.objectForKey("screen_name") as String!)
-                        self.userNameLabel.font = UIFont.systemFontOfSize(12)
-                        self.userNameLabel.textColor = UIColor.blueColor()
+                        self.userNameLabel.text = user_data.objectForKey("name") as String!
+                        self.userNameLabel.font = UIFont.boldSystemFontOfSize(14)
+                        self.userNameLabel.textColor = UIColor(red: 0.216, green: 0.416, blue: 0.827, alpha: 1.0)
                         self.userNameLabel.sizeToFit()
                         self.userNameLabel.textAlignment = NSTextAlignment.Center
                         var nameFrame:CGRect = self.userNameLabel.frame
@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.userNameLabel.layer.cornerRadius = 5
                         self.userNameLabel.clipsToBounds = true
                         self.userNameLabel.center = CGPointMake(self.windowSize.width / 2.0, 90)
-                        self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
+                        self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
                         self.scrollView.addSubview(self.userNameLabel)
                     
                         self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 110, self.windowSize.width * 0.8, 15))
@@ -156,7 +156,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.descriptionLabel.frame = descriptionFrame
                         self.descriptionLabel.layer.cornerRadius = 5
                         self.descriptionLabel.clipsToBounds = true
-                        self.descriptionLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.7)
+                        self.descriptionLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
                         self.scrollView.addSubview(self.descriptionLabel)
                         
                         //-----------------------------

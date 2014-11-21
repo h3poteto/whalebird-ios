@@ -66,7 +66,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             windowSize.size.height - self.tabBarController!.tabBar.frame.height - self.pageControlViewHeight - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.size.height,
             windowSize.size.width,
             self.pageControlViewHeight))
-        self.pageControl.backgroundColor = UIColor(red: 0.529, green: 0.808, blue: 0.980, alpha: 1.0)
+        self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0)
+        self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
+        self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)
         self.pageControl.numberOfPages = self.parentController.streamList.count
         self.pageControl.currentPage = self.pageIndex
         self.tableView.addSubview(self.pageControl)
