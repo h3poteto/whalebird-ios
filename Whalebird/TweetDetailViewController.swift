@@ -29,7 +29,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     var tweetBodyLabel: TTTAttributedLabel!
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
-    var retweetedNameLabel: UILabel?
+    var retweetedNameLabel: UIButton?
     var retweetedProfileImageLabel: UIImageView?
     
     var replyButton: UIButton!
@@ -148,10 +148,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)
         
+        // TODO: ボタンに変更しprofileへのリンク
         if (self.retweetedName != nil) {
-            self.retweetedNameLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
-            self.retweetedNameLabel?.text = "Retweeted by @" + self.retweetedName!
-            self.retweetedNameLabel?.font = UIFont.systemFontOfSize(13)
+            self.retweetedNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+            self.retweetedNameLabel?.setTitle("Retweeted by @" + self.retweetedName!, forState: UIControlState.Normal)
+            self.retweetedNameLabel?.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+            self.retweetedNameLabel?.titleLabel?.font = UIFont.systemFontOfSize(13)
+            self.retweetedNameLabel?.contentEdgeInsets = UIEdgeInsetsZero
+            self.retweetedNameLabel?.addTarget(self, action: "tappedRetweetedProfile", forControlEvents: UIControlEvents.TouchDown)
             self.blankView.addSubview(self.retweetedNameLabel!)
         }
         
@@ -336,5 +340,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     
     func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
         UIApplication.sharedApplication().openURL(url)
+    }
+    
+    func tappedRetweetedProfile() {
+        var userProfileView = ProfileViewController(screenName: self.retweetedName!)
+        self.navigationController!.pushViewController(userProfileView, animated: true)
     }
 }

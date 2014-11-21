@@ -24,7 +24,6 @@ class WhalebirdAPIClient: NSObject {
     //===========================================
     //  class method
     //===========================================
-    // TODO: 相対時刻，ずれがある気がするので確認
     class func convertLocalTime(utctime: String) -> String {
         var utcDateFormatter = NSDateFormatter()
         utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle

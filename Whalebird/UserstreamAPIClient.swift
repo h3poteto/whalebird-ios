@@ -130,8 +130,6 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
             var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
-                // TODO: retweetedの部分も加工しないとTimelineViewCellと合致していない
-                // retwetedフラグはつねに入ってくるので，強制的にnilにしておかないとretweet判定されてしまう
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
                 println(object.objectForKey("user")?.objectForKey("screen_name"))
                 if (object.objectForKey("retweeted_status") == nil) {
