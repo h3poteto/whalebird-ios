@@ -12,3 +12,4 @@
 #import <AFNetworking/AFNetworking.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
+#import "application.h"

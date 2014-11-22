@@ -196,7 +196,9 @@ class WhalebirdAPIClient: NSObject {
     }
 
     func cancelRequest() {
-        self.sessionManager.operationQueue.cancelAllOperations()
+        if (self.sessionManager != nil) {
+            self.sessionManager.operationQueue.cancelAllOperations()
+        }
     }
     
     func regenerateSession() {

@@ -12,6 +12,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     var loginWebView: UIWebView!
     var redirectedTwitter: Bool = false
     var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String)!
+    var whalebirdAPIWithKey: NSURL = NSURL(string: (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String) + "users/sign_in?whalebird=" + WHALEBIRD_APPLICATION_KEY)!
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -33,7 +34,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.loginWebView.scalesPageToFit = true
         self.loginWebView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.loginWebView.delegate = self
-        self.loginWebView.loadRequest(NSURLRequest(URL: self.whalebirdAPIURL))
+        self.loginWebView.loadRequest(NSURLRequest(URL: self.whalebirdAPIWithKey))
         self.view.addSubview(self.loginWebView)
     }
 
@@ -44,7 +45,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidStartLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        SVProgressHUD.show()
+        SVProgressHUD.showWithMaskType(UInt(SVProgressHUDMaskTypeClear))
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
@@ -53,7 +54,6 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        println(request)
         if (self.redirectedTwitter && request.URL.host == self.whalebirdAPIURL.host && (request.URL.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession()
             

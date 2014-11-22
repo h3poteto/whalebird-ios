@@ -108,6 +108,7 @@
 		E9956B1D19D1ECE200E15D7C /* Trash-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Trash-Line@2x.png"; sourceTree = "<group>"; };
 		E9956B2019D1EDBA00E15D7C /* Conversation-Line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Conversation-Line.png"; sourceTree = "<group>"; };
 		E9956B2119D1EDBA00E15D7C /* Conversation-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Conversation-Line@2x.png"; sourceTree = "<group>"; };
+		E99603A11A20E23400D23629 /* application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = application.h; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +204,7 @@
 				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
+				E99603A11A20E23400D23629 /* application.h */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9956AE419D1E12500E15D7C /* Home.png */,
 				E9956AE519D1E12500E15D7C /* Home@2x.png */,

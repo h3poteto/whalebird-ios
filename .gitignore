@@ -2,3 +2,4 @@ build/*
 Pods/*
 Whalebird.xcodeproj/xcuserdata/*
 Whalebird.xcworkspace/xcuserdata/*
+Whalebird/application.h
