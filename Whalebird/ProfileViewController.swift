@@ -217,9 +217,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //-----------------------------
             //  body
             //-----------------------------
-            // ここでtableのupdate
-            // 呼び出し回数が多すぎる
-            updateTimeline(0)
+            self.updateTimeline(0, aMoreIndex: nil)
             
         }
     }
@@ -352,12 +350,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 
-    func updateTimeline(aSinceID: Int) {
+    func updateTimeline(aSinceID: Int, aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
             "count" : "10"
         ]
+        if (aMoreIndex != nil) {
+            var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("id_str") as String
+            // max_idは「以下」という判定になるので自身を含めない
+            var intMoreID = strMoreID.toInt()! - 1
+            params["max_id"] = String(intMoreID)
+        }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
             "screen_name" : self.twitterScreenName!
@@ -366,10 +370,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = aNewTimeline
-                for newTweet in self.newTimeline {
-                    self.currentTimeline.insert(newTweet, atIndex: 0)
+                if (aMoreIndex == nil) {
+                    for newTweet in self.newTimeline {
+                        self.currentTimeline.insert(newTweet, atIndex: 0)
+                    }
+                } else {
+                    for newTweet in self.newTimeline {
+                        self.currentTimeline.append(newTweet)
+                    }
                 }
                 self.tableView.reloadData()
+                self.scrollView.pullToRefreshView.stopAnimating()
+                self.scrollView.contentInset.top = self.headerHeight
             })
         }
         
@@ -484,10 +496,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func userTableRefresh() {
         switch(self.tableType) {
         case 0:
-            // TODO: タイムラインも更新したい
-            // でもこれあとでいい
-            self.scrollView.pullToRefreshView.stopAnimating()
-            self.scrollView.contentInset = UIEdgeInsetsMake(self.tabBarController!.tabBar.frame.size.height, 0, self.tabBarController!.tabBar.frame.size.height, 0)
+            self.updateTimeline(0, aMoreIndex: self.currentTimeline.count - 1)
             break
         case 1:
             self.updateFollowUser(self.followUsersNextCursor)
