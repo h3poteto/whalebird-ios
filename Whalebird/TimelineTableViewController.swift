@@ -194,7 +194,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/home_timeline.json", params: cParameter, callback: {aNewTimeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

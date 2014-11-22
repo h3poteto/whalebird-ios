@@ -110,7 +110,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
                 "status" : newTweetText.text
             ]
         }
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

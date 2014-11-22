@@ -240,7 +240,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/list_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

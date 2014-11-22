@@ -98,6 +98,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
+        
         if (self.twitterScreenName != nil) {
             var params:Dictionary<String, String> = [
                 "screen_name" : self.twitterScreenName!
@@ -105,7 +106,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.show()
+            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
             //-------------------------
             //  header
             //-------------------------
@@ -424,7 +425,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -512,5 +513,4 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.scrollView.contentInset = UIEdgeInsetsMake(self.tabBarController!.tabBar.frame.size.height, 0, 0, 0)
     }
-
 }

@@ -60,7 +60,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         return 5
     }
 
-    // TODO: アカウント設定関連の削除機能
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cellCount = Int(0)
         switch(section) {
@@ -540,7 +539,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: cParameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
