@@ -62,12 +62,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(detailView, animated: true)
             } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "direct_message") {
                 var messageViewController = MessageDetailViewController(
-                        aMessageID: userInfo.objectForKey("id") as String,
-                        aMessageBody: userInfo.objectForKey("text") as String,
-                        aScreeName: userInfo.objectForKey("screen_name") as String,
-                        aUserName: userInfo.objectForKey("name") as String,
-                        aProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                        aPostDetail: userInfo.objectForKey("created_at") as String)
+                    aMessageID: userInfo.objectForKey("id") as String,
+                    aMessageBody: userInfo.objectForKey("text") as String,
+                    aScreeName: userInfo.objectForKey("screen_name") as String,
+                    aUserName: userInfo.objectForKey("name") as String,
+                    aProfileImage: userInfo.objectForKey("profile_image_url") as String,
+                    aPostDetail: userInfo.objectForKey("created_at") as String)
                 
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
             }
@@ -200,12 +200,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 break
             case "direct_message":
                 var messageViewController = MessageDetailViewController(
-              aMessageID: userInfo["id"] as String,
-              aMessageBody: userInfo["text"] as String,
-              aScreeName: userInfo["screen_name"] as String,
-              aUserName: userInfo["name"] as String,
-              aProfileImage: userInfo["profile_image_url"] as String,
-              aPostDetail: userInfo["created_at"] as String)
+                    aMessageID: userInfo["id"] as String,
+                    aMessageBody: userInfo["text"] as String,
+                    aScreeName: userInfo["screen_name"] as String,
+                    aUserName: userInfo["name"] as String,
+                    aProfileImage: userInfo["profile_image_url"] as String,
+                    aPostDetail: userInfo["created_at"] as String)
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
                 break
             default:
