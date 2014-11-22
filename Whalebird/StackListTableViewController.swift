@@ -18,8 +18,8 @@ class StackListTableViewController: UITableViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リストを選択"
-        let user_default = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = user_default.objectForKey("username") as? NSString
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        self.twitterScreenName = userDefault.objectForKey("username") as? NSString
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -34,9 +34,9 @@ class StackListTableViewController: UITableViewController {
         super.init()
     }
     
-    init(StackTarget: NSURL) {
+    init(aStackTarget: NSURL) {
         super.init()
-        self.stackTarget = StackTarget
+        self.stackTarget = aStackTarget
     }
 
     override func viewDidLoad() {
@@ -53,18 +53,18 @@ class StackListTableViewController: UITableViewController {
         
         
         if (self.twitterScreenName != nil) {
-            let params: Dictionary<String, String> = [
+            var params: Dictionary<String, String> = [
                 "screen_name" : self.twitterScreenName!
             ]
-            let parameter: Dictionary<String, AnyObject> = [
+            let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
             SVProgressHUD.show()
-            WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: parameter) { (stackList) -> Void in
+            WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: cParameter) { (aStackList) -> Void in
                 var q_main = dispatch_get_main_queue()
-                println(stackList)
+                println(aStackList)
                 dispatch_async(q_main, {()->Void in
-                    self.stackListArray = stackList
+                    self.stackListArray = aStackList
                     self.tableView.reloadData()
                     SVProgressHUD.dismiss()
                 })
@@ -94,20 +94,20 @@ class StackListTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+        var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("full_name") as? String
         
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        var cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         self.selectedIndex = indexPath.row
     }
 
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        var cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         cell.accessoryType = UITableViewCellAccessoryType.None
     }
     
@@ -115,15 +115,15 @@ class StackListTableViewController: UITableViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         if (self.selectedIndex != nil) {
-            let viewControllers = self.navigationController!.viewControllers as NSArray
-            let viewControllersCount = viewControllers.count as Int
-            let parentController: ListTableViewController = viewControllers.objectAtIndex(viewControllersCount - 1) as ListTableViewController
+            let cViewControllers = self.navigationController!.viewControllers as NSArray
+            let cViewControllersCount = cViewControllers.count as Int
+            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as ListTableViewController
             var streamElement = ListTableViewController.Stream(
                 image: "",
                 name: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("full_name") as String,
                 type: "list", uri: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("uri") as String,
                 id: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("id_str") as String)
-            parentController.streamList.append(streamElement)
+            cParentController.streamList.append(streamElement)
         }
     }
 

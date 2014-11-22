@@ -31,14 +31,14 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         super.init()
     }
     
-    init(ReplyToUser: String?) {
+    init(aReplyToUser: String?) {
         super.init()
-        self.replyToUser = ReplyToUser
+        self.replyToUser = aReplyToUser
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let maxSize = UIScreen.mainScreen().bounds.size
+        let cMaxSize = UIScreen.mainScreen().bounds.size
 
         self.cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
         self.navigationItem.leftBarButtonItem = self.cancelButton
@@ -46,14 +46,14 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         self.sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onSendTapped")
         self.navigationItem.rightBarButtonItem = self.sendButton
         
-        self.sendToUserLabel = UILabel(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.height, maxSize.width, 35))
+        self.sendToUserLabel = UILabel(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.height, cMaxSize.width, 35))
         self.sendToUserLabel.text = "to: " + self.replyToUser
         self.sendToUserLabel.textAlignment = NSTextAlignment.Center
         self.sendToUserLabel.backgroundColor = UIColor.lightGrayColor()
-        self.sendToUserLabel.center.x = maxSize.width / 2.0
+        self.sendToUserLabel.center.x = cMaxSize.width / 2.0
         self.view.addSubview(self.sendToUserLabel)
         
-        self.newMessageText = UITextView(frame: CGRectMake(0, 100, maxSize.width, maxSize.height / 3.0))
+        self.newMessageText = UITextView(frame: CGRectMake(0, 100, cMaxSize.width, cMaxSize.height / 3.0))
         self.newMessageText.editable = true
         self.newMessageText.delegate = self
         //self.newMessageText.addSubview(self.sendToUserLabel)
@@ -93,12 +93,12 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
             "screen_name" : self.replyToUser,
             "text" : messageBody
         ]
-        let parameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: parameter) { (operation) -> Void in
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "送信しました")

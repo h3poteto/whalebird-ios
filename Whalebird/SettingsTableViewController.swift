@@ -44,9 +44,6 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        let WindowSize = UIScreen.mainScreen().bounds
         
     }
 
@@ -446,14 +443,14 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 }
                 var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
                 if (twitterAccounts.count > 0) {
-                    let username = userDefault.stringForKey("username")
-                    var selected_account: ACAccount!
+                    let cUsername = userDefault.stringForKey("username")
+                    var selectedAccount: ACAccount!
                     for aclist in twitterAccounts {
-                        if (username == aclist.username) {
-                            selected_account = aclist as ACAccount
+                        if (cUsername == aclist.username) {
+                            selectedAccount = aclist as ACAccount
                         }
                     }
-                    if (selected_account == nil) {
+                    if (selectedAccount == nil) {
                         self.tableView.reloadData()
                         self.accountAlert()
                     } else {
@@ -513,30 +510,21 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func syncWhalebirdServer() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         self.deviceToken = userDefault.stringForKey("deviceToken")
-        var params: Dictionary<String, AnyObject>
+        var params: Dictionary<String, AnyObject> = [
+            "notification" : self.notificationBackgroundFlag,
+            "reply" : self.notificationReplyFlag,
+            "retweet" : self.notificationRTFlag,
+            "favorite" : self.notificationFavFlag,
+            "direct_message" : self.notificationDMFlag
+        ]
         if (self.deviceToken != nil) {
-            params = [
-                "notification" : self.notificationBackgroundFlag,
-                "reply" : self.notificationReplyFlag,
-                "retweet" : self.notificationRTFlag,
-                "favorite" : self.notificationFavFlag,
-                "direct_message" : self.notificationDMFlag,
-                "device_token" : self.deviceToken!
-            ]
-        } else {
-            params = [
-                "notification" : self.notificationBackgroundFlag,
-                "reply" : self.notificationReplyFlag,
-                "retweet" : self.notificationRTFlag,
-                "favorite" : self.notificationFavFlag,
-                "direct_message" : self.notificationDMFlag
-            ]
+            params["device_token"] = self.deviceToken!
         }
-        let parameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: parameter) { (operation) -> Void in
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: cParameter) { (operation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 println(operation)

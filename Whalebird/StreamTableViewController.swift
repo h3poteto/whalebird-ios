@@ -9,6 +9,8 @@
 import UIKit
 
 class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+    let PageControlViewHeight = CGFloat(20)
+    
     var streamElement: ListTableViewController.Stream!
     var currentTimeline: Array<AnyObject> = []
     var newTimeline: Array<AnyObject> = []
@@ -19,8 +21,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var refreshTimeline: UIRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var sinceId: String?
-    
-    let pageControlViewHeight = CGFloat(20)
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -39,11 +39,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         super.init()
     }
     
-    init(StreamElement: ListTableViewController.Stream, PageIndex: Int, ParentController: ListTableViewController) {
+    init(aStreamElement: ListTableViewController.Stream, aPageIndex: Int, aParentController: ListTableViewController) {
         super.init()
-        self.streamElement = StreamElement
-        self.pageIndex = PageIndex
-        self.parentController = ParentController
+        self.streamElement = aStreamElement
+        self.pageIndex = aPageIndex
+        self.parentController = aParentController
         self.title = self.streamElement.name
     }
     
@@ -55,7 +55,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.tableView.estimatedRowHeight = 60.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
-        let windowSize = UIScreen.mainScreen().bounds
+        let cWindowSize = UIScreen.mainScreen().bounds
         
     
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
@@ -63,9 +63,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         
         self.pageControl = UIPageControl(frame: CGRectMake(
             0,
-            windowSize.size.height - self.tabBarController!.tabBar.frame.height - self.pageControlViewHeight - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.size.height,
-            windowSize.size.width,
-            self.pageControlViewHeight))
+            cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.size.height,
+            cWindowSize.size.width, self.PageControlViewHeight))
         self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0)
         self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
         self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)
@@ -180,37 +179,36 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     // してやらないと下部に固定されない
     //---------------------------------------------------
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        let windowSize = UIScreen.mainScreen().bounds
-        let scrollOffset = scrollView.contentOffset.y as CGFloat
+        let cWindowSize = UIScreen.mainScreen().bounds
+        let cScrollOffset = scrollView.contentOffset.y as CGFloat
         
         if (self.tabBarController != nil) {
             self.pageControl.frame = CGRectMake(
                 0,
-                scrollOffset + windowSize.size.height - self.tabBarController!.tabBar.frame.height - self.pageControlViewHeight,
-                windowSize.size.width,
-                self.pageControlViewHeight)
+                cScrollOffset + cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight,
+                cWindowSize.size.width, self.PageControlViewHeight)
             self.navigationController?.view.bringSubviewToFront(self.pageControl)
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
-        if (tweetData.objectForKey("moreID") != nil && tweetData.objectForKey("moreID") as String != "moreID") {
-            var sinceID = tweetData.objectForKey("sinceID") as? String
+        let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
+        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as String != "moreID") {
+            var sinceID = cTweetData.objectForKey("sinceID") as? String
             if (sinceID == "sinceID") {
                 sinceID = nil
             }
-            self.updateTimeline(sinceID, more_index: indexPath.row)
+            self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
         } else {
             var detailView = TweetDetailViewController(
-                tweet_id: tweetData.objectForKey("id_str") as String,
-                tweet_body: tweetData.objectForKey("text") as String,
-                screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-                user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
-                profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-                post_detail: tweetData.objectForKey("created_at") as String,
-                retweeted_name: tweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                retweeted_profile_image: tweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
+                aTweetID: cTweetData.objectForKey("id_str") as String,
+                aTweetBody: cTweetData.objectForKey("text") as String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+                aPostDetail: cTweetData.objectForKey("created_at") as String,
+                aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
             )
             self.navigationController!.pushViewController(detailView, animated: true)
         }
@@ -218,7 +216,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     
     
-    func updateTimeline(since_id: String?, more_index: Int?) {
+    func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String>!
         switch self.streamElement.type {
         case "list":
@@ -226,11 +224,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 "list_id" : self.streamElement.id as String!,
                 "count" : "20"
             ]
-            if (since_id != nil) {
-                params["since_id"] = since_id as String!
+            if (aSinceID != nil) {
+                params["since_id"] = aSinceID as String!
             }
-            if (more_index != nil) {
-                var strMoreID = (self.currentTimeline[more_index!] as NSDictionary).objectForKey("moreID") as String
+            if (aMoreIndex != nil) {
+                var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
                 // max_idは「以下」という判定になるので自身を含めない
                 var intMoreID = strMoreID.toInt()! - 1
                 params["max_id"] = String(intMoreID)
@@ -239,16 +237,16 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         default:
             break
         }
-        let parameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/list_timeline.json", params: parameter) { (new_timeline) -> Void in
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/list_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                self.newTimeline = new_timeline
+                self.newTimeline = aNewTimeline
                 if (self.newTimeline.count > 0) {
-                    if (more_index == nil) {
+                    if (aMoreIndex == nil) {
                         // refreshによる更新
                         if (self.newTimeline.count >= 20) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
@@ -267,14 +265,14 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                             }
                             self.newTimeline.insert(readMoreDictionary, atIndex: 0)
                         }
-                        for new_tweet in self.newTimeline {
-                            self.currentTimeline.insert(new_tweet, atIndex: 0)
-                            self.sinceId = (new_tweet as NSDictionary).objectForKey("id_str") as String?
+                        for newTweet in self.newTimeline {
+                            self.currentTimeline.insert(newTweet, atIndex: 0)
+                            self.sinceId = (newTweet as NSDictionary).objectForKey("id_str") as String?
                         }
                     } else {
                         // readMoreを押した場合
                         // tableの途中なのかbottomなのかの判定
-                        if (more_index == self.currentTimeline.count - 1) {
+                        if (aMoreIndex == self.currentTimeline.count - 1) {
                             // bottom
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary(dictionary: [
@@ -288,23 +286,23 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                             // 途中
                             if (self.newTimeline.count >= 20) {
                                 var moreID = self.newTimeline.first?.objectForKey("id_str") as String
-                                var sinceID = (self.currentTimeline[more_index! + 1] as NSDictionary).objectForKey("id_str") as String
+                                var sinceID = (self.currentTimeline[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : sinceID
                                     ])
                                 self.newTimeline.insert(readMoreDictionary, atIndex: 0)
                             }
-                            self.currentTimeline.removeAtIndex(more_index!)
-                            for new_tweet in self.newTimeline {
-                                self.currentTimeline.insert(new_tweet, atIndex: more_index!)
+                            self.currentTimeline.removeAtIndex(aMoreIndex!)
+                            for newTweet in self.newTimeline {
+                                self.currentTimeline.insert(newTweet, atIndex: aMoreIndex!)
                             }
                             
                         }
                     }
                     self.tableView.reloadData()
                     SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(new_timeline.count) + "件更新")
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewTimeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
@@ -323,7 +321,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     func hundleLeftSwipe(sender: AnyObject) {
         if (self.pageControl.currentPage + 1 < self.pageControl.numberOfPages) {
             self.pageControl.currentPage += 1
-            var rightView = StreamTableViewController(StreamElement: self.parentController.streamList[self.pageControl.currentPage], PageIndex: self.pageControl.currentPage, ParentController: self.parentController)
+            var rightView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
             self.navigationController!.pushViewController(rightView, animated: true)
         }
     }
@@ -339,7 +337,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             transition.subtype = kCATransitionFromLeft
             
             self.pageControl.currentPage -= 1
-            var rightView = StreamTableViewController(StreamElement: self.parentController.streamList[self.pageControl.currentPage], PageIndex: self.pageControl.currentPage, ParentController: self.parentController)
+            var rightView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
             self.navigationController!.view.layer.addAnimation(transition, forKey: nil)
             self.navigationController!.pushViewController(rightView, animated: false)
         }
@@ -347,7 +345,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
-        updateTimeline(self.sinceId, more_index: nil)
+        updateTimeline(self.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
@@ -361,11 +359,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        let timelineMin = min(self.currentTimeline.count, 20)
-        if (timelineMin <= 0) {
+        let cTimelineMin = min(self.currentTimeline.count, 20)
+        if (cTimelineMin <= 0) {
             return
         }
-        for timeline in self.currentTimeline[0...(timelineMin - 2)] {
+        for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
             cleanTimelineArray.append(dic)
         }

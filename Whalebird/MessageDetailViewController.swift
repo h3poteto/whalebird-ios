@@ -42,33 +42,33 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         super.init()
     }
     
-    init(MessageID: String, MessageBody: String, ScreeName: String, UserName: String, ProfileImage: String, PostDetail: String) {
+    init(aMessageID: String, aMessageBody: String, aScreeName: String, aUserName: String, aProfileImage: String, aPostDetail: String) {
         super.init()
-        self.messageID = MessageID
-        self.messageBody = MessageBody
-        self.screenName = ScreeName
-        self.userName = UserName
-        self.profileImage = ProfileImage
-        self.postDetail = WhalebirdAPIClient.convertLocalTime(PostDetail)
+        self.messageID = aMessageID
+        self.messageBody = aMessageBody
+        self.screenName = aScreeName
+        self.userName = aUserName
+        self.profileImage = aProfileImage
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(aPostDetail)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let windowSize = UIScreen.mainScreen().bounds
+        let cWindowSize = UIScreen.mainScreen().bounds
         var userDefault = NSUserDefaults.standardUserDefaults()
         
-        self.profileImageLabel = UIImageView(frame: CGRectMake(windowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 40))
-        var image_url = NSURL(string: self.profileImage)
+        self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
+        var imageURL = NSURL(string: self.profileImage)
         var error = NSError?()
-        var imageData = NSData(contentsOfURL: image_url!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
+        var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
         if (error == nil) {
             self.profileImageLabel.image = UIImage(data: imageData!)
             self.profileImageLabel.sizeToFit()
         }
         self.view.addSubview(self.profileImageLabel)
         
-        self.userNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, windowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))
         self.userNameLabel.setTitle(self.userName, forState: .Normal)
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.userNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
@@ -81,7 +81,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
             self.view.addSubview(self.userNameLabel)
         }
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, windowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
         self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
@@ -94,7 +94,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
             self.view.addSubview(self.screenNameLabel)
         }
         
-        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(windowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0
         self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
@@ -102,7 +102,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
         
-        self.postDetailLabel = UILabel(frame: CGRectMake(windowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
+        self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.text = self.postDetail
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.view.addSubview(self.postDetailLabel)
@@ -118,7 +118,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
     
 
     func tappedReplyMessage() {
-        var newMessage = NewDirectMessageViewController(ReplyToUser: self.screenName)
+        var newMessage = NewDirectMessageViewController(aReplyToUser: self.screenName)
         self.navigationController!.pushViewController(newMessage, animated: true)
     }
     

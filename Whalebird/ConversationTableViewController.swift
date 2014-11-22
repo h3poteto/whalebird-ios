@@ -27,9 +27,9 @@ class ConversationTableViewController: UITableViewController {
         super.init()
     }
     
-    init(tweetID: String) {
+    init(aTweetID: String) {
         super.init()
-        self.rootTweetID = tweetID
+        self.rootTweetID = aTweetID
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -103,16 +103,16 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let tweetData = self.newConversation[indexPath.row] as NSDictionary
+        let cTweetData = self.newConversation[indexPath.row] as NSDictionary
         var detailView = TweetDetailViewController(
-            tweet_id: tweetData.objectForKey("id_str") as String,
-            tweet_body: tweetData.objectForKey("text") as String,
-            screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-            user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
-            profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-            post_detail: tweetData.objectForKey("created_at") as String,
-            retweeted_name: nil,
-            retweeted_profile_image: nil
+            aTweetID: cTweetData.objectForKey("id_str") as String,
+            aTweetBody: cTweetData.objectForKey("text") as String,
+            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
+            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+            aPostDetail: cTweetData.objectForKey("created_at") as String,
+            aRetweetedName: nil,
+            aRetweetedProfileImage: nil
         )
         self.navigationController!.pushViewController(detailView, animated: true)
     }
@@ -126,10 +126,10 @@ class ConversationTableViewController: UITableViewController {
             "settings" : params
         ]
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", params: parameter) { (new_conversation) -> Void in
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", params: parameter) { (aNewConversation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
-                self.newConversation = new_conversation.reverseObjectEnumerator().allObjects
+                self.newConversation = aNewConversation.reverseObjectEnumerator().allObjects
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
             })

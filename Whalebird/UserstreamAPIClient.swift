@@ -28,43 +28,43 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     //  class method
     //=======================================
-    class func convertUTCTime(srctime: String) -> String {
+    class func convertUTCTime(aSrctime: String) -> String {
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        var srcDate = dateFormatter.dateFromString(srctime)
+        var srcDate = dateFormatter.dateFromString(aSrctime)
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         var dstDate = dateFormatter.stringFromDate(srcDate!)
         return dstDate
     }
     
-    class func convertRetweet(src_dict: NSMutableDictionary) -> NSMutableDictionary {
-        var mutableDictionary = src_dict.mutableCopy() as NSMutableDictionary
-        let originalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as String
-        let originalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String)
-        let originalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("name") as String
-        let originalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
-        let originalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
-        let postName = mutableDictionary.objectForKey("user")?.objectForKey("name") as String
-        let postScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as String
-        let postProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as String
+    class func convertRetweet(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
+        var mutableDictionary = aDictionary.mutableCopy() as NSMutableDictionary
+        let cOriginalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as String
+        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String)
+        let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("name") as String
+        let cOriginalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
+        let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
+        let cPostName = mutableDictionary.objectForKey("user")?.objectForKey("name") as String
+        let cPostScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as String
+        let cPostProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as String
         
-        mutableDictionary.setValue(originalText, forKey: "text")
-        mutableDictionary.setValue(originalCreatedAt, forKey: "created_at")
+        mutableDictionary.setValue(cOriginalText, forKey: "text")
+        mutableDictionary.setValue(cOriginalCreatedAt, forKey: "created_at")
     
         var userDictionay = NSMutableDictionary(dictionary: [
-            "name" : originalName,
-            "screen_name" : originalScreenName,
-            "profile_image_url" : originalProfileImageURL
+            "name" : cOriginalName,
+            "screen_name" : cOriginalScreenName,
+            "profile_image_url" : cOriginalProfileImageURL
         ])
         mutableDictionary.setValue(userDictionay, forKey: "user")
         
         var retweetedDictionary = NSMutableDictionary(dictionary: [
-            "name" : postName,
-            "screen_name" : postScreenName,
-            "profile_image_url" : postProfileImageURL
+            "name" : cPostName,
+            "screen_name" : cPostScreenName,
+            "profile_image_url" : cPostProfileImageURL
         ])
         mutableDictionary.setValue(retweetedDictionary, forKey: "retweeted")
         
@@ -76,23 +76,23 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //  instance method
     //=======================================
     
-    func startStreaming(target_stream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
-        var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: target_stream, parameters: params)
+    func startStreaming(aTargetStream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
+        var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: aTargetStream, parameters: params)
         var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
         var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
         if (twitterAccounts.count > 0) {
-            let user_default = NSUserDefaults.standardUserDefaults()
-            let username = user_default.stringForKey("username")
-            var selected_account: ACAccount!
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            let cUsername = userDefault.stringForKey("username")
+            var selectedAccount: ACAccount!
             for aclist in twitterAccounts {
-                if (username == aclist.username) {
-                    selected_account = aclist as ACAccount
+                if (cUsername == aclist.username) {
+                    selectedAccount = aclist as ACAccount
                 }
             }
-            if (selected_account == nil) {
+            if (selectedAccount == nil) {
                 //
             } else {
-                self.account = selected_account
+                self.account = selectedAccount
                 request.account = self.account
                 self.connection = NSURLConnection(request: request.preparedURLRequest(), delegate: self)
                 self.connection.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)

@@ -33,10 +33,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         super.init()
     }
     
-    init(TweetBody: String!, ReplyToID: String?) {
+    init(aTweetBody: String!, aReplyToID: String?) {
         super.init()
-        self.tweetBody = TweetBody
-        self.replyToID = ReplyToID
+        self.tweetBody = aTweetBody
+        self.replyToID = aReplyToID
     }
     
     override func loadView() {
@@ -48,8 +48,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let WindowSize = UIScreen.mainScreen().bounds
-        self.maxSize = WindowSize.size
+        let cWindowSize = UIScreen.mainScreen().bounds
+        self.maxSize = cWindowSize.size
         
         cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
         self.navigationItem.leftBarButtonItem = cancelButton
@@ -94,7 +94,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     //-----------------------------------------
     //-----------------------------------------
-    func postTweet(tweetBody: NSString) {
+    func postTweet(aTweetBody: NSString) {
         var params: Dictionary<String, String>
         var parameter: Dictionary<String, AnyObject>
         if (self.replyToID != nil) {
@@ -111,7 +111,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
             ]
         }
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (operation) -> Void in
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "投稿しました")

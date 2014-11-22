@@ -24,13 +24,13 @@ class WhalebirdAPIClient: NSObject {
     //===========================================
     //  class method
     //===========================================
-    class func convertLocalTime(utctime: String) -> String {
+    class func convertLocalTime(aUtctime: String) -> String {
         var utcDateFormatter = NSDateFormatter()
         utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         utcDateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        var utcDate = utcDateFormatter.dateFromString(utctime)
+        var utcDate = utcDateFormatter.dateFromString(aUtctime)
         
         var jstDateFormatter =  NSDateFormatter()
         jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle

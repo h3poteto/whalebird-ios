@@ -57,22 +57,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        let user_default = NSUserDefaults.standardUserDefaults()
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        let user_default = NSUserDefaults.standardUserDefaults()
+        var userDefault = NSUserDefaults.standardUserDefaults()
     }
     
     override init() {
         super.init()
     }
     
-    init(screenName: NSString) {
+    init(aScreenName: NSString) {
         super.init()
-        self.twitterScreenName = screenName
-        self.title = "@" + screenName
+        self.twitterScreenName = aScreenName
+        self.title = "@" + aScreenName
     }
     
     override func viewDidLoad() {
@@ -100,39 +99,39 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         if (self.twitterScreenName != nil) {
-            let params:Dictionary<String, String> = [
+            var params:Dictionary<String, String> = [
                 "screen_name" : self.twitterScreenName!
             ]
-            let parameter: Dictionary<String, AnyObject> = [
+            let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
             SVProgressHUD.show()
             //-------------------------
             //  header
             //-------------------------
-            WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: parameter, callback: { (header_data) -> Void in
+            WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
                 var q_main = dispatch_get_main_queue()
                 var error = NSError?()
                 dispatch_async(q_main, {()->Void in
-                    if (header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
-                        var header_image_url = NSURL(string: header_data.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
+                    if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
+                        var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
                         self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
-                        self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: header_image_url!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
+                        self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: headerImageURL!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
                 })
-                WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: parameter, callback: { (user_data) -> Void in
+                WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: cParameter, callback: { (aUserData) -> Void in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
                         
-                        var profile_image_url = NSURL(string: user_data.objectForKey("profile_image_url") as String)
+                        var profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as String)
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                         self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40 + 10)
-                        self.profileImage.image = UIImage(data: NSData(contentsOfURL: profile_image_url!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
+                        self.profileImage.image = UIImage(data: NSData(contentsOfURL: profileImageURL!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
                         self.scrollView.addSubview(self.profileImage)
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
-                        self.userNameLabel.text = user_data.objectForKey("name") as String!
+                        self.userNameLabel.text = aUserData.objectForKey("name") as String!
                         self.userNameLabel.font = UIFont.boldSystemFontOfSize(14)
                         self.userNameLabel.textColor = UIColor.blackColor()
                         self.userNameLabel.sizeToFit()
@@ -149,7 +148,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     
                         self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 110, self.windowSize.width * 0.8, 15))
                         self.descriptionLabel.numberOfLines = 3
-                        self.descriptionLabel.text = user_data.objectForKey("description") as? String
+                        self.descriptionLabel.text = aUserData.objectForKey("description") as? String
                         self.descriptionLabel.font = UIFont.systemFontOfSize(11)
                         self.descriptionLabel.sizeToFit()
                         self.descriptionLabel.textAlignment = NSTextAlignment.Center
@@ -166,7 +165,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         //  status
                         //-----------------------------
                         
-                        var tweetNumText = ("ツイート：" + String(user_data.objectForKey("statuses_count") as Int)) as NSString
+                        var tweetNumText = ("ツイート：" + String(aUserData.objectForKey("statuses_count") as Int)) as NSString
                         var tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                         tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
@@ -182,7 +181,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.scrollView.addSubview(self.tweetNumLabel)
                         
                         
-                        var followText = ("フォロー：" + String(user_data.objectForKey("friends_count") as Int)) as NSString
+                        var followText = ("フォロー：" + String(aUserData.objectForKey("friends_count") as Int)) as NSString
                         var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var followRange: NSRange = followText.rangeOfString("フォロー：")
                         followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
@@ -197,7 +196,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.scrollView.addSubview(self.followNumLabel)
                         self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                         
-                        var followerText = ("フォロワー：" + String(user_data.objectForKey("followers_count") as Int)) as NSString
+                        var followerText = ("フォロワー：" + String(aUserData.objectForKey("followers_count") as Int)) as NSString
                         var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                         followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
@@ -260,18 +259,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
-        //var timeline_cell: TimelineViewCell
         switch(self.tableType) {
         case 0:
-            var timeline_cell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
-            if (timeline_cell == nil) {
-                timeline_cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            var timelineCell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+            if (timelineCell == nil) {
+                timelineCell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
             }
             
-            self.timelineCell.insert(timeline_cell!, atIndex: indexPath.row)
-            timeline_cell!.cleanCell()
-            timeline_cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
-            return timeline_cell!
+            self.timelineCell.insert(timelineCell!, atIndex: indexPath.row)
+            timelineCell!.cleanCell()
+            timelineCell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
+            return timelineCell!
         case 1:
             var error = NSError?()
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
@@ -327,25 +325,25 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            let tweetData = self.currentTimeline[indexPath.row] as NSDictionary
+            let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
             var detailView = TweetDetailViewController(
-                tweet_id: tweetData.objectForKey("id_str") as String,
-                tweet_body: tweetData.objectForKey("text") as String,
-                screen_name: tweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-                user_name: tweetData.objectForKey("user")?.objectForKey("name") as String,
-                profile_image: tweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-                post_detail: tweetData.objectForKey("created_at") as String,
-                retweeted_name: tweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                retweeted_profile_image: tweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
+                aTweetID: cTweetData.objectForKey("id_str") as String,
+                aTweetBody: cTweetData.objectForKey("text") as String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
+                aPostDetail: cTweetData.objectForKey("created_at") as String,
+                aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
             )
             self.navigationController!.pushViewController(detailView, animated: true)
             break
         case 1:
-            var userProfileView = ProfileViewController(screenName: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(aScreenName: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         case 2:
-            var userProfileView = ProfileViewController(screenName: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(aScreenName: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         default:
@@ -354,22 +352,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 
-    func updateTimeline(since_id: Int) {
+    func updateTimeline(aSinceID: Int) {
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
             "count" : "10"
         ]
-        let parameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: parameter) { (new_timeline) -> Void in
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                self.newTimeline = new_timeline
-                for new_tweet in self.newTimeline {
-                    self.currentTimeline.insert(new_tweet, atIndex: 0)
+                self.newTimeline = aNewTimeline
+                for newTweet in self.newTimeline {
+                    self.currentTimeline.insert(newTweet, atIndex: 0)
                 }
                 self.tableView.reloadData()
             })
@@ -377,26 +375,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func updateFollowUser(nextCursor: String?) {
-        var params: Dictionary<String, String>
-        if (nextCursor == nil) {
-            params = [
-                "screen_name" : self.twitterScreenName!
-            ]
-        } else {
-            params = [
-                "screen_name" : self.twitterScreenName!,
-                "cursor" : nextCursor!
-            ]
+    func updateFollowUser(aNextCursor: String?) {
+        var params: Dictionary<String, String> =  [
+            "screen_name" : self.twitterScreenName!
+        ]
+        if (aNextCursor != nil) {
+            params["cursor"] = aNextCursor!
         }
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (follows) -> Void in
+        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                var user = follows as NSDictionary
+                var user = aFollows as NSDictionary
                 self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
                 self.followUsers = self.followUsers + (user.objectForKey("users") as Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0
@@ -408,27 +401,22 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func updateFollowerUser(nextCursor: String?) {
-        var params: Dictionary<String, String>
-        if (nextCursor == nil) {
-            params = [
-                "screen_name" : self.twitterScreenName!
-            ]
-        } else {
-            params = [
-                "screen_name" : self.twitterScreenName!,
-                "cursor" : nextCursor!
-            ]
+    func updateFollowerUser(aNextCursor: String?) {
+        var params: Dictionary<String, String> =  [
+            "screen_name" : self.twitterScreenName!
+        ]
+        if (aNextCursor != nil) {
+            params["cursor"] = aNextCursor!
         }
-        let parameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
         SVProgressHUD.show()
-        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: parameter) { (follows) -> Void in
+        WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                var user = follows as NSDictionary
+                var user = aFollows as NSDictionary
                 self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
                 self.followerUsers = self.followerUsers + (user.objectForKey("users") as Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followerUsers.count) * 60.0 + self.headerHeight
