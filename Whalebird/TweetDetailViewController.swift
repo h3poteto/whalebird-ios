@@ -148,7 +148,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.postDetailLabel.font = UIFont.systemFontOfSize(11)
         self.blankView.addSubview(self.postDetailLabel)
         
-        // TODO: ボタンに変更しprofileへのリンク
         if (self.retweetedName != nil) {
             self.retweetedNameLabel = UIButton(frame: CGRectMake(windowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, windowSize.size.width * 0.9, 15))
             self.retweetedNameLabel?.setTitle("Retweeted by @" + self.retweetedName!, forState: UIControlState.Normal)

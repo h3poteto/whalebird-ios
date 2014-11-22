@@ -41,7 +41,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var followUsersNextCursor: String?
     var followerUsers: Array<AnyObject> = []
     var followerUsersNextCursor: String?
-    var selectedButtonColor = UIColor(red: 0.863, green: 0.863, blue: 0.863, alpha: 1.0)
+    var selectedButtonColor = UIColor.whiteColor()
+    var unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
+    var selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
+    var unselectedTextColor = UIColor.grayColor()
     
     var timelineCell: Array<AnyObject> = []
     var refreshControl: UIRefreshControl!
@@ -131,7 +134,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
                         self.userNameLabel.text = user_data.objectForKey("name") as String!
                         self.userNameLabel.font = UIFont.boldSystemFontOfSize(14)
-                        self.userNameLabel.textColor = UIColor(red: 0.216, green: 0.416, blue: 0.827, alpha: 1.0)
+                        self.userNameLabel.textColor = UIColor.blackColor()
                         self.userNameLabel.sizeToFit()
                         self.userNameLabel.textAlignment = NSTextAlignment.Center
                         var nameFrame:CGRect = self.userNameLabel.frame
@@ -164,14 +167,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         //-----------------------------
                         
                         var tweetNumText = ("ツイート：" + String(user_data.objectForKey("statuses_count") as Int)) as NSString
-                        var tweetNumAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                         tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                         
                         self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
                         
                         self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Normal)
-                        self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Selected)
                         self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.tweetNumLabel.layer.borderWidth = 0.5
@@ -181,7 +183,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         
                         
                         var followText = ("フォロー：" + String(user_data.objectForKey("friends_count") as Int)) as NSString
-                        var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var followRange: NSRange = followText.rangeOfString("フォロー：")
                         followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
                         
@@ -190,12 +192,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.followNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.followNumLabel.layer.borderWidth = 0.5
+                        self.followNumLabel.backgroundColor = self.unselectedButtonColor
                         self.followNumLabel.addTarget(self, action: "tappedFollowNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.followNumLabel)
-                        
+                        self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                         
                         var followerText = ("フォロワー：" + String(user_data.objectForKey("followers_count") as Int)) as NSString
-                        var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: UIColor.blackColor(), NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                        var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                         var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                         followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
                     
@@ -204,6 +207,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.followerNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                         self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                         self.followerNumLabel.layer.borderWidth = 0.5
+                        self.followerNumLabel.backgroundColor = self.unselectedButtonColor
                         self.followerNumLabel.addTarget(self, action: "tappedFollowerNum", forControlEvents: UIControlEvents.TouchDown)
                         self.scrollView.addSubview(self.followerNumLabel)
                         SVProgressHUD.dismiss()
@@ -441,16 +445,26 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.reloadData()
         self.scrollView.contentInset.top = self.headerHeight
         self.tweetNumLabel.backgroundColor = self.selectedButtonColor
-        self.followNumLabel.backgroundColor = UIColor.whiteColor()
-        self.followerNumLabel.backgroundColor = UIColor.whiteColor()
+        self.tweetNumLabel.titleLabel?.textColor = self.selectedTextColor
+        self.followNumLabel.backgroundColor = self.unselectedButtonColor
+        self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
+        self.followerNumLabel.backgroundColor = self.unselectedButtonColor
+        self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
         
     }
     
     func tappedFollowNum() {
         self.tableType = 1
-        self.tweetNumLabel.backgroundColor = UIColor.whiteColor()
+        self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
+        self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
         self.followNumLabel.backgroundColor = self.selectedButtonColor
-        self.followerNumLabel.backgroundColor = UIColor.whiteColor()
+        var attributed = self.followNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+        var range = NSRangeFromString(self.followNumLabel.titleLabel?.text)
+        attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+        self.followNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+        self.followNumLabel.titleLabel?.textColor = self.selectedTextColor
+        self.followerNumLabel.backgroundColor = self.unselectedButtonColor
+        self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
         if (self.followUsers.count == 0) {
             self.updateFollowUser(nil)
         } else {
@@ -461,9 +475,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tappedFollowerNum() {
         self.tableType = 2
-        self.tweetNumLabel.backgroundColor = UIColor.whiteColor()
-        self.followNumLabel.backgroundColor = UIColor.whiteColor()
+        self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
+        self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
+        self.followNumLabel.backgroundColor = self.unselectedButtonColor
+        self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
         self.followerNumLabel.backgroundColor = self.selectedButtonColor
+        var attributed = self.followerNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+        var range = NSRangeFromString(self.followerNumLabel.titleLabel?.text)
+        attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+        self.followerNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+        self.followerNumLabel.titleLabel?.textColor = self.selectedTextColor
         if (self.followerUsers.count == 0) {
             self.updateFollowerUser(nil)
         } else {
