@@ -160,6 +160,31 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
+    func deleteSsessionAPI(path: String, params: Dictionary<String, AnyObject>,callback: (AnyObject) -> Void) {
+        self.loadCookie()
+        if (self.sessionManager != nil) {
+            var requestURL = self.whalebirdAPIURL + path
+            self.sessionManager.DELETE(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
+                if (responseObject != nil) {
+                    var jsonError: NSError?
+                    callback(operation)
+                } else {
+                    println("blank response")
+                    callback(operation)
+                }
+            }, failure: { (operation, error) -> Void in
+                println(error)
+                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Delete Error", message: ("Status Code:" + String(operation.response.statusCode)))
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
+                SVProgressHUD.dismiss()
+            })
+        } else {
+            self.regenerateSession()
+        }
+    }
+    
     func regenerateSession() {
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
         notice.alpha = 0.8
@@ -182,5 +207,10 @@ class WhalebirdAPIClient: NSObject {
     func saveCookie() {
         var cookiesData = NSKeyedArchiver.archivedDataWithRootObject(NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies!)
         NSUserDefaults.standardUserDefaults().setObject(cookiesData, forKey: "cookiesKey")
+    }
+    
+    func removeSession() {
+        self.sessionManager = nil
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "cookiesKey")
     }
 }

@@ -90,7 +90,10 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 }
             }
             if (selectedAccount == nil) {
-                //
+                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+                notice.alpha = 0.8
+                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.show()
             } else {
                 self.account = selectedAccount
                 request.account = self.account

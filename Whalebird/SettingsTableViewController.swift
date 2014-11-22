@@ -60,11 +60,12 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         return 5
     }
 
+    // TODO: アカウント設定関連の削除機能
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cellCount = Int(0)
         switch(section) {
         case 0:
-            cellCount = 2
+            cellCount = 3
             break
         case 1:
             cellCount = 2
@@ -143,6 +144,9 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 cellDetailTitle = userDefault.stringForKey("username")
                 break
             case 1:
+                cellTitle = "アカウント連携を削除"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            case 2:
                 cellTitle = "プロフィール"
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break
@@ -315,8 +319,21 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 self.navigationController!.pushViewController(loginViewController, animated: true)
                 break
             case 1:
-                var profileViewController = ProfileViewController()
-                self.navigationController!.pushViewController(profileViewController, animated: true)
+                var alertController = UIAlertController(title: "Remove Account Information", message: "アカウント情報を削除してよろしいですか？", preferredStyle: UIAlertControllerStyle.Alert)
+                let cOkAction = UIAlertAction(title: "削除する", style: UIAlertActionStyle.Default, handler: { (aAction) -> Void in
+                    self.removeAccountInfo()
+                })
+                let cCloseAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
+                alertController.addAction(cOkAction)
+                alertController.addAction(cCloseAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                break
+            case 2:
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                if (userDefault.objectForKey("username") != nil) {
+                    var profileViewController = ProfileViewController(aScreenName: (userDefault.stringForKey("username") as String!))
+                    self.navigationController!.pushViewController(profileViewController, animated: true)
+                }
                 break
             default:
                 break
@@ -540,5 +557,31 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         }
         alertController.addAction(closeAction)
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func removeAccountInfo() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        
+        // whalebirdからのログアウト
+        let params = Dictionary<String, AnyObject>()
+        WhalebirdAPIClient.sharedClient.deleteSsessionAPI("users/sign_out.json", params: params) { (operation) -> Void in
+            // sessionの削除
+            WhalebirdAPIClient.sharedClient.removeSession()
+            // userstream停止
+            if (UserstreamAPIClient.sharedClient.livingStream()) {
+                UserstreamAPIClient.sharedClient.stopStreaming({ () -> Void in
+                })
+            }
+            
+            // timelineやlist情報もすべて削除する必要がある
+            userDefault.setObject(nil, forKey: "username")
+            userDefault.setObject(nil, forKey: "homeTimelineSinceID")
+            userDefault.setObject(nil, forKey: "homeTimeline")
+            userDefault.setObject(nil, forKey: "replyTimelineSinceId")
+            userDefault.setObject(nil, forKey: "replyTimeline")
+            userDefault.setObject(nil, forKey: "directMessageSinceId")
+            userDefault.setObject(nil, forKey: "directMessage")
+            userDefault.setObject(nil, forKey: "streamList")
+        }
     }
 }
