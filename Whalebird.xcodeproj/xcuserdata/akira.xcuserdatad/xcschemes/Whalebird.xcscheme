@@ -105,6 +105,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Whalebird"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
