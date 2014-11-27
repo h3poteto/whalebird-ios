@@ -69,30 +69,35 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.view.addSubview(self.profileImageLabel)
         
         self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))
-        self.userNameLabel.setTitle(self.userName, forState: .Normal)
+        
+        if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
+            self.userNameLabel.setTitle("@" + self.screenName, forState: .Normal)
+        } else {
+            self.userNameLabel.setTitle(self.userName, forState: .Normal)
+        }
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        self.userNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
+        self.userNameLabel.titleLabel?.font = UIFont.boldSystemFontOfSize(15)
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
         self.userNameLabel.frame.size.height = self.userNameLabel.titleLabel!.frame.size.height
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
-        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 3 ) {
-            self.view.addSubview(self.userNameLabel)
-        }
+        self.view.addSubview(self.userNameLabel)
         
         self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
-        self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+        if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
+        } else {
+            self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+        }
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
-        self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(13)
+        self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(15)
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
         self.screenNameLabel.frame.size.height = self.screenNameLabel.titleLabel!.frame.size.height
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
-        if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 2 ) {
-            self.view.addSubview(self.screenNameLabel)
-        }
+        self.view.addSubview(self.screenNameLabel)
+        
         
         self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
@@ -104,7 +109,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.text = self.postDetail
-        self.postDetailLabel.font = UIFont.systemFontOfSize(11)
+        self.postDetailLabel.font = UIFont.systemFontOfSize(12)
         self.view.addSubview(self.postDetailLabel)
         
         self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedReplyMessage")

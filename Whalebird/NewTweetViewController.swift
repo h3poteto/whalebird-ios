@@ -60,6 +60,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
         newTweetText.editable = true
         newTweetText.delegate = self
+        newTweetText.font = UIFont.systemFontOfSize(18)
         self.blankView.addSubview(newTweetText)
         
     }

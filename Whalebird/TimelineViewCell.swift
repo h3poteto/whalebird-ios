@@ -17,7 +17,7 @@ class TimelineViewCell: UITableViewCell {
         static let ImagePadding = CGFloat(7)
         static let ImageSize = CGFloat(40)
         static let DefaultLineHeight = CGFloat(15)
-        static let DefaultFontSize = CGFloat(13)
+        static let DefaultFontSize = CGFloat(14)
     }
     
     class var ImagePadding: CGFloat {
@@ -156,7 +156,7 @@ class TimelineViewCell: UITableViewCell {
     func configureCell(aDictionary: NSDictionary) {
         if (aDictionary.objectForKey("moreID") != nil) {
             self.bodyLabel = UILabel(frame: CGRectMake(0, 0, self.maxSize.width, 40))
-            self.bodyLabel.font = UIFont.systemFontOfSize(15)
+            self.bodyLabel.font = UIFont.systemFontOfSize(16)
             self.bodyLabel.textAlignment = NSTextAlignment.Center
             self.bodyLabel.textColor = UIColor.grayColor()
             self.bodyLabel.text = "もっと読む"
@@ -176,14 +176,14 @@ class TimelineViewCell: UITableViewCell {
             if (self.retweeted) {
                 self.contentView.addSubview(self.retweetedProfileImageLabel!)
             }
+            
+            
             self.nameLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4 , TimelineViewCell.ImagePadding, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
-            if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 3 ) {
-                self.contentView.addSubview(self.nameLabel)
-            }
+            self.contentView.addSubview(self.nameLabel)
+            
             self.screenNameLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
-            if (userDefault.objectForKey("displayNameType") == nil || userDefault.integerForKey("displayNameType") == 1 || userDefault.integerForKey("displayNameType") == 2 ) {
-                self.contentView.addSubview(self.screenNameLabel)
-            }
+            self.contentView.addSubview(self.screenNameLabel)
+            
             self.bodyLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 2, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.bodyLabel)
             self.postDetailLable = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
@@ -232,22 +232,30 @@ class TimelineViewCell: UITableViewCell {
                     
                 })
             }
+            
+            let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as NSString
             //------------------------------------
             //  nameLabel
             //------------------------------------
+            if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
+                self.nameLabel.text = "@" + cScreenName
+            } else {
+                self.nameLabel.text = aDictionary.objectForKey("user")?.objectForKey("name") as NSString
+            }
             self.nameLabel.textAlignment = NSTextAlignment.Left
             self.nameLabel.textColor = UIColor.blackColor()
-            self.nameLabel.text = aDictionary.objectForKey("user")?.objectForKey("name") as NSString
-            self.nameLabel.font = UIFont.systemFontOfSize(TimelineViewCell.DefaultFontSize)
+            self.nameLabel.font = UIFont.boldSystemFontOfSize(TimelineViewCell.DefaultFontSize)
             
             
             //------------------------------------
             //  screenNameLabel
             //------------------------------------
+            if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
+            } else {
+                self.screenNameLabel.text = "@" + cScreenName
+            }
             self.screenNameLabel.textAlignment = NSTextAlignment.Left
             self.screenNameLabel.textColor = UIColor.grayColor()
-            let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as NSString
-            self.screenNameLabel.text = "@" + cScreenName
             self.screenNameLabel.font = UIFont.systemFontOfSize(TimelineViewCell.DefaultFontSize)
             //------------------------------------
             //  bodyLabel
@@ -270,7 +278,7 @@ class TimelineViewCell: UITableViewCell {
             self.postDetailLable.textAlignment = NSTextAlignment.Right
             self.postDetailLable.textColor = UIColor.grayColor()
             self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.objectForKey("created_at") as NSString)
-            self.postDetailLable.font = UIFont.systemFontOfSize(11)
+            self.postDetailLable.font = UIFont.systemFontOfSize(12)
             
             //-------------------------------------
             //  retweeted
