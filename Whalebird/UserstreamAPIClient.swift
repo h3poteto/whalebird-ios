@@ -28,13 +28,15 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     //  class method
     //=======================================
+    // localeの設定をしないと，実機で落ちる
     class func convertUTCTime(aSrctime: String) -> String {
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+        dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss ZZZ yyyy"
         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        var srcDate = dateFormatter.dateFromString(aSrctime)
+        dateFormatter.locale = NSLocale(localeIdentifier: "UTC")
+        var srcDate = dateFormatter.dateFromString(aSrctime as String)
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         var dstDate = dateFormatter.stringFromDate(srcDate!)
         return dstDate
@@ -43,7 +45,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     class func convertRetweet(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
         var mutableDictionary = aDictionary.mutableCopy() as NSMutableDictionary
         let cOriginalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as String
-        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String)
+        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String!)
         let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("name") as String
         let cOriginalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
         let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
@@ -130,10 +132,10 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
         
         if (jsonObject != nil) {
-            var object: NSMutableDictionary! = (jsonObject as NSMutableDictionary).mutableCopy() as NSMutableDictionary
+            var object: NSMutableDictionary! = jsonObject!.mutableCopy() as NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
-                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String), forKey: "created_at")
+                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String!), forKey: "created_at")
                 println(object.objectForKey("user")?.objectForKey("screen_name"))
                 if (object.objectForKey("retweeted_status") == nil) {
                     object.setValue(nil, forKey: "retweeted")
