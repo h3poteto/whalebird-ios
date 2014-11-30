@@ -74,6 +74,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
+    // TODO: 下方向スクロールを２回以上やると表示されない
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -11,6 +11,7 @@ import UIKit
 class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     let optionItemBarHeight = CGFloat(40)
     let imageViewSpan = CGFloat(20)
+    let progressColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
     
     var maxSize: CGSize!
     var tweetBody: String!
@@ -145,8 +146,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
             let image:UIImage = info[UIImagePickerControllerOriginalImage]  as UIImage
-            self.uploadImageView = UIImageView(frame: CGRectMake(self.imageViewSpan, self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2, 50, 50))
-            self.uploadImageView?.image = image
             var width: CGFloat
             var height: CGFloat
             if (image.size.width > image.size.height) {
@@ -158,7 +157,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
             }
             self.uploadImageView?.sizeThatFits(CGSize(width: width, height: height))
+            self.uploadImageView = UIImageView(frame: CGRectMake(self.imageViewSpan, self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2, width, height))
+            self.uploadImageView?.image = image
             self.view.addSubview(self.uploadImageView!)
+            
+            var progressView = DACircularProgressView(frame: CGRectMake(0, 0, width * 2.0 / 3.0, height * 2.0 / 3.0))
+            progressView.center = CGPoint(x: width / 2.0, y: height / 2.0)
+            progressView.roundedCorners = 0
+            progressView.progressTintColor = self.progressColor
+            progressView.trackTintColor = UIColor.grayColor()
+            progressView.setProgress(0.0, animated: true)
+            self.uploadImageView!.addSubview(progressView)
             
             self.closeImageView = UIButton(frame: CGRectMake(self.uploadImageView!.frame.origin.x + self.uploadImageView!.frame.width, self.uploadImageView!.frame.origin.y - 20, 20.0, 20.0))
             self.closeImageView.setImage(UIImage(named: "Close-Filled.png"), forState: UIControlState.Normal)
@@ -168,14 +177,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             // upload処理
             // Whalebirdのapiにupload
             // ファイルパスだけ戻してもらってpostのparameterに付随させてtweet判定
-            // TODO: プログレスバーの表示
             WhalebirdAPIClient.sharedClient.postImage(image, progress: { (written) -> Void in
                 self.progressCount = Int(written * 100)
                 println(self.progressCount)
+                progressView.setProgress(CGFloat(written), animated: true)
                 
             }, callback: { (response) -> Void in
                 println(response)
                 self.uploadedImage = (response as NSDictionary).objectForKey("filename") as? String
+                progressView.removeFromSuperview()
             })
 
         }

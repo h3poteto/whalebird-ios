@@ -12,4 +12,5 @@
 #import <AFNetworking/AFNetworking.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
+#import <DACircularProgress/DACircularProgressView.h>
 #import "application.h"
