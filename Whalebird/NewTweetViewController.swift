@@ -24,6 +24,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var cameraButton: UIBarButtonItem?
     var optionItemBar: UIToolbar?
     var currentCharacters: Int = 140
+    var currentCharactersView: UIBarButtonItem?
     var uploadImageView: UIImageView?
     var closeImageView: UIButton!
     var uploadedImage: String?
@@ -54,23 +55,27 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         super.loadView()
     }
     
-    // TODO: 入力可能文字列カウント
     override func viewDidLoad() {
         super.viewDidLoad()
         let cWindowSize = UIScreen.mainScreen().bounds
         self.maxSize = cWindowSize.size
         
-        cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
-        self.navigationItem.leftBarButtonItem = cancelButton
+        self.cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
+        self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onSendTapped")
-        self.navigationItem.rightBarButtonItem = sendButton
+        self.sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onSendTapped")
+        self.navigationItem.rightBarButtonItem = self.sendButton
         
-        newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
-        newTweetText.editable = true
-        newTweetText.delegate = self
-        newTweetText.font = UIFont.systemFontOfSize(18)
-        self.view.addSubview(newTweetText)
+        self.newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
+        self.newTweetText.editable = true
+        self.newTweetText.delegate = self
+        self.newTweetText.font = UIFont.systemFontOfSize(18)
+        self.view.addSubview(self.newTweetText)
+        
+        self.newTweetText.keyboardAppearance = UIKeyboardAppearance.Light
+        self.newTweetText.text = self.tweetBody
+        self.newTweetText.becomeFirstResponder()
+        self.currentCharacters = 140 - self.newTweetText.text.utf16Count
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -85,9 +90,14 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        newTweetText.keyboardAppearance = UIKeyboardAppearance.Light
-        newTweetText.text = self.tweetBody
-        newTweetText.becomeFirstResponder()
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        self.currentCharacters = 140 - (textView.text.utf16Count - range.length + text.utf16Count)
+        if (self.currentCharactersView != nil) {
+            self.currentCharactersView?.title = String(self.currentCharacters)
+        }
+        return true
     }
     
     func keyboardDidShow(notification: NSNotification) {
@@ -102,8 +112,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
             self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
             self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
+            self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             
-            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer]
+            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.currentCharactersView!]
             self.optionItemBar?.setItems(itemArray, animated: true)
             
             self.view.addSubview(self.optionItemBar!)
