@@ -168,6 +168,48 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
+    func postImage(image: UIImage, progress: (Float) -> Void,callback: (NSDictionary) -> Void) {
+        self.loadCookie()
+        if (self.sessionManager != nil) {
+            self.sessionManager = AFHTTPRequestOperationManager()
+            self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
+            
+            var request = self.sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
+                URLString: self.whalebirdAPIURL + "users/apis/upload.json",
+                parameters: nil,
+                constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
+                    formData.appendPartWithFileData(
+                        NSData(data: UIImagePNGRepresentation(image)),
+                        name: "media",
+                        fileName: "test.png",
+                        mimeType: "image/png")
+                    
+                }, error: nil)
+            
+            
+            
+            var operation = self.sessionManager.HTTPRequestOperationWithRequest(request, success: { (operation, responseObject) -> Void in
+                if (responseObject != nil) {
+                    println(responseObject)
+                    var jsonError: NSError?
+                    var jsonData = NSJSONSerialization.JSONObjectWithData(responseObject as NSData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSDictionary
+                    callback(jsonData)
+                }
+                }) { (operation, error) -> Void in
+                    println(error)
+            }
+            
+            operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
+                var written = Float(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
+                progress(written)
+            }
+            
+            self.sessionManager.operationQueue.addOperation(operation)
+        } else {
+            self.regenerateSession()
+        }
+    }
+    
     func deleteSsessionAPI(path: String, params: Dictionary<String, AnyObject>,callback: (AnyObject) -> Void) {
         self.loadCookie()
         if (self.sessionManager != nil) {

@@ -45,6 +45,12 @@
 		E9956B1F19D1ECE200E15D7C /* Trash-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956B1D19D1ECE200E15D7C /* Trash-Line@2x.png */; };
 		E9956B2219D1EDBA00E15D7C /* Conversation-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956B2019D1EDBA00E15D7C /* Conversation-Line.png */; };
 		E9956B2319D1EDBA00E15D7C /* Conversation-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956B2119D1EDBA00E15D7C /* Conversation-Line@2x.png */; };
+		E9977D171A2746E90091FF24 /* Image.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D151A2746E90091FF24 /* Image.png */; };
+		E9977D181A2746E90091FF24 /* Image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D161A2746E90091FF24 /* Image@2x.png */; };
+		E9977D1B1A2746FF0091FF24 /* Camera-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D191A2746FF0091FF24 /* Camera-Line.png */; };
+		E9977D1C1A2746FF0091FF24 /* Camera-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D1A1A2746FF0091FF24 /* Camera-Line@2x.png */; };
+		E9977D221A28E25B0091FF24 /* Close-Filled.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D211A28E25B0091FF24 /* Close-Filled.png */; };
+		E9977D241A28E26B0091FF24 /* Close-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D231A28E26B0091FF24 /* Close-Filled@2x.png */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
 		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
@@ -109,6 +115,12 @@
 		E9956B2019D1EDBA00E15D7C /* Conversation-Line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Conversation-Line.png"; sourceTree = "<group>"; };
 		E9956B2119D1EDBA00E15D7C /* Conversation-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Conversation-Line@2x.png"; sourceTree = "<group>"; };
 		E99603A11A20E23400D23629 /* application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = application.h; sourceTree = "<group>"; };
+		E9977D151A2746E90091FF24 /* Image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Image.png; sourceTree = "<group>"; };
+		E9977D161A2746E90091FF24 /* Image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Image@2x.png"; sourceTree = "<group>"; };
+		E9977D191A2746FF0091FF24 /* Camera-Line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera-Line.png"; sourceTree = "<group>"; };
+		E9977D1A1A2746FF0091FF24 /* Camera-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera-Line@2x.png"; sourceTree = "<group>"; };
+		E9977D211A28E25B0091FF24 /* Close-Filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Close-Filled.png"; path = "../../CupertinoLine/png/Close-Filled.png"; sourceTree = "<group>"; };
+		E9977D231A28E26B0091FF24 /* Close-Filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Close-Filled@2x.png"; path = "../../CupertinoLine/png@2x/Close-Filled@2x.png"; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +218,12 @@
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E99603A11A20E23400D23629 /* application.h */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
+				E9977D211A28E25B0091FF24 /* Close-Filled.png */,
+				E9977D231A28E26B0091FF24 /* Close-Filled@2x.png */,
+				E9977D191A2746FF0091FF24 /* Camera-Line.png */,
+				E9977D1A1A2746FF0091FF24 /* Camera-Line@2x.png */,
+				E9977D151A2746E90091FF24 /* Image.png */,
+				E9977D161A2746E90091FF24 /* Image@2x.png */,
 				E9956AE419D1E12500E15D7C /* Home.png */,
 				E9956AE519D1E12500E15D7C /* Home@2x.png */,
 				E9956AE819D1E19700E15D7C /* Speaking-Line.png */,
@@ -346,7 +364,9 @@
 			files = (
 				E9956AE719D1E12500E15D7C /* Home@2x.png in Resources */,
 				E9956B2319D1EDBA00E15D7C /* Conversation-Line@2x.png in Resources */,
+				E9977D221A28E25B0091FF24 /* Close-Filled.png in Resources */,
 				E9956AF619D1E21700E15D7C /* Settings-Line.png in Resources */,
+				E9977D171A2746E90091FF24 /* Image.png in Resources */,
 				E9956B1719D1ECD300E15D7C /* More-Line@2x.png in Resources */,
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
 				E9956AEF19D1E1CE00E15D7C /* List-Boxes@2x.png in Resources */,
@@ -357,10 +377,14 @@
 				E9956B1A19D1ECDB00E15D7C /* Star-Line.png in Resources */,
 				E9956B1619D1ECD300E15D7C /* More-Line.png in Resources */,
 				E9956B1219D1ECCB00E15D7C /* Import-Line.png in Resources */,
+				E9977D181A2746E90091FF24 /* Image@2x.png in Resources */,
 				E9956B1319D1ECCB00E15D7C /* Import-Line@2x.png in Resources */,
+				E9977D1B1A2746FF0091FF24 /* Camera-Line.png in Resources */,
 				E9956AEB19D1E19700E15D7C /* Speaking-Line@2x.png in Resources */,
+				E9977D241A28E26B0091FF24 /* Close-Filled@2x.png in Resources */,
 				E9956AEA19D1E19700E15D7C /* Speaking-Line.png in Resources */,
 				E9956AEE19D1E1CE00E15D7C /* List-Boxes.png in Resources */,
+				E9977D1C1A2746FF0091FF24 /* Camera-Line@2x.png in Resources */,
 				E9956AE619D1E12500E15D7C /* Home.png in Resources */,
 				E9956B2219D1EDBA00E15D7C /* Conversation-Line.png in Resources */,
 				E91B203A1A11184C008BF1ED /* Mail@2x.png in Resources */,
@@ -536,7 +560,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				APIURL = "http://192.168.1.22:3000/";
+				APIURL = "http://192.168.55.13:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;

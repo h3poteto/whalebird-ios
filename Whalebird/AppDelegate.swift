@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.rootController.setViewControllers(controllers, animated: true)
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
+        // TODO: 認証前なら設定画面に飛ばす
         
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {

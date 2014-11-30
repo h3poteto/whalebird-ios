@@ -8,15 +8,25 @@
 
 import UIKit
 
-class NewTweetViewController: UIViewController, UITextViewDelegate{
+class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    let optionItemBarHeight = CGFloat(40)
+    let imageViewSpan = CGFloat(20)
+    
     var maxSize: CGSize!
     var tweetBody: String!
     var replyToID: String?
     
-    var blankView:UIView!
     var newTweetText: UITextView!
     var cancelButton: UIBarButtonItem!
     var sendButton: UIBarButtonItem!
+    var photostreamButton: UIBarButtonItem?
+    var cameraButton: UIBarButtonItem?
+    var optionItemBar: UIToolbar?
+    var currentCharacters: Int = 140
+    var uploadImageView: UIImageView?
+    var closeImageView: UIButton!
+    var uploadedImage: String?
+    var progressCount = Int(0)
     
     //======================================
     //  instance method
@@ -41,11 +51,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     
     override func loadView() {
         super.loadView()
-        self.blankView = UIView(frame: self.view.bounds)
-        self.blankView.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(self.blankView)
     }
     
+    // TODO: 入力可能文字列カウント
     override func viewDidLoad() {
         super.viewDidLoad()
         let cWindowSize = UIScreen.mainScreen().bounds
@@ -61,7 +69,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         newTweetText.editable = true
         newTweetText.delegate = self
         newTweetText.font = UIFont.systemFontOfSize(18)
-        self.blankView.addSubview(newTweetText)
+        self.view.addSubview(newTweetText)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        
         
     }
 
@@ -77,10 +89,109 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
         newTweetText.becomeFirstResponder()
     }
     
+    func keyboardDidShow(notification: NSNotification) {
+        
+        var windowSize = UIScreen.mainScreen().bounds.size
+        var info = notification.userInfo as NSDictionary?
+        if (info != nil) {
+            var keyboardSize = info!.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue() as CGRect?
+            self.optionItemBar = UIToolbar(frame: CGRectMake(0, keyboardSize!.origin.y - self.optionItemBarHeight, windowSize.width, self.optionItemBarHeight))
+            self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
+            // 配置するボタン
+            var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+            self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
+            self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
+            
+            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer]
+            self.optionItemBar?.setItems(itemArray, animated: true)
+            
+            self.view.addSubview(self.optionItemBar!)
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if (self.optionItemBar != nil) {
+            self.optionItemBar?.removeFromSuperview()
+        }
+    }
+    
     func onCancelTapped() {
-        newTweetText.text = ""
+        self.newTweetText.text = ""
         self.navigationController!.popViewControllerAnimated(true)
         
+    }
+    
+    func openPhotostream() {
+        let ipc:UIImagePickerController = UIImagePickerController();
+        ipc.delegate = self
+        ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        self.presentViewController(ipc, animated:true, completion:nil)
+    }
+    
+    func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        {
+            //camera ok
+            let ipc:UIImagePickerController = UIImagePickerController();
+            ipc.delegate = self
+            ipc.sourceType = UIImagePickerControllerSourceType.Camera
+            self.presentViewController(ipc, animated:true, completion:nil)
+            
+        }
+        
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        if (info[UIImagePickerControllerOriginalImage] != nil) {
+            let image:UIImage = info[UIImagePickerControllerOriginalImage]  as UIImage
+            self.uploadImageView = UIImageView(frame: CGRectMake(self.imageViewSpan, self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2, 50, 50))
+            self.uploadImageView?.image = image
+            var width: CGFloat
+            var height: CGFloat
+            if (image.size.width > image.size.height) {
+                width = CGFloat(50.0)
+                height = CGFloat(50.0 * image.size.height / image.size.width)
+            } else {
+                width = CGFloat(50.0 * image.size.width / image.size.height)
+                height = CGFloat(50.0)
+
+            }
+            self.uploadImageView?.sizeThatFits(CGSize(width: width, height: height))
+            self.view.addSubview(self.uploadImageView!)
+            
+            self.closeImageView = UIButton(frame: CGRectMake(self.uploadImageView!.frame.origin.x + self.uploadImageView!.frame.width, self.uploadImageView!.frame.origin.y - 20, 20.0, 20.0))
+            self.closeImageView.setImage(UIImage(named: "Close-Filled.png"), forState: UIControlState.Normal)
+            self.closeImageView.addTarget(self, action: "removeImage", forControlEvents: UIControlEvents.TouchUpInside)
+            self.view.addSubview(self.closeImageView)
+            
+            // upload処理
+            // Whalebirdのapiにupload
+            // ファイルパスだけ戻してもらってpostのparameterに付随させてtweet判定
+            // TODO: プログレスバーの表示
+            WhalebirdAPIClient.sharedClient.postImage(image, progress: { (written) -> Void in
+                self.progressCount = Int(written * 100)
+                println(self.progressCount)
+                
+            }, callback: { (response) -> Void in
+                println(response)
+                self.uploadedImage = (response as NSDictionary).objectForKey("filename") as? String
+            })
+
+        }
+        //allowsEditingがtrueの場合 UIImagePickerControllerEditedImage
+        //閉じる処理
+        picker.dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    
+    func removeImage() {
+        if (self.uploadImageView != nil) {
+            self.uploadImageView!.removeFromSuperview()
+            self.uploadImageView = nil
+        }
+        self.closeImageView.removeFromSuperview()
+        self.uploadedImage = nil
     }
     
     //-----------------------------------------
@@ -96,20 +207,19 @@ class NewTweetViewController: UIViewController, UITextViewDelegate{
     //-----------------------------------------
     //-----------------------------------------
     func postTweet(aTweetBody: NSString) {
-        var params: Dictionary<String, String>
-        var parameter: Dictionary<String, AnyObject>
+        var params: Dictionary<String, String> = [:]
+        var parameter: Dictionary<String, AnyObject> = [
+            "status" : newTweetText.text
+        ]
         if (self.replyToID != nil) {
-            params = [
-                "in_reply_to_status_id": self.replyToID!
-            ]
-            parameter = [
-                "status" : newTweetText.text,
-                "settings" : params
-            ]
-        } else {
-            parameter = [
-                "status" : newTweetText.text
-            ]
+            params["in_reply_to_status_id"] = self.replyToID!
+        }
+        if (self.uploadedImage != nil) {
+            params["media"] = self.uploadedImage!
+        }
+        
+        if (params.count != 0) {
+            parameter["settings"] = params
         }
         SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in

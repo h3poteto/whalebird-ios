@@ -38,7 +38,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     var deleteButton: UIButton!
     var moreButton: UIButton!
     
-    var optionButtonArea: UILabel!
     
     var newTweetButton: UIBarButtonItem!
     
