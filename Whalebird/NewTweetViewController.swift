@@ -205,7 +205,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         picker.dismissViewControllerAnimated(true, completion: nil);
     }
     
-    
+
     func removeImage() {
         if (self.uploadImageView != nil) {
             self.uploadImageView!.removeFromSuperview()
@@ -213,15 +213,29 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
         self.closeImageView.removeFromSuperview()
         self.uploadedImage = nil
+        WhalebirdAPIClient.sharedClient.cancelRequest()
     }
     
     //-----------------------------------------
     //  送信ボタンを押した時の処理
     //-----------------------------------------
-    func onSendTapped() {
+    func onSendTapped() -> Bool {
+        if (self.uploadImageView != nil) {
+            if (self.uploadedImage == nil) {
+                var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
+                let cOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                })
+                alertController.addAction(cOkAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+                return false
+            }
+        }
         if (countElements(newTweetText.text as String) > 0) {
             postTweet(newTweetText.text)
+            return true
         }
+        return false
     }
     
     

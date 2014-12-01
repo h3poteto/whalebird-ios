@@ -196,6 +196,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.deleteButton)
         } else {
+            // これボタンが小さいので画像変更がほしい
             let cMoreImage = UIImage(named: "More-Line.png")
             self.moreButton = UIButton(frame: CGRectMake(0, 100, cMoreImage!.size.width, cMoreImage!.size.height))
             self.moreButton.setBackgroundImage(cMoreImage, forState: .Normal)

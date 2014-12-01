@@ -18,6 +18,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     var newTweetButton: UIBarButtonItem!
     
     var sinceId: String?
+    let tweetCount = Int(50)
     
     //========================================
     //  instance method
@@ -149,7 +150,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
-            "count" : "20"
+            "count" : String(self.tweetCount)
         ]
         if (aSinceID != nil) {
             params["since_id"] = aSinceID as String!
@@ -171,7 +172,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
-                        if (self.newTimeline.count >= 20) {
+                        if (self.newTimeline.count >= self.tweetCount) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentTimeline.count > 0) {
@@ -207,7 +208,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                             self.currentTimeline += self.newTimeline.reverse()
                         } else {
                             // 途中
-                            if (self.newTimeline.count >= 20) {
+                            if (self.newTimeline.count >= self.tweetCount) {
                                 var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                                 var sinceID = (self.currentTimeline[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
@@ -262,7 +263,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        let cTimelineMin = min(self.currentTimeline.count, 20)
+        let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
         if (cTimelineMin <= 0) {
             return
         }

@@ -42,7 +42,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.rootController.setViewControllers(controllers, animated: true)
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
-        // TODO: 認証前なら設定画面に飛ばす
+        
+        // 認証前なら設定画面に飛ばす
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if ( userDefault.objectForKey("username") == nil) {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+            notice.alpha = 0.8
+            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+            notice.show()
+            self.rootController.presentedViewController
+            (self.rootController.selectedViewController as UINavigationController).pushViewController(settingsViewController, animated: true)
+        }
         
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {

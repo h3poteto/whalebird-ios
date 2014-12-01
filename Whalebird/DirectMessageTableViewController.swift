@@ -18,6 +18,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     var newMessageButton: UIBarButtonItem!
     
     var sinceId: String?
+    let tweetCount = Int(50)
     
     //============================================
     //  instance method
@@ -146,7 +147,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     
     func updateMessage(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
-            "count" : "20"
+            "count" : String(self.tweetCount)
         ]
         if (aSinceID != nil) {
             params["since_id"] = aSinceID as String!
@@ -168,7 +169,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                 if (self.newMessage.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
-                        if (self.newMessage.count >= 20) {
+                        if (self.newMessage.count >= self.tweetCount) {
                             var moreID = self.newMessage.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentMessage.count > 0) {
@@ -204,7 +205,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                             self.currentMessage += self.newMessage.reverse()
                         } else {
                             // 途中
-                            if (self.newMessage.count >= 20) {
+                            if (self.newMessage.count >= self.tweetCount) {
                                 var moreID = self.newMessage.first?.objectForKey("id_str") as String
                                 var sinceID = (self.currentMessage[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
@@ -254,7 +255,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanMessageArray: Array<NSMutableDictionary> = []
-        let cMessageMin = min(self.currentMessage.count, 20)
+        let cMessageMin = min(self.currentMessage.count, self.tweetCount)
         if (cMessageMin <= 0) {
             return
         }

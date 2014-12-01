@@ -12,6 +12,7 @@ import Accounts
 import Social
 
 class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+    let tweetCount = Int(50)
     
     var accountStore: ACAccountStore = ACAccountStore()
     var account: ACAccount = ACAccount()
@@ -180,7 +181,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
-            "count" : "20"
+            "count" : String(self.tweetCount)
         ]
         if (aSinceID != nil) {
             params["since_id"] = aSinceID as String!
@@ -202,7 +203,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
-                        if (self.newTimeline.count >= 20) {
+                        if (self.newTimeline.count >= self.tweetCount) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentTimeline.count > 0) {
@@ -238,7 +239,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                             self.currentTimeline += self.newTimeline.reverse()
                         } else {
                             // 途中
-                            if (self.newTimeline.count >= 20) {
+                            if (self.newTimeline.count >= self.tweetCount) {
                                 var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                                 var sinceID = (self.currentTimeline[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
@@ -293,7 +294,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        let cTimelineMin = min(self.currentTimeline.count, 20)
+        let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
         if (cTimelineMin <= 0) {
             return
         }

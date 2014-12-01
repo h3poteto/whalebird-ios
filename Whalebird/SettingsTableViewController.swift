@@ -21,6 +21,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     var notificationRTFlag: Bool = false
     var notificationDMFlag: Bool = false
     var deviceToken = String?()
+    var notificationForegroundSwitch: UISwitch!
     
     var account: ACAccount!
     var accountStore: ACAccountStore!
@@ -168,14 +169,16 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                 break
             case 1:
                 cellTitle = "起動中の通知"
-                var notificationForegroundSwitch = UISwitch(frame: CGRect.zeroRect)
+                self.notificationForegroundSwitch = UISwitch(frame: CGRect.zeroRect)
                 var userDefault = NSUserDefaults.standardUserDefaults()
                 if (userDefault.objectForKey("notificationForegroundFlag") != nil) {
                     self.notificationForegroundFlag = userDefault.boolForKey("notificationForegroundFlag")
                 }
-                notificationForegroundSwitch.on = self.notificationForegroundFlag
-                notificationForegroundSwitch.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
-                cell.accessoryView = notificationForegroundSwitch
+                self.notificationForegroundSwitch.on = self.notificationForegroundFlag
+                // そもそもの通知がオフの時は使えなくする必要がある
+                self.notificationForegroundSwitch.enabled = self.notificationBackgroundFlag
+                self.notificationForegroundSwitch.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                cell.accessoryView = self.notificationForegroundSwitch
                 break
             default:
                 break
@@ -491,8 +494,17 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
     func tappedNotificationBackgroundSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
+        
+        // 通知がオフのときはforegroundの通知も不可能になる
+        userDefault.setBool(false, forKey: "notificationForegroundFlag")
         self.notificationBackgroundFlag = !self.notificationBackgroundFlag
+        if (!self.notificationBackgroundFlag) {
+            self.notificationForegroundSwitch.enabled = false
+        } else {
+            self.notificationForegroundSwitch.enabled = true
+        }
         self.syncWhalebirdServer()
+        //tableView.reloadData()
     }
     
     func tappedNotificationReplySwitch() {

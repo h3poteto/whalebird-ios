@@ -10,6 +10,7 @@ import UIKit
 
 class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     let PageControlViewHeight = CGFloat(20)
+    let tweetCount = Int(50)
     
     var streamElement: ListTableViewController.Stream!
     var currentTimeline: Array<AnyObject> = []
@@ -222,7 +223,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         case "list":
             params = [
                 "list_id" : self.streamElement.id as String!,
-                "count" : "20"
+                "count" : String(self.tweetCount)
             ]
             if (aSinceID != nil) {
                 params["since_id"] = aSinceID as String!
@@ -248,7 +249,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
-                        if (self.newTimeline.count >= 20) {
+                        if (self.newTimeline.count >= self.tweetCount) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentTimeline.count > 0) {
@@ -284,7 +285,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                             self.currentTimeline += self.newTimeline.reverse()
                         } else {
                             // 途中
-                            if (self.newTimeline.count >= 20) {
+                            if (self.newTimeline.count >= self.tweetCount) {
                                 var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                                 var sinceID = (self.currentTimeline[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
@@ -320,9 +321,17 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
 
     func hundleLeftSwipe(sender: AnyObject) {
         if (self.pageControl.currentPage + 1 < self.pageControl.numberOfPages) {
+            // push向きアニメーション生成
+            var transition = CATransition()
+            transition.duration = 0.4
+            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromRight
+            
             self.pageControl.currentPage += 1
-            var rightView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
-            self.navigationController!.pushViewController(rightView, animated: true)
+            var leftView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
+            self.navigationController!.view.layer.addAnimation(transition, forKey: nil)
+            self.navigationController!.pushViewController(leftView, animated: true)
         }
     }
     
@@ -359,7 +368,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     func destroy() {
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
-        let cTimelineMin = min(self.currentTimeline.count, 20)
+        let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
         if (cTimelineMin <= 0) {
             return
         }
