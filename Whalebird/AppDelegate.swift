@@ -50,8 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             notice.alpha = 0.8
             notice.originY = UIApplication.sharedApplication().statusBarFrame.height
             notice.show()
+            var loginSettingsView = SettingsTableViewController()
             self.rootController.presentedViewController
-            (self.rootController.selectedViewController as UINavigationController).pushViewController(settingsViewController, animated: true)
+            (self.rootController.selectedViewController as UINavigationController).pushViewController(loginSettingsView, animated: true)
         }
         
         // RemoteNotificationからの復帰処理

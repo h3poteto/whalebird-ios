@@ -74,7 +74,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
-    // TODO: 下方向スクロールを２回以上やると表示されない
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -381,6 +380,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.currentTimeline.append(newTweet)
                     }
                 }
+                // ここでtableView.contentSizeを再計算しないとだめっぽい
+                self.tableView.frame.size.height = CGFloat(self.currentTimeline.count) * 200.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
@@ -406,7 +407,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 var user = aFollows as NSDictionary
                 self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
                 self.followUsers = self.followUsers + (user.objectForKey("users") as Array<AnyObject>)
-                self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0
+                self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
