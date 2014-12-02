@@ -105,6 +105,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         var windowSize = UIScreen.mainScreen().bounds.size
         var info = notification.userInfo as NSDictionary?
         if (info != nil) {
+            self.optionItemBar?.removeFromSuperview()
             var keyboardSize = info!.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue() as CGRect?
             self.optionItemBar = UIToolbar(frame: CGRectMake(0, keyboardSize!.origin.y - self.optionItemBarHeight, windowSize.width, self.optionItemBarHeight))
             self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
@@ -184,6 +185,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.closeImageView.setImage(UIImage(named: "Close-Filled.png"), forState: UIControlState.Normal)
             self.closeImageView.addTarget(self, action: "removeImage", forControlEvents: UIControlEvents.TouchUpInside)
             self.view.addSubview(self.closeImageView)
+            
+            // TODO: カメラの場合は保存をさせよう
+            // TODO: いずれの場合もリサイズは必須
             
             // upload処理
             // Whalebirdのapiにupload
