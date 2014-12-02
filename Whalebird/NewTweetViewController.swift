@@ -158,19 +158,34 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
             let image:UIImage = info[UIImagePickerControllerOriginalImage]  as UIImage
-            var width: CGFloat
-            var height: CGFloat
+            // カメラで撮影するだけでは保存はされていない
+            if (picker.sourceType == UIImagePickerControllerSourceType.Camera) {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            }
+            
+            // アス比を固定したままリサイズ
+            var sendWidth = CGFloat(image.size.width)
+            var sendHeight = CGFloat(image.size.height)
+            var width = CGFloat(image.size.width)
+            var height = CGFloat(image.size.height)
             if (image.size.width > image.size.height) {
                 width = CGFloat(50.0)
                 height = CGFloat(50.0 * image.size.height / image.size.width)
+                sendWidth = CGFloat(800.0)
+                sendHeight = CGFloat(800.0 * image.size.height / image.size.width)
             } else {
                 width = CGFloat(50.0 * image.size.width / image.size.height)
                 height = CGFloat(50.0)
+                sendWidth = CGFloat(800.0 * image.size.width / image.size.height)
+                sendHeight = CGFloat(800.0)
 
             }
+            
+            var resizedImage = self.resizeImage(image, newSize: CGSize(width: sendWidth, height: sendHeight))
+            
             self.uploadImageView?.sizeThatFits(CGSize(width: width, height: height))
             self.uploadImageView = UIImageView(frame: CGRectMake(self.imageViewSpan, self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2, width, height))
-            self.uploadImageView?.image = image
+            self.uploadImageView?.image = resizedImage
             self.view.addSubview(self.uploadImageView!)
             
             var progressView = DACircularProgressView(frame: CGRectMake(0, 0, width * 2.0 / 3.0, height * 2.0 / 3.0))
@@ -186,13 +201,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.closeImageView.addTarget(self, action: "removeImage", forControlEvents: UIControlEvents.TouchUpInside)
             self.view.addSubview(self.closeImageView)
             
-            // TODO: カメラの場合は保存をさせよう
-            // TODO: いずれの場合もリサイズは必須
-            
             // upload処理
             // Whalebirdのapiにupload
             // ファイルパスだけ戻してもらってpostのparameterに付随させてtweet判定
-            WhalebirdAPIClient.sharedClient.postImage(image, progress: { (written) -> Void in
+            WhalebirdAPIClient.sharedClient.postImage(resizedImage, progress: { (written) -> Void in
                 self.progressCount = Int(written * 100)
                 println(self.progressCount)
                 progressView.setProgress(CGFloat(written), animated: true)
@@ -244,6 +256,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     
     //-----------------------------------------
+    //  whalebirdにPOST
     //-----------------------------------------
     func postTweet(aTweetBody: NSString) {
         var params: Dictionary<String, String> = [:]
@@ -273,6 +286,48 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             })
         }
     }
+    
+    //-----------------------------------------------
+    //  resizeには軽さを求めるのでCoreGraphicsを使う
+    //-----------------------------------------------
+    func resizeImage(srcImage: UIImage, newSize: CGSize) -> UIImage {
+        let targetWidth = newSize.width
+        let targetHeight = newSize.height
+        
+        let imageRef = srcImage.CGImage as CGImageRef
+        let bitmapInfo = CGImageGetBitmapInfo(imageRef) as CGBitmapInfo
+        let colorSpaceInfo = CGImageGetColorSpace(imageRef) as CGColorSpaceRef
+        
+        var bitmap: CGContextRef!
+        if (srcImage.imageOrientation == UIImageOrientation.Up || srcImage.imageOrientation == UIImageOrientation.Down) {
+            bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
+        } else {
+            bitmap = CGBitmapContextCreate(nil, UInt(targetHeight), UInt(targetWidth), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
+        }
+        
+        if (srcImage.imageOrientation == UIImageOrientation.Left) {
+            CGContextRotateCTM(bitmap, self.radian(90))
+            CGContextTranslateCTM(bitmap, 0, -targetHeight)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
+            CGContextRotateCTM(bitmap, self.radian(-90))
+            CGContextTranslateCTM(bitmap, -targetWidth, 0)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
+            
+        } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
+            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
+            CGContextRotateCTM(bitmap, self.radian(-180))
+        }
+        
+        CGContextDrawImage(bitmap, CGRectMake(0, 0, targetWidth, targetHeight), imageRef)
+        var ref = CGBitmapContextCreateImage(bitmap)
+        var newImage = UIImage(CGImage: ref) as UIImage!
+        
+        return newImage
+        
+    }
 
 
+    func radian(degree: Float) -> CGFloat {
+        return CGFloat(degree * 3.14159265358979323846 / 180.0)
+    }
 }
