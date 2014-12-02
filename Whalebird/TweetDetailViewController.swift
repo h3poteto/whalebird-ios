@@ -196,10 +196,24 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.deleteButton)
         } else {
-            // これボタンが小さいので画像変更がほしい
-            let cMoreImage = UIImage(named: "More-Line.png")
-            self.moreButton = UIButton(frame: CGRectMake(0, 100, cMoreImage!.size.width, cMoreImage!.size.height))
-            self.moreButton.setBackgroundImage(cMoreImage, forState: .Normal)
+            // このボタンが小さいので領域拡大
+            var cMoreImage = UIImage(named: "More-Line.png")
+            
+            var width = cMoreImage!.size.width
+            var height = cMoreImage!.size.width
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), false, 0.0);
+            var context = UIGraphicsGetCurrentContext() as CGContextRef
+            UIGraphicsPushContext(context)
+            
+            let origin = CGPointMake((width - cMoreImage!.size.width) / 2.0, (height - cMoreImage!.size.height) / 2.0)
+            cMoreImage?.drawAtPoint(origin)
+            
+            UIGraphicsPopContext()
+            var newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            self.moreButton = UIButton(frame: CGRectMake(0, 100, newImage.size.width, newImage.size.width))
+            self.moreButton.setBackgroundImage(newImage, forState: .Normal)
             self.moreButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.moreButton)
