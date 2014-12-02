@@ -11,8 +11,7 @@ import UIKit
 class StackListTableViewController: UITableViewController {
     
     var twitterScreenName: String?
-    var stackTarget: NSURL!
-    var stackListArray = NSArray()
+    var stackListArray: Array<ListTableViewController.Stream> = []
     var selectedIndex: Int?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -32,12 +31,22 @@ class StackListTableViewController: UITableViewController {
     
     override init() {
         super.init()
+        var favStream = ListTableViewController.Stream(
+            image: "",
+            name: "お気に入り",
+            type: "myself",
+            uri: "users/apis/user_favorites.json",
+            id: "")
+        var myselfStream = ListTableViewController.Stream(
+            image: "",
+            name: "送信済みツイート",
+            type: "myself",
+            uri: "users/apis/user_timeline.json",
+            id: "")
+        self.stackListArray.append(myselfStream)
+        self.stackListArray.append(favStream)
     }
     
-    init(aStackTarget: NSURL) {
-        super.init()
-        self.stackTarget = aStackTarget
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +73,15 @@ class StackListTableViewController: UITableViewController {
                 var q_main = dispatch_get_main_queue()
                 println(aStackList)
                 dispatch_async(q_main, {()->Void in
-                    self.stackListArray = aStackList
+                    for list in aStackList {
+                        var streamElement = ListTableViewController.Stream(
+                            image: "",
+                            name: list.objectForKey("full_name") as String,
+                            type: "list",
+                            uri: list.objectForKey("uri") as String,
+                            id: list.objectForKey("id_str") as String)
+                        self.stackListArray.append(streamElement)
+                    }
                     self.tableView.reloadData()
                     SVProgressHUD.dismiss()
                 })
@@ -95,7 +112,7 @@ class StackListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel.text = (self.stackListArray.objectAtIndex(indexPath.row) as NSDictionary).objectForKey("full_name") as? String
+        cell.textLabel.text = self.stackListArray[indexPath.row].name
         
         return cell
     }
@@ -118,12 +135,7 @@ class StackListTableViewController: UITableViewController {
             let cViewControllers = self.navigationController!.viewControllers as NSArray
             let cViewControllersCount = cViewControllers.count as Int
             let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as ListTableViewController
-            var streamElement = ListTableViewController.Stream(
-                image: "",
-                name: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("full_name") as String,
-                type: "list", uri: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("uri") as String,
-                id: self.stackListArray.objectAtIndex(self.selectedIndex!).objectForKey("id_str") as String)
-            cParentController.streamList.append(streamElement)
+            cParentController.streamList.append(self.stackListArray[self.selectedIndex!])
         }
     }
 

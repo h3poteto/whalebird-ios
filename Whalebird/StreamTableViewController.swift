@@ -219,30 +219,41 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String>!
+        var apiURL = "users/apis/list_timeline.json"
         switch self.streamElement.type {
         case "list":
             params = [
                 "list_id" : self.streamElement.id as String!,
                 "count" : String(self.tweetCount)
             ]
-            if (aSinceID != nil) {
-                params["since_id"] = aSinceID as String!
-            }
-            if (aMoreIndex != nil) {
-                var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
-                // max_idは「以下」という判定になるので自身を含めない
-                var intMoreID = strMoreID.toInt()! - 1
-                params["max_id"] = String(intMoreID)
-            }
+            break
+        case "myself":
+            apiURL = self.streamElement.uri
+            params = [
+                "count" : String(self.tweetCount)
+            ]
+            
             break
         default:
             break
         }
+        if (aSinceID != nil) {
+            params["since_id"] = aSinceID as String!
+        }
+        if (aMoreIndex != nil) {
+            var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
+            // max_idは「以下」という判定になるので自身を含めない
+            var intMoreID = strMoreID.toInt()! - 1
+            params["max_id"] = String(intMoreID)
+        }
+        
+        var userDefault = NSUserDefaults.standardUserDefaults()
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params,
+            "screen_name" : userDefault.objectForKey("username") as String
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/list_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
+        WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = aNewTimeline

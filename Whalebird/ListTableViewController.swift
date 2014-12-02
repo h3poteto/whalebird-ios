@@ -22,6 +22,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     
+    // TODO: ふぁぼリスト，自分の発言等，自分関連のものも扱えるように
     //==============================================
     //  instance method
     //==============================================
@@ -162,7 +163,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
 
 
     func addNewItem(sender: AnyObject) {
-        var stackListTableView = StackListTableViewController(aStackTarget: NSURL(string: "https://api.twitter.com/1.1/lists/list.json")!)
+        var stackListTableView = StackListTableViewController()
         self.navigationController?.pushViewController(stackListTableView, animated: true)
     }
 }

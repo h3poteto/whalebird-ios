@@ -355,7 +355,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
-            "count" : "10"
+            "count" : "20"
         ]
         if (aMoreIndex != nil) {
             var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("id_str") as String
@@ -376,10 +376,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.currentTimeline.insert(newTweet, atIndex: 0)
                     }
                 } else {
-                    for newTweet in self.newTimeline {
+                    for newTweet in self.newTimeline.reverse() {
                         self.currentTimeline.append(newTweet)
                     }
                 }
+
                 // ここでtableView.contentSizeを再計算しないとだめっぽい
                 self.tableView.frame.size.height = CGFloat(self.currentTimeline.count) * 200.0 + self.headerHeight
                 self.tableView.reloadData()
