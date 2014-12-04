@@ -306,7 +306,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             break
         }
         
-        cell.textLabel.text = cellTitle
+        cell.textLabel!.text = cellTitle
         cell.detailTextLabel?.text = cellDetailTitle
         
         return cell

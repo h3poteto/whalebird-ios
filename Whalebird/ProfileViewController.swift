@@ -273,9 +273,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var error = NSError?()
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
             
-            cell?.imageView.image = UIImage(data: NSData(
+            cell?.imageView?.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
                 options: NSDataReadingOptions.DataReadingMappedAlways,
                 error: &error)!)
@@ -284,9 +284,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var error = NSError?()
             var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
             
-            cell?.imageView.image = UIImage(data: NSData(
+            cell?.imageView?.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
                 options: NSDataReadingOptions.DataReadingMappedAlways,
                 error: &error)!)

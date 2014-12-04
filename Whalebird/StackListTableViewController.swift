@@ -112,7 +112,7 @@ class StackListTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel.text = self.stackListArray[indexPath.row].name
+        cell.textLabel?.text = self.stackListArray[indexPath.row].name
         
         return cell
     }

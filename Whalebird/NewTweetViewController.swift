@@ -30,6 +30,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var uploadedImage: String?
     var progressCount = Int(0)
     
+
+    // 右上は送信
+    // アラートは敬語
     //======================================
     //  instance method
     //======================================
@@ -61,9 +64,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.maxSize = cWindowSize.size
         
         self.cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
+        self.cancelButton.title = "キャンセル"
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
         self.sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onSendTapped")
+        self.sendButton.title = "送信"
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
@@ -239,7 +244,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.uploadImageView != nil) {
             if (self.uploadedImage == nil) {
                 var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
-                let cOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 })
                 alertController.addAction(cOkAction)
                 self.presentViewController(alertController, animated: true, completion: nil)

@@ -22,7 +22,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     
-    // TODO: ふぁぼリスト，自分の発言等，自分関連のものも扱えるように
+    // TODO: 検索から結果を保存できるようにしておく
     //==============================================
     //  instance method
     //==============================================
@@ -52,9 +52,12 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        self.editButtonItem().title = "編集"
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addNewItem:")
         self.navigationItem.leftBarButtonItem = self.addItemButton
+        
+        self.tableView.allowsSelectionDuringEditing = true
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var userStreamList = userDefaults.arrayForKey("streamList") as Array?
@@ -69,6 +72,21 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
                     id: streamList.objectForKey("id") as String),
                     atIndex: 0)
             }
+        } else {
+            var favStream = ListTableViewController.Stream(
+                image: "",
+                name: "お気に入り",
+                type: "myself",
+                uri: "users/apis/user_favorites.json",
+                id: "")
+            var myselfStream = ListTableViewController.Stream(
+                image: "",
+                name: "送信済みツイート",
+                type: "myself",
+                uri: "users/apis/user_timeline.json",
+                id: "")
+            self.streamList.append(myselfStream)
+            self.streamList.append(favStream)
         }
         
     }
@@ -116,7 +134,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel.text = self.streamList[indexPath.row].name
+        cell.textLabel!.text = self.streamList[indexPath.row].name
 
         return cell
     }

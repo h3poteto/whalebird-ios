@@ -264,8 +264,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     }
 
     func tappedDelete() {
-        var alertController = UIAlertController(title: "ツイート削除", message: "削除していい？", preferredStyle: .Alert)
-        let cOkAction = UIAlertAction(title: "OK", style: .Default, handler: {action in
+        var alertController = UIAlertController(title: "ツイート削除", message: "本当に削除しますか？", preferredStyle: .Alert)
+        let cOkAction = UIAlertAction(title: "はい", style: .Default, handler: {action in
             println("OK")
             var params:Dictionary<String, String> = [
                 "id" : self.tweetID
@@ -286,7 +286,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
                 })
             })
         })
-        let cCancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
+        let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
             println("Cancel")
         })
         alertController.addAction(cOkAction)
@@ -296,7 +296,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     }
     
     func tappedMore() {
-        var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil)
+        var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
         retweetSelectSheet.addButtonWithTitle("公式RT")
         retweetSelectSheet.addButtonWithTitle("非公式RT")
         retweetSelectSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
@@ -308,8 +308,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         switch buttonIndex{
         case 1:
             // 公式RTの処理．直接POSTしちゃって構わない
-            var alertController = UIAlertController(title: "公式RT", message: "RTしていい？", preferredStyle: .Alert)
-            let cOkAction = UIAlertAction(title: "OK", style: .Default, handler: {action in
+            var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
+            let cOkAction = UIAlertAction(title: "はい", style: .Default, handler: {action in
                 println("OK")
                 var params:Dictionary<String, String> = [
                     "id" : self.tweetID
@@ -322,14 +322,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in
                         SVProgressHUD.dismiss()
-                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "リツイートしました")
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
                         notice.alpha = 0.8
                         notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                         notice.show()
                     })
                 })
             })
-            let cCancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
+            let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
                 println("Cancel")
             })
             alertController.addAction(cOkAction)
