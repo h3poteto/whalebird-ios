@@ -63,12 +63,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         let cWindowSize = UIScreen.mainScreen().bounds
         self.maxSize = cWindowSize.size
         
-        self.cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "onCancelTapped")
-        self.cancelButton.title = "キャンセル"
+        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: "onCancelTapped")
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "onSendTapped")
-        self.sendButton.title = "送信"
+        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: "onSendTapped")
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))

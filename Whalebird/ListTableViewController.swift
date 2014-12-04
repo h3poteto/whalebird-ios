@@ -156,13 +156,14 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if(editing){
+            self.editButtonItem().title = "完了"
+        }else{
+            self.editButtonItem().title = "編集"
+        }
     }
-    */
 
     
     // Override to support editing the table view.
@@ -173,7 +174,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     
 
