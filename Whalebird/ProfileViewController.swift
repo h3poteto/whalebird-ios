@@ -87,6 +87,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.scrollEnabled = false
+        self.tableView.separatorInset = UIEdgeInsetsZero
         self.scrollView.addSubview(self.tableView)
         self.scrollView.scrollEnabled = true
         self.scrollView.delegate = self
@@ -273,7 +274,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var error = NSError?()
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             
             cell?.imageView?.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
@@ -284,7 +287,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var error = NSError?()
             var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as? String
+            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             
             cell?.imageView?.image = UIImage(data: NSData(
                 contentsOfURL: profileImageURL!,
@@ -367,6 +372,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -401,7 +407,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.show()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

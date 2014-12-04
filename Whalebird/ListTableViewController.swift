@@ -58,6 +58,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.navigationItem.leftBarButtonItem = self.addItemButton
         
         self.tableView.allowsSelectionDuringEditing = true
+        self.tableView.separatorInset = UIEdgeInsetsZero
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var userStreamList = userDefaults.arrayForKey("streamList") as Array?
@@ -135,6 +136,11 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel!.text = self.streamList[indexPath.row].name
+        if (self.streamList[indexPath.row].type == "list") {
+            cell.imageView?.image = UIImage(named: "List-Dots.png")
+        } else {
+            cell.imageView?.image = UIImage(named: "Profile-Filled.png")
+        }
 
         return cell
     }
