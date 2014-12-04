@@ -72,7 +72,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
         self.newTweetText.editable = true
         self.newTweetText.delegate = self
-        self.newTweetText.font = UIFont.systemFontOfSize(18)
+        self.newTweetText.font = UIFont(name: TimelineViewCell.NormalFont, size: 18)
         self.view.addSubview(self.newTweetText)
         
         self.newTweetText.keyboardAppearance = UIKeyboardAppearance.Light

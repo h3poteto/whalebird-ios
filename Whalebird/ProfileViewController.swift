@@ -134,7 +134,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
                         self.userNameLabel.text = aUserData.objectForKey("name") as String!
-                        self.userNameLabel.font = UIFont.boldSystemFontOfSize(14)
+                        self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
                         self.userNameLabel.textColor = UIColor.blackColor()
                         self.userNameLabel.sizeToFit()
                         self.userNameLabel.textAlignment = NSTextAlignment.Center
@@ -151,7 +151,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 110, self.windowSize.width * 0.8, 15))
                         self.descriptionLabel.numberOfLines = 3
                         self.descriptionLabel.text = aUserData.objectForKey("description") as? String
-                        self.descriptionLabel.font = UIFont.systemFontOfSize(11)
+                        self.descriptionLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 11)
                         self.descriptionLabel.sizeToFit()
                         self.descriptionLabel.textAlignment = NSTextAlignment.Center
                         var descriptionFrame: CGRect = self.descriptionLabel.frame
@@ -275,7 +275,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             
             cell?.imageView?.image = UIImage(data: NSData(
@@ -288,7 +290,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             
             cell?.imageView?.image = UIImage(data: NSData(

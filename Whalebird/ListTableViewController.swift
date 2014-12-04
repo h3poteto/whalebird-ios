@@ -136,6 +136,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel!.text = self.streamList[indexPath.row].name
+        cell.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         switch self.streamList[indexPath.row].type {
         case "list":
             cell.imageView?.image = UIImage(named: "List-Dots.png")

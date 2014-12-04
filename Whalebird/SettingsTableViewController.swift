@@ -10,7 +10,7 @@ import UIKit
 import Accounts
 import Social
 
-class SettingsTableViewController: UITableViewController, UIActionSheetDelegate {
+class SettingsTableViewController: UITableViewController{
     
     var twitterAccounts: NSArray!
     var userstreamFlag: Bool = false
@@ -109,6 +109,13 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         return sectionTitle
     }
     
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header:UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        
+        header.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
+    }
+    
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         var sectionTitle = String?()
         switch(section) {
@@ -128,6 +135,11 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
             break
         }
         return sectionTitle
+    }
+
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer: UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        footer.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -195,7 +207,7 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
                     cellDetailTitle = "アラート表示"
                     break
                 case 2:
-                    cellDetailTitle = "ヘッダー通知"
+                    cellDetailTitle = "ヘッダー表示"
                     break
                 default:
                     cellDetailTitle = "アラート表示"
@@ -307,7 +319,9 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
         }
         
         cell.textLabel!.text = cellTitle
+        cell.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         cell.detailTextLabel?.text = cellDetailTitle
+        cell.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
         return cell
     }
@@ -379,63 +393,74 @@ class SettingsTableViewController: UITableViewController, UIActionSheetDelegate 
 
     
     func stackNotificationType() {
-        var notificationTypeSheet = UIActionSheet(title: "通知方法選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        notificationTypeSheet.tag = 1
-        notificationTypeSheet.addButtonWithTitle("アラート表示")
-        notificationTypeSheet.addButtonWithTitle("ヘッダー通知")
-        notificationTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-        notificationTypeSheet.showInView(self.view)
+        
+        var notificationTypeSheet = UIAlertController(title: "通知方法選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alertAction = UIAlertAction(title: "アラート表示", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(1, forKey: "notificationType")
+            self.tableView.reloadData()
+        }
+        let headerAction = UIAlertAction(title: "ヘッダー表示", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(2, forKey: "notificationType")
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        notificationTypeSheet.addAction(alertAction)
+        notificationTypeSheet.addAction(headerAction)
+        notificationTypeSheet.addAction(cancelAction)
+        self.presentViewController(notificationTypeSheet, animated: true, completion: nil)
     }
     
     func stackDisplayNameType() {
-        var nameTypeSheet = UIActionSheet(title: "表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        nameTypeSheet.tag = 2
-        nameTypeSheet.addButtonWithTitle("名前+スクリーンネーム")
-        nameTypeSheet.addButtonWithTitle("スクリーンネーム")
-        nameTypeSheet.addButtonWithTitle("名前")
-        nameTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-        nameTypeSheet.showInView(self.view)
+        
+        var nameTypeSheet = UIAlertController(title: "表示名選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let nameAndScreenAction = UIAlertAction(title: "名前+スクリーンネーム", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(1, forKey: "displayNameType")
+            self.tableView.reloadData()
+        }
+        let screenAction = UIAlertAction(title: "スクリーンネーム", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(2, forKey: "displayNameType")
+            self.tableView.reloadData()
+        }
+        let nameAction = UIAlertAction(title: "名前", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(3, forKey: "displayNameType")
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        nameTypeSheet.addAction(nameAndScreenAction)
+        nameTypeSheet.addAction(screenAction)
+        nameTypeSheet.addAction(nameAction)
+        nameTypeSheet.addAction(cancelAction)
+        self.presentViewController(nameTypeSheet, animated: true, completion: nil)
     }
     
     func stackDisplayTimeType() {
-        var timeTypeSheet = UIActionSheet(title: "時刻表示名選択", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        timeTypeSheet.tag = 3
-        timeTypeSheet.addButtonWithTitle("絶対時刻")
-        timeTypeSheet.addButtonWithTitle("相対時刻")
-        timeTypeSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-        timeTypeSheet.showInView(self.view)
-    }
-    
-    
-    func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
-        switch(actionSheet.tag) {
-        case 0:
-            break
-        case 1:
-            if (buttonIndex > 0 && buttonIndex <= 2) {
-                var userDefault = NSUserDefaults.standardUserDefaults()
-                userDefault.setInteger(buttonIndex, forKey: "notificationType")
-                tableView.reloadData()
-            }
-            break
-        case 2:
-            if (buttonIndex > 0 && buttonIndex <= 3) {
-                var userDefault = NSUserDefaults.standardUserDefaults()
-                userDefault.setInteger(buttonIndex, forKey: "displayNameType")
-                tableView.reloadData()
-            }
-            break
-        case 3:
-            if (buttonIndex > 0 && buttonIndex <= 2) {
-                var userDefault = NSUserDefaults.standardUserDefaults()
-                userDefault.setInteger(buttonIndex, forKey: "displayTimeType")
-                tableView.reloadData()
-            }
-            break
-        default:
-            break
+        
+        var timeTypeSheet = UIAlertController(title: "時刻表示選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let absoluteTimeAction = UIAlertAction(title: "絶対時刻", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(1, forKey: "displayTimeType")
+            self.tableView.reloadData()
         }
+        let relativeTimeAction = UIAlertAction(title: "相対時刻", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(2, forKey: "displayTimeType")
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        timeTypeSheet.addAction(absoluteTimeAction)
+        timeTypeSheet.addAction(relativeTimeAction)
+        timeTypeSheet.addAction(cancelAction)
+        self.presentViewController(timeTypeSheet, animated: true, completion: nil)
     }
+
 
     func tappedUserstreamSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()

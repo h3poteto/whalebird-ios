@@ -113,6 +113,7 @@ class StackListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.text = self.stackListArray[indexPath.row].name
+        cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
         return cell
     }

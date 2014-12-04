@@ -25,6 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.backgroundColor = UIColor.whiteColor()
         
+        let tabBarFont: UIFont! = UIFont(name: TimelineViewCell.NormalFont, size: 10)
+        let tabBarFontDict = [NSFontAttributeName: tabBarFont]
+        UITabBarItem.appearance().setTitleTextAttributes(tabBarFontDict, forState: UIControlState.Normal)
+        UITabBarItem.appearance().setTitleTextAttributes(tabBarFontDict, forState: UIControlState.Selected)
+        let navBarFont: UIFont! = UIFont(name: TimelineViewCell.BoldFont, size: 16)
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: navBarFont]
+        let barButtonFont: UIFont! = UIFont(name: TimelineViewCell.NormalFont, size: 16)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], forState: UIControlState.Normal)
+        
         
         self.rootController = UITabBarController()
         self.rootController.delegate = self

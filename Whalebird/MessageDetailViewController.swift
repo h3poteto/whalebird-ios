@@ -76,7 +76,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
             self.userNameLabel.setTitle(self.userName, forState: .Normal)
         }
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        self.userNameLabel.titleLabel?.font = UIFont.boldSystemFontOfSize(15)
+        self.userNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.BoldFont, size: 15)
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
@@ -90,7 +90,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
             self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
         }
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
-        self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(15)
+        self.screenNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
@@ -102,14 +102,14 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0
-        self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
+        self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = self.messageBody
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
         
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.text = self.postDetail
-        self.postDetailLabel.font = UIFont.systemFontOfSize(12)
+        self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.view.addSubview(self.postDetailLabel)
         
         self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedReplyMessage")

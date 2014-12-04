@@ -114,7 +114,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.userNameLabel.setTitle(self.userName, forState: .Normal)
         }
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        self.userNameLabel.titleLabel?.font = UIFont.boldSystemFontOfSize(15)
+        self.userNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.BoldFont, size: 15)
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
@@ -129,7 +129,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
         }
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
-        self.screenNameLabel.titleLabel?.font = UIFont.systemFontOfSize(15)
+        self.screenNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
@@ -141,7 +141,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         self.tweetBodyLabel.numberOfLines = 0
-        self.tweetBodyLabel.font = UIFont.systemFontOfSize(15)
+        self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = self.tweetBody
         self.tweetBodyLabel.sizeToFit()
         self.blankView.addSubview(self.tweetBodyLabel)
@@ -149,14 +149,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.textAlignment = NSTextAlignment.Right
         self.postDetailLabel.text = self.postDetail
-        self.postDetailLabel.font = UIFont.systemFontOfSize(12)
+        self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.blankView.addSubview(self.postDetailLabel)
         
         if (self.retweetedName != nil) {
             self.retweetedNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
             self.retweetedNameLabel?.setTitle("Retweeted by @" + self.retweetedName!, forState: UIControlState.Normal)
             self.retweetedNameLabel?.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
-            self.retweetedNameLabel?.titleLabel?.font = UIFont.systemFontOfSize(13)
+            self.retweetedNameLabel?.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
             self.retweetedNameLabel?.contentEdgeInsets = UIEdgeInsetsZero
             self.retweetedNameLabel?.addTarget(self, action: "tappedRetweetedProfile", forControlEvents: UIControlEvents.TouchDown)
             self.blankView.addSubview(self.retweetedNameLabel!)
@@ -296,17 +296,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     }
     
     func tappedMore() {
-        var retweetSelectSheet = UIActionSheet(title: "Retweet", delegate: self, cancelButtonTitle: "キャンセル", destructiveButtonTitle: nil)
-        retweetSelectSheet.addButtonWithTitle("公式RT")
-        retweetSelectSheet.addButtonWithTitle("非公式RT")
-        retweetSelectSheet.actionSheetStyle = UIActionSheetStyle.BlackTranslucent
-        retweetSelectSheet.showInView(self.view)
-        
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
-        switch buttonIndex{
-        case 1:
+        var retweetSelectSheet = UIAlertController(title: "Retweet", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let oficialRetweetAction = UIAlertAction(title: "公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
             // 公式RTの処理．直接POSTしちゃって構わない
             var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
             let cOkAction = UIAlertAction(title: "はい", style: .Default, handler: {action in
@@ -334,15 +325,19 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
             })
             alertController.addAction(cOkAction)
             alertController.addAction(cCancelAction)
-            presentViewController(alertController, animated: true, completion: nil)
-            break
-        case 2:
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
             var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.userName + " " + self.tweetBody!, aReplyToID: self.tweetID)
             self.navigationController!.pushViewController(retweetView, animated: true)
-            break
-        default:
-            break
         }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        retweetSelectSheet.addAction(oficialRetweetAction)
+        retweetSelectSheet.addAction(unoficialRetweetAction)
+        retweetSelectSheet.addAction(cancelAction)
+        self.presentViewController(retweetSelectSheet, animated: true, completion: nil)
+        
     }
     
     func tappedNewTweet(sender: AnyObject) {
