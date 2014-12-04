@@ -136,11 +136,17 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel!.text = self.streamList[indexPath.row].name
-        if (self.streamList[indexPath.row].type == "list") {
+        switch self.streamList[indexPath.row].type {
+        case "list":
             cell.imageView?.image = UIImage(named: "List-Dots.png")
-        } else {
+            break
+        case "myself":
             cell.imageView?.image = UIImage(named: "Profile-Filled.png")
+            break
+        default:
+            break
         }
+
 
         return cell
     }

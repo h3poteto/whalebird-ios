@@ -83,7 +83,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.windowSize = UIScreen.mainScreen().bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
         
-        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 2000))
+        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 4000))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.scrollEnabled = false
@@ -91,7 +91,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView.addSubview(self.tableView)
         self.scrollView.scrollEnabled = true
         self.scrollView.delegate = self
-        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 1000)
+        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 2000)
 
         self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
             self.userTableRefresh()
@@ -392,6 +392,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
                 self.scrollView.contentInset.top = self.headerHeight
+                SVProgressHUD.dismiss()
             })
         }
         
