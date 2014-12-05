@@ -15,7 +15,7 @@ class TimelineViewCell: UITableViewCell {
     //===================================
     private struct ClassProperty {
         static let ImagePadding = CGFloat(7)
-        static let ImageSize = CGFloat(40)
+        static let ImageSize = CGFloat(50)
         static let DefaultLineHeight = CGFloat(15)
         static let DefaultFontSize = CGFloat(14)
         // 共通フォント
@@ -130,8 +130,6 @@ class TimelineViewCell: UITableViewCell {
     //--------------------------------------
     // Cellは使いまわされるので，描画されるたびに消去処理をしておかないといけない
     //--------------------------------------
-    // TODO: 画像のキャッシュはやはりSDWebImageを使おう
-    // 高速移動させたときに再読み込みが連続で走って紙芝居が怒る
     func cleanCell() {
         if (self.profileImage != nil) {
             self.profileImage.removeFromSuperview()
@@ -187,7 +185,7 @@ class TimelineViewCell: UITableViewCell {
             
             self.profileImage = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding, TimelineViewCell.ImagePadding, TimelineViewCell.ImageSize, TimelineViewCell.ImageSize))
             self.contentView.addSubview(self.profileImage)
-            self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 3.0 / 4.0, TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 3.0 / 4.0, TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImageSize * 2.0 / 3.0))
+            self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImageSize * 1.0 / 2.0, TimelineViewCell.ImageSize * 1.0 / 2.0))
             if (self.retweeted) {
                 self.contentView.addSubview(self.retweetedProfileImageLabel!)
             }
@@ -212,40 +210,14 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
             var q_main = dispatch_get_main_queue()
-            dispatch_async(q_global, { () -> Void in
-                var error = NSError?()
-                var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
-                var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-                var image: UIImage?
-                if (error == nil) {
-                    image = UIImage(data: imageData!)
-                }
-                dispatch_async(q_main, { () -> Void in
-                    if (image != nil) {
-                        self.profileImage.image = image
-                        self.profileImage.sizeToFit()
-                    }
-                })
-            })
+            var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
-                dispatch_async(q_global, { () -> Void in
-                    var error = NSError?()
-                    var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as NSString)
-                    var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-                    var image: UIImage?
-                    if (error == nil) {
-                        image = UIImage(data: imageData!)
-                    }
-                    dispatch_async(q_main, { () -> Void in
-                        if (image != nil) {
-                            self.retweetedProfileImageLabel!.image = image
-                        }
-                    })
-                    
-                })
+                var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as NSString)
+                self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning.png"))
             }
             
             let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as NSString
@@ -275,8 +247,6 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  bodyLabel
             //------------------------------------
-            
-            var error = NSError?()
             
             self.bodyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
             self.bodyLabel.numberOfLines = 0

@@ -270,7 +270,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             timelineCell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
             return timelineCell!
         case 1:
-            var error = NSError?()
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
@@ -279,25 +278,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             
-            cell?.imageView?.image = UIImage(data: NSData(
-                contentsOfURL: profileImageURL!,
-                options: NSDataReadingOptions.DataReadingMappedAlways,
-                error: &error)!)
+            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage.png"))
             break
         case 2:
-            var error = NSError?()
             var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
-            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
-            
-            cell?.imageView?.image = UIImage(data: NSData(
-                contentsOfURL: profileImageURL!,
-                options: NSDataReadingOptions.DataReadingMappedAlways,
-                error: &error)!)
+            cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
+            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage.png"))
             break
         default:
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")

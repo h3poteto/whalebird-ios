@@ -22,7 +22,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     
-    // TODO: 検索から結果を保存できるようにしておく
     //==============================================
     //  instance method
     //==============================================
