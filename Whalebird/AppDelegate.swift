@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         
+        // TODO: 一番初めに，iOS7以下を切り捨てる
+        
         var types: UIUserNotificationType = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
         var notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
         application.registerForRemoteNotifications()
@@ -25,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.window?.backgroundColor = UIColor.whiteColor()
         
+        // 共通フォント設定
         let tabBarFont: UIFont! = UIFont(name: TimelineViewCell.NormalFont, size: 10)
         let tabBarFontDict = [NSFontAttributeName: tabBarFont]
         UITabBarItem.appearance().setTitleTextAttributes(tabBarFontDict, forState: UIControlState.Normal)
@@ -35,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], forState: UIControlState.Normal)
         
         
+        // tabBar設定
         self.rootController = UITabBarController()
         self.rootController.delegate = self
         var timelineViewController = TimelineTableViewController()
