@@ -47,6 +47,10 @@ class SettingsTableViewController: UITableViewController{
         super.viewDidLoad()
         
     }
+    
+    // TODO: お問い合わせを作る
+    // TODO: サードパーティー製のpodをリストアップし，リンクしておく
+    // TODO: helpの作成
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -129,6 +133,7 @@ class SettingsTableViewController: UITableViewController{
             sectionTitle = "※再起動後に反映されます"
             break
         case 4:
+            sectionTitle = "※Wifi推奨"
             break
         default:
             sectionTitle = ""

@@ -14,7 +14,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     var currentMessage: Array<AnyObject> = []
     var messageCell: Array<AnyObject> = []
     
-    var refreshMessage: UIRefreshControl!
+    var refreshMessage: ODRefreshControl!
     var newMessageButton: UIBarButtonItem!
     
     var sinceId: String?
@@ -48,9 +48,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.refreshMessage = UIRefreshControl()
+        self.refreshMessage = ODRefreshControl(inScrollView: self.tableView)
         self.refreshMessage.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(self.refreshMessage)
+        self.edgesForExtendedLayout = UIRectEdge.None
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         

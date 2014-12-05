@@ -47,7 +47,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var unselectedTextColor = UIColor.grayColor()
     
     var timelineCell: Array<AnyObject> = []
-    var refreshControl: UIRefreshControl!
     
     var tableType: Int = Int(0)
     

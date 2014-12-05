@@ -14,7 +14,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     var currentTimeline: Array<AnyObject> = []
     var timelineCell: Array<AnyObject> = []
     
-    var refreshTimeline: UIRefreshControl!
+    var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     
     var sinceId: String?
@@ -45,9 +45,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
-        self.refreshTimeline = UIRefreshControl()
+        self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(self.refreshTimeline)
+        self.edgesForExtendedLayout = UIRectEdge.None
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         

@@ -130,6 +130,8 @@ class TimelineViewCell: UITableViewCell {
     //--------------------------------------
     // Cellは使いまわされるので，描画されるたびに消去処理をしておかないといけない
     //--------------------------------------
+    // TODO: 画像のキャッシュはやはりSDWebImageを使おう
+    // 高速移動させたときに再読み込みが連続で走って紙芝居が怒る
     func cleanCell() {
         if (self.profileImage != nil) {
             self.profileImage.removeFromSuperview()

@@ -20,7 +20,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     var currentTimeline: Array<AnyObject> = []
     
     var timelineCell: Array<AnyObject> = []
-    var refreshTimeline: UIRefreshControl!
+    var refreshTimeline: ODRefreshControl!
     
     var newTweetButton: UIBarButtonItem!
     var sinceId: String?
@@ -53,11 +53,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.refreshTimeline = UIRefreshControl()
-        self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(self.refreshTimeline)
+        self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
+        self.refreshTimeline.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.edgesForExtendedLayout = UIRectEdge.None
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet:")
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
@@ -203,6 +203,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
+                        // TODO: ここだけ移動させないようにindex位置固定
                         if (self.newTimeline.count >= self.tweetCount) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()
@@ -274,14 +275,14 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         
     }
     
-    func onRefresh(sender: AnyObject) {
+    func onRefresh() {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    func tappedNewTweet(sender: AnyObject) {
+    func tappedNewTweet() {
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }

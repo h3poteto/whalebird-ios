@@ -19,7 +19,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var pageControl: UIPageControl!
     var pageIndex: Int!
     var parentController: ListTableViewController!
-    var refreshTimeline: UIRefreshControl!
+    var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var sinceId: String?
     
@@ -40,6 +40,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         super.init()
     }
     
+    // TODO: swipeViewを使ってみる
+    // Gestureだとindexが保持されない
     init(aStreamElement: ListTableViewController.Stream, aPageIndex: Int, aParentController: ListTableViewController) {
         super.init()
         self.streamElement = aStreamElement
@@ -84,9 +86,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.view.addGestureRecognizer(rightSwipteRecognizer)
         
         
-        self.refreshTimeline = UIRefreshControl()
+        self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: .ValueChanged)
-        self.tableView.addSubview(self.refreshTimeline)
+        self.edgesForExtendedLayout = UIRectEdge.None
         
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
