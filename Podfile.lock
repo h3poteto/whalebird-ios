@@ -27,6 +27,7 @@ PODS:
   - OHAttributedLabel (3.5.4)
   - SVProgressHUD (1.0)
   - SVPullToRefresh (HEAD based on 0.4.1)
+  - SwipeView (1.3.2)
   - TSMessages (0.9.10):
     - HexColors
   - TTTAttributedLabel (1.10.1)
@@ -39,6 +40,7 @@ DEPENDENCIES:
   - OHAttributedLabel
   - SVProgressHUD
   - SVPullToRefresh (HEAD)
+  - SwipeView
   - TSMessages
   - TTTAttributedLabel
 
@@ -51,6 +53,7 @@ SPEC CHECKSUMS:
   OHAttributedLabel: fcf1d1245b4c8d2df94da91369b1474901d7fb14
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
+  SwipeView: 0093c212acf3d715b09334c50d568a4418404150
   TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
 

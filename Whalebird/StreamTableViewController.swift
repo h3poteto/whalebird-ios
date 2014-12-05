@@ -9,16 +9,13 @@
 import UIKit
 
 class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
-    let PageControlViewHeight = CGFloat(20)
     let tweetCount = Int(50)
     
     var streamElement: ListTableViewController.Stream!
     var currentTimeline: Array<AnyObject> = []
     var newTimeline: Array<AnyObject> = []
     var timelineCell: Array<AnyObject> = []
-    var pageControl: UIPageControl!
-    var pageIndex: Int!
-    var parentController: ListTableViewController!
+    var parentNavigation: UINavigationController!
     var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var sinceId: String?
@@ -40,58 +37,27 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         super.init()
     }
     
-    // TODO: swipeViewを使ってみる
-    // Gestureだとindexが保持されない
-    init(aStreamElement: ListTableViewController.Stream, aPageIndex: Int, aParentController: ListTableViewController) {
+    init(aStreamElement: ListTableViewController.Stream, aParentNavigation: UINavigationController) {
         super.init()
         self.streamElement = aStreamElement
-        self.pageIndex = aPageIndex
-        self.parentController = aParentController
-        self.title = self.streamElement.name
+        self.parentNavigation = aParentNavigation
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.interactivePopGestureRecognizer.enabled = false
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 60.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
-        let cWindowSize = UIScreen.mainScreen().bounds
-        
     
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-        
-        
-        self.pageControl = UIPageControl(frame: CGRectMake(
-            0,
-            cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.size.height,
-            cWindowSize.size.width, self.PageControlViewHeight))
-        self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0)
-        self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
-        self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)
-        self.pageControl.numberOfPages = self.parentController.streamList.count
-        self.pageControl.currentPage = self.pageIndex
-        self.tableView.addSubview(self.pageControl)
-        
-        var leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: "hundleLeftSwipe:")
-        leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-        self.view.addGestureRecognizer(leftSwipeRecognizer)
-        
-        var rightSwipteRecognizer = UISwipeGestureRecognizer(target: self, action: "hundleRightSwipe:")
-        rightSwipteRecognizer.direction = UISwipeGestureRecognizerDirection.Right
-        self.view.addGestureRecognizer(rightSwipteRecognizer)
-        
         
         self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
         self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: .ValueChanged)
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
-        self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
         self.sinceId = userDefaults.stringForKey(self.streamElement.name + "SinceId") as String?
@@ -112,13 +78,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
 
     
     override func viewWillDisappear(animated: Bool) {
-        // delegateを消してやらないとオブジェクト消失に時にスクロールイベントが呼ばれて落ちる
-        // だけどpush遷移のときにこれ呼ばれるの困る
-        if(self.navigationController != nil) {
-            if(!(self.navigationController!.viewControllers as NSArray).containsObject(self)) {
-                self.tableView.delegate = nil
-            }
-        }
         destroy()
     }
     
@@ -179,23 +138,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
 
     
-    //---------------------------------------------------
-    // スクロールイベント時にpageControlのViewの位置を調節
-    // してやらないと下部に固定されない
-    //---------------------------------------------------
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        let cWindowSize = UIScreen.mainScreen().bounds
-        let cScrollOffset = scrollView.contentOffset.y as CGFloat
-        
-        if (self.tabBarController != nil) {
-            self.pageControl.frame = CGRectMake(
-                0,
-                cScrollOffset + cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight,
-                cWindowSize.size.width, self.PageControlViewHeight)
-            self.navigationController?.view.bringSubviewToFront(self.pageControl)
-        }
-    }
-    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
         if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as String != "moreID") {
@@ -215,7 +157,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
                 aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
             )
-            self.navigationController!.pushViewController(detailView, animated: true)
+            self.parentNavigation.pushViewController(detailView, animated: true)
         }
     }
     
@@ -318,13 +260,13 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                     }
                     self.tableView.reloadData()
                     SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewTimeline.count) + "件更新")
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: String(aNewTimeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
                 } else {
                     SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: "新着なし")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
                     notice.show()
@@ -334,49 +276,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         
     }
 
-    func hundleLeftSwipe(sender: AnyObject) {
-        if (self.pageControl.currentPage + 1 < self.pageControl.numberOfPages) {
-            // push向きアニメーション生成
-            var transition = CATransition()
-            transition.duration = 0.4
-            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
-            transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromRight
-            
-            self.pageControl.currentPage += 1
-            var leftView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
-            self.navigationController!.view.layer.addAnimation(transition, forKey: nil)
-            self.navigationController!.pushViewController(leftView, animated: true)
-        }
-    }
-    
-    func hundleRightSwipe(sender: AnyObject) {
-        if (self.pageControl.currentPage > 0) {
-            
-            // pushの逆向きアニメーション生成
-            var transition = CATransition()
-            transition.duration = 0.4
-            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
-            transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromLeft
-            
-            self.pageControl.currentPage -= 1
-            var rightView = StreamTableViewController(aStreamElement: self.parentController.streamList[self.pageControl.currentPage], aPageIndex: self.pageControl.currentPage, aParentController: self.parentController)
-            self.navigationController!.view.layer.addAnimation(transition, forKey: nil)
-            self.navigationController!.pushViewController(rightView, animated: false)
-        }
-    }
-    
     func onRefresh(sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
-    }
-    
-    func tappedNewTweet(sender: AnyObject) {
-        var newTweetView = NewTweetViewController()
-        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
     

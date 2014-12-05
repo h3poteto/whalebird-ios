@@ -189,8 +189,8 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var streamTableView = StreamTableViewController(aStreamElement: self.streamList[indexPath.row], aPageIndex: indexPath.row, aParentController: self)
-        self.navigationController?.pushViewController(streamTableView, animated: true)
+        var swipeView = SwipeViewController(aStream: self.streamList, aStartIndex: indexPath.row)
+        self.navigationController?.pushViewController(swipeView, animated: true)
     }
 
 
