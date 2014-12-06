@@ -60,6 +60,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             var index = self.navigationController!.viewControllers.count
             var parent = (self.navigationController!.viewControllers as NSArray).objectAtIndex(index - 2) as SettingsTableViewController
             parent.syncWhalebirdServer()
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             self.navigationController!.popViewControllerAnimated(true)
             return false
         } else if ((request.URL.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {

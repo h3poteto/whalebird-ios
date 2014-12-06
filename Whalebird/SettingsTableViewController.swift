@@ -62,7 +62,7 @@ class SettingsTableViewController: UITableViewController{
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 5
+        return 6
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -82,6 +82,9 @@ class SettingsTableViewController: UITableViewController{
             break
         case 4:
             cellCount = 1
+            break
+        case 5:
+            cellCount = 4
             break
         default:
             break
@@ -105,6 +108,9 @@ class SettingsTableViewController: UITableViewController{
             break
         case 4:
             sectionTitle = "Userstream"
+            break
+        case 5:
+            sectionTitle = "Whalebirdについて"
             break
         default:
             sectionTitle = ""
@@ -134,6 +140,8 @@ class SettingsTableViewController: UITableViewController{
             break
         case 4:
             sectionTitle = "※Wifi推奨"
+            break
+        case 5:
             break
         default:
             sectionTitle = ""
@@ -319,6 +327,28 @@ class SettingsTableViewController: UITableViewController{
                 break
             }
             break
+        case 5:
+            switch(indexPath.row) {
+            case 0:
+                cellTitle = "お問い合わせ"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                break
+            case 1:
+                cellTitle = "ヘルプ"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                break
+            case 2:
+                cellTitle = "オープンライセンス"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                break
+            case 3:
+                cellTitle = "@whalebirdorg"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                break
+            default:
+                break
+            }
+            break
         default:
             break
         }
@@ -386,6 +416,28 @@ class SettingsTableViewController: UITableViewController{
                 break
             case 1:
                 self.stackDisplayTimeType()
+                break
+            default:
+                break
+            }
+            break
+        case 4:
+            break
+        case 5:
+            switch(indexPath.row) {
+            case 0:
+                var inquiryView = WebViewController(aOpenURL: "inquiries/new")
+                self.navigationController!.pushViewController(inquiryView, animated: true)
+                break
+            case 1:
+                var helpView = WebViewController(aOpenURL: "helps")
+                self.navigationController!.pushViewController(helpView, animated: true)
+                break
+            case 2:
+                break
+            case 3:
+                var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil)
+                self.navigationController!.pushViewController(reply, animated: true)
                 break
             default:
                 break

@@ -203,7 +203,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
-                        // TODO: ここだけ移動させないようにindex位置固定
+                        // index位置固定は保留
                         if (self.newTimeline.count >= self.tweetCount) {
                             var moreID = self.newTimeline.first?.objectForKey("id_str") as String
                             var readMoreDictionary = NSMutableDictionary()

@@ -34,5 +34,7 @@
 	</array>
 	<key>apiurl</key>
 	<string>${APIURL}</string>
+	<key>weburl</key>
+	<string>${WebURL}</string>
 </dict>
 </plist>

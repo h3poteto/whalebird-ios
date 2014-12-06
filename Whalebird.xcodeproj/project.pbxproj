@@ -65,6 +65,7 @@
 		E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
 		E9CD81DF1A3224E600763660 /* noimage.png in Resources */ = {isa = PBXBuildFile; fileRef = E9CD81DD1A3224E600763660 /* noimage.png */; };
 		E9CD81E01A3224E600763660 /* noimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9CD81DE1A3224E600763660 /* noimage@2x.png */; };
+		E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD81E11A32FA9E00763660 /* WebViewController.swift */; };
 		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -145,6 +146,7 @@
 		E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
 		E9CD81DD1A3224E600763660 /* noimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noimage.png; sourceTree = "<group>"; };
 		E9CD81DE1A3224E600763660 /* noimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noimage@2x.png"; sourceTree = "<group>"; };
+		E9CD81E11A32FA9E00763660 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -234,6 +236,7 @@
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
+				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E99603A11A20E23400D23629 /* application.h */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
@@ -477,6 +480,7 @@
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
 				E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */,
 				E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */,
+				E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
 				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
@@ -609,6 +613,7 @@
 				PROVISIONING_PROFILE = "f76da065-292b-415a-915b-2f8e1b627178";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WebURL = "http://192.168.55.13:3001/";
 			};
 			name = Debug;
 		};
@@ -628,6 +633,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "b777e2a1-cff6-45c6-a498-581d0faf8546";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
+				WebURL = "http://whalebird.org/";
 			};
 			name = Release;
 		};
