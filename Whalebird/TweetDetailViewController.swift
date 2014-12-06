@@ -227,9 +227,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     }
     
     
-    //---------------------------------------------------
-    // TODO: 複数人の会話の場合全員をターゲットにしているか確認
-    //---------------------------------------------------
     func tappedReply() {
         var newTweetView = NewTweetViewController(aTweetBody: "@" + self.screenName + " ", aReplyToID: self.tweetID)
         self.navigationController!.pushViewController(newTweetView, animated: true)

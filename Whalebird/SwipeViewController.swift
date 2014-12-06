@@ -16,6 +16,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     var swipeItems: Array<ListTableViewController.Stream> = []
     var viewItems: Array<StreamTableViewController> = []
     var startIndex = Int(0)
+    var currentScroll: Array<CGPoint> = []
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -30,6 +31,9 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.swipeItems = aStream
         if (aStartIndex != nil) {
             self.startIndex = aStartIndex!
+        }
+        for view in self.swipeItems {
+            self.currentScroll.append(CGPoint(x: 0, y: 0))
         }
     }
 
@@ -67,6 +71,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.pageControl.numberOfPages = self.swipeItems.count
         self.pageControl.currentPage = self.startIndex
         self.view.addSubview(self.pageControl)
+
         // Do any additional setup after loading the view.
     }
 
@@ -92,6 +97,21 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.navigationItem.title = self.swipeItems[swipeView.currentItemIndex].name
         if (self.pageControl != nil) {
             self.pageControl.currentPage = swipeView.currentItemIndex
+        }
+    }
+    
+    func swipeViewWillBeginDragging(swipeView: SwipeView!) {
+        //self.currentScroll = self.viewItems[self.swipeView.currentItemIndex].tableView.contentOffset
+        for (var i = 0; i < self.swipeItems.count; i++) {
+            self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
+        }
+        //self.viewItems[self.swipeView.currentItemIndex].tableView.scrollEnabled = false
+    }
+    
+    func swipeViewDidScroll(swipeView: SwipeView!) {
+        // ここが正解 TODO: itemIndexごとに作ろう
+        for (var i = 0; i < self.swipeItems.count; i++) {
+            self.viewItems[i].setCurrentOffset(self.currentScroll[i])
         }
     }
     

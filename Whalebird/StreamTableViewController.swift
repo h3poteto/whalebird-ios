@@ -162,6 +162,15 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
     
     
+    func getCurrentOffset() ->CGPoint {
+        return self.tableView.contentOffset
+    }
+    
+    func setCurrentOffset(offset: CGPoint) {
+        self.tableView.setContentOffset(offset, animated: false)
+    }
+    
+    
     
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String>!
