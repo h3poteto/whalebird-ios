@@ -434,6 +434,8 @@ class SettingsTableViewController: UITableViewController{
                 self.navigationController!.pushViewController(helpView, animated: true)
                 break
             case 2:
+                var podsView = PodsTableViewController()
+                self.navigationController!.pushViewController(podsView, animated: true)
                 break
             case 3:
                 var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil)
