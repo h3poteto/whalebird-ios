@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource {
+class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource, UINavigationControllerDelegate {
     let PageControlViewHeight = CGFloat(20)
     var swipeView: SwipeView!
     
@@ -55,6 +55,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.swipeView.pagingEnabled = true
         self.swipeView.currentPage = self.startIndex
         self.view.addSubview(self.swipeView)
+        self.navigationController?.delegate = self
         
         var newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
         self.navigationItem.rightBarButtonItem = newTweetButton
@@ -109,12 +110,22 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
     
     func swipeViewDidScroll(swipeView: SwipeView!) {
-        // ここが正解 TODO: itemIndexごとに作ろう
         for (var i = 0; i < self.swipeItems.count; i++) {
-            self.viewItems[i].setCurrentOffset(self.currentScroll[i])
+            if (!self.viewItems[i].fCellSelect) {
+                self.viewItems[i].setCurrentOffset(self.currentScroll[i])
+            }
         }
     }
     
+    // Cell選択周りではsetCurrentOffsetを実行したくないので，Navigationの戻るイベントを検出してフラグの書き換え
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        if (viewController.dynamicType === SwipeViewController.self) {
+            for (var i = 0; i < self.swipeItems.count; i++) {
+                self.viewItems[i].fCellSelect = false
+            }
+        }
+    }
+
     func tappedNewTweet() {
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)

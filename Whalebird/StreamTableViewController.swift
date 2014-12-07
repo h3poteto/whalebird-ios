@@ -19,6 +19,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var sinceId: String?
+    var fCellSelect: Bool = false
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -80,7 +81,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     override func viewWillDisappear(animated: Bool) {
         destroy()
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -124,7 +124,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         }
         return height
     }
-
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
@@ -137,6 +136,10 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         return height
     }
 
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        self.fCellSelect = true
+        return indexPath
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
@@ -159,6 +162,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             )
             self.parentNavigation.pushViewController(detailView, animated: true)
         }
+
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     
