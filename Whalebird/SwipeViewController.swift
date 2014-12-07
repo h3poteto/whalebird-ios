@@ -55,7 +55,6 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.swipeView.pagingEnabled = true
         self.swipeView.currentPage = self.startIndex
         self.view.addSubview(self.swipeView)
-        self.navigationController?.delegate = self
         
         var newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
         self.navigationItem.rightBarButtonItem = newTweetButton
@@ -79,6 +78,14 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.delegate = nil
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController?.delegate = self
     }
     
 
@@ -116,7 +123,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
             }
         }
     }
-    
+
     // Cell選択周りではsetCurrentOffsetを実行したくないので，Navigationの戻るイベントを検出してフラグの書き換え
     func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
         if (viewController.dynamicType === SwipeViewController.self) {
