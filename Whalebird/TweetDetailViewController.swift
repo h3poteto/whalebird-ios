@@ -163,60 +163,59 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         }
         
         
+        // そのまま表示するとボタン領域が小さくてタップしにくいので拡大
+        let actionButtonWidth = CGFloat(50)
+        let actionButtonHeight = CGFloat(40)
 
         
         let cImportImage = UIImage(named: "Import-Line.png")
-        self.replyButton = UIButton(frame: CGRectMake(0, 100, cImportImage!.size.width, cImportImage!.size.height))
-        self.replyButton.setBackgroundImage(cImportImage, forState: .Normal)
-        self.replyButton.center = CGPoint(x: cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-        self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
-        self.blankView.addSubview(self.replyButton)
+        self.ts_imageWithSize(cImportImage!, width: actionButtonWidth, height: actionButtonHeight) { (aImportImage) -> Void in
+            self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
+            self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
+            self.replyButton.center = CGPoint(x: cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
+            self.blankView.addSubview(self.replyButton)
+        }
         
         let cConversationImage = UIImage(named: "Conversation-Line.png")
-        self.conversationButton = UIButton(frame: CGRectMake(0, 100, cConversationImage!.size.width, cConversationImage!.size.height))
-        self.conversationButton.setBackgroundImage(cConversationImage, forState: .Normal)
-        self.conversationButton.center = CGPoint(x: cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-        self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
-        self.blankView.addSubview(self.conversationButton)
+        self.ts_imageWithSize(cConversationImage!, width: actionButtonWidth, height: actionButtonHeight) { (aConversationImage) -> Void in
+            self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
+            self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
+            self.conversationButton.center = CGPoint(x: cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
+            self.blankView.addSubview(self.conversationButton)
+        }
         
         let cStarImage = UIImage(named: "Star-Line.png")
-        self.favButton = UIButton(frame: CGRectMake(0, 100, cStarImage!.size.width, cStarImage!.size.height))
-        self.favButton.setBackgroundImage(cStarImage, forState: .Normal)
-        self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-        self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-        self.blankView.addSubview(self.favButton)
+        self.ts_imageWithSize(cStarImage!, width: actionButtonWidth, height: actionButtonHeight) { (aStarImage) -> Void in
+            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+            self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+            self.blankView.addSubview(self.favButton)
+        }
         
         let cUsername = userDefault.stringForKey("username")
         
         if (cUsername == self.screenName) {
             let cTrashImage = UIImage(named: "Trash-Line.png")
-            self.deleteButton = UIButton(frame: CGRectMake(0, 100, cTrashImage!.size.width, cTrashImage!.size.height))
-            self.deleteButton.setBackgroundImage(cTrashImage, forState: .Normal)
-            self.deleteButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-            self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
-            self.blankView.addSubview(self.deleteButton)
+            self.ts_imageWithSize(cTrashImage!, width: actionButtonWidth, height: actionButtonHeight, callback: { (aTrashImage) -> Void in
+                self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
+                self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
+                self.deleteButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
+                self.blankView.addSubview(self.deleteButton)
+            })
         } else {
-            // このボタンが小さいので領域拡大
             var cMoreImage = UIImage(named: "More-Line.png")
             
-            var width = cMoreImage!.size.width
-            var height = cMoreImage!.size.width
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), false, 0.0);
-            var context = UIGraphicsGetCurrentContext() as CGContextRef
-            UIGraphicsPushContext(context)
-            
-            let origin = CGPointMake((width - cMoreImage!.size.width) / 2.0, (height - cMoreImage!.size.height) / 2.0)
-            cMoreImage?.drawAtPoint(origin)
-            
-            UIGraphicsPopContext()
-            var newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            self.moreButton = UIButton(frame: CGRectMake(0, 100, newImage.size.width, newImage.size.width))
-            self.moreButton.setBackgroundImage(newImage, forState: .Normal)
-            self.moreButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-            self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
-            self.blankView.addSubview(self.moreButton)
+            self.ts_imageWithSize(cMoreImage!, width: actionButtonWidth, height: actionButtonHeight, callback: { (aMoreImage) -> Void in
+                self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
+                self.moreButton.setBackgroundImage(aMoreImage, forState: .Normal)
+                self.moreButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
+                self.blankView.addSubview(self.moreButton)
+            })
         }
         
     }
@@ -224,6 +223,20 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func ts_imageWithSize(image: UIImage, width: CGFloat, height: CGFloat, callback: (UIImage)->Void) {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), false, 0.0);
+        var context = UIGraphicsGetCurrentContext() as CGContextRef
+        UIGraphicsPushContext(context)
+        
+        let origin = CGPointMake((width - image.size.width) / 2.0, (height - image.size.height) / 2.0)
+        image.drawAtPoint(origin)
+        
+        UIGraphicsPopContext()
+        var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        callback(resizedImage)
     }
     
     
