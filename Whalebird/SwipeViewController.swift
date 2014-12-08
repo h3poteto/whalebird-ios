@@ -54,6 +54,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         
         self.swipeView.pagingEnabled = true
         self.swipeView.currentPage = self.startIndex
+        self.navigationItem.title = self.swipeItems[self.startIndex].name
         self.view.addSubview(self.swipeView)
         
         var newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
@@ -94,6 +95,9 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
 
     func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
+        var backButton = UIBarButtonItem()
+        backButton.title = "戻る"
+        self.navigationItem.backBarButtonItem = backButton
         return self.viewItems[index].tableView
     }
     

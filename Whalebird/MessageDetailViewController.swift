@@ -50,6 +50,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.userName = aUserName
         self.profileImage = aProfileImage
         self.postDetail = WhalebirdAPIClient.convertLocalTime(aPostDetail)
+        self.title = "詳細"
     }
     
     override func viewDidLoad() {

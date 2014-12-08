@@ -66,7 +66,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.userName = aUserName
         self.retweetedName = aRetweetedName
         self.retweetedProfileImage = aRetweetedProfileImage
-        
+        self.title = "詳細"
     }
     
     override func loadView() {

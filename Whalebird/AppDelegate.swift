@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let barButtonFont: UIFont! = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], forState: UIControlState.Normal)
         
-        
         // tabBar設定
         self.rootController = UITabBarController()
         self.rootController.delegate = self

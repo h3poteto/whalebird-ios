@@ -48,9 +48,7 @@ class SettingsTableViewController: UITableViewController{
         
     }
     
-    // TODO: お問い合わせを作る
     // TODO: サードパーティー製のpodをリストアップし，リンクしておく
-    // TODO: helpの作成
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

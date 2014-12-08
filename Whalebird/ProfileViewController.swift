@@ -73,6 +73,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
+    // TODO: フォントを変えた影響でプロフィール詳細の領域デザイン調節
     override func viewDidLoad() {
         super.viewDidLoad()
         
