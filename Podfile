@@ -11,3 +11,9 @@ pod 'DACircularProgress'
 pod 'ODRefreshControl'
 pod 'SwipeView'
 pod 'SDWebImage'
+
+
+post_install do | installer |
+  require 'fileutils'
+  FileUtils.cp_r('Pods/Target Support Files/Pods/Pods-Acknowledgements.plist', 'Whalebird/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+end
