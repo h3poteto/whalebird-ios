@@ -48,7 +48,6 @@ class SettingsTableViewController: UITableViewController{
         
     }
     
-    // TODO: サードパーティー製のpodをリストアップし，リンクしておく
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -73,7 +73,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
-    // TODO: フォントを変えた影響でプロフィール詳細の領域デザイン調節
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,28 +110,31 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //-------------------------
             //  header
             //-------------------------
+            self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
+            self.profileHeaderImage.image = UIImage(named: "profile_back.png")
+            self.scrollView.addSubview(self.profileHeaderImage)
+            
             WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
                 var q_main = dispatch_get_main_queue()
                 var error = NSError?()
                 dispatch_async(q_main, {()->Void in
                     if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                         var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
-                        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
-                        self.profileHeaderImage.image = UIImage(data: NSData(contentsOfURL: headerImageURL!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
+                        self.profileHeaderImage.removeFromSuperview()
+                        self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "profile_back.png"))
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
                 })
                 WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: cParameter, callback: { (aUserData) -> Void in
                     var q_sub = dispatch_get_main_queue()
                     dispatch_async(q_sub, {()->Void in
-                        
                         var profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as String)
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
-                        self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40 + 10)
-                        self.profileImage.image = UIImage(data: NSData(contentsOfURL: profileImageURL!, options: NSDataReadingOptions.DataReadingMappedAlways, error: &error)!)
+                        self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
+                        self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage.png"))
                         self.scrollView.addSubview(self.profileImage)
                     
-                        self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 80, self.windowSize.width * 0.8, 15))
+                        self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 70, self.windowSize.width * 0.8, 15))
                         self.userNameLabel.text = aUserData.objectForKey("name") as String!
                         self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
                         self.userNameLabel.textColor = UIColor.blackColor()
@@ -144,15 +146,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.userNameLabel.frame = nameFrame
                         self.userNameLabel.layer.cornerRadius = 5
                         self.userNameLabel.clipsToBounds = true
-                        self.userNameLabel.center = CGPointMake(self.windowSize.width / 2.0, 90)
+                        self.userNameLabel.center = CGPointMake(self.windowSize.width / 2.0, 80)
                         self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
                         self.scrollView.addSubview(self.userNameLabel)
                     
-                        self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 110, self.windowSize.width * 0.8, 15))
+                        self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, 100, self.windowSize.width * 0.8, 15))
                         self.descriptionLabel.numberOfLines = 3
                         self.descriptionLabel.text = aUserData.objectForKey("description") as? String
                         self.descriptionLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 11)
                         self.descriptionLabel.sizeToFit()
+                        self.descriptionLabel.center.x = CGFloat(self.windowSize.width / 2.0)
                         self.descriptionLabel.textAlignment = NSTextAlignment.Center
                         var descriptionFrame: CGRect = self.descriptionLabel.frame
                         descriptionFrame.size.width += 10
