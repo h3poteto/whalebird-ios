@@ -111,7 +111,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             //  header
             //-------------------------
             self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
-            self.profileHeaderImage.image = UIImage(named: "profile_back.png")
+            self.profileHeaderImage.image = UIImage(named: "profile_back.jpg")
             self.scrollView.addSubview(self.profileHeaderImage)
             
             WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
@@ -121,7 +121,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                         var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
                         self.profileHeaderImage.removeFromSuperview()
-                        self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "profile_back.png"))
+                        self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "profile_back.jpg"))
                         self.scrollView.addSubview(self.profileHeaderImage)
                     }
                 })
