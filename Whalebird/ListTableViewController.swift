@@ -21,6 +21,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
+    var searchItemButton: UIBarButtonItem!
     
     //==============================================
     //  instance method
@@ -53,8 +54,10 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         
         self.editButtonItem().title = "編集"
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addNewItem:")
-        self.navigationItem.leftBarButtonItem = self.addItemButton
+        // TODO: 左上にsearchを追加
+        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "displaySearch")
+        self.navigationItem.leftBarButtonItem = self.searchItemButton
+
         
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.separatorInset = UIEdgeInsetsZero
@@ -158,10 +161,14 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
 
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        if(editing){
+        if(self.editing){
             self.editButtonItem().title = "完了"
+            self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addNewItem:")
+            self.navigationItem.leftBarButtonItem = self.addItemButton
         }else{
             self.editButtonItem().title = "編集"
+            self.navigationItem.rightBarButtonItem = self.editButtonItem()
+            self.navigationItem.leftBarButtonItem = self.searchItemButton
         }
     }
 
@@ -191,10 +198,15 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         var swipeView = SwipeViewController(aStream: self.streamList, aStartIndex: indexPath.row)
         self.navigationController?.pushViewController(swipeView, animated: true)
     }
-
+    
 
     func addNewItem(sender: AnyObject) {
         var stackListTableView = StackListTableViewController()
         self.navigationController?.pushViewController(stackListTableView, animated: true)
+    }
+
+    func displaySearch() {
+        var searchView = SearchTableViewController()
+        self.navigationController?.pushViewController(searchView, animated: true)
     }
 }
