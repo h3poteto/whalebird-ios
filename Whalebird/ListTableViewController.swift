@@ -146,6 +146,9 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         case "myself":
             cell.imageView?.image = UIImage(named: "Profile-Filled.png")
             break
+        case "search":
+            cell.imageView?.image = UIImage(named: "Search-Line.png")
+            break
         default:
             break
         }

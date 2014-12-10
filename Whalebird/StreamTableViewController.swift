@@ -192,7 +192,12 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             params = [
                 "count" : String(self.tweetCount)
             ]
-            
+            break
+        case "search":
+            apiURL = self.streamElement.uri
+            params = [
+                "count" : String(self.tweetCount)
+            ]
             break
         default:
             break
@@ -210,7 +215,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         var userDefault = NSUserDefaults.standardUserDefaults()
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
-            "screen_name" : userDefault.objectForKey("username") as String
+            "screen_name" : userDefault.objectForKey("username") as String,
+            "q" : self.streamElement.name
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
         WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, params: cParameter) { (aNewTimeline) -> Void in

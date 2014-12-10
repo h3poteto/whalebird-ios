@@ -15,6 +15,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     var currentResult: Array<AnyObject> = []
     var newResult: Array<AnyObject> = []
     var resultCell: Array<AnyObject> = []
+    var saveButton: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -39,10 +40,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.searchBar.placeholder = "検索"
         self.searchBar.keyboardType = UIKeyboardType.Default
         self.searchBar.delegate = self
-        self.searchBar.showsCancelButton = true
         
         self.navigationItem.titleView = self.searchBar
         self.searchBar.becomeFirstResponder()
+        
+        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "saveResult")
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -120,45 +122,24 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         )
         self.navigationController!.pushViewController(detailView, animated: true)
     }
+   
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        self.searchBar.showsCancelButton = true
+        self.navigationItem.rightBarButtonItem = nil
+        return true
+    }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
+    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+        self.navigationItem.rightBarButtonItem = self.saveButton
+        self.searchBar.showsCancelButton = false
         return true
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+   
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        var params: Dictionary<String, String> = [:]
+        var params: Dictionary<String, String> = [
+            "count" : String(self.tweetCount)
+        ]
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
             "q" : self.searchBar.text
@@ -186,6 +167,22 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         self.searchBar.resignFirstResponder()
+    }
+    
+    func saveResult() {
+        if (countElements(self.searchBar.text) > 0) {
+            var searchStream = ListTableViewController.Stream(
+                image: "",
+                name: self.searchBar.text,
+                type: "search",
+                uri: "users/apis/search.json",
+                id: "")
+            let cViewControllers = self.navigationController!.viewControllers as NSArray
+            let cViewControllersCount = cViewControllers.count as Int
+            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as ListTableViewController
+            cParentController.streamList.append(searchStream)
+            self.navigationController!.popViewControllerAnimated(true)
+        }
     }
 
 }
