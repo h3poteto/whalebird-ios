@@ -76,6 +76,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.view.addSubview(self.blankView)
     }
     
+    // TODO: このViewだけはコピーができるように
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

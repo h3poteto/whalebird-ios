@@ -56,6 +56,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         self.newMessageText = UITextView(frame: CGRectMake(0, 100, cMaxSize.width, cMaxSize.height / 3.0))
         self.newMessageText.editable = true
         self.newMessageText.delegate = self
+        self.newMessageText.font = UIFont(name: TimelineViewCell.NormalFont, size: 18)
         //self.newMessageText.addSubview(self.sendToUserLabel)
         self.view.addSubview(self.newMessageText)
     }
