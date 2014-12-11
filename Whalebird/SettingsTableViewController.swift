@@ -86,7 +86,7 @@ class SettingsTableViewController: UITableViewController{
             cellCount = 1
             break
         case 5:
-            cellCount = 3
+            cellCount = 4
             break
         default:
             break
@@ -340,6 +340,10 @@ class SettingsTableViewController: UITableViewController{
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break
             case 2:
+                cellTitle = "Q&A"
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                break
+            case 3:
                 cellTitle = "@whalebirdorg"
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break
@@ -432,6 +436,10 @@ class SettingsTableViewController: UITableViewController{
                 self.navigationController!.pushViewController(helpView, animated: true)
                 break
             case 2:
+                var questionView = WebViewController(aOpenURL: "questions")
+                self.navigationController!.pushViewController(questionView, animated: true)
+                break
+            case 3:
                 var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil)
                 self.navigationController!.pushViewController(reply, animated: true)
                 break
