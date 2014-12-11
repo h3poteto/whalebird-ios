@@ -179,8 +179,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
-            "contributor_details" : "false",
-            "trim_user" : "0",
             "count" : String(self.tweetCount)
         ]
         if (aSinceID != nil) {

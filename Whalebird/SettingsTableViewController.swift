@@ -47,8 +47,13 @@ class SettingsTableViewController: UITableViewController{
         super.viewDidLoad()
         
     }
+    // 表示時にインジケータを消そう
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        SVProgressHUD.dismiss()
+    }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

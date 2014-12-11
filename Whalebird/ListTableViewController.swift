@@ -54,7 +54,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         
         self.editButtonItem().title = "編集"
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        // TODO: 左上にsearchを追加
         self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "displaySearch")
         self.navigationItem.leftBarButtonItem = self.searchItemButton
 

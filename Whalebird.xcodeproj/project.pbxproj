@@ -633,7 +633,7 @@
 				PROVISIONING_PROFILE = "f76da065-292b-415a-915b-2f8e1b627178";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				WebURL = "http://192.168.55.13:3001/";
+				WebURL = "http://192.168.0.11:3001/";
 			};
 			name = Debug;
 		};
