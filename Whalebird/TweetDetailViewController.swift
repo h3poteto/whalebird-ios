@@ -97,6 +97,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         }
         self.blankView.addSubview(self.profileImageLabel)
         
+        // TODO：ここも画像読み込みはsd_webimageに
         if (self.retweetedProfileImage != nil) {
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
             var imageURL = NSURL(string: self.retweetedProfileImage!)
@@ -146,7 +147,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = self.tweetBody
         self.tweetBodyLabel.sizeToFit()
+        self.tweetBodyLabel.userInteractionEnabled = true
         self.blankView.addSubview(self.tweetBodyLabel)
+        
+        var bodyLongGesture = UILongPressGestureRecognizer(target: self, action: "longPressGesture:")
+        self.tweetBodyLabel.addGestureRecognizer(bodyLongGesture)
         
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.textAlignment = NSTextAlignment.Right
@@ -369,5 +374,12 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     func tappedRetweetedProfile() {
         var userProfileView = ProfileViewController(aScreenName: self.retweetedName!)
         self.navigationController!.pushViewController(userProfileView, animated: true)
+    }
+    
+    func longPressGesture(sender: AnyObject) {
+        var copyMenu = UIMenuController.sharedMenuController()
+        copyMenu.setTargetRect(self.tweetBodyLabel.frame, inView: self.blankView)
+        copyMenu.setMenuVisible(true, animated: true)
+        sender.view??.becomeFirstResponder()
     }
 }
