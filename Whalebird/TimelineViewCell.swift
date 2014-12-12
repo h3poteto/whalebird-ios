@@ -21,6 +21,9 @@ class TimelineViewCell: UITableViewCell {
         // 共通フォント
         static let NormalFont = "Avenir-Light"
         static let BoldFont = "Avenir-Heavy"
+        
+        // dummy
+        static let DummyLabel = UILabel()
     }
     
     class var ImagePadding: CGFloat {
@@ -53,6 +56,11 @@ class TimelineViewCell: UITableViewCell {
             return ClassProperty.BoldFont
         }
     }
+    class var DummyLabel: UILabel {
+        get {
+            return ClassProperty.DummyLabel
+        }
+    }
     
     
     //===================================
@@ -79,16 +87,15 @@ class TimelineViewCell: UITableViewCell {
             // bodyLabelの開始位置
             height = TimelineViewCell.ImagePadding * 3 + TimelineViewCell.DefaultLineHeight * 2
             // dummyでbodyLabelを生成
-            var dummyLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3, cWindowMaxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
-            dummyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-            dummyLabel.numberOfLines = 0
-            dummyLabel.textAlignment = NSTextAlignment.Left
-            dummyLabel.textColor = UIColor.blackColor()
-            dummyLabel.text = aDictionary.objectForKey("text") as NSString
-            dummyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
-            dummyLabel.sizeToFit()
+            DummyLabel.frame = CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3, cWindowMaxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight)
+            DummyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+            DummyLabel.numberOfLines = 0
+            DummyLabel.textAlignment = NSTextAlignment.Left
+            DummyLabel.text = aDictionary.objectForKey("text") as NSString
+            DummyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
+            DummyLabel.sizeToFit()
             // retweeted分の行追加
-            height += dummyLabel.frame.size.height + TimelineViewCell.ImagePadding
+            height += DummyLabel.frame.size.height + TimelineViewCell.ImagePadding
             if (aDictionary.objectForKey("retweeted") != nil) {
                 height += TimelineViewCell.DefaultLineHeight
             }
