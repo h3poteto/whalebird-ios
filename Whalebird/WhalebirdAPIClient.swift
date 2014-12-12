@@ -59,7 +59,6 @@ class WhalebirdAPIClient: NSObject {
     //  instance method
     //===========================================
     
-    // TODO: 401 Unauthorizedのときはログインを促して
     func cleanDictionary(dict: NSMutableDictionary)->NSMutableDictionary {
         var mutableDict: NSMutableDictionary = dict.mutableCopy() as NSMutableDictionary
         mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
@@ -83,10 +82,7 @@ class WhalebirdAPIClient: NSObject {
         }) { (operation, error) -> Void in
             println(error)
             if (operation.response != nil) {
-                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: ("Status Code:" + String(operation.response.statusCode)))
-                notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                notice.show()
+                self.displayErrorMessage(operation)
             }
             SVProgressHUD.dismiss()
         }
@@ -106,10 +102,7 @@ class WhalebirdAPIClient: NSObject {
             }, failure: { (operation, error) -> Void in
                 println(error)
                 if (operation.response != nil) {
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: ("Status Code:" + String(operation.response.statusCode)))
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                    self.displayErrorMessage(operation)
                 }
                 SVProgressHUD.dismiss()
             })
@@ -131,10 +124,7 @@ class WhalebirdAPIClient: NSObject {
             }, failure: { (operation, error) -> Void in
                 println(error)
                 if (operation.response != nil) {
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: ("Status Code:" + String(operation.response.statusCode)))
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                    self.displayErrorMessage(operation)
                 }
                 SVProgressHUD.dismiss()
             })
@@ -157,10 +147,7 @@ class WhalebirdAPIClient: NSObject {
             }, failure: { (operation, error) -> Void in
                 println(error)
                 if (operation.response != nil) {
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Post  Error", message: ("Status Code:" + String(operation.response.statusCode)))
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                    self.displayErrorMessage(operation)
                 }
                 SVProgressHUD.dismiss()
             })
@@ -198,6 +185,7 @@ class WhalebirdAPIClient: NSObject {
                 }
                 }) { (operation, error) -> Void in
                     println(error)
+                    self.displayErrorMessage(operation)
             }
             
             operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
@@ -226,10 +214,7 @@ class WhalebirdAPIClient: NSObject {
             }, failure: { (operation, error) -> Void in
                 println(error)
                 if (operation.response != nil) {
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Delete Error", message: ("Status Code:" + String(operation.response.statusCode)))
-                    notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                    self.displayErrorMessage(operation)
                 }
                 SVProgressHUD.dismiss()
             })
@@ -271,5 +256,18 @@ class WhalebirdAPIClient: NSObject {
     func removeSession() {
         self.sessionManager = nil
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "cookiesKey")
+    }
+    
+    func displayErrorMessage(operation: AFHTTPRequestOperation) {
+        var errorMessage = String()
+        if (operation.response.statusCode == 401) {
+            errorMessage = "ログインしなおしてください"
+        } else {
+            errorMessage = "Status Code: " + String(operation.response.statusCode)
+        }
+        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: errorMessage)
+        notice.alpha = 0.8
+        notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+        notice.show()
     }
 }
