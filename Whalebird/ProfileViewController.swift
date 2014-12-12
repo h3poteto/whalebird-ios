@@ -73,7 +73,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
-    // TODO: セル選択解除を実装
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -352,6 +351,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             break
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
 
