@@ -76,7 +76,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.view.addSubview(self.blankView)
     }
     
-    // TODO: このViewだけはコピーができるように
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,24 +88,16 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
-        var error = NSError?()
-        var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-        if (error == nil) {
-            self.profileImageLabel.image = UIImage(data: imageData!)
-            self.profileImageLabel.sizeToFit()
-        }
+        self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.sizeToFit()
+        
         self.blankView.addSubview(self.profileImageLabel)
         
-        // TODO：ここも画像読み込みはsd_webimageに
         if (self.retweetedProfileImage != nil) {
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
             var imageURL = NSURL(string: self.retweetedProfileImage!)
-            var error = NSError?()
-            var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-            if (error == nil) {
-                self.retweetedProfileImageLabel!.image = UIImage(data: imageData!)
-                self.blankView.addSubview(self.retweetedProfileImageLabel!)
-            }
+            self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning.png"))
+            self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
         self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))

@@ -59,6 +59,7 @@ class WhalebirdAPIClient: NSObject {
     //  instance method
     //===========================================
     
+    // TODO: 401 Unauthorizedのときはログインを促して
     func cleanDictionary(dict: NSMutableDictionary)->NSMutableDictionary {
         var mutableDict: NSMutableDictionary = dict.mutableCopy() as NSMutableDictionary
         mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in

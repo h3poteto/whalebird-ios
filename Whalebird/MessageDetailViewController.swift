@@ -61,12 +61,9 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
-        var error = NSError?()
-        var imageData = NSData(contentsOfURL: imageURL!, options: NSDataReadingOptions.DataReadingMappedIfSafe, error: &error)
-        if (error == nil) {
-            self.profileImageLabel.image = UIImage(data: imageData!)
-            self.profileImageLabel.sizeToFit()
-        }
+        self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.sizeToFit()
+        
         self.view.addSubview(self.profileImageLabel)
         
         self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))
