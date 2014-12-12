@@ -56,6 +56,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     override func loadView() {
         super.loadView()
+        self.view.backgroundColor = UIColor.whiteColor()
     }
     
     override func viewDidLoad() {

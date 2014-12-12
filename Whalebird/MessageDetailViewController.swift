@@ -53,6 +53,11 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.title = "詳細"
     }
     
+    override func loadView() {
+        super.loadView()
+        self.view.backgroundColor = UIColor.whiteColor()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

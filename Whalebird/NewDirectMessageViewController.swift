@@ -35,6 +35,11 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         super.init()
         self.replyToUser = aReplyToUser
     }
+    
+    override func loadView() {
+        super.loadView()
+        self.view.backgroundColor = UIColor.whiteColor()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

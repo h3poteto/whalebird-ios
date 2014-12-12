@@ -73,6 +73,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.title = "@" + aScreenName
     }
     
+    // TODO: セル選択解除を実装
     override func viewDidLoad() {
         super.viewDidLoad()
         
