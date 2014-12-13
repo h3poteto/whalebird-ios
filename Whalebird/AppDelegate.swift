@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
             if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
                 var detailView = TweetDetailViewController(
-                    aTweetID: userInfo.objectForKey("id_str") as String,
+                    aTweetID: userInfo.objectForKey("id") as String,
                     aTweetBody: userInfo.objectForKey("text") as String,
                     aScreenName: userInfo.objectForKey("screen_name") as String,
                     aUserName: userInfo.objectForKey("name") as String,
