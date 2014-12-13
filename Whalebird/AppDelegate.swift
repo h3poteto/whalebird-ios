@@ -55,29 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.makeKeyAndVisible()
         
         
-        // iOS7以下を切り捨てる
-        if greaterThanOrEqual(8, minorVersion: 0, patchVersion: 0) {
-        } else {
-            println("システムバージョン < iOS 8.0.0")
-            var systemAlert = UIAlertController(title: "iOSのアップデートをしてください", message: "対応OSはiOS8.0以上です", preferredStyle: UIAlertControllerStyle.Alert)
-            var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
-            })
-            systemAlert.addAction(closeAction)
-            self.rootController.presentViewController(systemAlert, animated: true, completion: nil)
-        }
-        
-        // 認証前なら設定画面に飛ばす
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        if ( userDefault.objectForKey("username") == nil) {
-            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
-            notice.alpha = 0.8
-            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-            notice.show()
-            var loginSettingsView = SettingsTableViewController()
-            self.rootController.presentedViewController
-            (self.rootController.selectedViewController as UINavigationController).pushViewController(loginSettingsView, animated: true)
-        }
-        
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {
             var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
@@ -106,6 +83,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
             }
+        }
+        
+        // iOS7以下を切り捨てる
+        if greaterThanOrEqual(8, minorVersion: 0, patchVersion: 0) {
+        } else {
+            println("システムバージョン < iOS 8.0.0")
+            var systemAlert = UIAlertController(title: "iOSのアップデートをしてください", message: "対応OSはiOS8.0以上です", preferredStyle: UIAlertControllerStyle.Alert)
+            var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            })
+            systemAlert.addAction(closeAction)
+            self.rootController.presentViewController(systemAlert, animated: true, completion: nil)
+        }
+        
+        // 認証前なら設定画面に飛ばす
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if ( userDefault.objectForKey("username") == nil) {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+            notice.alpha = 0.8
+            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+            notice.show()
+            var loginSettingsView = SettingsTableViewController()
+            self.rootController.presentedViewController
+            (self.rootController.selectedViewController as UINavigationController).pushViewController(loginSettingsView, animated: true)
         }
         
         

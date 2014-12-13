@@ -630,7 +630,7 @@
 				INFOPLIST_FILE = Whalebird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f76da065-292b-415a-915b-2f8e1b627178";
+				PROVISIONING_PROFILE = "0db0d716-e1d8-4cf8-b1b5-f7faef499e4c";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WebURL = "http://192.168.55.13:3001/";
