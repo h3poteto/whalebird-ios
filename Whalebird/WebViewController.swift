@@ -25,9 +25,10 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         super.init()
     }
     
-    init(aOpenURL: String) {
+    init(aOpenURL: String, aTitle: String) {
         super.init()
         self.openURL = aOpenURL
+        self.title = aTitle
     }
 
     override func viewDidLoad() {

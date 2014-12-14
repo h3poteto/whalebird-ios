@@ -428,15 +428,15 @@ class SettingsTableViewController: UITableViewController{
         case 5:
             switch(indexPath.row) {
             case 0:
-                var inquiryView = WebViewController(aOpenURL: "inquiries/new")
+                var inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: "お問い合わせ")
                 self.navigationController!.pushViewController(inquiryView, animated: true)
                 break
             case 1:
-                var helpView = WebViewController(aOpenURL: "helps")
+                var helpView = WebViewController(aOpenURL: "helps", aTitle: "ヘルプ")
                 self.navigationController!.pushViewController(helpView, animated: true)
                 break
             case 2:
-                var questionView = WebViewController(aOpenURL: "questions")
+                var questionView = WebViewController(aOpenURL: "questions", aTitle: "Q&A")
                 self.navigationController!.pushViewController(questionView, animated: true)
                 break
             case 3:
