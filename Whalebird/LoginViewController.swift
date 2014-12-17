@@ -8,11 +8,19 @@
 
 import UIKit
 
+class ExWebView: UIWebView {
+    override func loadRequest(request: NSURLRequest) {
+        var mRequest = request.mutableCopy() as NSMutableURLRequest
+        mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
+        super.loadRequest(mRequest)
+    }
+}
+
 class LoginViewController: UIViewController, UIWebViewDelegate {
     var loginWebView: UIWebView!
     var redirectedTwitter: Bool = false
     var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String)!
-    var whalebirdAPIWithKey: NSURL = NSURL(string: (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String) + "users/sign_in?whalebird=" + WHALEBIRD_APPLICATION_KEY)!
+    var whalebirdAPIWithKey: String = (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String) + "users/sign_in?"
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -30,11 +38,12 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.loginWebView = UIWebView(frame: self.view.frame)
+        self.loginWebView = ExWebView(frame: self.view.frame)
         self.loginWebView.scalesPageToFit = true
         self.loginWebView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.loginWebView.delegate = self
-        self.loginWebView.loadRequest(NSURLRequest(URL: self.whalebirdAPIWithKey))
+        var request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
+        self.loginWebView.loadRequest(request)
         self.view.addSubview(self.loginWebView)
     }
 
@@ -42,6 +51,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     func webViewDidStartLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true

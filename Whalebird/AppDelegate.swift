@@ -114,6 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         SVProgressHUD.appearance().hudBackgroundColor = UIColor.blackColor()
         SVProgressHUD.appearance().hudForegroundColor = UIColor.whiteColor()
         
+        
         return true
     }
 

@@ -11,7 +11,7 @@ pod 'DACircularProgress'
 pod 'ODRefreshControl'
 pod 'SwipeView'
 pod 'SDWebImage'
-
+pod 'RNCryptor'
 
 post_install do | installer |
   require 'fileutils'

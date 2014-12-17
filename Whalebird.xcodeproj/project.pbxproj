@@ -60,6 +60,8 @@
 		E9977D241A28E26B0091FF24 /* Close-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9977D231A28E26B0091FF24 /* Close-Filled@2x.png */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
+		E9BC3E631A408E5700D2D6BD /* ApplicationSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */; };
+		E9BC3E651A40905E00D2D6BD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9BC3E641A40905E00D2D6BD /* Security.framework */; };
 		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
 		E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */; };
 		E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
@@ -71,6 +73,7 @@
 		E9D493C51A37504C00DE2051 /* profile_back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E9D493C41A37504C00DE2051 /* profile_back.jpg */; };
 		E9D493C81A37DD6F00DE2051 /* Search-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = E9D493C61A37DD6F00DE2051 /* Search-Line.png */; };
 		E9D493C91A37DD6F00DE2051 /* Search-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9D493C71A37DD6F00DE2051 /* Search-Line@2x.png */; };
+		E9D86A421A41336F00920984 /* OriginalCryp.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D86A411A41336F00920984 /* OriginalCryp.m */; };
 		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +112,8 @@
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
+		E97594291A4127F800BFD41F /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
+		E975942B1A412A9500BFD41F /* SHA256iOs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SHA256iOs.framework; path = "SHA256-Swift/build/Debug-iphoneos/SHA256iOs.framework"; sourceTree = "<group>"; };
 		E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeViewController.swift; sourceTree = "<group>"; };
 		E9770D5E1A32160800E7153C /* Warning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Warning.png; sourceTree = "<group>"; };
 		E9770D5F1A32160800E7153C /* Warning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Warning@2x.png"; sourceTree = "<group>"; };
@@ -146,6 +151,8 @@
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
+		E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationSecrets.swift; sourceTree = "<group>"; };
+		E9BC3E641A40905E00D2D6BD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +164,8 @@
 		E9D493C41A37504C00DE2051 /* profile_back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = profile_back.jpg; sourceTree = "<group>"; };
 		E9D493C61A37DD6F00DE2051 /* Search-Line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search-Line.png"; sourceTree = "<group>"; };
 		E9D493C71A37DD6F00DE2051 /* Search-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search-Line@2x.png"; sourceTree = "<group>"; };
+		E9D86A401A41336F00920984 /* OriginalCryp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalCryp.h; sourceTree = "<group>"; };
+		E9D86A411A41336F00920984 /* OriginalCryp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OriginalCryp.m; sourceTree = "<group>"; };
 		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -166,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9BC3E651A40905E00D2D6BD /* Security.framework in Frameworks */,
 				E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */,
 				E9797B1C199526F6000FC13C /* Social.framework in Frameworks */,
 				E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */,
@@ -186,6 +196,9 @@
 		0249136FA29B42BCB7523044 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E975942B1A412A9500BFD41F /* SHA256iOs.framework */,
+				E97594291A4127F800BFD41F /* libcommonCrypto.dylib */,
+				E9BC3E641A40905E00D2D6BD /* Security.framework */,
 				E9A33A2F19AEC6460077B673 /* Foundation.framework */,
 				E9869EE719AE370F009DD99D /* QuartzCore.framework */,
 				F93BA7217F214FE3BC6C20D1 /* libPods.a */,
@@ -250,7 +263,10 @@
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
+				E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */,
 				E99603A11A20E23400D23629 /* application.h */,
+				E9D86A401A41336F00920984 /* OriginalCryp.h */,
+				E9D86A411A41336F00920984 /* OriginalCryp.m */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9D493C61A37DD6F00DE2051 /* Search-Line.png */,
 				E9D493C71A37DD6F00DE2051 /* Search-Line@2x.png */,
@@ -500,6 +516,7 @@
 				E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */,
 				E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */,
 				E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */,
+				E9BC3E631A408E5700D2D6BD /* ApplicationSecrets.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
 				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
@@ -510,6 +527,7 @@
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
+				E9D86A421A41336F00920984 /* OriginalCryp.m in Sources */,
 				E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
@@ -620,15 +638,23 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				APIURL = "http://192.168.55.13:3000/";
+				APIURL = "http://192.168.1.16:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Akira Fukushima (9PQ8S3P587)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SHA256-Swift/build/Debug-iphoneos",
+				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Whalebird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0db0d716-e1d8-4cf8-b1b5-f7faef499e4c";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
@@ -647,9 +673,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SHA256-Swift/build/Debug-iphoneos",
+				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Whalebird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "b777e2a1-cff6-45c6-a498-581d0faf8546";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";

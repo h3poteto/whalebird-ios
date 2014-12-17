@@ -73,6 +73,7 @@ class WhalebirdAPIClient: NSObject {
     
     func initAPISession() {
         self.sessionManager = AFHTTPRequestOperationManager()
+        self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         var requestURL = self.whalebirdAPIURL + "users/apis.json"
         self.sessionManager.GET(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
             println(responseObject)
@@ -161,7 +162,6 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             self.sessionManager = AFHTTPRequestOperationManager()
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
-            
             var request = self.sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
                 URLString: self.whalebirdAPIURL + "users/apis/upload.json",
                 parameters: nil,
@@ -245,6 +245,7 @@ class WhalebirdAPIClient: NSObject {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as NSHTTPCookie)
             }
             self.sessionManager = AFHTTPRequestOperationManager()
+            self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         }
     }
     
