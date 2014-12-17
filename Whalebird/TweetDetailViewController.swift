@@ -237,9 +237,35 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         callback(resizedImage)
     }
     
-    
     func tappedReply() {
-        var newTweetView = NewTweetViewController(aTweetBody: "@" + self.screenName + " ", aReplyToID: self.tweetID)
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userScreenName = userDefault.objectForKey("username") as String
+        
+        var replyList: Array<String> = []
+        var tScreenName = ""
+        var fReply = false
+        for char in self.tweetBody! {
+            if (fReply) {
+                if (char == " " || char == "　") {
+                    if ("@" + userScreenName != tScreenName) {
+                        replyList.append(tScreenName)
+                    }
+                    tScreenName = ""
+                    fReply = false
+                } else {
+                    tScreenName.append(char)
+                }
+            }else if (char == "@") {
+                tScreenName.append(char)
+                fReply = true
+            }
+        }
+        replyList.append("@" + self.screenName)
+        var replyListStr = ""
+        for name in replyList {
+            replyListStr += name + " "
+        }
+        var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetID)
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
