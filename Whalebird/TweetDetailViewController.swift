@@ -244,6 +244,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         var replyList: Array<String> = []
         var tScreenName = ""
         var fReply = false
+        replyList.append("@" + self.screenName)
         for char in self.tweetBody! {
             if (fReply) {
                 if (char == " " || char == "　") {
@@ -260,7 +261,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
                 fReply = true
             }
         }
-        replyList.append("@" + self.screenName)
         var replyListStr = ""
         for name in replyList {
             replyListStr += name + " "
