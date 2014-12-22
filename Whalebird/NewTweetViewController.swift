@@ -314,11 +314,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (srcImage.imageOrientation == UIImageOrientation.Left) {
             CGContextRotateCTM(bitmap, self.radian(90))
             CGContextTranslateCTM(bitmap, 0, -targetWidth)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, 1.0)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
         } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
             CGContextRotateCTM(bitmap, self.radian(-90))
             CGContextTranslateCTM(bitmap, -targetHeight, 0)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, 1.0)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
         } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
             
         } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
