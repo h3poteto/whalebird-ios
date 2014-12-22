@@ -160,7 +160,6 @@ class WhalebirdAPIClient: NSObject {
     func postImage(image: UIImage, progress: (Float) -> Void,callback: (NSDictionary) -> Void) {
         self.loadCookie()
         if (self.sessionManager != nil) {
-            self.sessionManager = AFHTTPRequestOperationManager()
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
             var request = self.sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
                 URLString: self.whalebirdAPIURL + "users/apis/upload.json",
