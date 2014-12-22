@@ -303,18 +303,22 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         let colorSpaceInfo = CGImageGetColorSpace(imageRef) as CGColorSpaceRef
         
         var bitmap: CGContextRef!
+        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
+        /*
         if (srcImage.imageOrientation == UIImageOrientation.Up || srcImage.imageOrientation == UIImageOrientation.Down) {
             bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
         } else {
             bitmap = CGBitmapContextCreate(nil, UInt(targetHeight), UInt(targetWidth), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
-        }
+        }*/
         
         if (srcImage.imageOrientation == UIImageOrientation.Left) {
             CGContextRotateCTM(bitmap, self.radian(90))
-            CGContextTranslateCTM(bitmap, 0, -targetHeight)
+            CGContextTranslateCTM(bitmap, 0, -targetWidth)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, 1.0)
         } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
             CGContextRotateCTM(bitmap, self.radian(-90))
-            CGContextTranslateCTM(bitmap, -targetWidth, 0)
+            CGContextTranslateCTM(bitmap, -targetHeight, 0)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, 1.0)
         } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
             
         } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
