@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UITextViewDelegate {
+class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UITextViewDelegate, NSLayoutManagerDelegate {
     let LabelPadding = CGFloat(10)
     
     //=====================================
@@ -135,8 +135,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.tweetBody!) as NSString
         self.tweetBodyLabel.delegate = self
-        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.All
+        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
+        self.tweetBodyLabel.layoutManager.delegate = self
         self.tweetBodyLabel.sizeToFit()
         self.tweetBodyLabel.userInteractionEnabled = true
         self.blankView.addSubview(self.tweetBodyLabel)
@@ -233,6 +234,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         var resizedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         callback(resizedImage)
+    }
+    
+    // UITextViewの行間
+    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 4;
     }
     
     func tappedReply() {

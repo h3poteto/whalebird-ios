@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageDetailViewController: UIViewController, UITextViewDelegate {
+class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayoutManagerDelegate {
     let LabelPadding = CGFloat(10)
     
     var messageID: String!
@@ -106,8 +106,9 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate {
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody!) as NSString
         self.tweetBodyLabel.delegate = self
-        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.All
+        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
+        self.tweetBodyLabel.layoutManager.delegate = self
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
         
@@ -125,6 +126,9 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        return 4;
+    }
 
     func tappedReplyMessage() {
         var newMessage = NewDirectMessageViewController(aReplyToUser: self.screenName)
