@@ -98,6 +98,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
+        // SVProgressHUDの表示スタイル設定
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
         
         if (self.twitterScreenName != nil) {
             var params:Dictionary<String, String> = [
@@ -519,7 +521,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.scrollView.contentInset = UIEdgeInsetsMake(self.tabBarController!.tabBar.frame.size.height, 0, 0, 0)
+    func hudTapped() {
+        self.scrollView.pullToRefreshView.stopAnimating()
     }
 }
