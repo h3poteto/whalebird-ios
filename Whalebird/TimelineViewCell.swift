@@ -259,7 +259,7 @@ class TimelineViewCell: UITableViewCell {
             self.bodyLabel.numberOfLines = 0
             self.bodyLabel.textAlignment = NSTextAlignment.Left
             self.bodyLabel.textColor = UIColor.blackColor()
-            self.bodyLabel.text = aDictionary.objectForKey("text") as NSString
+            self.bodyLabel.text = WhalebirdAPIClient.escapeString(aDictionary.objectForKey("text") as String!) as NSString
             self.bodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             self.bodyLabel.sizeToFit()
             

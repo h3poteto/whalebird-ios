@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAttributedLabelDelegate {
+class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UITextViewDelegate {
     let LabelPadding = CGFloat(10)
     
     //=====================================
@@ -26,7 +26,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
     var blankView: UIView!
     var screenNameLabel: UIButton!
     var userNameLabel: UIButton!
-    var tweetBodyLabel: TTTAttributedLabel!
+    var tweetBodyLabel: UITextView!
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
     var retweetedNameLabel: UIButton?
@@ -131,18 +131,16 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
-        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 10, cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.delegate = self
-        self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
-        self.tweetBodyLabel.numberOfLines = 0
+        self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 10, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = self.tweetBody
+        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.tweetBody!) as NSString
+        self.tweetBodyLabel.delegate = self
+        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.All
+        self.tweetBodyLabel.editable = false
         self.tweetBodyLabel.sizeToFit()
         self.tweetBodyLabel.userInteractionEnabled = true
         self.blankView.addSubview(self.tweetBodyLabel)
         
-        var bodyLongGesture = UILongPressGestureRecognizer(target: self, action: "longPressGesture:")
-        self.tweetBodyLabel.addGestureRecognizer(bodyLongGesture)
         
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.textAlignment = NSTextAlignment.Right
@@ -384,19 +382,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, TTTAtt
         self.navigationController!.pushViewController(userProfileView, animated: true)
     }
     
-    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
-        UIApplication.sharedApplication().openURL(url)
-    }
-    
     func tappedRetweetedProfile() {
         var userProfileView = ProfileViewController(aScreenName: self.retweetedName!)
         self.navigationController!.pushViewController(userProfileView, animated: true)
     }
     
-    func longPressGesture(sender: AnyObject) {
-        var copyMenu = UIMenuController.sharedMenuController()
-        copyMenu.setTargetRect(self.tweetBodyLabel.frame, inView: self.blankView)
-        copyMenu.setMenuVisible(true, animated: true)
-        sender.view??.becomeFirstResponder()
-    }
 }

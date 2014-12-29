@@ -55,6 +55,17 @@ class WhalebirdAPIClient: NSObject {
         }
         return jstDate
     }
+    
+    class func escapeString(aString: String) -> String {
+        var escapeStr: String!
+        
+        escapeStr = aString.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
+        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&quot;", withString: "\"", options: nil, range: nil)
+        
+        return escapeStr
+    }
     //===========================================
     //  instance method
     //===========================================

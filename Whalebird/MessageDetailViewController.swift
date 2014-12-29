@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate {
+class MessageDetailViewController: UIViewController, UITextViewDelegate {
     let LabelPadding = CGFloat(10)
     
     var messageID: String!
@@ -20,7 +20,7 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
     
     var screenNameLabel: UIButton!
     var userNameLabel: UIButton!
-    var tweetBodyLabel: TTTAttributedLabel!
+    var tweetBodyLabel: UITextView!
     var postDetailLabel: UILabel!
     var profileImageLabel: UIImageView!
     
@@ -102,11 +102,12 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.view.addSubview(self.screenNameLabel)
         
         
-        self.tweetBodyLabel = TTTAttributedLabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
-        self.tweetBodyLabel.numberOfLines = 0
+        self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = self.messageBody
+        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody!) as NSString
+        self.tweetBodyLabel.delegate = self
+        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.All
+        self.tweetBodyLabel.editable = false
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
         
@@ -130,8 +131,5 @@ class MessageDetailViewController: UIViewController, TTTAttributedLabelDelegate 
         self.navigationController!.pushViewController(newMessage, animated: true)
     }
     
-    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
-        UIApplication.sharedApplication().openURL(url)
-    }
 
 }
