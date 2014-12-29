@@ -45,6 +45,8 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         var request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
         self.loginWebView.loadRequest(request)
         self.view.addSubview(self.loginWebView)
+        // SVProgressHUDの表示スタイル設定
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,7 +57,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidStartLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        SVProgressHUD.showWithMaskType(UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
@@ -77,6 +79,11 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             self.redirectedTwitter = true
         }
         return true
+    }
+    
+    func hudTapped() {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        self.loginWebView.stopLoading()
     }
 
 }
