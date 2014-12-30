@@ -131,13 +131,41 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
+        // string
+        var escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody!)
+        var screenNameList: Array<String> = []
+        var tScreenName = ""
+        var fReply = false
+        for char in self.tweetBody! {
+            if (fReply) {
+                var str = String(char)
+                if (char == " " || char == "　" || char == ")" || char == "）" || str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
+                    screenNameList.append(tScreenName)
+                    tScreenName = ""
+                    fReply = false
+                } else {
+                    tScreenName.append(char)
+                }
+            }else if (char == "@") {
+                tScreenName.append(char)
+                fReply = true
+            }
+        }
+        var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
+        attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
+        for screen in screenNameList {
+            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
+            attributedString.addAttributes([NSLinkAttributeName: screen], range: nameRange)
+        }
+        
+        
         self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 5, cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.tweetBody!) as NSString
+        self.tweetBodyLabel.attributedText = attributedString
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
         self.tweetBodyLabel.layoutManager.delegate = self
+        self.tweetBodyLabel.scrollEnabled = false
         self.tweetBodyLabel.sizeToFit()
         self.tweetBodyLabel.userInteractionEnabled = true
         self.blankView.addSubview(self.tweetBodyLabel)
@@ -251,7 +279,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         replyList.append("@" + self.screenName)
         for char in self.tweetBody! {
             if (fReply) {
-                if (char == " " || char == "　") {
+                var str = String(char)
+                if (char == " " || char == "　" || char == ")" || char == "）" || str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
                     if ("@" + userScreenName != tScreenName) {
                         replyList.append(tScreenName)
                     }

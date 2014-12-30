@@ -108,6 +108,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
+        self.tweetBodyLabel.scrollEnabled = false
         self.tweetBodyLabel.layoutManager.delegate = self
         self.tweetBodyLabel.sizeToFit()
         self.view.addSubview(self.tweetBodyLabel)
