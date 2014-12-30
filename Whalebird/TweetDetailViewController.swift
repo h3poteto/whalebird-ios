@@ -155,7 +155,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         for screen in screenNameList {
             var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
-            attributedString.addAttributes([NSLinkAttributeName: screen], range: nameRange)
+            attributedString.addAttributes([NSLinkAttributeName: "at:" + screen], range: nameRange)
         }
         
         
@@ -423,8 +423,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        if (URL.absoluteString?.hasPrefix("@") != nil) {
-            var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("@", withString: "", options: nil, range: nil))
+        var scheme = URL.scheme
+        if (scheme?.hasPrefix("at:") == true) {
+            var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("at:@", withString: "", options: nil, range: nil))
             self.navigationController!.pushViewController(userView, animated: true)
         }
         return true
