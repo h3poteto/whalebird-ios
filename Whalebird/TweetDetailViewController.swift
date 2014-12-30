@@ -422,4 +422,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.navigationController!.pushViewController(userProfileView, animated: true)
     }
     
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        if (URL.absoluteString?.hasPrefix("@") != nil) {
+            var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("@", withString: "", options: nil, range: nil))
+            self.navigationController!.pushViewController(userView, animated: true)
+        }
+        return true
+    }
 }
