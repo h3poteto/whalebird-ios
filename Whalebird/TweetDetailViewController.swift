@@ -66,6 +66,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userName = aUserName
         self.retweetedName = aRetweetedName
         self.retweetedProfileImage = aRetweetedProfileImage
+
         self.title = "詳細"
     }
     
@@ -423,8 +424,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        var scheme = URL.scheme
-        if (scheme?.hasPrefix("at:") == true) {
+        if (URL.scheme?.hasPrefix("at") == true) {
             var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("at:@", withString: "", options: nil, range: nil))
             self.navigationController!.pushViewController(userView, animated: true)
         }
