@@ -23,7 +23,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var retweetedName: String?
     var retweetedProfileImage: String?
     
-    var blankView: UIView!
+    var blankView: UIScrollView!
     var screenNameLabel: UIButton!
     var userNameLabel: UIButton!
     var tweetBodyLabel: UITextView!
@@ -72,8 +72,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     override func loadView() {
         super.loadView()
-        self.blankView = UIView(frame: self.view.bounds)
+        self.blankView = UIScrollView(frame: self.view.bounds)
         self.blankView.backgroundColor = UIColor.whiteColor()
+        self.blankView.scrollEnabled = true
         self.view.addSubview(self.blankView)
     }
     
@@ -87,7 +88,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let cWindowSize = UIScreen.mainScreen().bounds
         var userDefault = NSUserDefaults.standardUserDefaults()
         
-        self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
+        self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
         self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
         self.profileImageLabel.sizeToFit()
@@ -101,7 +102,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
-        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
             self.userNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
@@ -117,7 +118,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, cWindowSize.size.width * 0.05 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
@@ -243,6 +244,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.blankView.addSubview(self.moreButton)
             })
         }
+        
+        self.blankView.contentSize = CGSizeMake(cWindowSize.width, self.favButton.frame.origin.y + self.favButton.frame.size.height + 20)
         
     }
 
