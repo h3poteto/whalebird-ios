@@ -399,7 +399,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
-            var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.userName + " " + self.tweetBody!, aReplyToID: self.tweetID)
+            var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.screenName + " " + self.tweetBody!, aReplyToID: self.tweetID)
             self.navigationController!.pushViewController(retweetView, animated: true)
         }
         let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
