@@ -112,6 +112,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         }
     }
     
+    // TODO: read moreしたときの位置調節
     func swipeViewWillBeginDragging(swipeView: SwipeView!) {
         //self.currentScroll = self.viewItems[self.swipeView.currentItemIndex].tableView.contentOffset
         for (var i = 0; i < self.swipeItems.count; i++) {
@@ -138,6 +139,9 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
 
     func tappedNewTweet() {
+        for (var i = 0; i < self.swipeItems.count; i++) {
+            self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
+        }
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
     }
