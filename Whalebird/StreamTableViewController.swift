@@ -137,7 +137,12 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
 
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        self.fCellSelect = true
+        let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
+        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as String != "moreID") {
+            self.fCellSelect = false
+        } else {
+            self.fCellSelect = true
+        }
         return indexPath
     }
     
