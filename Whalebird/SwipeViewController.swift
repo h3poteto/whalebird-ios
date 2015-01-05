@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource, UINavigationControllerDelegate {
+class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource, UINavigationControllerDelegate, UITabBarControllerDelegate {
     let PageControlViewHeight = CGFloat(20)
     var swipeView: SwipeView!
     
@@ -83,12 +83,13 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
 
     override func viewWillDisappear(animated: Bool) {
         self.navigationController?.delegate = nil
+        self.tabBarController?.delegate = nil
     }
     
     override func viewDidAppear(animated: Bool) {
         self.navigationController?.delegate = self
+        self.tabBarController?.delegate = self
     }
-    
 
     func numberOfItemsInSwipeView(swipeView: SwipeView!) -> Int {
         return swipeItems.count
@@ -143,5 +144,12 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         }
         var newTweetView = NewTweetViewController()
         self.navigationController!.pushViewController(newTweetView, animated: true)
+    }
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        for (var i = 0; i < self.swipeItems.count; i++) {
+            self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
+        }
+        return true
     }
 }
