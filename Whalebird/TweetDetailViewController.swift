@@ -140,8 +140,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         var fReply = false
         for char in self.tweetBody! {
             if (fReply) {
-                var str = String(char)
-                if (char == " " || char == "　" || char == ")" || char == "）" || str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
+                if (char == " " || char == "　" || !self.checkScreenName(char)) {
                     screenNameList.append(tScreenName)
                     tScreenName = ""
                     fReply = false
@@ -283,8 +282,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         replyList.append("@" + self.screenName)
         for char in self.tweetBody! {
             if (fReply) {
-                var str = String(char)
-                if (char == " " || char == "　" || char == ")" || char == "）" || str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
+                if (char == " " || char == "　" || !self.checkScreenName(char)) {
                     if ("@" + userScreenName != tScreenName) {
                         replyList.append(tScreenName)
                     }
@@ -432,5 +430,19 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.navigationController!.pushViewController(userView, animated: true)
         }
         return true
+    }
+    
+    // twitter独自のscreen name判定
+    // _ はscreen nameと判定．他の文字は半角英数字のみ許可
+    func checkScreenName(aCharacter: Character) -> Bool {
+        if (aCharacter == "_") {
+            return true
+        } else {
+            var charSet = NSCharacterSet.alphanumericCharacterSet()
+            var aScanner = NSScanner.localizedScannerWithString(String(aCharacter)) as NSScanner
+            aScanner.charactersToBeSkipped = nil
+            aScanner.scanCharactersFromSet(charSet, intoString: nil)
+            return aScanner.atEnd
+        }
     }
 }
