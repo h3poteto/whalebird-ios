@@ -128,7 +128,7 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil && responseObject.count > 0) {
+                if (responseObject != nil) {
                     callback(responseObject as NSDictionary)
                 } else {
                     println("blank response")
@@ -218,7 +218,6 @@ class WhalebirdAPIClient: NSObject {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.DELETE(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    var jsonError: NSError?
                     callback(operation)
                 } else {
                     println("blank response")
