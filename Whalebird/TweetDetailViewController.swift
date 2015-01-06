@@ -438,11 +438,17 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (aCharacter == "_") {
             return true
         } else {
-            var charSet = NSCharacterSet.alphanumericCharacterSet()
-            var aScanner = NSScanner.localizedScannerWithString(String(aCharacter)) as NSScanner
-            aScanner.charactersToBeSkipped = nil
-            aScanner.scanCharactersFromSet(charSet, intoString: nil)
-            return aScanner.atEnd
+            // 半角全角判定
+            var str = String(aCharacter)
+            if (str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
+                return false
+            } else {
+                var charSet = NSCharacterSet.alphanumericCharacterSet()
+                var aScanner = NSScanner.localizedScannerWithString(str) as NSScanner
+                aScanner.charactersToBeSkipped = nil
+                aScanner.scanCharactersFromSet(charSet, intoString: nil)
+                return aScanner.atEnd
+            }
         }
     }
 }
