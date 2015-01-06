@@ -128,10 +128,14 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil) {
+                if (responseObject != nil && responseObject.count > 0) {
                     callback(responseObject as NSDictionary)
                 } else {
                     println("blank response")
+                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Request Error", message: "情報がありません")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
@@ -151,7 +155,6 @@ class WhalebirdAPIClient: NSObject {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.POST(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    var jsonError: NSError?
                     callback(operation)
                 } else {
                     println("blank response")
