@@ -78,6 +78,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 ])
             self.currentTimeline.insert(readMoreDictionary, atIndex: self.currentTimeline.count)
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appWillResignActive:", name: UIApplicationWillResignActiveNotification, object: nil)
 
     }
     
@@ -85,6 +88,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.viewDidAppear(animated)
         
         // Home用のUserstream
+        self.prepareUserstream()
+    }
+    
+    func prepareUserstream() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
             let cStreamURL = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
@@ -94,6 +101,15 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             UserstreamAPIClient.sharedClient.timelineTable = self
             UserstreamAPIClient.sharedClient.startStreaming(cStreamURL!, params: cParams, callback: {data in
             })
+        }
+    }
+    
+    func appDidBecomeActive(notification: NSNotification) {
+        self.prepareUserstream()
+    }
+    
+    func appWillResignActive(notification: NSNotification) {
+        UserstreamAPIClient.sharedClient.stopStreaming { () -> Void in
         }
     }
 
