@@ -22,7 +22,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     var account: ACAccount!
     var accountStore = ACAccountStore()
-    var connection: NSURLConnection!
+    var connection: NSURLConnection?
     var timelineTable: TimelineTableViewController?
     
     //=======================================
@@ -100,8 +100,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 self.account = selectedAccount
                 request.account = self.account
                 self.connection = NSURLConnection(request: request.preparedURLRequest(), delegate: self)
-                self.connection.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
-                self.connection.start()
+                self.connection!.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
+                self.connection!.start()
                 callback(self.account)
             }
          }
@@ -109,7 +109,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     func stopStreaming(callback:()->Void) {
         if (self.connection != nil) {
-            self.connection.cancel()
+            self.connection!.cancel()
+            self.connection = nil
             callback()
         }
     }
