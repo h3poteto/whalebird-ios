@@ -26,6 +26,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var retweetedName: String?
     var retweetedProfileImage: String?
     var fFavorited: Bool!
+    var parentArray: Array<AnyObject>?
+    var parentIndex: Int?
     
     var blankView: UIScrollView!
     var screenNameLabel: UIButton!
@@ -60,7 +62,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init()
     }
     
-    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool!) {
+    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool!, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
         super.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
@@ -71,6 +73,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.retweetedName = aRetweetedName
         self.retweetedProfileImage = aRetweetedProfileImage
         self.fFavorited = aFavorited
+        if (aParentArray.count > 0) {
+            self.parentArray = aParentArray
+        }
+        self.parentIndex = aParentIndex
 
         self.title = "詳細"
     }
@@ -348,7 +354,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
                         self.blankView.addSubview(self.favButton)
                     }
-                    // TODO: 親のdictionaryも変更
+                    // 親要素のツイート情報を書き換え
+                    if (self.parentArray != nil && self.parentIndex != nil) {
+                        (self.parentArray![self.parentIndex!] as NSMutableDictionary).setObject(1, forKey: "favorited?")
+                    }
                 })
             }
         }

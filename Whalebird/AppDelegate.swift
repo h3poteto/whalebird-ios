@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {
             var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
+            var dummyArray: Array<AnyObject> = []
             if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
                 var detailView = TweetDetailViewController(
                     aTweetID: userInfo.objectForKey("id") as String,
@@ -68,7 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aPostDetail: userInfo.objectForKey("created_at") as String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
-                    aFavorited: userInfo.objectForKey("favorited?") as Bool
+                    aFavorited: userInfo.objectForKey("favorited?") as Bool,
+                    aParentArray: &dummyArray,
+                    aParentIndex: nil
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -175,6 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 case "reply":
                     var alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
                     let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
+                        var dummyArray: Array<AnyObject> = []
                         var detailViewController = TweetDetailViewController(
                             aTweetID: userInfo["id"] as String,
                             aTweetBody: userInfo["text"] as String,
@@ -184,7 +188,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aPostDetail: userInfo["created_at"] as String,
                             aRetweetedName: nil,
                             aRetweetedProfileImage: nil,
-                            aFavorited: userInfo["favorited?"] as Bool
+                            aFavorited: userInfo["favorited?"] as Bool,
+                            aParentArray: &dummyArray,
+                            aParentIndex: nil
                         )
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -222,6 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         } else {
             switch(category) {
             case "reply":
+                var dummyArray: Array<AnyObject> = []
                 var detailViewController = TweetDetailViewController(
                     aTweetID: userInfo["id"] as String,
                     aTweetBody: userInfo["text"] as String,
@@ -231,7 +238,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aPostDetail: userInfo["created_at"] as String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
-                    aFavorited: userInfo["favorited?"] as Bool
+                    aFavorited: userInfo["favorited?"] as Bool,
+                    aParentArray: &dummyArray,
+                    aParentIndex: nil
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある

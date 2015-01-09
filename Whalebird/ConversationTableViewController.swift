@@ -113,7 +113,9 @@ class ConversationTableViewController: UITableViewController {
             aPostDetail: cTweetData.objectForKey("created_at") as String,
             aRetweetedName: nil,
             aRetweetedProfileImage: nil,
-            aFavorited: cTweetData.objectForKey("favorited?") as Bool
+            aFavorited: cTweetData.objectForKey("favorited?") as Bool,
+            aParentArray: &self.newConversation,
+            aParentIndex: indexPath.row
         )
         self.navigationController!.pushViewController(detailView, animated: true)
     }

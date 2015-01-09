@@ -164,7 +164,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 aPostDetail: cTweetData.objectForKey("created_at") as String,
                 aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
                 aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
-                aFavorited: cTweetData.objectForKey("favorited?") as Bool
+                aFavorited: cTweetData.objectForKey("favorited?") as Bool,
+                aParentArray: &self.currentTimeline,
+                aParentIndex: indexPath.row
             )
             self.parentNavigation.pushViewController(detailView, animated: true)
         }
