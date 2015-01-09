@@ -428,8 +428,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (URL.scheme?.hasPrefix("at") == true) {
             var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("at:@", withString: "", options: nil, range: nil))
             self.navigationController!.pushViewController(userView, animated: true)
+            return false
+        } else {
+            UIApplication.sharedApplication().openURL(URL)
+            return false
         }
-        return true
     }
     
     // twitter独自のscreen name判定
