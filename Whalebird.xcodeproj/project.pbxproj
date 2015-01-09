@@ -25,6 +25,8 @@
 		E91F12C51A3045260036F982 /* Profile-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E91F12C31A3045260036F982 /* Profile-Filled@2x.png */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
+		E95A17171A5FC63200006AFD /* Star-Filled.png in Resources */ = {isa = PBXBuildFile; fileRef = E95A17151A5FC63200006AFD /* Star-Filled.png */; };
+		E95A17181A5FC63200006AFD /* Star-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E95A17161A5FC63200006AFD /* Star-Filled@2x.png */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */; };
 		E9770D601A32160800E7153C /* Warning.png in Resources */ = {isa = PBXBuildFile; fileRef = E9770D5E1A32160800E7153C /* Warning.png */; };
@@ -111,6 +113,8 @@
 		E91F12C31A3045260036F982 /* Profile-Filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Profile-Filled@2x.png"; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E95A17151A5FC63200006AFD /* Star-Filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-Filled.png"; sourceTree = "<group>"; };
+		E95A17161A5FC63200006AFD /* Star-Filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-Filled@2x.png"; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
 		E97594291A4127F800BFD41F /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +303,8 @@
 				E91B20371A111844008BF1ED /* Mail.png */,
 				E9956B1819D1ECDB00E15D7C /* Star-Line.png */,
 				E9956B1919D1ECDB00E15D7C /* Star-Line@2x.png */,
+				E95A17151A5FC63200006AFD /* Star-Filled.png */,
+				E95A17161A5FC63200006AFD /* Star-Filled@2x.png */,
 				E9956B1C19D1ECE200E15D7C /* Trash-Line.png */,
 				E9956B1D19D1ECE200E15D7C /* Trash-Line@2x.png */,
 				E9956B2019D1EDBA00E15D7C /* Conversation-Line.png */,
@@ -423,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9956AE719D1E12500E15D7C /* Home@2x.png in Resources */,
+				E95A17171A5FC63200006AFD /* Star-Filled.png in Resources */,
 				E9956B2319D1EDBA00E15D7C /* Conversation-Line@2x.png in Resources */,
 				E9977D221A28E25B0091FF24 /* Close-Filled.png in Resources */,
 				E9956AF619D1E21700E15D7C /* Settings-Line.png in Resources */,
@@ -438,6 +445,7 @@
 				E9D493C51A37504C00DE2051 /* profile_back.jpg in Resources */,
 				E9956AF719D1E21700E15D7C /* Settings-Line@2x.png in Resources */,
 				E9956B1A19D1ECDB00E15D7C /* Star-Line.png in Resources */,
+				E95A17181A5FC63200006AFD /* Star-Filled@2x.png in Resources */,
 				E9956B1619D1ECD300E15D7C /* More-Line.png in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
 				E9956B1219D1ECCB00E15D7C /* Import-Line.png in Resources */,
@@ -641,7 +649,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				APIURL = "http://192.168.55.13:3000/";
+				APIURL = "http://192.168.33.14:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;

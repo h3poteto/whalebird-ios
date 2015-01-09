@@ -118,7 +118,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
             aPostDetail: cTweetData.objectForKey("created_at") as String,
             aRetweetedName: nil,
-            aRetweetedProfileImage: nil
+            aRetweetedProfileImage: nil,
+            aFavorited: cTweetData.objectForKey("favorited?") as Bool
         )
         self.navigationController!.pushViewController(detailView, animated: true)
     }

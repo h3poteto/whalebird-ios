@@ -67,7 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aProfileImage: userInfo.objectForKey("profile_image_url") as String,
                     aPostDetail: userInfo.objectForKey("created_at") as String,
                     aRetweetedName: nil,
-                    aRetweetedProfileImage: nil
+                    aRetweetedProfileImage: nil,
+                    aFavorited: userInfo.objectForKey("favorited?") as Bool
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -182,7 +183,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aProfileImage: userInfo["profile_image_url"] as String,
                             aPostDetail: userInfo["created_at"] as String,
                             aRetweetedName: nil,
-                            aRetweetedProfileImage: nil
+                            aRetweetedProfileImage: nil,
+                            aFavorited: userInfo["favorited?"] as Bool
                         )
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -228,7 +230,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aProfileImage: userInfo["profile_image_url"] as String,
                     aPostDetail: userInfo["created_at"] as String,
                     aRetweetedName: nil,
-                    aRetweetedProfileImage: nil
+                    aRetweetedProfileImage: nil,
+                    aFavorited: userInfo["favorited?"] as Bool
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
