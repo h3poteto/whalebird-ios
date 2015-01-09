@@ -132,7 +132,10 @@ class ConversationTableViewController: UITableViewController {
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", params: parameter) { (aNewConversation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
-                self.newConversation = aNewConversation.reverseObjectEnumerator().allObjects
+                for timeline in aNewConversation {
+                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    self.newConversation.insert(mutableTimeline, atIndex: 0)
+                }
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
             })

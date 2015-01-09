@@ -380,7 +380,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                self.newTimeline = aNewTimeline
+                for timeline in aNewTimeline {
+                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    self.newTimeline.append(mutableTimeline)
+                }
                 if (aMoreIndex == nil) {
                     for newTweet in self.newTimeline {
                         self.currentTimeline.insert(newTweet, atIndex: 0)
