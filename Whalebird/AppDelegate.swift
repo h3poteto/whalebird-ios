@@ -221,6 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     self.rootController.presentViewController(alertController, animated: true, completion: nil)
                     break
                 default:
+                    // TODO: fav, RTも通知は実装しよう．ただしwbでよい
                     break
                 
                 }
@@ -257,6 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
                 break
             default:
+                // TODO: fav, RTも通知は実装しよう．ただしwbでよい
                 break
             }
         }

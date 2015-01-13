@@ -325,7 +325,40 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //-------------------------------------------------
     func tappedFavorite() {
         if (self.fFavorited == true) {
-            self.fFavorited = false
+            var params:Dictionary<String, String> = [
+                "id" : self.tweetID
+            ]
+            let cParameter: Dictionary<String, AnyObject> = [
+                "settings" : params
+            ]
+            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    SVProgressHUD.dismiss()
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り削除")
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
+                    // アイコンの挿げ替え
+                    let cWindowSize = UIScreen.mainScreen().bounds
+                    self.fFavorited = false
+                    var cStarImage = UIImage(named: "Star-Line.png")
+                    self.ts_imageWithSize(cStarImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
+                        self.favButton.removeFromSuperview()
+                        self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                        self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                        self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                        self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                        self.blankView.addSubview(self.favButton)
+                    }
+                    // 親要素のツイート情報を書き換え
+                    if (self.parentArray != nil && self.parentIndex != nil) {
+                        (self.parentArray![self.parentIndex!] as NSMutableDictionary).setObject(0, forKey: "favorited?")
+                    }
+                })
+            }
+            
         } else {
             var params:Dictionary<String, String> = [
                 "id" : self.tweetID
