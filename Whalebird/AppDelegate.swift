@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aPostDetail: userInfo.objectForKey("created_at") as String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
-                    aFavorited: userInfo.objectForKey("favorited") as Bool,
+                    aFavorited: userInfo.objectForKey("favorited") as? Bool,
                     aParentArray: &dummyArray,
                     aParentIndex: nil
                 )
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aPostDetail: userInfo.objectForKey("created_at") as String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
-                        aFavorited: userInfo.objectForKey("favorited") as Bool,
+                        aFavorited: userInfo.objectForKey("favorited") as? Bool,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aPostDetail: userInfo.objectForKey("created_at") as String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
-                        aFavorited: userInfo.objectForKey("favorited") as Bool,
+                        aFavorited: userInfo.objectForKey("favorited") as? Bool,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -226,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aPostDetail: userInfo["created_at"] as String,
                             aRetweetedName: nil,
                             aRetweetedProfileImage: nil,
-                            aFavorited: userInfo["favorited"] as Bool,
+                            aFavorited: userInfo["favorited"] as? Bool,
                             aParentArray: &dummyArray,
                             aParentIndex: nil
                         )
@@ -290,7 +290,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aPostDetail: userInfo["created_at"] as String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
-                    aFavorited: userInfo["favorited"] as Bool,
+                    aFavorited: userInfo["favorited"] as? Bool,
                     aParentArray: &dummyArray,
                     aParentIndex: nil
                 )
@@ -320,7 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aPostDetail: userInfo["created_at"] as String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
-                        aFavorited: userInfo["favorited"] as Bool,
+                        aFavorited: userInfo["favorited"] as? Bool,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -340,7 +340,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aPostDetail: userInfo["created_at"] as String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
-                        aFavorited: userInfo["favorited"] as Bool,
+                        aFavorited: userInfo["favorited"] as? Bool,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )

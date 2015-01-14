@@ -62,7 +62,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init()
     }
     
-    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool!, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
+    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
         super.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
@@ -72,7 +72,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userName = aUserName
         self.retweetedName = aRetweetedName
         self.retweetedProfileImage = aRetweetedProfileImage
-        self.fFavorited = aFavorited
+        if (aFavorited != nil) {
+            self.fFavorited = aFavorited!
+        } else {
+            self.fFavorited = false
+        }
         if (aParentArray.count > 0) {
             self.parentArray = aParentArray
         }
