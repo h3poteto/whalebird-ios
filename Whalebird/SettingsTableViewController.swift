@@ -10,8 +10,6 @@ import UIKit
 import Accounts
 import Social
 
-
-// TODO: Fav，RT，DMはデフォルトでONに
 class SettingsTableViewController: UITableViewController{
     
     var twitterAccounts: NSArray!
@@ -19,9 +17,9 @@ class SettingsTableViewController: UITableViewController{
     var notificationForegroundFlag: Bool = true
     var notificationBackgroundFlag: Bool = true
     var notificationReplyFlag: Bool = true
-    var notificationFavFlag: Bool = false
-    var notificationRTFlag: Bool = false
-    var notificationDMFlag: Bool = false
+    var notificationFavFlag: Bool = true
+    var notificationRTFlag: Bool = true
+    var notificationDMFlag: Bool = true
     var deviceToken = String?()
     var notificationForegroundSwitch: UISwitch!
     
@@ -246,7 +244,9 @@ class SettingsTableViewController: UITableViewController{
                 cellTitle = "Fav通知"
                 var notificationFavSwitch = UISwitch(frame: CGRect.zeroRect)
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                self.notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+                if (userDefault.objectForKey("notificationFavFlag") != nil) {
+                    self.notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+                }
                 notificationFavSwitch.on = self.notificationFavFlag
                 notificationFavSwitch.addTarget(self, action: "tappedNotificationFavSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationFavSwitch
@@ -255,7 +255,9 @@ class SettingsTableViewController: UITableViewController{
                 cellTitle = "RT通知"
                 var notificationRTSwitch = UISwitch(frame: CGRect.zeroRect)
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                self.notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+                if (userDefault.objectForKey("notificationRTFlag") != nil) {
+                    self.notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+                }
                 notificationRTSwitch.on = self.notificationRTFlag
                 notificationRTSwitch.addTarget(self, action: "tappedNotificationRTSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationRTSwitch
@@ -264,7 +266,9 @@ class SettingsTableViewController: UITableViewController{
                 cellTitle = "DM通知"
                 var notificationDMSwitch = UISwitch(frame: CGRect.zeroRect)
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                self.notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+                if (userDefault.objectForKey("notificationDMFlag") != nil) {
+                    self.notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+                }
                 notificationDMSwitch.on = self.notificationDMFlag
                 notificationDMSwitch.addTarget(self, action: "tappedNotificationDMSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationDMSwitch
