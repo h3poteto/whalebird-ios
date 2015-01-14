@@ -10,6 +10,8 @@ import UIKit
 import Accounts
 import Social
 
+
+// TODO: Fav，RT，DMはデフォルトでONに
 class SettingsTableViewController: UITableViewController{
     
     var twitterAccounts: NSArray!
