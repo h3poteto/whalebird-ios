@@ -259,10 +259,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     self.rootController.presentViewController(alertController, animated: true, completion: nil)
                     break
                 case "favorite":
-                    // TODO: ここではwbで表示
+                    // wbによる通知
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
                     break
                 case "retweet":
-                    // TODO: ここではwbで表示
+                    // wbによる通知
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
+                    notice.alpha = 0.8
+                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.show()
                     break
                 default:
                     break
