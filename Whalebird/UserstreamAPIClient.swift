@@ -138,6 +138,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String!), forKey: "created_at")
                 println(object.objectForKey("user")?.objectForKey("screen_name"))
+                object.setValue(object.objectForKey("favorited") as Int, forKey: "favorited?")
                 if (object.objectForKey("retweeted_status") == nil) {
                     object.setValue(nil, forKey: "retweeted")
                 } else {
