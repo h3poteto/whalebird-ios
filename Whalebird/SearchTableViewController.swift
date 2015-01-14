@@ -151,6 +151,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", params: cParameter) { (aNewResult) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
+                self.newResult = []
                 for timeline in aNewResult {
                     var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
                     self.newResult.append(mutableTimeline)

@@ -230,6 +230,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
+                self.newTimeline = []
                 for timeline in aNewTimeline {
                     var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
                     self.newTimeline.append(mutableTimeline)

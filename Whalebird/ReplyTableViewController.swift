@@ -171,6 +171,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/mentions.json", params: parameter, callback: {aNewTimeline in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
+                self.newTimeline = []
                 for timeline in aNewTimeline {
                     var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
                     self.newTimeline.append(mutableTimeline)
