@@ -277,7 +277,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 
                 }
             }
-        } else {
+        } else if (application.applicationState != UIApplicationState.Active) {
             switch(category) {
             case "reply":
                 var dummyArray: Array<AnyObject> = []
