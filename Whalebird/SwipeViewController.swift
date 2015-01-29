@@ -47,7 +47,12 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         for item in self.swipeItems {
             viewItems.append(StreamTableViewController(aStreamElement: item, aParentNavigation: self.navigationController!))
         }
-        self.swipeView = SwipeView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.height, self.view.frame.width, self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.height))
+        self.swipeView = SwipeView(frame: CGRectMake(
+            0,
+            self.navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.height,
+            self.view.frame.width,
+            self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.height - self.PageControlViewHeight
+            ))
         
         self.swipeView.delegate = self
         self.swipeView.dataSource = self
@@ -66,7 +71,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
             cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight,
             cWindowSize.size.width,
             self.PageControlViewHeight))
-        self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0)
+        self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
         self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)
         self.pageControl.numberOfPages = self.swipeItems.count
