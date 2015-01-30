@@ -14,7 +14,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var streamElement: ListTableViewController.Stream!
     var currentTimeline: Array<AnyObject> = []
     var newTimeline: Array<AnyObject> = []
-    var timelineCell: Array<AnyObject> = []
     var parentNavigation: UINavigationController!
     var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
@@ -108,7 +107,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.timelineCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
         cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
         
@@ -117,22 +115,13 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
-        } else {
-            height = 60.0
-        }
+        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         return height
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        if (self.timelineCell.count > 0 && indexPath.row < self.timelineCell.count) {
-            var cell: TimelineViewCell  = self.timelineCell[indexPath.row] as TimelineViewCell
-            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
-        } else {
-            height = 60.0
-        }
+        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
         return height
     }
 
@@ -235,6 +224,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                     var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
                     self.newTimeline.append(mutableTimeline)
                 }
+                var currentRowIndex: Int?
                 if (self.newTimeline.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
@@ -254,6 +244,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                                     ])
                             }
                             self.newTimeline.insert(readMoreDictionary, atIndex: 0)
+                        }
+                        if (self.currentTimeline.count > 0) {
+                            currentRowIndex = self.newTimeline.count
                         }
                         for newTweet in self.newTimeline {
                             self.currentTimeline.insert(newTweet, atIndex: 0)
@@ -291,6 +284,11 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                         }
                     }
                     self.tableView.reloadData()
+                    var userDefault = NSUserDefaults.standardUserDefaults()
+                    if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
+                        var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                    }
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: String(aNewTimeline.count) + "件更新")
                     notice.alpha = 0.8

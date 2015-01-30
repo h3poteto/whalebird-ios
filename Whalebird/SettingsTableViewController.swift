@@ -65,7 +65,7 @@ class SettingsTableViewController: UITableViewController{
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 6
+        return 7
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,6 +87,9 @@ class SettingsTableViewController: UITableViewController{
             cellCount = 1
             break
         case 5:
+            cellCount = 1
+            break
+        case 6:
             cellCount = 4
             break
         default:
@@ -113,6 +116,9 @@ class SettingsTableViewController: UITableViewController{
             sectionTitle = "Userstream"
             break
         case 5:
+            sectionTitle = "ツイート更新設定"
+            break
+        case 6:
             sectionTitle = "Whalebirdについて"
             break
         default:
@@ -145,6 +151,8 @@ class SettingsTableViewController: UITableViewController{
             sectionTitle = "※Wifi推奨"
             break
         case 5:
+            break
+        case 6:
             break
         default:
             sectionTitle = ""
@@ -339,6 +347,28 @@ class SettingsTableViewController: UITableViewController{
         case 5:
             switch(indexPath.row) {
             case 0:
+                cellTitle = "新着更新後の位置"
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                var timeType = userDefault.integerForKey("afterUpdatePosition") as Int
+                switch(timeType) {
+                case 1:
+                    cellDetailTitle = "トップ"
+                    break
+                case 2:
+                    cellDetailTitle = "そのまま"
+                    break
+                default:
+                    cellDetailTitle = "トップ"
+                    break
+                }
+                break
+            default:
+                break
+            }
+            break
+        case 6:
+            switch(indexPath.row) {
+            case 0:
                 cellTitle = "お問い合わせ"
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break
@@ -435,6 +465,15 @@ class SettingsTableViewController: UITableViewController{
         case 5:
             switch(indexPath.row) {
             case 0:
+                self.stackAfterUpdateType()
+                break
+            default:
+                break
+            }
+            break
+        case 6:
+            switch(indexPath.row) {
+            case 0:
                 var inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: "お問い合わせ")
                 self.navigationController!.pushViewController(inquiryView, animated: true)
                 break
@@ -527,6 +566,26 @@ class SettingsTableViewController: UITableViewController{
         timeTypeSheet.addAction(relativeTimeAction)
         timeTypeSheet.addAction(cancelAction)
         self.presentViewController(timeTypeSheet, animated: true, completion: nil)
+    }
+    
+    func stackAfterUpdateType() {
+        var updateTypeSheet = UIAlertController(title: "新着ツイート更新後位置選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let topAction = UIAlertAction(title: "トップ", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(1, forKey: "afterUpdatePosition")
+            self.tableView.reloadData()
+        }
+        let currentAction = UIAlertAction(title: "そのまま", style: UIAlertActionStyle.Default) { (action) -> Void in
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setInteger(2, forKey: "afterUpdatePosition")
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        updateTypeSheet.addAction(topAction)
+        updateTypeSheet.addAction(currentAction)
+        updateTypeSheet.addAction(cancelAction)
+        self.presentViewController(updateTypeSheet, animated: true, completion: nil)
     }
 
 

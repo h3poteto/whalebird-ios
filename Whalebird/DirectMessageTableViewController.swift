@@ -12,7 +12,6 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
     var newMessage: Array<AnyObject> = []
     var currentMessage: Array<AnyObject> = []
-    var messageCell: Array<AnyObject> = []
     
     var refreshMessage: ODRefreshControl!
     var newMessageButton: UIBarButtonItem!
@@ -95,7 +94,6 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         if (cell == nil) {
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
-        self.messageCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
         cell!.configureCell(self.currentMessage[indexPath.row] as NSDictionary)
 
@@ -105,22 +103,14 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
-        } else {
-            height = 60.0
-        }
+        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
         return height
     }
 
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        if (self.messageCell.count > 0 && indexPath.row < self.messageCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
-        } else {
-            height = 60.0
-        }
+        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
         return height
     }
     
@@ -166,6 +156,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newMessage = aNewMessage
+                var currentRowIndex: Int?
                 if (self.newMessage.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
@@ -185,6 +176,9 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                                     ])
                             }
                             self.newMessage.insert(readMoreDictionary, atIndex: 0)
+                        }
+                        if (self.currentMessage.count > 0) {
+                            currentRowIndex = self.newMessage.count
                         }
                         for newTweet in self.newMessage {
                             self.currentMessage.insert(newTweet, atIndex: 0)
@@ -222,6 +216,11 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                         }
                     }
                     self.tableView.reloadData()
+                    var userDefault = NSUserDefaults.standardUserDefaults()
+                    if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
+                        var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                    }
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewMessage.count) + "件更新")
                     notice.alpha = 0.8
