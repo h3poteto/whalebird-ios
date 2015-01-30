@@ -161,8 +161,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         if (aMoreIndex != nil) {
             var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
             // max_idは「以下」という判定になるので自身を含めない
-            var intMoreID = strMoreID.toInt()! - 1
-            params["max_id"] = String(intMoreID)
+            var intMoreID = (strMoreID as NSString).doubleValue - 1.0
+            params["max_id"] = String(format: "%f", intMoreID)
         }
         var parameter: Dictionary<String, AnyObject> = [
             "settings" : params

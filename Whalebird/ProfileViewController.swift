@@ -369,8 +369,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (aMoreIndex != nil) {
             var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("id_str") as String
             // max_idは「以下」という判定になるので自身を含めない
-            var intMoreID = strMoreID.toInt()! - 1
-            params["max_id"] = String(intMoreID)
+            var intMoreID = (strMoreID as NSString).doubleValue - 1.0
+            params["max_id"] = String(format: "%f", intMoreID)
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,

@@ -207,8 +207,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         if (aMoreIndex != nil) {
             var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
             // max_idは「以下」という判定になるので自身を含めない
-            var intMoreID = strMoreID.toInt()! - 1
-            params["max_id"] = String(intMoreID)
+            // iPhone5以下は32bitなので，Intで扱える範囲を超える
+            var intMoreID = (strMoreID as NSString).doubleValue - 1.0
+            params["max_id"] = String(format: "%f", intMoreID)
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
