@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO: 日付の位置をbottom left
+// Retweetedはbottom center
 class TimelineViewCell: UITableViewCell {
     
     //===================================
