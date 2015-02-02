@@ -8,8 +8,6 @@
 
 import UIKit
 
-// TODO: 日付の位置をbottom left
-// Retweetedはbottom center
 class TimelineViewCell: UITableViewCell {
     
     //===================================
@@ -96,8 +94,9 @@ class TimelineViewCell: UITableViewCell {
             DummyLabel.text = aDictionary.objectForKey("text") as NSString
             DummyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             DummyLabel.sizeToFit()
-            // retweeted分の行追加
             height += DummyLabel.frame.size.height + TimelineViewCell.ImagePadding
+            height += TimelineViewCell.DefaultLineHeight
+            // retweeted分の行追加
             if (aDictionary.objectForKey("retweeted") != nil) {
                 height += TimelineViewCell.DefaultLineHeight
             }
@@ -200,18 +199,39 @@ class TimelineViewCell: UITableViewCell {
             }
             
             
-            self.nameLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4 , TimelineViewCell.ImagePadding, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
+            self.nameLabel = UILabel(frame: CGRectMake(
+                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                TimelineViewCell.ImagePadding,
+                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.nameLabel)
             
-            self.screenNameLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 2, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
+            self.screenNameLabel = UILabel(frame: CGRectMake(
+                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 2,
+                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.screenNameLabel)
             
-            self.bodyLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
+            self.bodyLabel = UILabel(frame: CGRectMake(
+                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3,
+                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.bodyLabel)
-            self.postDetailLable = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1, self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
+            
+            self.postDetailLable = UILabel(frame: CGRectMake(
+                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1,
+                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.postDetailLable)
             
-            self.retweetedLabel = UILabel(frame: CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 5, 40, self.maxSize.width - (TimelineViewCell.ImagePadding * 6 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight))
+            self.retweetedLabel = UILabel(frame: CGRectMake(
+                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 5,
+                40,
+                self.maxSize.width - (TimelineViewCell.ImagePadding * 6 + TimelineViewCell.ImageSize),
+                TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.retweetedLabel!)
             
             //------------------------------------
@@ -272,6 +292,7 @@ class TimelineViewCell: UITableViewCell {
             self.postDetailLable.textAlignment = NSTextAlignment.Right
             self.postDetailLable.textColor = UIColor.grayColor()
             self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.objectForKey("created_at") as NSString)
+            self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height
             self.postDetailLable.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             
             //-------------------------------------
@@ -283,8 +304,9 @@ class TimelineViewCell: UITableViewCell {
                 self.retweetedLabel?.textColor = UIColor.grayColor()
                 self.retweetedLabel?.text = "Retweeted by @" + (aDictionary.objectForKey("retweeted")?.objectForKey("screen_name") as String)
                 self.retweetedLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
+                self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height
+                self.retweetedLabel?.center.x = self.maxSize.width / 2.0
             }
-            self.retweetedLabel?.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height
         }
     }
 }

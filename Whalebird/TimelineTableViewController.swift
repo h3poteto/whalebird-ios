@@ -278,11 +278,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                         var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
                         self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                     }
+                    // TODO: 位置を最上部に固定：すべて共通
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewTimeline.count) + "件更新")
                     notice.alpha = 0.8
                     notice.originY = UIApplication.sharedApplication().statusBarFrame.height
-                    notice.show()
+                        notice.show()
                 } else {
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
