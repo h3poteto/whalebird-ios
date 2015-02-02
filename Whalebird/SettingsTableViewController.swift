@@ -10,7 +10,6 @@ import UIKit
 import Accounts
 import Social
 
-// TODO: 新着ツイート取得時のスクロール位置設定項目追加
 class SettingsTableViewController: UITableViewController{
     
     var twitterAccounts: NSArray!

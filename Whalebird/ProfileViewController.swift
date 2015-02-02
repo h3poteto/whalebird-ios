@@ -9,7 +9,6 @@
 import UIKit
 import QuartzCore
 
-// TODO: ここからも新規ツイート
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //===================================
@@ -34,6 +33,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var tableView: UITableView!
     var scrollView: UIScrollView!
+    
+    var newTweetButton: UIBarButtonItem!
     
     var newTimeline: Array<AnyObject> = []
     var currentTimeline: Array<AnyObject> = []
@@ -81,6 +82,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.windowSize = UIScreen.mainScreen().bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+        
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 4000))
         self.tableView.delegate = self
@@ -457,6 +461,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 SVProgressHUD.dismiss()
             })
         }
+    }
+    
+    func tappedNewTweet(sender: AnyObject) {
+        var newTweetView = NewTweetViewController()
+        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
     func tappedTweetNum() {

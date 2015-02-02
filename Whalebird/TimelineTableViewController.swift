@@ -11,7 +11,6 @@ import UIKit
 import Accounts
 import Social
 
-// TODO: 新着ツイート取得時のスクロール位置調節
 class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     let tweetCount = Int(50)
     
