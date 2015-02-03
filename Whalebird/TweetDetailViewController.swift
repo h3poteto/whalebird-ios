@@ -342,7 +342,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り削除")
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
                     let cWindowSize = UIScreen.mainScreen().bounds
@@ -377,7 +377,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り追加")
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
                     let cWindowSize = UIScreen.mainScreen().bounds
@@ -417,7 +417,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "削除完了")
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                     self.navigationController!.popViewControllerAnimated(true)
                 })
@@ -452,7 +452,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                         SVProgressHUD.dismiss()
                         var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
                         notice.alpha = 0.8
-                        notice.originY = 0
+                        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                         notice.show()
                     })
                 })

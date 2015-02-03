@@ -14,6 +14,7 @@ import Crashlytics
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
     var rootController: UITabBarController!
     var window: UIWindow?
+    var alertPosition: CGFloat = 0.0
 
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
@@ -58,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
         
+        self.alertPosition = (self.rootController.selectedViewController as UINavigationController).navigationBar.frame.origin.y + (self.rootController.selectedViewController as UINavigationController).navigationBar.frame.size.height
         
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {
@@ -147,7 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if ( userDefault.objectForKey("username") == nil) {
             var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
             notice.alpha = 0.8
-            notice.originY = 0
+            notice.originY = self.alertPosition
             notice.show()
             var loginSettingsView = SettingsTableViewController()
             self.rootController.presentedViewController
@@ -212,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 // wbによる通知
                 var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                 notice.alpha = 0.8
-                notice.originY = 0
+                notice.originY = self.alertPosition
                 notice.show()
             } else {
                 // デフォルトはアラート通知
@@ -266,14 +268,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // wbによる通知
                     var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = self.alertPosition
                     notice.show()
                     break
                 case "retweet":
                     // wbによる通知
                     var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = self.alertPosition
                     notice.show()
                     break
                 default:

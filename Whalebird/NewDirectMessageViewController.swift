@@ -110,7 +110,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "送信しました")
                 SVProgressHUD.dismiss()
                 notice.alpha = 0.8
-                notice.originY = 0
+                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                 notice.show()
                 self.navigationController?.popViewControllerAnimated(true)
             })

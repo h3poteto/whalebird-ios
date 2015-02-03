@@ -134,7 +134,7 @@ class WhalebirdAPIClient: NSObject {
                     println("blank response")
                     var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Request Error", message: "情報がありません")
                     notice.alpha = 0.8
-                    notice.originY = 0
+                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                 }
             }, failure: { (operation, error) -> Void in
@@ -244,7 +244,7 @@ class WhalebirdAPIClient: NSObject {
     func regenerateSession() {
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
         notice.alpha = 0.8
-        notice.originY = 0
+        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
         notice.show()
         SVProgressHUD.dismiss()
     }
@@ -280,7 +280,7 @@ class WhalebirdAPIClient: NSObject {
         }
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: errorMessage)
         notice.alpha = 0.8
-        notice.originY = 0
+        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
         notice.show()
     }
 }
