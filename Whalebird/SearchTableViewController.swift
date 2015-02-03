@@ -165,7 +165,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 SVProgressHUD.dismiss()
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewResult.count) + "件")
                 notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.originY = 0
                 notice.show()
                 self.searchBar.resignFirstResponder()
             })

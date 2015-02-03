@@ -147,7 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if ( userDefault.objectForKey("username") == nil) {
             var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
             notice.alpha = 0.8
-            notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+            notice.originY = 0
             notice.show()
             var loginSettingsView = SettingsTableViewController()
             self.rootController.presentedViewController
@@ -212,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 // wbによる通知
                 var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                 notice.alpha = 0.8
-                notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                notice.originY = 0
                 notice.show()
             } else {
                 // デフォルトはアラート通知
@@ -266,14 +266,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // wbによる通知
                     var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                     notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.originY = 0
                     notice.show()
                     break
                 case "retweet":
                     // wbによる通知
                     var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                     notice.alpha = 0.8
-                    notice.originY = UIApplication.sharedApplication().statusBarFrame.height
+                    notice.originY = 0
                     notice.show()
                     break
                 default:
