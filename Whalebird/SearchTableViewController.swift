@@ -120,6 +120,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             aRetweetedName: nil,
             aRetweetedProfileImage: nil,
             aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+            aMedia: cTweetData.objectForKey("media") as? NSArray,
             aParentArray: &self.currentResult,
             aParentIndex: indexPath.row
         )

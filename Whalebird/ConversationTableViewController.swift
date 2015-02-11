@@ -114,6 +114,7 @@ class ConversationTableViewController: UITableViewController {
             aRetweetedName: nil,
             aRetweetedProfileImage: nil,
             aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+            aMedia: cTweetData.objectForKey("media") as? NSArray,
             aParentArray: &self.newConversation,
             aParentIndex: indexPath.row
         )

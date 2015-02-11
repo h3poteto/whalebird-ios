@@ -132,6 +132,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
                 aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                aMedia: cTweetData.objectForKey("media") as? NSArray,
                 aParentArray: &self.currentTimeline,
                 aParentIndex: indexPath.row
             )

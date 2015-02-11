@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: 画像が入っている場合は表示
 class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UITextViewDelegate, NSLayoutManagerDelegate {
     let LabelPadding = CGFloat(10)
     // そのまま表示するとボタン領域が小さくてタップしにくいので拡大
@@ -26,6 +27,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var retweetedName: String?
     var retweetedProfileImage: String?
     var fFavorited: Bool!
+    var media: Array<String>?
     var parentArray: Array<AnyObject>?
     var parentIndex: Int?
     
@@ -34,6 +36,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var userNameLabel: UIButton!
     var tweetBodyLabel: UITextView!
     var postDetailLabel: UILabel!
+    var innerMediaButton: Array<UIButton>?
     var profileImageLabel: UIImageView!
     var retweetedNameLabel: UIButton?
     var retweetedProfileImageLabel: UIImageView?
@@ -46,6 +49,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     
     var newTweetButton: UIBarButtonItem!
+    var cWindowSize: CGRect!
     
     //=====================================
     //  instance method
@@ -62,7 +66,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init()
     }
     
-    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
+    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
         super.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
@@ -76,6 +80,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.fFavorited = aFavorited!
         } else {
             self.fFavorited = false
+        }
+        if (aMedia != nil && aMedia?.count > 0) {
+            self.media = aMedia as Array<String>!
         }
         if (aParentArray.count > 0) {
             self.parentArray = aParentArray
@@ -100,10 +107,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
         
-        let cWindowSize = UIScreen.mainScreen().bounds
+        self.cWindowSize = UIScreen.mainScreen().bounds
         var userDefault = NSUserDefaults.standardUserDefaults()
         
-        self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.9, 40))
+        self.profileImageLabel = UIImageView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
         self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
         self.profileImageLabel.sizeToFit()
@@ -117,7 +124,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
-        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, cWindowSize.size.width * 0.05, cWindowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
             self.userNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
@@ -133,7 +140,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 70, cWindowSize.size.width * 0.05 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.05 + self.userNameLabel.frame.size.height + 5, self.cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
@@ -175,7 +182,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }
         
         
-        self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 5, cWindowSize.size.width * 0.9, 15))
+        self.tweetBodyLabel = UITextView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 5, self.cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.attributedText = attributedString
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
@@ -187,14 +194,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.blankView.addSubview(self.tweetBodyLabel)
         
         
-        self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height, cWindowSize.size.width * 0.9, 15))
+        self.postDetailLabel = UILabel(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height, self.cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.textAlignment = NSTextAlignment.Right
         self.postDetailLabel.text = self.postDetail
         self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.blankView.addSubview(self.postDetailLabel)
         
         if (self.retweetedName != nil) {
-            self.retweetedNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
+            self.retweetedNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + self.LabelPadding, self.cWindowSize.size.width * 0.9, 15))
             self.retweetedNameLabel?.setTitle("Retweeted by @" + self.retweetedName!, forState: UIControlState.Normal)
             self.retweetedNameLabel?.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
             self.retweetedNameLabel?.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
@@ -209,7 +216,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.ts_imageWithSize(cImportImage!, width: self.self.ActionButtonWidth, height: self.ActionButtonHeight) { (aImportImage) -> Void in
             self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
             self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
-            self.replyButton.center = CGPoint(x: cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.replyButton.center = CGPoint(x: self.cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
             self.blankView.addSubview(self.replyButton)
         }
@@ -218,7 +225,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.ts_imageWithSize(cConversationImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aConversationImage) -> Void in
             self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
             self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
-            self.conversationButton.center = CGPoint(x: cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.conversationButton.center = CGPoint(x: self.cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.conversationButton)
         }
@@ -231,7 +238,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.ts_imageWithSize(starImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
             self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
             self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-            self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+            self.favButton.center = CGPoint(x: self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
             self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
             self.blankView.addSubview(self.favButton)
         }
@@ -243,7 +250,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.ts_imageWithSize(cTrashImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight, callback: { (aTrashImage) -> Void in
                 self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
                 self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
-                self.deleteButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.deleteButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
                 self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
                 self.blankView.addSubview(self.deleteButton)
             })
@@ -253,13 +260,48 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.ts_imageWithSize(cMoreImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight, callback: { (aMoreImage) -> Void in
                 self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
                 self.moreButton.setBackgroundImage(aMoreImage, forState: .Normal)
-                self.moreButton.center = CGPoint(x: cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.moreButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
                 self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
                 self.blankView.addSubview(self.moreButton)
             })
         }
         
-        self.blankView.contentSize = CGSizeMake(cWindowSize.width, self.favButton.frame.origin.y + self.favButton.frame.size.height + 20)
+        self.blankView.contentSize = CGSizeMake(self.cWindowSize.width, self.favButton.frame.origin.y + self.favButton.frame.size.height + 20)
+        
+        
+        // 画像があった場合の処理
+        if (self.media != nil) {
+            var startPosY = self.favButton.frame.origin.y + self.favButton.frame.size.height + 20.0
+            self.innerMediaButton = []
+            for mediaURL in self.media! {
+                var eachMediaButton = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, startPosY, self.cWindowSize.size.width * 0.9, 100))
+                self.innerMediaButton!.append(eachMediaButton)
+                var imageURL = NSURL(string: mediaURL)
+                
+                // SDWebImageにより読み込むのでクロージャで位置を再調節
+                eachMediaButton.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, completed: { (image, error, cacheType, url) -> Void in
+
+                    var fixStartPosY = self.favButton.frame.origin.y + self.favButton.frame.size.height + 20.0
+                    for mediaButton in self.innerMediaButton! {
+                        // 表示画像のリサイズ
+                        mediaButton.sizeToFit()
+                        if (mediaButton.frame.size.width > self.cWindowSize.size.width * 0.9){
+                            var scale = (self.cWindowSize.size.width * 0.9) / mediaButton.frame.size.width
+                            mediaButton.frame.size = CGSizeMake(self.cWindowSize.size.width * 0.9, mediaButton.frame.size.height * scale)
+                        }
+                        mediaButton.frame.origin.y = fixStartPosY
+                        fixStartPosY += mediaButton.frame.size.height + 10.0
+                        
+                        // スクロール用に全体サイズも調節
+                        self.blankView.contentSize = CGSizeMake(self.cWindowSize.width, mediaButton.frame.origin.y + mediaButton.frame.size.height + 20)
+                    }
+                    
+                })
+                eachMediaButton.addTarget(self, action: "tappedMedia:", forControlEvents: UIControlEvents.TouchDown)
+                startPosY += eachMediaButton.frame.size.height
+                self.blankView.addSubview(eachMediaButton)
+            }
+        }
         
     }
 
@@ -345,14 +387,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
-                    let cWindowSize = UIScreen.mainScreen().bounds
                     self.fFavorited = false
                     var cStarImage = UIImage(named: "Star-Line.png")
                     self.ts_imageWithSize(cStarImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
                         self.favButton.removeFromSuperview()
                         self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
                         self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                        self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                        self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
                         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
                         self.blankView.addSubview(self.favButton)
                     }
@@ -380,14 +421,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
-                    let cWindowSize = UIScreen.mainScreen().bounds
                     self.fFavorited = true
                     var cStarImage = UIImage(named: "Star-Filled.png")
                     self.ts_imageWithSize(cStarImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
                         self.favButton.removeFromSuperview()
                         self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
                         self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                        self.favButton.center = CGPoint(x: cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                        self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
                         self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
                         self.blankView.addSubview(self.favButton)
                     }
@@ -521,5 +561,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 return aScanner.atEnd
             }
         }
+    }
+    
+    // 画像が押された時
+    func tappedMedia(sender: AnyObject) {
+        var button = sender as UIButton
+        let mediaURL = button.sd_imageURLForState(UIControlState.Normal)
     }
 }

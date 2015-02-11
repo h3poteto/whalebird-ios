@@ -74,6 +74,17 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         return mutableDictionary
     }
     
+    class func convertMedia(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
+        var mutableDictionary = aDictionary.mutableCopy() as NSMutableDictionary
+        var cOriginalMedia = mutableDictionary.objectForKey("entities")!.objectForKey("media") as NSArray
+        var mediaURLArray = NSMutableArray()
+        for media in cOriginalMedia {
+            mediaURLArray.addObject(media.objectForKey("media_url")!)
+        }
+        mutableDictionary.setValue(mediaURLArray, forKey: "media")
+        return mutableDictionary
+    }
+    
     //=======================================
     //  instance method
     //=======================================
@@ -143,6 +154,11 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                     object.setValue(nil, forKey: "retweeted")
                 } else {
                     object = UserstreamAPIClient.convertRetweet(object) as NSMutableDictionary
+                }
+                if (object.objectForKey("entities")?.objectForKey("media") == nil) {
+                    object.setValue(nil, forKey: "media")
+                } else {
+                    object = UserstreamAPIClient.convertMedia(object) as NSMutableDictionary
                 }
                 self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
                 self.timelineTable?.sinceId = object.objectForKey("id_str") as String?

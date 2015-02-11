@@ -76,6 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
                     aFavorited: userInfo.objectForKey("favorited") as? Bool,
+                    aMedia: userInfo.objectForKey("media") as? NSArray,
                     aParentArray: &dummyArray,
                     aParentIndex: nil
                 )
@@ -104,6 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
+                        aMedia: userInfo.objectForKey("media") as? NSArray,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -123,6 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
+                        aMedia: userInfo.objectForKey("media") as? NSArray,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -233,6 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aRetweetedName: nil,
                             aRetweetedProfileImage: nil,
                             aFavorited: userInfo["favorited"] as? Bool,
+                            aMedia: userInfo["media"] as? NSArray,
                             aParentArray: &dummyArray,
                             aParentIndex: nil
                         )
@@ -297,6 +301,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
                     aFavorited: userInfo["favorited"] as? Bool,
+                    aMedia: userInfo["media"] as? NSArray,
                     aParentArray: &dummyArray,
                     aParentIndex: nil
                 )
@@ -327,6 +332,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo["favorited"] as? Bool,
+                        aMedia: userInfo["media"] as? NSArray,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )
@@ -347,6 +353,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo["favorited"] as? Bool,
+                        aMedia: userInfo["media"] as? NSArray,
                         aParentArray: &dummyArray,
                         aParentIndex: nil
                     )

@@ -17,4 +17,5 @@
 #import <SwipeView/SwipeView.h>
 #import "OriginalCryp.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/UIButton+WebCache.h>
 #import "application.h"
