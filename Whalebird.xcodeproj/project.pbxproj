@@ -78,6 +78,7 @@
 		E9D493C81A37DD6F00DE2051 /* Search-Line.png in Resources */ = {isa = PBXBuildFile; fileRef = E9D493C61A37DD6F00DE2051 /* Search-Line.png */; };
 		E9D493C91A37DD6F00DE2051 /* Search-Line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9D493C71A37DD6F00DE2051 /* Search-Line@2x.png */; };
 		E9D86A421A41336F00920984 /* OriginalCryp.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D86A411A41336F00920984 /* OriginalCryp.m */; };
+		E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */; };
 		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -173,6 +174,7 @@
 		E9D493C71A37DD6F00DE2051 /* Search-Line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search-Line@2x.png"; sourceTree = "<group>"; };
 		E9D86A401A41336F00920984 /* OriginalCryp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalCryp.h; sourceTree = "<group>"; };
 		E9D86A411A41336F00920984 /* OriginalCryp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OriginalCryp.m; sourceTree = "<group>"; };
+		E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
 		F93BA7217F214FE3BC6C20D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -254,6 +256,7 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
+				E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */,
 				E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */,
 				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
 				E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */,
@@ -560,6 +563,7 @@
 				E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
+				E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
 				E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */,

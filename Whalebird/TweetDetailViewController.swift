@@ -566,7 +566,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     // 画像が押された時
     func tappedMedia(sender: AnyObject) {
         var button = sender as UIButton
-        let mediaURL = button.sd_imageURLForState(UIControlState.Normal)
-        // TODO: タップされたら画像のみを専用Viewで開く
+        let mediaImage = button.backgroundImageForState(UIControlState.Normal)
+        var mediaView = MediaViewController(aMediaImage: mediaImage)
+        self.presentViewController(mediaView, animated: true, completion: nil)
     }
 }

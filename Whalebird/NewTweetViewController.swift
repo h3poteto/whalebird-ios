@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: 書き換えの項目を下書き保存する機能を追加
 class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     let optionItemBarHeight = CGFloat(40)
     let imageViewSpan = CGFloat(20)
