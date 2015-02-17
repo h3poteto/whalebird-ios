@@ -8,7 +8,6 @@
 
 import UIKit
 
-// TODO: 画像が入っている場合は表示
 class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UITextViewDelegate, NSLayoutManagerDelegate {
     let LabelPadding = CGFloat(10)
     // そのまま表示するとボタン領域が小さくてタップしにくいので拡大

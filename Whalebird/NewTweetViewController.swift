@@ -8,7 +8,6 @@
 
 import UIKit
 
-// TODO: 書き換えの項目を下書き保存する機能を追加
 class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     let optionItemBarHeight = CGFloat(40)
     let imageViewSpan = CGFloat(20)
@@ -23,6 +22,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var sendButton: UIBarButtonItem!
     var photostreamButton: UIBarButtonItem?
     var cameraButton: UIBarButtonItem?
+    var minuteButton: UIBarButtonItem?
     var optionItemBar: UIToolbar?
     var currentCharacters: Int = 140
     var currentCharactersView: UIBarButtonItem?
@@ -118,9 +118,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
             self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
             self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
+            self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.Plain, target: self, action: "openMinute")
             self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             
-            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.currentCharactersView!]
+            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
             self.optionItemBar?.setItems(itemArray, animated: true)
             
             self.view.addSubview(self.optionItemBar!)
@@ -135,8 +136,29 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func onCancelTapped() {
-        self.newTweetText.text = ""
-        self.navigationController!.popViewControllerAnimated(true)
+        if (self.newTweetText.text.isEmpty) {
+            self.navigationController!.popViewControllerAnimated(true)
+        } else {
+            var minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let closeAction = UIAlertAction(title: "破棄する", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                self.newTweetText.text = ""
+                self.navigationController!.popViewControllerAnimated(true)
+            })
+            let minuteAction = UIAlertAction(title: "下書き保存", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                var minuteTableView = MinuteTableViewController()
+                minuteTableView.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
+                self.newTweetText.text = ""
+                self.navigationController!.popViewControllerAnimated(true)
+            })
+            let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                
+            })
+            minuteSheet.addAction(closeAction)
+            minuteSheet.addAction(minuteAction)
+            minuteSheet.addAction(cancelAction)
+            self.presentViewController(minuteSheet, animated: true, completion: nil)
+            
+        }
         
     }
     
@@ -157,6 +179,12 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.presentViewController(ipc, animated:true, completion:nil)
             
         }
+        
+    }
+    
+    func openMinute() {
+        var minuteTableView = MinuteTableViewController()
+        self.navigationController!.pushViewController(minuteTableView, animated: true)
         
     }
     
