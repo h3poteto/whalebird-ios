@@ -25,6 +25,7 @@
 		E91F12C51A3045260036F982 /* Profile-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E91F12C31A3045260036F982 /* Profile-Filled@2x.png */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
+		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95A17171A5FC63200006AFD /* Star-Filled.png in Resources */ = {isa = PBXBuildFile; fileRef = E95A17151A5FC63200006AFD /* Star-Filled.png */; };
 		E95A17181A5FC63200006AFD /* Star-Filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E95A17161A5FC63200006AFD /* Star-Filled@2x.png */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
@@ -117,6 +118,7 @@
 		E91F12C31A3045260036F982 /* Profile-Filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Profile-Filled@2x.png"; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95A17151A5FC63200006AFD /* Star-Filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-Filled.png"; sourceTree = "<group>"; };
 		E95A17161A5FC63200006AFD /* Star-Filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-Filled@2x.png"; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
+				E9514A761A9AF39700BC4811 /* BigInteger.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */,
 				E99603A11A20E23400D23629 /* application.h */,
@@ -554,6 +557,7 @@
 				E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */,
 				E9BC3E631A408E5700D2D6BD /* ApplicationSecrets.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
+				E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */,
 				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
 				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
