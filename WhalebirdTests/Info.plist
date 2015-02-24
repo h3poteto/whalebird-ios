@@ -20,5 +20,9 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>apiurl</key>
+	<string>${APIURL}</string>
+	<key>weburl</key>
+	<string>${WebURL}</string>
 </dict>
 </plist>
