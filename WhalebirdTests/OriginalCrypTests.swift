@@ -20,8 +20,11 @@ class OriginalCrypTests: XCTestCase {
         XCTAssertNotNil(encryptData, "encryptData not nil")
         if (encryptData != nil) {
             encodeBase = encryptData!.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.allZeros)
+            XCTAssertNotNil(encodeBase, "encodeBase not nil")
+        } else {
+            XCTFail("cannot encryptData")
         }
-        XCTAssertNotNil(encodeBase, "encodeBase not nil")
+
         
     }
 }

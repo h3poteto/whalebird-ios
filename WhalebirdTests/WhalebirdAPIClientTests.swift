@@ -24,19 +24,21 @@ class WhalebirdAPIClientTests: XCTestCase {
     }
     
     func testCleanDictionary() {
-        var nullDictionary = NSMutableDictionary()
-        var nullChildDictionary = NSMutableDictionary()
-        nullChildDictionary.setValue(NSNull(), forKey: "nullObject")
-        nullChildDictionary.setValue(1, forKey: "intObject")
-        nullDictionary.setValue(2, forKey: "intObject")
-        nullDictionary.setValue(NSNull(), forKey: "nullObject")
+        var nullDictionary = NSMutableDictionary(dictionary: [
+            "nullObject" : NSNull(),
+            "intObject" : 1
+            ])
+        var nullChildDictionary = NSMutableDictionary(dictionary: [
+            "intObject" : 2,
+            "nullObject" : NSNull()
+            ])
         nullDictionary.setValue(nullChildDictionary, forKey: "childDictionary")
         
         var notNullDictionary = WhalebirdAPIClient.sharedClient.cleanDictionary(nullDictionary)
         
-        XCTAssertEqual(notNullDictionary.objectForKey("intObject") as Int, 2, "int object should not touch")
+        XCTAssertEqual(notNullDictionary.objectForKey("intObject") as Int, 1, "int object should not touch")
         XCTAssertEqual(notNullDictionary.objectForKey("nullObject") as String, "", "null objecct should convert string")
-        XCTAssertEqual(notNullDictionary.objectForKey("childDictionary")?.objectForKey("intObject") as Int, 1, "int object should not touch")
+        XCTAssertEqual(notNullDictionary.objectForKey("childDictionary")?.objectForKey("intObject") as Int, 2, "int object should not touch")
         XCTAssertEqual(notNullDictionary.objectForKey("childDictionary")?.objectForKey("nullObject") as String, "", "null object should convert string")
         
     }
