@@ -36,7 +36,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var tweetBodyLabel: UITextView!
     var postDetailLabel: UILabel!
     var innerMediaButton: Array<UIButton>?
-    var profileImageLabel: UIImageView!
+    var profileImageLabel: UIButton!
     var retweetedNameLabel: UIButton?
     var retweetedProfileImageLabel: UIImageView?
     
@@ -99,7 +99,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.view.addSubview(self.blankView)
     }
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -109,9 +109,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.cWindowSize = UIScreen.mainScreen().bounds
         var userDefault = NSUserDefaults.standardUserDefaults()
         
-        self.profileImageLabel = UIImageView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
+        self.profileImageLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
-        self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.profileImageLabel.sizeToFit()
         
         self.blankView.addSubview(self.profileImageLabel)
