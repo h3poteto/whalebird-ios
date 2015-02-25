@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, "8.0"
+platform :ios, "8.1"
 pod 'TSMessages'
 pod 'NoticeView'
 pod 'OHAttributedLabel'
@@ -12,6 +12,8 @@ pod 'ODRefreshControl'
 pod 'SwipeView'
 pod 'SDWebImage'
 pod 'RNCryptor'
+pod 'Fabric','~>1.0'
+pod 'Fabric/Crashlytics'
 
 post_install do | installer |
   require 'fileutils'

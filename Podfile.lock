@@ -21,6 +21,11 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - DACircularProgress (2.2.0)
+  - Fabric (1.1.2):
+    - Fabric/Core (= 1.1.2)
+  - Fabric/Core (1.1.2)
+  - Fabric/Crashlytics (1.1.2):
+    - Fabric/Core
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
   - ODRefreshControl (1.1.0)
@@ -39,6 +44,8 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
   - DACircularProgress
+  - Fabric (~> 1.0)
+  - Fabric/Crashlytics
   - NoticeView
   - ODRefreshControl
   - OHAttributedLabel
@@ -53,6 +60,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
+  Fabric: e02d1e589fba3b317c012447b12cd2c0c3063d72
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   NoticeView: 357545814931eb92428de54449f405f91c84a1b8
   ODRefreshControl: 7bc75258d9dba1f93c4e34654d1e4b5aa39529f0
