@@ -359,6 +359,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            self.tableView.frame.size.height = self.tableView.contentSize.height
             break
         case 1:
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
@@ -517,6 +518,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
         self.followerNumLabel.backgroundColor = self.unselectedButtonColor
         self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
+        self.tableView.reloadData()
         
     }
     
