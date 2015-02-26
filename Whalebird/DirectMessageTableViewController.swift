@@ -258,7 +258,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             return
         }
         for message in self.currentMessage[0...(cMessageMin - 2)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSMutableDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSDictionary)
             cleanMessageArray.append(dic)
         }
         userDefaults.setObject(cleanMessageArray.reverse(), forKey: "directMessage")

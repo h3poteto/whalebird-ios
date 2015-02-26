@@ -322,7 +322,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             return
         }
         for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSDictionary)
             cleanTimelineArray.append(dic)
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: self.streamElement.name)

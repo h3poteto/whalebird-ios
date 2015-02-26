@@ -70,13 +70,13 @@ class WhalebirdAPIClient: NSObject {
     //  instance method
     //===========================================
     
-    func cleanDictionary(dict: NSMutableDictionary)->NSMutableDictionary {
-        var mutableDict: NSMutableDictionary = dict.mutableCopy() as NSMutableDictionary
+    func cleanDictionary(dict: NSDictionary)->NSMutableDictionary {
+        var mutableDict: NSMutableDictionary = NSMutableDictionary(dictionary: dict)
         mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
             if (obj.isKindOfClass(NSNull.classForCoder())) {
                 mutableDict.setObject("", forKey: (key as NSString))
             } else if (obj.isKindOfClass(NSDictionary.classForCoder())) {
-                mutableDict.setObject(self.cleanDictionary(obj as NSMutableDictionary), forKey: (key as NSString))
+                mutableDict.setObject(self.cleanDictionary(obj as NSDictionary), forKey: (key as NSString))
             }
         }
         return mutableDict

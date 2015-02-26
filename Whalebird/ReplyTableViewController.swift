@@ -274,7 +274,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             return
         }
         for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSMutableDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSDictionary)
             cleanTimelineArray.append(dic)
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "replyTimeline")
