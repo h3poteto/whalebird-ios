@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.4.1):
-    - AFNetworking/NSURLConnection (= 2.4.1)
-    - AFNetworking/NSURLSession (= 2.4.1)
-    - AFNetworking/Reachability (= 2.4.1)
-    - AFNetworking/Security (= 2.4.1)
-    - AFNetworking/Serialization (= 2.4.1)
-    - AFNetworking/UIKit (= 2.4.1)
-  - AFNetworking/NSURLConnection (2.4.1):
+  - AFNetworking (2.5.1):
+    - AFNetworking/NSURLConnection (= 2.5.1)
+    - AFNetworking/NSURLSession (= 2.5.1)
+    - AFNetworking/Reachability (= 2.5.1)
+    - AFNetworking/Security (= 2.5.1)
+    - AFNetworking/Serialization (= 2.5.1)
+    - AFNetworking/UIKit (= 2.5.1)
+  - AFNetworking/NSURLConnection (2.5.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.4.1):
+  - AFNetworking/NSURLSession (2.5.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.4.1)
-  - AFNetworking/Security (2.4.1)
-  - AFNetworking/Serialization (2.4.1)
-  - AFNetworking/UIKit (2.4.1):
+  - AFNetworking/Reachability (2.5.1)
+  - AFNetworking/Security (2.5.1)
+  - AFNetworking/Serialization (2.5.1)
+  - AFNetworking/UIKit (2.5.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - DACircularProgress (2.2.0)
@@ -29,17 +29,17 @@ PODS:
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
   - ODRefreshControl (1.1.0)
-  - OHAttributedLabel (3.5.4)
+  - OHAttributedLabel (3.5.5)
   - RNCryptor (2.2)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
-  - SVProgressHUD (1.0)
+  - SVProgressHUD (1.1.2)
   - SVPullToRefresh (HEAD based on 0.4.1)
   - SwipeView (1.3.2)
-  - TSMessages (0.9.10):
+  - TSMessages (0.9.12):
     - HexColors
-  - TTTAttributedLabel (1.10.1)
+  - TTTAttributedLabel (1.13.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
@@ -58,19 +58,19 @@ DEPENDENCIES:
   - TTTAttributedLabel
 
 SPEC CHECKSUMS:
-  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
   DACircularProgress: 3b41941891a56dc6aa17971f5322a9a38a6f446e
   Fabric: e02d1e589fba3b317c012447b12cd2c0c3063d72
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   NoticeView: 357545814931eb92428de54449f405f91c84a1b8
   ODRefreshControl: 7bc75258d9dba1f93c4e34654d1e4b5aa39529f0
-  OHAttributedLabel: fcf1d1245b4c8d2df94da91369b1474901d7fb14
+  OHAttributedLabel: 733b32053cd02be1044749d394e874143e41e8d7
   RNCryptor: 4f562062c39f288b99601674f2c50dd44b68d58a
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
-  SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
+  SVProgressHUD: da7a49e789af645d9279ffbca62318945a832438
   SVPullToRefresh: d5161ebc833a38b465364412e5e307ca80bbb190
   SwipeView: 0093c212acf3d715b09334c50d568a4418404150
-  TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
-  TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
+  TSMessages: b2b5dc71f65146387e51f2600bb0eb8f3a6c4ab8
+  TTTAttributedLabel: 7c4592f9a806badb8b48dc634cb9800447c51594
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0.rc.1

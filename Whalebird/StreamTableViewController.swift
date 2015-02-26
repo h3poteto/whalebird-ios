@@ -215,7 +215,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             "screen_name" : userDefault.objectForKey("username") as String,
             "q" : self.streamElement.name
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

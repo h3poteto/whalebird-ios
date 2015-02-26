@@ -148,7 +148,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             "settings" : params,
             "q" : self.searchBar.text
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", params: cParameter) { (aNewResult) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in

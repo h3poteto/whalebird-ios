@@ -103,7 +103,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
             "settings" : params
         ]
         
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in

@@ -306,7 +306,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (params.count != 0) {
             parameter["settings"] = params
         }
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

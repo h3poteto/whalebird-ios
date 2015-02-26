@@ -112,7 +112,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             //-------------------------
             //  header
             //-------------------------
@@ -380,7 +380,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: cParameter) { (aNewTimeline) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -420,7 +420,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
@@ -447,7 +447,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params,
             "screen_name" : self.twitterScreenName!
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in

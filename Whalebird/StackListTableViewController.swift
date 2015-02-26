@@ -68,7 +68,7 @@ class StackListTableViewController: UITableViewController {
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: cParameter) { (aStackList) -> Void in
                 var q_main = dispatch_get_main_queue()
                 println(aStackList)

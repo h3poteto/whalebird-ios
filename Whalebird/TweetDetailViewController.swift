@@ -377,7 +377,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
@@ -411,7 +411,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: cParameter) { (operation) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
@@ -450,7 +450,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: cParameter, callback: { (operation) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
@@ -485,7 +485,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 let cParameter: Dictionary<String, AnyObject> = [
                     "settings" : params
                 ]
-                SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
                 WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
                     var q_main = dispatch_get_main_queue()
                     dispatch_async(q_main, {()->Void in

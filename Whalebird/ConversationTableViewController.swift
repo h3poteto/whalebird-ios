@@ -129,7 +129,7 @@ class ConversationTableViewController: UITableViewController {
         var parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", params: parameter) { (aNewConversation) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in

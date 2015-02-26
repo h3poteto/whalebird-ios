@@ -162,8 +162,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         // SVProgressHUDの表示スタイル設定
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped:", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
-        SVProgressHUD.appearance().hudBackgroundColor = UIColor.blackColor()
-        SVProgressHUD.appearance().hudForegroundColor = UIColor.whiteColor()
+        SVProgressHUD.setBackgroundColor(UIColor.blackColor())
+        SVProgressHUD.setForegroundColor(UIColor.whiteColor())
         
         
         return true

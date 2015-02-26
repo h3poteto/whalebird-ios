@@ -150,7 +150,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: UInt(SVProgressHUDMaskTypeClear))
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", params: cParameter) { (aNewMessage) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
