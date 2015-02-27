@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-// TODO: fix: TL更新後フォローに移動し，TLに戻ると内容が消失
+
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //===================================
@@ -583,44 +583,65 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tappedFollow() {
-        var parameter: Dictionary<String, AnyObject> = [
-            "screen_name" : self.twitterScreenName as String
-        ]
-        var params: Dictionary<String, AnyObject> = [
-            "settings" : parameter
-        ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/follow.json", params: params) { (response) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォローしました")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
-                notice.show()
-                self.navigationItem.rightBarButtonItem = self.unfollowButton
-            })
+        var followAlert = UIAlertController(title: "Follow", message: "フォローしますか？", preferredStyle: .Alert)
+        let cOkAction = UIAlertAction(title: "フォローする", style: .Default) { (action) -> Void in
+            if (self.twitterScreenName != nil) {
+                var parameter: Dictionary<String, AnyObject> = [
+                    "screen_name" : self.twitterScreenName!
+                ]
+                var params: Dictionary<String, AnyObject> = [
+                    "settings" : parameter
+                ]
+                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+                WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/follow.json", params: params) { (response) -> Void in
+                    var q_main = dispatch_get_main_queue()
+                    dispatch_async(q_main, {()->Void in
+                        SVProgressHUD.dismiss()
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォローしました")
+                        notice.alpha = 0.8
+                        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                        notice.show()
+                        self.navigationItem.rightBarButtonItem = self.unfollowButton
+                    })
+                }
+            }
         }
+        let cCancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        }
+        followAlert.addAction(cOkAction)
+        followAlert.addAction(cCancelAction)
+        self.presentViewController(followAlert, animated: true, completion: nil)
     }
     
     func tappedUnfollow() {
-        var parameter: Dictionary<String, AnyObject> = [
-            "screen_name" : self.twitterScreenName as String
-        ]
-        var params: Dictionary<String, AnyObject> = [
-            "settings" : parameter
-        ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/unfollow.json", params: params) { (response) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォロー解除しました")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
-                notice.show()
-                self.navigationItem.rightBarButtonItem = self.followButton
-            })
+        var unfollowAlert = UIAlertController(title: "Unfollow", message: "フォロー解除しますか？", preferredStyle: .Alert)
+        let cOkAction = UIAlertAction(title: "フォロー解除", style: .Default) { (action) -> Void in
+            if (self.twitterScreenName != nil) {
+                var parameter: Dictionary<String, AnyObject> = [
+                    "screen_name" : self.twitterScreenName!
+                ]
+                var params: Dictionary<String, AnyObject> = [
+                    "settings" : parameter
+                ]
+                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+                WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/unfollow.json", params: params) { (response) -> Void in
+                    var q_main = dispatch_get_main_queue()
+                    dispatch_async(q_main, {()->Void in
+                        SVProgressHUD.dismiss()
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォロー解除しました")
+                        notice.alpha = 0.8
+                        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                        notice.show()
+                        self.navigationItem.rightBarButtonItem = self.followButton
+                    })
+                }
+            }
         }
+        let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel) { (action) -> Void in
+        }
+        unfollowAlert.addAction(cOkAction)
+        unfollowAlert.addAction(cCancelAction)
+        self.presentViewController(unfollowAlert, animated: true, completion: nil)
+        
     }
 }
