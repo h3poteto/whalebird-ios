@@ -12,8 +12,7 @@ import XCTest
 class UserstreamAPIClientTests: XCTestCase {
     func testConvertUTCTime() {
         let streamDateString = "Tue Feb 24 18:49:01 +0000 2015"
-        var utcDateString = UserstreamAPIClient.convertUTCTime(streamDateString)
-        
+        let utcDateString = UserstreamAPIClient.convertUTCTime(streamDateString)
         XCTAssertEqual(utcDateString, "2015-02-24 18:49", "userstream time convert should success")
     }
     
@@ -24,7 +23,7 @@ class UserstreamAPIClientTests: XCTestCase {
         var streamDictionary = NSMutableDictionary(dictionary: ["entities" : entitiesDictionary])
         var resultMediaArray = NSArray(array: ["http://whalebird.org"])
         
-        var convertMedia = UserstreamAPIClient.convertMedia(streamDictionary)
+        let convertMedia = UserstreamAPIClient.convertMedia(streamDictionary)
         XCTAssertEqual(convertMedia.objectForKey("media") as NSArray, resultMediaArray, "media url should fixed")
     }
     
@@ -51,7 +50,7 @@ class UserstreamAPIClientTests: XCTestCase {
             "retweeted_status" : originalDictionary
             ])
         
-        var convertRetweet = UserstreamAPIClient.convertRetweet(retweetDictionary)
+        let convertRetweet = UserstreamAPIClient.convertRetweet(retweetDictionary)
         XCTAssertEqual(convertRetweet.objectForKey("text") as String, "test text", "retweeted original text should fixed")
         XCTAssertEqual(convertRetweet.objectForKey("created_at") as String, "2015-02-24 18:49", "retweeted original created_at should fixed")
         XCTAssertEqual(convertRetweet.objectForKey("user")?.objectForKey("name") as String, "test name", "retweeted original name should fixed")
