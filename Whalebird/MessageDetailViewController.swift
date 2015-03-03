@@ -67,6 +67,8 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
         self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.layer.cornerRadius = 5.0
+        self.profileImageLabel.clipsToBounds = true
         self.profileImageLabel.sizeToFit()
         
         self.view.addSubview(self.profileImageLabel)

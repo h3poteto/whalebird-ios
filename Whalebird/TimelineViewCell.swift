@@ -240,13 +240,18 @@ class TimelineViewCell: UITableViewCell {
             var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
             var q_main = dispatch_get_main_queue()
             var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            //self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
             self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage.png"))
+            self.profileImage.layer.cornerRadius = 5.0
+            self.profileImage.clipsToBounds = true
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
                 var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as NSString)
                 self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning.png"))
+                self.retweetedProfileImageLabel!.layer.cornerRadius = 2
+                self.retweetedProfileImageLabel!.clipsToBounds = true
             }
             
             let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as NSString

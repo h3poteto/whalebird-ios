@@ -152,6 +152,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                         self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
                         self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage.png"))
+                        self.profileImage.layer.cornerRadius = 5.0
+                        self.profileImage.clipsToBounds = true
                         self.scrollView.addSubview(self.profileImage)
                     
                         self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
