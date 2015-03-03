@@ -412,9 +412,9 @@ class SettingsTableViewController: UITableViewController{
                 let cOkAction = UIAlertAction(title: "削除する", style: UIAlertActionStyle.Default, handler: { (aAction) -> Void in
                     self.removeAccountInfo()
                 })
-                let cCloseAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
-                alertController.addAction(cOkAction)
+                let cCloseAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel, handler: nil)
                 alertController.addAction(cCloseAction)
+                alertController.addAction(cOkAction)
                 self.presentViewController(alertController, animated: true, completion: nil)
                 break
             case 2:

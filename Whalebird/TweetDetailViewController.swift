@@ -442,7 +442,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
 
     func tappedDelete() {
         var alertController = UIAlertController(title: "ツイート削除", message: "本当に削除しますか？", preferredStyle: .Alert)
-        let cOkAction = UIAlertAction(title: "はい", style: .Default, handler: {action in
+        let cOkAction = UIAlertAction(title: "削除する", style: .Default, handler: {action in
             println("OK")
             var params:Dictionary<String, String> = [
                 "id" : self.tweetID
@@ -466,8 +466,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
             println("Cancel")
         })
-        alertController.addAction(cOkAction)
         alertController.addAction(cCancelAction)
+        alertController.addAction(cOkAction)
         presentViewController(alertController, animated: true, completion: nil)
         
     }
@@ -500,8 +500,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
                 println("Cancel")
             })
-            alertController.addAction(cOkAction)
             alertController.addAction(cCancelAction)
+            alertController.addAction(cOkAction)
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in

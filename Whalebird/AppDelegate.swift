@@ -246,8 +246,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     })
                     let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: {action in
                     })
-                    alertController.addAction(cOpenAction)
                     alertController.addAction(cOkAction)
+                    alertController.addAction(cOpenAction)
                     self.rootController.presentViewController(alertController, animated: true, completion: nil)
                     break
                 case "direct_message":
@@ -264,8 +264,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     })
                     let cOkAction = UIAlertAction(title: "閉じる", style: .Default, handler: { (action) -> Void in
                     })
-                    alertController.addAction(cOpenAction)
                     alertController.addAction(cOkAction)
+                    alertController.addAction(cOpenAction)
                     self.rootController.presentViewController(alertController, animated: true, completion: nil)
                     break
                 case "favorite":

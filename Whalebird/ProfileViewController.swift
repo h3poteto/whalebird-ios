@@ -603,8 +603,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         let cCancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
         }
-        followAlert.addAction(cOkAction)
         followAlert.addAction(cCancelAction)
+        followAlert.addAction(cOkAction)
         self.presentViewController(followAlert, animated: true, completion: nil)
     }
     
@@ -632,8 +632,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel) { (action) -> Void in
         }
-        unfollowAlert.addAction(cOkAction)
         unfollowAlert.addAction(cCancelAction)
+        unfollowAlert.addAction(cOkAction)
         self.presentViewController(unfollowAlert, animated: true, completion: nil)
         
     }

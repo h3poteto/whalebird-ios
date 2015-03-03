@@ -51,7 +51,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
     func webViewDidStartLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
