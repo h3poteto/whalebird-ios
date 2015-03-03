@@ -10,9 +10,13 @@ import XCTest
 
 class BigIntegerTests: XCTestCase {
     func testDecrement() {
-        let tweetID: String = "12345678987654321"
-        let nextTweetID: String = BigInteger(string: tweetID).decrement()
-        XCTAssertEqual(nextTweetID, "12345678987654320", "decrement success")
+        let zeroNum: String = "572673378139545600"
+        let nextZeroID: String = BigInteger(string: zeroNum).decrement()
+        XCTAssertEqual(nextZeroID, "572673378139545599", "decrement success")
+        
+        let normalNum: String = "572673378139545605"
+        let nextNormalID: String = BigInteger(string: normalNum).decrement()
+        XCTAssertEqual(nextNormalID, "572673378139545604", "decrement success")
     }
 
 }

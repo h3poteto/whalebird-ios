@@ -273,7 +273,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         //-----------------------------
         //  body
         //-----------------------------
-        self.updateTimeline(0, aMoreIndex: nil)
+        self.updateTimeline(nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -406,7 +406,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 
-    func updateTimeline(aSinceID: Int, aMoreIndex: Int?) {
+    func updateTimeline(aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
@@ -562,7 +562,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func userTableRefresh() {
         switch(self.tableType) {
         case 0:
-            self.updateTimeline(0, aMoreIndex: self.currentTimeline.count - 1)
+            self.updateTimeline(self.currentTimeline.count - 1)
             break
         case 1:
             self.updateFollowUser(self.followUsersNextCursor)

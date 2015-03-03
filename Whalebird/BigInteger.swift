@@ -45,11 +45,13 @@ class BigInteger: NSObject {
                 decnum = 1
             }
             var res = num - carry - decnum
-            carry = 0
             if (res < 0) {
                 res = 10 - carry - decnum
                 carry = 1
+            } else {
+                carry = 0
             }
+            
             decStr = String(res) + decStr
         }
         return decStr
