@@ -477,7 +477,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let oficialRetweetAction = UIAlertAction(title: "公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
             // 公式RTの処理．直接POSTしちゃって構わない
             var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
-            let cOkAction = UIAlertAction(title: "はい", style: .Default, handler: {action in
+            let cOkAction = UIAlertAction(title: "RTする", style: .Default, handler: {action in
                 println("OK")
                 var params:Dictionary<String, String> = [
                     "id" : self.tweetID
