@@ -297,7 +297,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     }
                     
                 })
-                eachMediaButton.addTarget(self, action: "tappedMedia:", forControlEvents: UIControlEvents.TouchDown)
+                eachMediaButton.addTarget(self, action: "tappedMedia:", forControlEvents: UIControlEvents.TouchUpInside)
                 startPosY += eachMediaButton.frame.size.height
                 self.blankView.addSubview(eachMediaButton)
             }
