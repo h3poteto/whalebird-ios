@@ -229,7 +229,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             progressView.setProgress(0.0, animated: true)
             self.uploadImageView!.addSubview(progressView)
             
-            self.closeImageView = UIButton(frame: CGRectMake(self.uploadImageView!.frame.origin.x + self.uploadImageView!.frame.width, self.uploadImageView!.frame.origin.y - 20, 20.0, 20.0))
+            self.closeImageView = UIButton(frame: CGRectMake(self.uploadImageView!.frame.origin.x - 15.0, self.uploadImageView!.frame.origin.y - 20, 20.0, 20.0))
             self.closeImageView.setImage(UIImage(named: "Close-Filled.png"), forState: UIControlState.Normal)
             self.closeImageView.addTarget(self, action: "removeImage", forControlEvents: UIControlEvents.TouchUpInside)
             self.view.addSubview(self.closeImageView)
