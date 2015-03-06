@@ -12,7 +12,6 @@ class StackListTableViewController: UITableViewController {
     
     var twitterScreenName: String?
     var stackListArray: Array<ListTableViewController.Stream> = []
-    var selectedIndex: Int?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -58,7 +57,7 @@ class StackListTableViewController: UITableViewController {
         var selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: "decideSelected:")
         self.navigationItem.rightBarButtonItem = selectButton
         
-        self.tableView.allowsMultipleSelection = false
+        self.tableView.allowsMultipleSelection = true
         
         
         if (self.twitterScreenName != nil) {
@@ -121,7 +120,6 @@ class StackListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         cell.accessoryType = UITableViewCellAccessoryType.Checkmark
-        self.selectedIndex = indexPath.row
     }
 
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
@@ -132,15 +130,19 @@ class StackListTableViewController: UITableViewController {
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        if (self.selectedIndex != nil) {
-            let cViewControllers = self.navigationController!.viewControllers as NSArray
-            let cViewControllersCount = cViewControllers.count as Int
-            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as ListTableViewController
-            cParentController.streamList.append(self.stackListArray[self.selectedIndex!])
-        }
     }
 
     func decideSelected(sender: AnyObject) {
         self.navigationController!.popViewControllerAnimated(true)
+        if let selectedArray = self.tableView.indexPathsForSelectedRows() as Array! {
+            if (selectedArray.count > 0) {
+                let cViewControllers = self.navigationController!.viewControllers as NSArray
+                let cViewControllersCount = cViewControllers.count as Int
+                let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as ListTableViewController
+                for index in selectedArray {
+                    cParentController.streamList.append(self.stackListArray[index.row])
+                }
+            }
+        }
     }
 }

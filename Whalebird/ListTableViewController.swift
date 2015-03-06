@@ -8,7 +8,6 @@
 
 import UIKit
 
-// TODO: 複数選択を可能にする
 class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
     
     struct Stream {
