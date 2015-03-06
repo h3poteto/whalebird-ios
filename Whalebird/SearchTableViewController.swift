@@ -11,7 +11,7 @@ import UIKit
 class SearchTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var tweetCount = Int(50)
-    var searchBar: UISearchBar!
+    var tweetSearchBar: UISearchBar!
     var currentResult: Array<AnyObject> = []
     var newResult: Array<AnyObject> = []
     var resultCell: Array<AnyObject> = []
@@ -36,13 +36,13 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         let window = UIScreen.mainScreen().bounds
-        self.searchBar = UISearchBar()
-        self.searchBar.placeholder = "検索"
-        self.searchBar.keyboardType = UIKeyboardType.Default
-        self.searchBar.delegate = self
+        self.tweetSearchBar = UISearchBar()
+        self.tweetSearchBar.placeholder = "検索"
+        self.tweetSearchBar.keyboardType = UIKeyboardType.Default
+        self.tweetSearchBar.delegate = self
         
-        self.navigationItem.titleView = self.searchBar
-        self.searchBar.becomeFirstResponder()
+        self.navigationItem.titleView = self.tweetSearchBar
+        self.tweetSearchBar.becomeFirstResponder()
         
         self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "saveResult")
         
@@ -128,14 +128,23 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     }
    
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        self.searchBar.showsCancelButton = true
+        self.tweetSearchBar.showsCancelButton = true
+        for childView in searchBar.subviews {
+            for subView in childView.subviews {
+                if (subView.isKindOfClass(UIButton.classForCoder())){
+                    let cancelButton = subView as UIButton
+                    cancelButton.setTitle("キャンセル", forState: .Normal)
+                }
+            }
+        }
+        self.tweetSearchBar.autocorrectionType = UITextAutocorrectionType.No
         self.navigationItem.rightBarButtonItem = nil
         return true
     }
     
     func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
         self.navigationItem.rightBarButtonItem = self.saveButton
-        self.searchBar.showsCancelButton = false
+        self.tweetSearchBar.showsCancelButton = false
         return true
     }
 
@@ -146,7 +155,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         ]
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
-            "q" : self.searchBar.text
+            "q" : self.tweetSearchBar.text
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", params: cParameter) { (aNewResult) -> Void in
@@ -168,20 +177,20 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                 notice.show()
-                self.searchBar.resignFirstResponder()
+                self.tweetSearchBar.resignFirstResponder()
             })
         }
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.searchBar.resignFirstResponder()
+        self.tweetSearchBar.resignFirstResponder()
     }
     
     func saveResult() {
-        if (countElements(self.searchBar.text) > 0) {
+        if (countElements(self.tweetSearchBar.text) > 0) {
             var searchStream = ListTableViewController.Stream(
                 image: "",
-                name: self.searchBar.text,
+                name: self.tweetSearchBar.text,
                 type: "search",
                 uri: "users/apis/search.json",
                 id: "")
