@@ -54,7 +54,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaImageView.center = CGPointMake(self.cWindowSize.size.width / 2.0, self.cWindowSize.size.height / 2.0)
         
         let closeImage = UIImage(named: "Close-Filled.png")
-        var closeButton = UIButton(frame: CGRectMake(cWindowSize.size.width - closeImage!.size.width * 1.5, self.mediaImageView.frame.origin.y - closeImage!.size.height * 1.5, closeImage!.size.width, closeImage!.size.height))
+        var closeButton = UIButton(frame: CGRectMake(closeImage!.size.width * 0.5, self.mediaImageView.frame.origin.y - closeImage!.size.height * 2.0, closeImage!.size.width * 1.5, closeImage!.size.height * 1.5))
         closeButton.setBackgroundImage(closeImage, forState: .Normal)
         closeButton.addTarget(self, action: "mediaClose", forControlEvents: UIControlEvents.TouchDown)
         
