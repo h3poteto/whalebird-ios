@@ -66,6 +66,8 @@
 		E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
 		E9797B1C199526F6000FC13C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
+		E97EA3181AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
+		E97EA3191AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E9956AE619D1E12500E15D7C /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956AE419D1E12500E15D7C /* Home.png */; };
 		E9956AE719D1E12500E15D7C /* Home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E9956AE519D1E12500E15D7C /* Home@2x.png */; };
@@ -166,6 +168,7 @@
 		E9797B19199526EF000FC13C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		E9797B1B199526F6000FC13C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E9797B1F1995325E000FC13C /* TimelineViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
+		E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
 		E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whalebird-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E9956AE419D1E12500E15D7C /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
@@ -308,6 +311,7 @@
 				E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */,
 				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
 				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
+				E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */,
 				E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */,
 				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
 				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
@@ -605,6 +609,7 @@
 				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,
 				E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */,
 				E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */,
+				E97EA3181AACB09800C0E0E3 /* EditImageViewController.swift in Sources */,
 				E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */,
 				E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */,
 				E9D142801A382E3500EA3E67 /* SearchTableViewController.swift in Sources */,
@@ -627,6 +632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E97EA3191AACB09800C0E0E3 /* EditImageViewController.swift in Sources */,
 				E92C49FB1A9C6D31006BD492 /* LoginViewController.swift in Sources */,
 				E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */,
 				E92C49F61A9C6D1E006BD492 /* StreamTableViewController.swift in Sources */,

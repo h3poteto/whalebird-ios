@@ -48,7 +48,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
             self.mediaImageView.frame.size = CGSizeMake(self.cWindowSize.size.width, self.mediaImageView.frame.size.height * scale)
         }
         if (self.mediaImageView.frame.size.height > self.cWindowSize.size.height) {
-            var scale = self.cWindowSize.size.height / self.cWindowSize.size.height
+            var scale = self.cWindowSize.size.height / self.mediaImageView.frame.size.height
             self.mediaImageView.frame.size = CGSizeMake(self.mediaImageView.frame.size.width * scale, self.cWindowSize.size.height)
         }
         self.mediaImageView.center = CGPointMake(self.cWindowSize.size.width / 2.0, self.cWindowSize.size.height / 2.0)
