@@ -161,7 +161,20 @@ class EditImageViewController: UIViewController {
         
         var bitmap: CGContextRef!
         bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
-        
+
+        if (srcImage.imageOrientation == UIImageOrientation.Left) {
+            CGContextRotateCTM(bitmap, self.radian(90))
+            CGContextTranslateCTM(bitmap, 0, -targetWidth)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
+            CGContextRotateCTM(bitmap, self.radian(-90))
+            CGContextTranslateCTM(bitmap, -targetHeight, 0)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
+        } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
+            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
+            CGContextRotateCTM(bitmap, self.radian(-180))
+        }
 
         // 回転時の原点に合わせて予め移動させる
         switch(normalizeAngle) {
