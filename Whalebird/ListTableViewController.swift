@@ -30,7 +30,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リスト"
-        self.tabBarItem.image = UIImage(named: "List-Boxes.png")
+        self.tabBarItem.image = UIImage(named: "assets/List-Boxes.png")
     }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -54,7 +54,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         
         self.editButtonItem().title = "編集"
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "displaySearch")
+        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "assets/Search-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "displaySearch")
         self.navigationItem.leftBarButtonItem = self.searchItemButton
 
         
@@ -140,13 +140,13 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         cell.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         switch self.streamList[indexPath.row].type {
         case "list":
-            cell.imageView?.image = UIImage(named: "List-Dots.png")
+            cell.imageView?.image = UIImage(named: "assets/List-Dots.png")
             break
         case "myself":
-            cell.imageView?.image = UIImage(named: "Profile-Filled.png")
+            cell.imageView?.image = UIImage(named: "assets/Profile-Filled.png")
             break
         case "search":
-            cell.imageView?.image = UIImage(named: "Search-Line.png")
+            cell.imageView?.image = UIImage(named: "assets/Search-Line.png")
             break
         default:
             break

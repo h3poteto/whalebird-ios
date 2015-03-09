@@ -111,7 +111,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         self.profileImageLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
         var imageURL = NSURL(string: self.profileImage)
-        self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "noimage.png"))
+        self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "assets/noimage.png"))
         self.profileImageLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.profileImageLabel.sizeToFit()
         
@@ -120,7 +120,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (self.retweetedProfileImage != nil) {
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
             var imageURL = NSURL(string: self.retweetedProfileImage!)
-            self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning.png"))
+            self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "assets/Warning.png"))
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
@@ -212,7 +212,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
 
         
-        let cImportImage = UIImage(named: "Import-Line.png")
+        let cImportImage = UIImage(named: "assets/Import-Line.png")
         self.ts_imageWithSize(cImportImage!, width: self.self.ActionButtonWidth, height: self.ActionButtonHeight) { (aImportImage) -> Void in
             self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
             self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
@@ -221,7 +221,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.blankView.addSubview(self.replyButton)
         }
         
-        let cConversationImage = UIImage(named: "Conversation-Line.png")
+        let cConversationImage = UIImage(named: "assets/Conversation-Line.png")
         self.ts_imageWithSize(cConversationImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aConversationImage) -> Void in
             self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
             self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
@@ -231,9 +231,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }
         var starImage: UIImage!
         if (self.fFavorited == true) {
-            starImage = UIImage(named: "Star-Filled.png")
+            starImage = UIImage(named: "assets/Star-Filled.png")
         } else {
-            starImage = UIImage(named: "Star-Line.png")
+            starImage = UIImage(named: "assets/Star-Line.png")
         }
         self.ts_imageWithSize(starImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
             self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
@@ -246,7 +246,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let cUsername = userDefault.stringForKey("username")
         
         if (cUsername == self.screenName) {
-            let cTrashImage = UIImage(named: "Trash-Line.png")
+            let cTrashImage = UIImage(named: "assets/Trash-Line.png")
             self.ts_imageWithSize(cTrashImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight, callback: { (aTrashImage) -> Void in
                 self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
                 self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
@@ -255,7 +255,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.blankView.addSubview(self.deleteButton)
             })
         } else {
-            var cMoreImage = UIImage(named: "More-Line.png")
+            var cMoreImage = UIImage(named: "assets/More-Line.png")
             
             self.ts_imageWithSize(cMoreImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight, callback: { (aMoreImage) -> Void in
                 self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
@@ -388,7 +388,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = false
-                    var cStarImage = UIImage(named: "Star-Line.png")
+                    var cStarImage = UIImage(named: "assets/Star-Line.png")
                     self.ts_imageWithSize(cStarImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
                         self.favButton.removeFromSuperview()
                         self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
@@ -422,7 +422,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = true
-                    var cStarImage = UIImage(named: "Star-Filled.png")
+                    var cStarImage = UIImage(named: "assets/Star-Filled.png")
                     self.ts_imageWithSize(cStarImage!, width: self.ActionButtonWidth, height: self.ActionButtonHeight) { (aStarImage) -> Void in
                         self.favButton.removeFromSuperview()
                         self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))

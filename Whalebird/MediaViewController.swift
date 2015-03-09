@@ -53,7 +53,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         }
         self.mediaImageView.center = CGPointMake(self.cWindowSize.size.width / 2.0, self.cWindowSize.size.height / 2.0)
         
-        let closeImage = UIImage(named: "Close-Filled.png")
+        let closeImage = UIImage(named: "assets/Close-Filled.png")
         var closeImagePosY: CGFloat = self.mediaImageView.frame.origin.y - closeImage!.size.height * 2.0
         if (closeImagePosY < 20.0) {
             closeImagePosY = 20.0

@@ -25,7 +25,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "DM"
-        self.tabBarItem.image = UIImage(named: "Mail.png")
+        self.tabBarItem.image = UIImage(named: "assets/Mail.png")
     }
     
     override init(style: UITableViewStyle) {

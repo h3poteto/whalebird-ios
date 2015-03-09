@@ -26,7 +26,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リプライ"
-        self.tabBarItem.image = UIImage(named: "Speaking-Line.png")
+        self.tabBarItem.image = UIImage(named: "assets/Speaking-Line.png")
     }
     override init(style: UITableViewStyle) {
         super.init(style: style)
