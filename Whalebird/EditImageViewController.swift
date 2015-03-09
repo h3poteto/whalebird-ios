@@ -106,6 +106,11 @@ class EditImageViewController: UIViewController {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.picker.dismissViewControllerAnimated(true, completion: nil)
         self.delegate.editImageViewController(self, rotationImage: rotationImage)
+        /* for debugging
+        self.imageView.removeFromSuperview()
+        self.imageView = UIImageView(image: rotationImage)
+        self.resizeImageView()
+        self.view.addSubview(self.imageView)*/
     }
     
     //-----------------------------------
@@ -128,6 +133,7 @@ class EditImageViewController: UIViewController {
     //  画像への回転・リサイズ処理は確定したときに行う
     //  アップロード用に画像はリサイズして軽量化
     //  resizeには軽さを求めるのでCoreGraphicsを使う
+    // TODO: スクリーンショットがうまくいかないので，なんとかして
     //-----------------------------------------------
     func rotationAndResizeImage(srcImage: UIImage, angle: Float) -> UIImage {
         var targetWidth: CGFloat!
@@ -162,19 +168,6 @@ class EditImageViewController: UIViewController {
         var bitmap: CGContextRef!
         bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
 
-        if (srcImage.imageOrientation == UIImageOrientation.Left) {
-            CGContextRotateCTM(bitmap, self.radian(90))
-            CGContextTranslateCTM(bitmap, 0, -targetWidth)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
-        } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
-            CGContextRotateCTM(bitmap, self.radian(-90))
-            CGContextTranslateCTM(bitmap, -targetHeight, 0)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
-        } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
-        } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
-            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
-            CGContextRotateCTM(bitmap, self.radian(-180))
-        }
 
         // 回転時の原点に合わせて予め移動させる
         switch(normalizeAngle) {
@@ -193,6 +186,20 @@ class EditImageViewController: UIViewController {
             break
         }
         CGContextRotateCTM(bitmap, self.radian(normalizeAngle))
+        
+        if (srcImage.imageOrientation == UIImageOrientation.Left) {
+            CGContextRotateCTM(bitmap, self.radian(90))
+            CGContextTranslateCTM(bitmap, 0, -sendWidth)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
+            CGContextRotateCTM(bitmap, self.radian(-90))
+            CGContextTranslateCTM(bitmap, -sendHeight, 0)
+            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
+        } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
+            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
+            CGContextRotateCTM(bitmap, self.radian(-180))
+        }
 
         CGContextDrawImage(bitmap, CGRectMake(0, 0, sendWidth, sendHeight), imageRef)
         var ref = CGBitmapContextCreateImage(bitmap)
