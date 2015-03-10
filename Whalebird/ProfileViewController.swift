@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-
+// TODO: privateアカウントだった場合には何も処理を積まない
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //===================================
@@ -19,6 +19,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var HeaderImageHeight = CGFloat(160)
     let StatusHeight = CGFloat(40)
     let TextMargin = CGFloat(5)
+    
+    var privateAccount = false
     
     var twitterScreenName: String!
     var windowSize: CGRect!
@@ -47,6 +49,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var followUsersNextCursor: String?
     var followerUsers: Array<AnyObject> = []
     var followerUsersNextCursor: String?
+    var privateAccountAnnounce: Array<AnyObject> = []
+    
     var selectedButtonColor = UIColor.whiteColor()
     var unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
     var selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
@@ -90,7 +94,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedFollow")
         self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedUnfollow")
         
-        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 4000))
+        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 100))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.scrollEnabled = false
@@ -98,7 +102,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView.addSubview(self.tableView)
         self.scrollView.scrollEnabled = true
         self.scrollView.delegate = self
-        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: 2000)
+        self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.windowSize.size.height + 100)
 
         self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
             self.userTableRefresh()
@@ -139,11 +143,27 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 var q_sub = dispatch_get_main_queue()
                 dispatch_async(q_sub, {()->Void in
                     
+                    self.privateAccount = aUserData.objectForKey("private_account?") as Bool
+                    
                     // フォローイベント
-                    if( aUserData.objectForKey("following?") as Bool) {
-                        self.navigationItem.rightBarButtonItem = self.unfollowButton
+                    if (aUserData.objectForKey("follow_request_sent?") as Bool) {
                     } else {
-                        self.navigationItem.rightBarButtonItem = self.followButton
+                        if (aUserData.objectForKey("following?") as Bool) {
+                            self.navigationItem.rightBarButtonItem = self.unfollowButton
+                        } else {
+                            self.navigationItem.rightBarButtonItem = self.followButton
+                        }
+                    }
+                    //-----------------------------
+                    //  body
+                    //-----------------------------
+                    if (self.privateAccount) {
+                        self.tableType = 3
+                        self.privateAccountAnnounce = ["private"]
+                        self.tableView.reloadData()
+                        SVProgressHUD.dismiss()
+                    } else {
+                        self.updateTimeline(nil)
                     }
                     
                     // プロフィール表示
@@ -265,15 +285,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followerNumLabel.backgroundColor = self.unselectedButtonColor
                     self.followerNumLabel.addTarget(self, action: "tappedFollowerNum", forControlEvents: UIControlEvents.TouchDown)
                     self.scrollView.addSubview(self.followerNumLabel)
-                    SVProgressHUD.dismiss()
                     
                 })
             })
         })
-        //-----------------------------
-        //  body
-        //-----------------------------
-        self.updateTimeline(nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -301,6 +316,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             break
         case 2:
             row = self.followerUsers.count
+            break
+        case 3:
+            row = self.privateAccountAnnounce.count
             break
         default:
             row = self.currentTimeline.count
@@ -341,6 +359,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
+            break
+        case 3:
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            cell?.textLabel?.text = "非公開アカウントです"
+            cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             break
         default:
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
@@ -506,72 +529,80 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func tappedTweetNum() {
-        self.tableType = 0
-        self.tableView.reloadData()
-        self.scrollView.contentInset.top = self.headerHeight
-        self.tweetNumLabel.backgroundColor = self.selectedButtonColor
-        self.tweetNumLabel.titleLabel?.textColor = self.selectedTextColor
-        self.followNumLabel.backgroundColor = self.unselectedButtonColor
-        self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        self.followerNumLabel.backgroundColor = self.unselectedButtonColor
-        self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        self.tableView.reloadData()
+        if (!self.privateAccount) {
+            self.tableType = 0
+            self.tableView.reloadData()
+            self.scrollView.contentInset.top = self.headerHeight
+            self.tweetNumLabel.backgroundColor = self.selectedButtonColor
+            self.tweetNumLabel.titleLabel?.textColor = self.selectedTextColor
+            self.followNumLabel.backgroundColor = self.unselectedButtonColor
+            self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            self.followerNumLabel.backgroundColor = self.unselectedButtonColor
+            self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            self.tableView.reloadData()
+        }
         
     }
     
     func tappedFollowNum() {
-        self.tableType = 1
-        self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
-        self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        self.followNumLabel.backgroundColor = self.selectedButtonColor
-        var attributed = self.followNumLabel.titleLabel?.attributedText as NSMutableAttributedString
-        var range = NSRangeFromString(self.followNumLabel.titleLabel?.text)
-        attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
-        self.followNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
-        self.followNumLabel.titleLabel?.textColor = self.selectedTextColor
-        self.followerNumLabel.backgroundColor = self.unselectedButtonColor
-        self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        if (self.followUsers.count == 0) {
-            self.updateFollowUser(nil)
-        } else {
-            self.tableView.reloadData()
+        if (!self.privateAccount) {
+            self.tableType = 1
+            self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
+            self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            self.followNumLabel.backgroundColor = self.selectedButtonColor
+            var attributed = self.followNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+            var range = NSRangeFromString(self.followNumLabel.titleLabel?.text)
+            attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+            self.followNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+            self.followNumLabel.titleLabel?.textColor = self.selectedTextColor
+            self.followerNumLabel.backgroundColor = self.unselectedButtonColor
+            self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            if (self.followUsers.count == 0) {
+                self.updateFollowUser(nil)
+            } else {
+                self.tableView.reloadData()
+            }
         }
         
     }
     
     func tappedFollowerNum() {
-        self.tableType = 2
-        self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
-        self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        self.followNumLabel.backgroundColor = self.unselectedButtonColor
-        self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
-        self.followerNumLabel.backgroundColor = self.selectedButtonColor
-        var attributed = self.followerNumLabel.titleLabel?.attributedText as NSMutableAttributedString
-        var range = NSRangeFromString(self.followerNumLabel.titleLabel?.text)
-        attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
-        self.followerNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
-        self.followerNumLabel.titleLabel?.textColor = self.selectedTextColor
-        if (self.followerUsers.count == 0) {
-            self.updateFollowerUser(nil)
-        } else {
-            self.tableView.reloadData()
+        if (!self.privateAccount) {
+            self.tableType = 2
+            self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
+            self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            self.followNumLabel.backgroundColor = self.unselectedButtonColor
+            self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
+            self.followerNumLabel.backgroundColor = self.selectedButtonColor
+            var attributed = self.followerNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+            var range = NSRangeFromString(self.followerNumLabel.titleLabel?.text)
+            attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+            self.followerNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+            self.followerNumLabel.titleLabel?.textColor = self.selectedTextColor
+            if (self.followerUsers.count == 0) {
+                self.updateFollowerUser(nil)
+            } else {
+                self.tableView.reloadData()
+            }
         }
     }
     
     // 更新は下方向（過去を遡る方向）にのみ実装する
     func userTableRefresh() {
-        switch(self.tableType) {
-        case 0:
-            self.updateTimeline(self.currentTimeline.count - 1)
-            break
-        case 1:
-            self.updateFollowUser(self.followUsersNextCursor)
-            break
-        case 2:
-            self.updateFollowerUser(self.followerUsersNextCursor)
-            break
-        default:
-            break
+        if (!self.privateAccount) {
+            switch(self.tableType) {
+            case 0:
+                self.updateTimeline(self.currentTimeline.count - 1)
+                break
+            case 1:
+                self.updateFollowUser(self.followUsersNextCursor)
+                break
+            case 2:
+                self.updateFollowerUser(self.followerUsersNextCursor)
+                break
+            default:
+                break
+            }
         }
     }
     
@@ -597,7 +628,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     notice.alpha = 0.8
                     notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
                     notice.show()
-                    self.navigationItem.rightBarButtonItem = self.unfollowButton
+                    if (self.privateAccount) {
+                    } else{
+                        self.navigationItem.rightBarButtonItem = self.unfollowButton
+                    }
                 })
             }
         }
@@ -637,4 +671,5 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.presentViewController(unfollowAlert, animated: true, completion: nil)
         
     }
+    
 }
