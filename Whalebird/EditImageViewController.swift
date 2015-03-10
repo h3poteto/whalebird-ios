@@ -143,12 +143,14 @@ class EditImageViewController: UIViewController {
         // アス比を固定したままリサイズ
         var sendWidth = CGFloat(srcImage.size.width)
         var sendHeight = CGFloat(srcImage.size.height)
-        if (srcImage.size.width > srcImage.size.height) {
-            sendWidth = CGFloat(800.0)
-            sendHeight = CGFloat(800.0 * srcImage.size.height / srcImage.size.width)
-        } else {
-            sendWidth = CGFloat(800.0 * srcImage.size.width / srcImage.size.height)
-            sendHeight = CGFloat(800.0)
+        if (srcImage.size.width > 800 || srcImage.size.height > 800) {
+            if (srcImage.size.width > srcImage.size.height) {
+                sendWidth = CGFloat(800.0)
+                sendHeight = CGFloat(800.0 * srcImage.size.height / srcImage.size.width)
+            } else {
+                sendWidth = CGFloat(800.0 * srcImage.size.width / srcImage.size.height)
+                sendHeight = CGFloat(800.0)
+            }
         }
         
         if (normalizeAngle % 180 == 0) {
@@ -166,7 +168,8 @@ class EditImageViewController: UIViewController {
         
         
         var bitmap: CGContextRef!
-        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo)
+        // bytesPerRowはwidthの4倍以上ないとメモリが足らない
+        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), UInt(targetWidth * 4), colorSpaceInfo, bitmapInfo)
 
 
         // 回転時の原点に合わせて予め移動させる
