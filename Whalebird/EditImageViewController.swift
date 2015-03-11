@@ -133,7 +133,6 @@ class EditImageViewController: UIViewController {
     //  画像への回転・リサイズ処理は確定したときに行う
     //  アップロード用に画像はリサイズして軽量化
     //  resizeには軽さを求めるのでCoreGraphicsを使う
-    // TODO: スクリーンショットがうまくいかないので，なんとかして
     //-----------------------------------------------
     func rotationAndResizeImage(srcImage: UIImage, angle: Float) -> UIImage {
         var targetWidth: CGFloat!

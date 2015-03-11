@@ -9,7 +9,6 @@
 import UIKit
 import QuartzCore
 
-// TODO: privateアカウントだった場合には何も処理を積まない
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //===================================

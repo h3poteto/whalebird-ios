@@ -237,7 +237,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     
-    // TODO: 複数アップロードの実装
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
             let image:UIImage = info[UIImagePickerControllerOriginalImage]  as UIImage
