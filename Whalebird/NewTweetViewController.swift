@@ -30,6 +30,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var closeImageView: UIButton!
     var uploadedImage: String?
     var progressCount = Int(0)
+    var fTopCursor = false
     
 
     // 右上は送信
@@ -49,10 +50,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         super.init()
     }
     
-    init(aTweetBody: String!, aReplyToID: String?) {
+    init(aTweetBody: String!, aReplyToID: String?, aTopCursor: Bool?) {
         super.init()
         self.tweetBody = aTweetBody
         self.replyToID = aReplyToID
+        if aTopCursor != nil {
+            self.fTopCursor = aTopCursor!
+        }
     }
     
     override func loadView() {
@@ -81,6 +85,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.newTweetText.keyboardAppearance = UIKeyboardAppearance.Light
         self.newTweetText.text = self.tweetBody
         self.newTweetText.becomeFirstResponder()
+        if (self.fTopCursor) {
+            self.newTweetText.selectedTextRange = self.newTweetText.textRangeFromPosition(self.newTweetText.beginningOfDocument, toPosition: self.newTweetText.beginningOfDocument)
+        }
         self.currentCharacters = 140 - self.newTweetText.text.utf16Count
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)

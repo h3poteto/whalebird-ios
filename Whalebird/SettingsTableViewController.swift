@@ -477,7 +477,7 @@ class SettingsTableViewController: UITableViewController{
                 self.navigationController!.pushViewController(helpView, animated: true)
                 break
             case 2:
-                var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil)
+                var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil, aTopCursor: nil)
                 self.navigationController!.pushViewController(reply, animated: true)
                 break
             default:
