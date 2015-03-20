@@ -26,9 +26,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var optionItemBar: UIToolbar?
     var currentCharacters: Int = 140
     var currentCharactersView: UIBarButtonItem?
-    var uploadImageView: UIImageView?
-    var closeImageView: UIButton!
-    var uploadedImage: String?
+
+    var newTweetMediasCount: Int = 0
+    var newTweetMedias: Array<String> = []
+    var newTweetMediaViews: Array<UIImageView> = []
+    var newTweetMediaCloseButton: Array<UIButton> = []
     var progressCount = Int(0)
     var fTopCursor = false
     
@@ -210,10 +212,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             height = CGFloat(50.0)
         }
         
-        self.uploadImageView?.sizeThatFits(CGSize(width: width, height: height))
-        self.uploadImageView = UIImageView(frame: CGRectMake(self.imageViewSpan, self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2, width, height))
-        self.uploadImageView?.image = rotationImage
-        self.view.addSubview(self.uploadImageView!)
+        var uploadImageView = UIImageView(frame: CGRectMake(
+            self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(self.newTweetMediasCount)),
+            self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2,
+            width,
+            height))
+        uploadImageView.image = rotationImage
+        self.view.addSubview(uploadImageView)
+        self.newTweetMediaViews.append(uploadImageView)
+        
         
         var progressView = DACircularProgressView(frame: CGRectMake(0, 0, width * 2.0 / 3.0, height * 2.0 / 3.0))
         progressView.center = CGPoint(x: width / 2.0, y: height / 2.0)
@@ -221,12 +228,16 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         progressView.progressTintColor = self.progressColor
         progressView.trackTintColor = UIColor.grayColor()
         progressView.setProgress(0.0, animated: true)
-        self.uploadImageView!.addSubview(progressView)
+        uploadImageView.addSubview(progressView)
         
-        self.closeImageView = UIButton(frame: CGRectMake(self.uploadImageView!.frame.origin.x - 15.0, self.uploadImageView!.frame.origin.y - 20, 20.0, 20.0))
-        self.closeImageView.setImage(UIImage(named: "assets/Close-Filled.png"), forState: UIControlState.Normal)
-        self.closeImageView.addTarget(self, action: "removeImage", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(self.closeImageView)
+        var closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
+        closeImageView.setImage(UIImage(named: "assets/Close-Filled.png"), forState: UIControlState.Normal)
+        closeImageView.addTarget(self, action: "removeImage:", forControlEvents: UIControlEvents.TouchUpInside)
+        closeImageView.tag = self.newTweetMediasCount
+        self.view.addSubview(closeImageView)
+        self.newTweetMediaCloseButton.append(closeImageView)
+        
+        self.newTweetMediasCount += 1
         
         // upload処理
         // Whalebirdのapiにupload
@@ -238,7 +249,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         
         }, callback: { (response) -> Void in
             println(response)
-            self.uploadedImage = (response as NSDictionary).objectForKey("filename") as? String
+            self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as String)
             progressView.removeFromSuperview()
         })
     }
@@ -259,13 +270,25 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
 
-    func removeImage() {
-        if (self.uploadImageView != nil) {
-            self.uploadImageView!.removeFromSuperview()
-            self.uploadImageView = nil
+    func removeImage(id: AnyObject) {
+        if (self.newTweetMediasCount > 0) {
+            var closeButton = id as UIButton
+            let removeIndex = closeButton.tag
+            closeButton.removeFromSuperview()
+            self.newTweetMedias.removeAtIndex(removeIndex)
+            // ここでuploadImageViewの削除と位置調節
+            self.newTweetMediaViews[removeIndex].removeFromSuperview()
+            self.newTweetMediaViews.removeAtIndex(removeIndex)
+            self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+            self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+            self.newTweetMediasCount -= 1
+            for (var index = 0; index < self.newTweetMediaViews.count; index++) {
+                self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
+                y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
+                self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
+                self.newTweetMediaCloseButton[index].tag = index
+            }
         }
-        self.closeImageView.removeFromSuperview()
-        self.uploadedImage = nil
         WhalebirdAPIClient.sharedClient.cancelRequest()
     }
     
@@ -273,8 +296,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //  送信ボタンを押した時の処理
     //-----------------------------------------
     func onSendTapped() -> Bool {
-        if (self.uploadImageView != nil) {
-            if (self.uploadedImage == nil) {
+        if (self.newTweetMediasCount > 0) {
+            if (self.newTweetMediasCount != self.newTweetMedias.count) {
                 var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
                 let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 })
@@ -296,15 +319,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //  whalebirdにPOST
     //-----------------------------------------
     func postTweet(aTweetBody: NSString) {
-        var params: Dictionary<String, String> = [:]
+        var params: Dictionary<String, AnyObject> = [:]
         var parameter: Dictionary<String, AnyObject> = [
             "status" : newTweetText.text
         ]
         if (self.replyToID != nil) {
             params["in_reply_to_status_id"] = self.replyToID!
         }
-        if (self.uploadedImage != nil) {
-            params["media"] = self.uploadedImage!
+        if (self.newTweetMedias.count > 0) {
+            params["medias"] = self.newTweetMedias
         }
         
         if (params.count != 0) {

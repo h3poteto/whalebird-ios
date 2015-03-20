@@ -168,7 +168,11 @@ class EditImageViewController: UIViewController {
         
         var bitmap: CGContextRef!
         // bytesPerRowはwidthの4倍以上ないとメモリが足らない
-        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), UInt(targetWidth * 4), colorSpaceInfo, bitmapInfo)
+        var longLength = targetWidth
+        if (longLength < targetHeight) {
+            longLength = targetHeight
+        }
+        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), UInt(longLength * 4), colorSpaceInfo, bitmapInfo)
 
 
         // 回転時の原点に合わせて予め移動させる
