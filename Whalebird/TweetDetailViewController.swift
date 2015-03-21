@@ -155,35 +155,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
-        // string
-        var escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody!)
-        var screenNameList: Array<String> = []
-        var tScreenName = ""
-        var fReply = false
-        for char in self.tweetBody! {
-            if (fReply) {
-                if (char == " " || char == "　" || !self.checkScreenName(char)) {
-                    screenNameList.append(tScreenName)
-                    tScreenName = ""
-                    fReply = false
-                } else {
-                    tScreenName.append(char)
-                }
-            }else if (char == "@") {
-                tScreenName.append(char)
-                fReply = true
-            }
-        }
-        var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
-        attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
-        for screen in screenNameList {
-            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
-            attributedString.addAttributes([NSLinkAttributeName: "at:" + screen], range: nameRange)
-        }
+        
         
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 5, self.cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.attributedText = attributedString
+        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetBody!)
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
@@ -543,6 +519,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }
     }
     
+    // 画像が押された時
+    func tappedMedia(sender: AnyObject) {
+        var button = sender as UIButton
+        let mediaImage = button.backgroundImageForState(UIControlState.Normal)
+        var mediaView = MediaViewController(aMediaImage: mediaImage)
+        self.presentViewController(mediaView, animated: true, completion: nil)
+    }
+    
     // twitter独自のscreen name判定
     // _ はscreen nameと判定．他の文字は半角英数字のみ許可
     func checkScreenName(aCharacter: Character) -> Bool {
@@ -563,11 +547,33 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }
     }
     
-    // 画像が押された時
-    func tappedMedia(sender: AnyObject) {
-        var button = sender as UIButton
-        let mediaImage = button.backgroundImageForState(UIControlState.Normal)
-        var mediaView = MediaViewController(aMediaImage: mediaImage)
-        self.presentViewController(mediaView, animated: true, completion: nil)
+    func customAttributedString(rawString: String) -> NSMutableAttributedString {
+        var escapedTweetBody = WhalebirdAPIClient.escapeString(rawString)
+        var screenNameList: Array<String> = []
+        var tScreenName = ""
+        var fReply = false
+        for char in rawString {
+            if (fReply) {
+                if (char == " " || char == "　" || !self.checkScreenName(char)) {
+                    screenNameList.append(tScreenName)
+                    tScreenName = ""
+                    fReply = false
+                } else {
+                    tScreenName.append(char)
+                }
+            }else if (char == "@") {
+                tScreenName.append(char)
+                fReply = true
+            }
+        }
+        var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
+        attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
+        for screen in screenNameList {
+            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
+            attributedString.addAttributes([NSLinkAttributeName: "at:" + screen], range: nameRange)
+        }
+        return attributedString
     }
+    
+    
 }
