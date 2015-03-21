@@ -173,23 +173,39 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func openPhotostream() {
-        let ipc:UIImagePickerController = UIImagePickerController();
-        ipc.delegate = self
-        ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        ipc.allowsEditing = false
-        self.presentViewController(ipc, animated:true, completion:nil)
+        if (self.newTweetMediasCount < 4) {
+            var ipc:UIImagePickerController = UIImagePickerController();
+            ipc.delegate = self
+            ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            ipc.allowsEditing = false
+            self.presentViewController(ipc, animated:true, completion:nil)
+        } else {
+            var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            })
+            overContentsAlert.addAction(okAction)
+            self.presentViewController(overContentsAlert, animated: true, completion: nil)
+        }
     }
     
     func openCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        {
-            //camera ok
-            let ipc:UIImagePickerController = UIImagePickerController();
-            ipc.delegate = self
-            ipc.sourceType = UIImagePickerControllerSourceType.Camera
-            ipc.allowsEditing = false
-            self.presentViewController(ipc, animated:true, completion:nil)
+        if (self.newTweetMediasCount < 4) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+            {
+                //camera ok
+                var ipc:UIImagePickerController = UIImagePickerController()
+                ipc.delegate = self
+                ipc.sourceType = UIImagePickerControllerSourceType.Camera
+                ipc.allowsEditing = false
+                self.presentViewController(ipc, animated:true, completion:nil)
+            }
             
+        } else {
+            var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            })
+            overContentsAlert.addAction(okAction)
+            self.presentViewController(overContentsAlert, animated: true, completion: nil)
         }
         
     }
