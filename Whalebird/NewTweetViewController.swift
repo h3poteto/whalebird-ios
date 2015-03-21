@@ -31,8 +31,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var newTweetMedias: Array<String> = []
     var newTweetMediaViews: Array<UIImageView> = []
     var newTweetMediaCloseButton: Array<UIButton> = []
-    var progressCount = Int(0)
     var fTopCursor = false
+    var fUploadProgress = false
     
 
     // 右上は送信
@@ -173,14 +173,22 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func openPhotostream() {
-        if (self.newTweetMediasCount < 4) {
-            var ipc:UIImagePickerController = UIImagePickerController();
-            ipc.delegate = self
-            ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            ipc.allowsEditing = false
-            self.presentViewController(ipc, animated:true, completion:nil)
+        if (!self.fUploadProgress) {
+            if (self.newTweetMediasCount < 4) {
+                var ipc:UIImagePickerController = UIImagePickerController();
+                ipc.delegate = self
+                ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                ipc.allowsEditing = false
+                self.presentViewController(ipc, animated:true, completion:nil)
+            } else {
+                var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                })
+                overContentsAlert.addAction(okAction)
+                self.presentViewController(overContentsAlert, animated: true, completion: nil)
+            }
         } else {
-            var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            var overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
@@ -189,25 +197,32 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func openCamera() {
-        if (self.newTweetMediasCount < 4) {
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-            {
-                //camera ok
-                var ipc:UIImagePickerController = UIImagePickerController()
-                ipc.delegate = self
-                ipc.sourceType = UIImagePickerControllerSourceType.Camera
-                ipc.allowsEditing = false
-                self.presentViewController(ipc, animated:true, completion:nil)
-            }
+        if (!self.fUploadProgress) {
+            if (self.newTweetMediasCount < 4) {
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+                {
+                    //camera ok
+                    var ipc:UIImagePickerController = UIImagePickerController()
+                    ipc.delegate = self
+                    ipc.sourceType = UIImagePickerControllerSourceType.Camera
+                    ipc.allowsEditing = false
+                    self.presentViewController(ipc, animated:true, completion:nil)
+                }
             
+            } else {
+                var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                })
+                overContentsAlert.addAction(okAction)
+                self.presentViewController(overContentsAlert, animated: true, completion: nil)
+            }
         } else {
-            var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+            var overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
             self.presentViewController(overContentsAlert, animated: true, completion: nil)
         }
-        
     }
     
     func openMinute() {
@@ -258,15 +273,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         // upload処理
         // Whalebirdのapiにupload
         // ファイルパスだけ戻してもらってpostのparameterに付随させてtweet判定
+        self.fUploadProgress = true
         WhalebirdAPIClient.sharedClient.postImage(rotationImage, progress: { (written) -> Void in
-            self.progressCount = Int(written * 100)
-            println(self.progressCount)
             progressView.setProgress(CGFloat(written), animated: true)
         
         }, callback: { (response) -> Void in
             println(response)
             self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as String)
             progressView.removeFromSuperview()
+            self.fUploadProgress = false
         })
     }
     
@@ -284,28 +299,41 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             imageEditView.delegate = self
         }
     }
-    
 
     func removeImage(id: AnyObject) {
+        // upload中は移動を伴うキャンセルはロックする
         if (self.newTweetMediasCount > 0) {
             var closeButton = id as UIButton
-            let removeIndex = closeButton.tag
-            closeButton.removeFromSuperview()
-            self.newTweetMedias.removeAtIndex(removeIndex)
-            // ここでuploadImageViewの削除と位置調節
-            self.newTweetMediaViews[removeIndex].removeFromSuperview()
-            self.newTweetMediaViews.removeAtIndex(removeIndex)
-            self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
-            self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
-            self.newTweetMediasCount -= 1
-            for (var index = 0; index < self.newTweetMediaViews.count; index++) {
-                self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
-                y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
-                self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
-                self.newTweetMediaCloseButton[index].tag = index
+            var removeIndex = closeButton.tag
+            if (self.fUploadProgress) {
+                if (removeIndex == self.newTweetMediasCount - 1) {
+                    // 今まさにupload中のものだったとき
+                    closeButton.removeFromSuperview()
+                    self.newTweetMediaViews[removeIndex].removeFromSuperview()
+                    self.newTweetMediaViews.removeAtIndex(removeIndex)
+                    self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+                    self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+                    self.newTweetMediasCount -= 1
+                    WhalebirdAPIClient.sharedClient.cancelRequest()
+                    self.fUploadProgress = false
+                }
+            } else {
+                closeButton.removeFromSuperview()
+                self.newTweetMedias.removeAtIndex(removeIndex)
+                // ここでuploadImageViewの削除と位置調節
+                self.newTweetMediaViews[removeIndex].removeFromSuperview()
+                self.newTweetMediaViews.removeAtIndex(removeIndex)
+                self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+                self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+                self.newTweetMediasCount -= 1
+                for (var index = 0; index < self.newTweetMediaViews.count; index++) {
+                    self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
+                        y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
+                    self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
+                    self.newTweetMediaCloseButton[index].tag = index
+                }
             }
         }
-        WhalebirdAPIClient.sharedClient.cancelRequest()
     }
     
     //-----------------------------------------
