@@ -101,9 +101,6 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
 
     func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
-        var backButton = UIBarButtonItem()
-        backButton.title = "戻る"
-        self.navigationItem.backBarButtonItem = backButton
         return self.viewItems[index].tableView
     }
     
