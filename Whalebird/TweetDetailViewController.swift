@@ -18,7 +18,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //  instance variables
     //=====================================
     var tweetID: String!
-    var tweetBody: String?
+    var tweetBody: String!
     var screenName: String!
     var userName: String!
     var postDetail: String!
@@ -159,7 +159,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding + 5, self.cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetBody!)
+        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetBody)
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
