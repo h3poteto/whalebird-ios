@@ -265,7 +265,7 @@ class WhalebirdAPIClient: NSObject {
         var errorMessage = String()
         if (operation.response == nil) {
             if (error.code != NSURLErrorCancelled) {
-                errorMessage = "Error Code: " + String(error.code)
+                errorMessage = String(error.localizedDescription)
             } else {
                 return
             }
