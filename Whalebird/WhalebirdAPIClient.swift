@@ -264,7 +264,11 @@ class WhalebirdAPIClient: NSObject {
     func displayErrorMessage(operation: AFHTTPRequestOperation, error: NSError) {
         var errorMessage = String()
         if (operation.response == nil) {
-            errorMessage = "Error Code: " + String(error.code)
+            if (error.code != NSURLErrorCancelled) {
+                errorMessage = "Error Code: " + String(error.code)
+            } else {
+                return
+            }
         } else if (operation.response.statusCode == 401) {
             errorMessage = "ログインしなおしてください"
         } else {

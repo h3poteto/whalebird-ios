@@ -310,13 +310,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.fUploadProgress) {
             if (removeIndex == self.newTweetMedias.count) {
                 // 今まさにupload中のものだったとき
-                closeButton.removeFromSuperview()
-                self.newTweetMediaViews[removeIndex].removeFromSuperview()
-                self.newTweetMediaViews.removeAtIndex(removeIndex)
-                self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
-                self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
                 WhalebirdAPIClient.sharedClient.cancelRequest()
-                self.fUploadProgress = false
             }
         } else {
             closeButton.removeFromSuperview()
