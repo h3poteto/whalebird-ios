@@ -342,7 +342,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             
             return false
         }
-        if (countElements(newTweetText.text as String) > 0) {
+        if (countElements(newTweetText.text as String) > 0 || self.newTweetMedias.count > 0) {
             postTweet(newTweetText.text)
             return true
         }
