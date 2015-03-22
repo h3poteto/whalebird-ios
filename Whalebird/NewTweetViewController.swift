@@ -27,7 +27,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var currentCharacters: Int = 140
     var currentCharactersView: UIBarButtonItem?
 
-    var newTweetMediasCount: Int = 0
     var newTweetMedias: Array<String> = []
     var newTweetMediaViews: Array<UIImageView> = []
     var newTweetMediaCloseButton: Array<UIButton> = []
@@ -174,7 +173,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func openPhotostream() {
         if (!self.fUploadProgress) {
-            if (self.newTweetMediasCount < 4) {
+            if (self.newTweetMedias.count < 4) {
                 var ipc:UIImagePickerController = UIImagePickerController();
                 ipc.delegate = self
                 ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
@@ -198,7 +197,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func openCamera() {
         if (!self.fUploadProgress) {
-            if (self.newTweetMediasCount < 4) {
+            if (self.newTweetMedias.count < 4) {
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
                 {
                     //camera ok
@@ -244,7 +243,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
         
         var uploadImageView = UIImageView(frame: CGRectMake(
-            self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(self.newTweetMediasCount)),
+            self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(self.newTweetMedias.count)),
             self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2,
             width,
             height))
@@ -264,11 +263,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         var closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
         closeImageView.setImage(UIImage(named: "assets/Close-Filled.png"), forState: UIControlState.Normal)
         closeImageView.addTarget(self, action: "removeImage:", forControlEvents: UIControlEvents.TouchUpInside)
-        closeImageView.tag = self.newTweetMediasCount
+        closeImageView.tag = self.newTweetMedias.count
         self.view.addSubview(closeImageView)
         self.newTweetMediaCloseButton.append(closeImageView)
-        
-        self.newTweetMediasCount += 1
         
         // upload処理
         // Whalebirdのapiにupload
@@ -276,13 +273,19 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.fUploadProgress = true
         WhalebirdAPIClient.sharedClient.postImage(rotationImage, progress: { (written) -> Void in
             progressView.setProgress(CGFloat(written), animated: true)
-        
-        }, callback: { (response) -> Void in
+        }, complete: { (response) -> Void in
             println(response)
             self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as String)
             progressView.removeFromSuperview()
             self.fUploadProgress = false
-        })
+        }) { (error) -> Void in
+            let removeIndex = self.newTweetMedias.count
+            self.newTweetMediaViews[removeIndex].removeFromSuperview()
+            self.newTweetMediaViews.removeAtIndex(removeIndex)
+            self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+            self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+            self.fUploadProgress = false
+        }
     }
     
     
@@ -302,54 +305,48 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     func removeImage(id: AnyObject) {
         // upload中は移動を伴うキャンセルはロックする
-        if (self.newTweetMediasCount > 0) {
-            var closeButton = id as UIButton
-            var removeIndex = closeButton.tag
-            if (self.fUploadProgress) {
-                if (removeIndex == self.newTweetMediasCount - 1) {
-                    // 今まさにupload中のものだったとき
-                    closeButton.removeFromSuperview()
-                    self.newTweetMediaViews[removeIndex].removeFromSuperview()
-                    self.newTweetMediaViews.removeAtIndex(removeIndex)
-                    self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
-                    self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
-                    self.newTweetMediasCount -= 1
-                    WhalebirdAPIClient.sharedClient.cancelRequest()
-                    self.fUploadProgress = false
-                }
-            } else {
+        var closeButton = id as UIButton
+        var removeIndex = closeButton.tag
+        if (self.fUploadProgress) {
+            if (removeIndex == self.newTweetMedias.count) {
+                // 今まさにupload中のものだったとき
                 closeButton.removeFromSuperview()
-                self.newTweetMedias.removeAtIndex(removeIndex)
-                // ここでuploadImageViewの削除と位置調節
                 self.newTweetMediaViews[removeIndex].removeFromSuperview()
                 self.newTweetMediaViews.removeAtIndex(removeIndex)
                 self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
                 self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
-                self.newTweetMediasCount -= 1
-                for (var index = 0; index < self.newTweetMediaViews.count; index++) {
-                    self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
-                        y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
-                    self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
-                    self.newTweetMediaCloseButton[index].tag = index
-                }
+                WhalebirdAPIClient.sharedClient.cancelRequest()
+                self.fUploadProgress = false
+            }
+        } else {
+            closeButton.removeFromSuperview()
+            self.newTweetMedias.removeAtIndex(removeIndex)
+            // ここでuploadImageViewの削除と位置調節
+            self.newTweetMediaViews[removeIndex].removeFromSuperview()
+            self.newTweetMediaViews.removeAtIndex(removeIndex)
+            self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+            self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+            for (var index = 0; index < self.newTweetMediaViews.count; index++) {
+                self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
+                    y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
+                self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
+                self.newTweetMediaCloseButton[index].tag = index
             }
         }
     }
-    
+
     //-----------------------------------------
     //  送信ボタンを押した時の処理
     //-----------------------------------------
     func onSendTapped() -> Bool {
-        if (self.newTweetMediasCount > 0) {
-            if (self.newTweetMediasCount != self.newTweetMedias.count) {
-                var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
-                let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                })
-                alertController.addAction(cOkAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
-                
-                return false
-            }
+        if (self.fUploadProgress) {
+            var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
+            let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            })
+            alertController.addAction(cOkAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+            
+            return false
         }
         if (countElements(newTweetText.text as String) > 0) {
             postTweet(newTweetText.text)

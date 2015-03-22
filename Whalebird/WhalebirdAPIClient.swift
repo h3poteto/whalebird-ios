@@ -93,9 +93,7 @@ class WhalebirdAPIClient: NSObject {
             userDefault.setObject(responseObject["screen_name"], forKey: "username")
         }) { (operation, error) -> Void in
             println(error)
-            if (operation.response != nil) {
-                self.displayErrorMessage(operation)
-            }
+            self.displayErrorMessage(operation, error: error)
             SVProgressHUD.dismiss()
         }
         
@@ -113,9 +111,7 @@ class WhalebirdAPIClient: NSObject {
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                if (operation.response != nil) {
-                    self.displayErrorMessage(operation)
-                }
+                self.displayErrorMessage(operation, error: error)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -139,9 +135,7 @@ class WhalebirdAPIClient: NSObject {
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                if (operation.response != nil) {
-                    self.displayErrorMessage(operation)
-                }
+                self.displayErrorMessage(operation, error: error)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -161,9 +155,7 @@ class WhalebirdAPIClient: NSObject {
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                if (operation.response != nil) {
-                    self.displayErrorMessage(operation)
-                }
+                self.displayErrorMessage(operation, error: error)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -171,7 +163,7 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
-    func postImage(image: UIImage, progress: (Float) -> Void,callback: (NSDictionary) -> Void) {
+    func postImage(image: UIImage, progress: (Float) -> Void, complete: (NSDictionary) -> Void, failed: (NSError)-> Void) {
         self.loadCookie()
         if (self.sessionManager != nil) {
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
@@ -188,17 +180,17 @@ class WhalebirdAPIClient: NSObject {
                 }, error: nil)
             
             
-            
             var operation = self.sessionManager.HTTPRequestOperationWithRequest(request, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
                     println(responseObject)
                     var jsonError: NSError?
                     var jsonData = NSJSONSerialization.JSONObjectWithData(responseObject as NSData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSDictionary
-                    callback(jsonData)
+                    complete(jsonData)
                 }
                 }) { (operation, error) -> Void in
                     println(error)
-                    self.displayErrorMessage(operation)
+                    self.displayErrorMessage(operation, error: error)
+                    failed(error)
             }
             
             operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
@@ -225,9 +217,7 @@ class WhalebirdAPIClient: NSObject {
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                if (operation.response != nil) {
-                    self.displayErrorMessage(operation)
-                }
+                self.displayErrorMessage(operation, error: error)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -271,16 +261,16 @@ class WhalebirdAPIClient: NSObject {
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "cookiesKey")
     }
     
-    func displayErrorMessage(operation: AFHTTPRequestOperation) {
+    func displayErrorMessage(operation: AFHTTPRequestOperation, error: NSError) {
         var errorMessage = String()
         if (operation.response == nil) {
-            return
+            errorMessage = "Error Code: " + String(error.code)
         } else if (operation.response.statusCode == 401) {
             errorMessage = "ログインしなおしてください"
         } else {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
         }
-        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Erro", message: errorMessage)
+        var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Error", message: errorMessage)
         notice.alpha = 0.8
         notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
         notice.show()
