@@ -271,6 +271,8 @@ class WhalebirdAPIClient: NSObject {
             }
         } else if (operation.response.statusCode == 401) {
             errorMessage = "ログインしなおしてください"
+        } else if (operation.response.statusCode == 200) {
+            errorMessage = "予期しないエラーが発生しました"
         } else {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
         }
