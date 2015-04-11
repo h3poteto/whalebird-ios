@@ -13,54 +13,13 @@ class TimelineViewCell: UITableViewCell {
     //===================================
     //  class variables
     //===================================
-    private struct ClassProperty {
-        static let ImagePadding = CGFloat(7)
-        static let ImageSize = CGFloat(50)
-        static let DefaultLineHeight = CGFloat(15)
-        static let DefaultFontSize = CGFloat(14)
-        // 共通フォント
-        static let NormalFont = "Avenir-Light"
-        static let BoldFont = "Avenir-Heavy"
-        
-        // dummy
-        static let DummyLabel = UILabel()
-    }
-    
-    class var ImagePadding: CGFloat {
-        get {
-            return ClassProperty.ImagePadding
-        }
-    }
-    class var ImageSize: CGFloat {
-        get {
-            return ClassProperty.ImageSize
-        }
-    }
-    class var DefaultLineHeight: CGFloat {
-        get {
-            return ClassProperty.DefaultLineHeight
-        }
-    }
-    class var DefaultFontSize: CGFloat {
-        get {
-            return ClassProperty.DefaultFontSize
-        }
-    }
-    class var NormalFont: String {
-        get {
-            return ClassProperty.NormalFont
-        }
-    }
-    class var BoldFont: String {
-        get {
-            return ClassProperty.BoldFont
-        }
-    }
-    class var DummyLabel: UILabel {
-        get {
-            return ClassProperty.DummyLabel
-        }
-    }
+    static let ImagePadding = CGFloat(7)
+    static let ImageSize = CGFloat(50)
+    static let DefaultLineHeight = CGFloat(15)
+    static let DefaultFontSize = CGFloat(14)
+    static let NormalFont = "Avenir-Light"
+    static let BoldFont = "Avenir-Heavy"
+    static let DummyLabel = UILabel()
     
     
     //===================================
