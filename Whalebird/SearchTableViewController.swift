@@ -25,9 +25,6 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
-    }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -81,7 +78,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.resultCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        cell!.configureCell(self.currentResult[indexPath.row] as NSDictionary)
+        cell!.configureCell(self.currentResult[indexPath.row] as! NSDictionary)
         // Configure the cell...
 
         return cell!
@@ -90,7 +87,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.resultCell.count > 0 && indexPath.row < self.resultCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as NSDictionary)
+            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as! NSDictionary)
         } else {
             height = 60.0
         }
@@ -100,7 +97,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.resultCell.count > 0 && indexPath.row < self.resultCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as NSDictionary)
+            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as! NSDictionary)
         } else {
             height = 60.0
         }
@@ -109,14 +106,14 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.currentResult[indexPath.row] as NSDictionary
+        let cTweetData = self.currentResult[indexPath.row] as! NSDictionary
         var detailView = TweetDetailViewController(
-            aTweetID: cTweetData.objectForKey("id_str") as String,
-            aTweetBody: cTweetData.objectForKey("text") as String,
-            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
-            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-            aPostDetail: cTweetData.objectForKey("created_at") as String,
+            aTweetID: cTweetData.objectForKey("id_str") as! String,
+            aTweetBody: cTweetData.objectForKey("text") as! String,
+            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+            aPostDetail: cTweetData.objectForKey("created_at") as! String,
             aRetweetedName: nil,
             aRetweetedProfileImage: nil,
             aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
@@ -132,7 +129,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         for childView in searchBar.subviews {
             for subView in childView.subviews {
                 if (subView.isKindOfClass(UIButton.classForCoder())){
-                    let cancelButton = subView as UIButton
+                    let cancelButton = subView as! UIButton
                     cancelButton.setTitle("キャンセル", forState: .Normal)
                 }
             }
@@ -163,7 +160,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             dispatch_async(q_main, { () -> Void in
                 self.newResult = []
                 for timeline in aNewResult {
-                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
                     self.newResult.append(mutableTimeline)
                 }
                 if (self.newResult.count > 0) {
@@ -175,7 +172,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 SVProgressHUD.dismiss()
                 var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewResult.count) + "件")
                 notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
                 self.tweetSearchBar.resignFirstResponder()
             })
@@ -187,7 +184,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     }
     
     func saveResult() {
-        if (countElements(self.tweetSearchBar.text) > 0) {
+        if (count(self.tweetSearchBar.text) > 0) {
             var searchStream = ListTableViewController.Stream(
                 image: "",
                 name: self.tweetSearchBar.text,
@@ -196,7 +193,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 id: "")
             let cViewControllers = self.navigationController!.viewControllers as NSArray
             let cViewControllersCount = cViewControllers.count as Int
-            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as ListTableViewController
+            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as! ListTableViewController
             cParentController.streamList.append(searchStream)
             self.navigationController!.popViewControllerAnimated(true)
         }

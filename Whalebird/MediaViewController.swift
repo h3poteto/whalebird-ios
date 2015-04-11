@@ -23,13 +23,10 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
-    override init() {
-        super.init()
-    }
-    
-    init(aMediaImage: UIImage!) {
-        super.init()
+    convenience init(aMediaImage: UIImage!) {
+        self.init()
         self.mediaImage = aMediaImage
     }
 

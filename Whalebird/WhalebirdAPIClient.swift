@@ -11,7 +11,7 @@ import UIKit
 class WhalebirdAPIClient: NSObject {
     
     var sessionManager: AFHTTPRequestOperationManager!
-    var whalebirdAPIURL: String = NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String
+    var whalebirdAPIURL: String = NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String
     
     // シングルトンにするよ
     class var sharedClient: WhalebirdAPIClient {
@@ -74,9 +74,9 @@ class WhalebirdAPIClient: NSObject {
         var mutableDict: NSMutableDictionary = NSMutableDictionary(dictionary: dict)
         mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
             if (obj.isKindOfClass(NSNull.classForCoder())) {
-                mutableDict.setObject("", forKey: (key as NSString))
+                mutableDict.setObject("", forKey: (key as! NSString))
             } else if (obj.isKindOfClass(NSDictionary.classForCoder())) {
-                mutableDict.setObject(self.cleanDictionary(obj as NSDictionary), forKey: (key as NSString))
+                mutableDict.setObject(self.cleanDictionary(obj as! NSDictionary), forKey: (key as! NSString))
             }
         }
         return mutableDict
@@ -105,7 +105,7 @@ class WhalebirdAPIClient: NSObject {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback((responseObject as NSArray).reverseObjectEnumerator().allObjects)
+                    callback((responseObject as! NSArray).reverseObjectEnumerator().allObjects)
                 } else {
                     println("blank response")
                 }
@@ -125,12 +125,12 @@ class WhalebirdAPIClient: NSObject {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback(responseObject as NSDictionary)
+                    callback(responseObject as! NSDictionary)
                 } else {
                     println("blank response")
                     var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Request Error", message: "情報がありません")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                 }
             }, failure: { (operation, error) -> Void in
@@ -184,7 +184,7 @@ class WhalebirdAPIClient: NSObject {
                 if (responseObject != nil) {
                     println(responseObject)
                     var jsonError: NSError?
-                    var jsonData = NSJSONSerialization.JSONObjectWithData(responseObject as NSData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as NSDictionary
+                    var jsonData = NSJSONSerialization.JSONObjectWithData(responseObject as! NSData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! NSDictionary
                     complete(jsonData)
                 }
                 }) { (operation, error) -> Void in
@@ -234,7 +234,7 @@ class WhalebirdAPIClient: NSObject {
     func regenerateSession() {
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
         notice.alpha = 0.8
-        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
         notice.show()
         SVProgressHUD.dismiss()
     }
@@ -242,9 +242,9 @@ class WhalebirdAPIClient: NSObject {
     func loadCookie() {
         var cookiesData = NSUserDefaults.standardUserDefaults().objectForKey("cookiesKey") as? NSData
         if (cookiesData != nil) {
-            var cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData!) as NSArray
+            var cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData!) as! NSArray
             for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as NSHTTPCookie)
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as! NSHTTPCookie)
             }
             self.sessionManager = AFHTTPRequestOperationManager()
             self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
@@ -278,7 +278,7 @@ class WhalebirdAPIClient: NSObject {
         }
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Error", message: errorMessage)
         notice.alpha = 0.8
-        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
         notice.show()
     }
 }

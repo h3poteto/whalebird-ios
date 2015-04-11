@@ -47,12 +47,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         super.init(coder: aDecoder)
     }
     
-    override init() {
-        super.init()
-    }
     
-    init(aTweetBody: String!, aReplyToID: String?, aTopCursor: Bool?) {
-        super.init()
+    convenience init(aTweetBody: String!, aReplyToID: String?, aTopCursor: Bool?) {
+        self.init()
         self.tweetBody = aTweetBody
         self.replyToID = aReplyToID
         if aTopCursor != nil {
@@ -89,7 +86,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.fTopCursor) {
             self.newTweetText.selectedTextRange = self.newTweetText.textRangeFromPosition(self.newTweetText.beginningOfDocument, toPosition: self.newTweetText.beginningOfDocument)
         }
-        self.currentCharacters = 140 - self.newTweetText.text.utf16Count
+        self.currentCharacters = 140 - count(self.newTweetText.text)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -107,7 +104,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        self.currentCharacters = 140 - (textView.text.utf16Count - range.length + text.utf16Count)
+        self.currentCharacters = 140 - (count(textView.text) - range.length + count(text))
         if (self.currentCharactersView != nil) {
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
@@ -275,7 +272,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             progressView.setProgress(CGFloat(written), animated: true)
         }, complete: { (response) -> Void in
             println(response)
-            self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as String)
+            self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as! String)
             progressView.removeFromSuperview()
             self.fUploadProgress = false
         }) { (error) -> Void in
@@ -291,7 +288,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
-            let image:UIImage = info[UIImagePickerControllerOriginalImage]  as UIImage
+            let image:UIImage = info[UIImagePickerControllerOriginalImage]  as! UIImage
             // カメラで撮影するだけでは保存はされていない
             if (picker.sourceType == UIImagePickerControllerSourceType.Camera) {
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
@@ -305,7 +302,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     func removeImage(id: AnyObject) {
         // upload中は移動を伴うキャンセルはロックする
-        var closeButton = id as UIButton
+        var closeButton = id as! UIButton
         var removeIndex = closeButton.tag
         if (self.fUploadProgress) {
             if (removeIndex == self.newTweetMedias.count) {
@@ -342,7 +339,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             
             return false
         }
-        if (countElements(newTweetText.text as String) > 0 || self.newTweetMedias.count > 0) {
+        if (count(newTweetText.text as String) > 0 || self.newTweetMedias.count > 0) {
             postTweet(newTweetText.text)
             return true
         }
@@ -375,7 +372,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "投稿しました")
                 SVProgressHUD.dismiss()
                 notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
                 self.navigationController?.popViewControllerAnimated(true)
             })

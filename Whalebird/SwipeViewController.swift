@@ -22,12 +22,8 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    override init() {
-        super.init()
-    }
-    
-    init(aStream: Array<ListTableViewController.Stream>, aStartIndex: Int?) {
-        super.init()
+    convenience init(aStream: Array<ListTableViewController.Stream>, aStartIndex: Int?) {
+        self.init()
         self.swipeItems = aStream
         if (aStartIndex != nil) {
             self.startIndex = aStartIndex!

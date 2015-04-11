@@ -61,12 +61,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init(coder: aDecoder)
     }
     
-    override init() {
-        super.init()
-    }
-    
-    init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
-        super.init()
+    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
+        self.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
         self.screenName = aScreenName
@@ -81,7 +77,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.fFavorited = false
         }
         if (aMedia != nil && aMedia?.count > 0) {
-            self.media = aMedia as Array<String>!
+            self.media = aMedia as! Array<String>!
         }
         if (aParentArray.count > 0) {
             self.parentArray = aParentArray
@@ -124,7 +120,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
-        self.userNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.03, self.cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
             self.userNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
@@ -134,13 +130,12 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.userNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.BoldFont, size: 15)
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
-        self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
-        self.userNameLabel.frame.size.height = self.userNameLabel.titleLabel!.frame.size.height
+        self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.05 + self.userNameLabel.frame.size.height + 5, self.cWindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height - 10, self.cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
@@ -151,7 +146,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
-        self.screenNameLabel.frame.size.height = self.screenNameLabel.titleLabel!.frame.size.height
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
@@ -307,7 +301,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     func tappedReply() {
         var userDefault = NSUserDefaults.standardUserDefaults()
-        let userScreenName = userDefault.objectForKey("username") as String
+        let userScreenName = userDefault.objectForKey("username") as! String
         
         var replyList: Array<String> = []
         var tScreenName = ""
@@ -360,7 +354,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り削除")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = false
@@ -375,7 +369,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     }
                     // 親要素のツイート情報を書き換え
                     if (self.parentArray != nil && self.parentIndex != nil) {
-                        (self.parentArray![self.parentIndex!] as NSMutableDictionary).setObject(0, forKey: "favorited?")
+                        (self.parentArray![self.parentIndex!] as! NSMutableDictionary).setObject(0, forKey: "favorited?")
                     }
                 })
             }
@@ -394,7 +388,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り追加")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = true
@@ -409,7 +403,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     }
                     // 親要素のツイート情報を書き換え
                     if (self.parentArray != nil && self.parentIndex != nil) {
-                        (self.parentArray![self.parentIndex!] as NSMutableDictionary).setObject(1, forKey: "favorited?")
+                        (self.parentArray![self.parentIndex!] as! NSMutableDictionary).setObject(1, forKey: "favorited?")
                     }
                 })
             }
@@ -433,7 +427,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "削除完了")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     self.navigationController!.popViewControllerAnimated(true)
                 })
@@ -468,7 +462,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                         SVProgressHUD.dismiss()
                         var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
                         notice.alpha = 0.8
-                        notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                         notice.show()
                     })
                 })
@@ -521,7 +515,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     // 画像が押された時
     func tappedMedia(sender: AnyObject) {
-        var button = sender as UIButton
+        var button = sender as! UIButton
         let mediaImage = button.backgroundImageForState(UIControlState.Normal)
         var mediaView = MediaViewController(aMediaImage: mediaImage)
         self.presentViewController(mediaView, animated: true, completion: nil)
@@ -539,7 +533,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 return false
             } else {
                 var charSet = NSCharacterSet.alphanumericCharacterSet()
-                var aScanner = NSScanner.localizedScannerWithString(str) as NSScanner
+                var aScanner = NSScanner.localizedScannerWithString(str) as! NSScanner
                 aScanner.charactersToBeSkipped = nil
                 aScanner.scanCharactersFromSet(charSet, intoString: nil)
                 return aScanner.atEnd

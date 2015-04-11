@@ -19,13 +19,13 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
+    convenience init() {
+        self.init()
         // ここでNSUserDefaultから下書きを読み込み
         var userDefault = NSUserDefaults.standardUserDefaults()
         var readMinutesArray: AnyObject? = userDefault.objectForKey("minutesArray")
         if (readMinutesArray != nil ) {
-            self.minutesArray = userDefault.objectForKey("minutesArray") as Array<AnyObject>
+            self.minutesArray = userDefault.objectForKey("minutesArray") as! Array<AnyObject>
         }
     }
 
@@ -78,7 +78,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "MinuteCell")
-        cell.textLabel!.text = (self.minutesArray[indexPath.row] as NSDictionary).objectForKey("text") as? String
+        cell.textLabel!.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
 
         return cell
     }
@@ -86,9 +86,9 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cViewControllers = self.navigationController!.viewControllers as NSArray
         let cViewControllersCount = cViewControllers.count  as Int
-        let cParentController: NewTweetViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as NewTweetViewController
-        cParentController.newTweetText.text = (self.minutesArray[indexPath.row] as NSDictionary).objectForKey("text") as String
-        cParentController.replyToID = (self.minutesArray[indexPath.row] as NSDictionary).objectForKey("replyToID") as? String
+        let cParentController: NewTweetViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as! NewTweetViewController
+        cParentController.newTweetText.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as! String
+        cParentController.replyToID = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("replyToID") as? String
         self.navigationController!.popViewControllerAnimated(true)
     }
 

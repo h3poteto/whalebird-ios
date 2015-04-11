@@ -10,7 +10,7 @@ import UIKit
 
 class ExWebView: UIWebView {
     override func loadRequest(request: NSURLRequest) {
-        var mRequest = request.mutableCopy() as NSMutableURLRequest
+        var mRequest = request.mutableCopy() as! NSMutableURLRequest
         mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         super.loadRequest(mRequest)
     }
@@ -19,8 +19,8 @@ class ExWebView: UIWebView {
 class LoginViewController: UIViewController, UIWebViewDelegate {
     var loginWebView: UIWebView!
     var redirectedTwitter: Bool = false
-    var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String)!
-    var whalebirdAPIWithKey: String = (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as String) + "users/sign_in?"
+    var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String)!
+    var whalebirdAPIWithKey: String = (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String) + "users/sign_in?"
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -30,10 +30,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    override init() {
-        super.init()
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,16 +63,16 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if (self.redirectedTwitter && request.URL.host == self.whalebirdAPIURL.host && (request.URL.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
+        if (self.redirectedTwitter && request.URL!.host == self.whalebirdAPIURL.host && (request.URL!.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession()
             
             var index = self.navigationController!.viewControllers.count
-            var parent = (self.navigationController!.viewControllers as NSArray).objectAtIndex(index - 2) as SettingsTableViewController
+            var parent = (self.navigationController!.viewControllers as NSArray).objectAtIndex(index - 2) as! SettingsTableViewController
             parent.syncWhalebirdServer()
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             self.navigationController!.popViewControllerAnimated(true)
             return false
-        } else if ((request.URL.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {
+        } else if ((request.URL!.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {
             self.redirectedTwitter = true
         }
         return true

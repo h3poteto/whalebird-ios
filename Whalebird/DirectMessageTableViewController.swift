@@ -37,11 +37,6 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     }
     
     
-    override init() {
-        super.init()
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
@@ -62,7 +57,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             for message in directMessage! {
                 self.currentMessage.insert(message, atIndex: 0)
             }
-            var moreID = self.currentMessage.last?.objectForKey("id_str") as String
+            var moreID = self.currentMessage.last?.objectForKey("id_str") as! String
             var readMoreDictionary = NSMutableDictionary(dictionary: [
                 "moreID" : moreID,
                 "sinceID" : "sinceID"
@@ -95,7 +90,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        cell!.configureCell(self.currentMessage[indexPath.row] as NSDictionary)
+        cell!.configureCell(self.currentMessage[indexPath.row] as! NSDictionary)
 
 
         return cell!
@@ -103,20 +98,20 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
+        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as! NSDictionary)
         return height
     }
 
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as NSDictionary)
+        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as! NSDictionary)
         return height
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cMessageData = self.currentMessage[indexPath.row] as NSDictionary
-        if (cMessageData.objectForKey("moreID") != nil && cMessageData.objectForKey("moreID") as String != "moreID") {
+        let cMessageData = self.currentMessage[indexPath.row] as! NSDictionary
+        if (cMessageData.objectForKey("moreID") != nil && cMessageData.objectForKey("moreID") as! String != "moreID") {
             var sinceID = cMessageData.objectForKey("sinceID") as? String
             if (sinceID == "sinceID") {
                 sinceID = nil
@@ -124,12 +119,12 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             self.updateMessage(sinceID, aMoreIndex: indexPath.row)
         } else {
             var detailView = MessageDetailViewController(
-                aMessageID: cMessageData.objectForKey("id_str") as NSString,
-                aMessageBody: cMessageData.objectForKey("text") as NSString,
-                aScreeName: cMessageData.objectForKey("user")?.objectForKey("screen_name") as NSString,
-                aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as NSString,
-                aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as NSString,
-                aPostDetail: cMessageData.objectForKey("created_at") as NSString)
+                aMessageID: cMessageData.objectForKey("id_str") as! String,
+                aMessageBody: cMessageData.objectForKey("text") as! String,
+                aScreeName: cMessageData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as! String,
+                aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                aPostDetail: cMessageData.objectForKey("created_at") as! String)
             self.navigationController!.pushViewController(detailView, animated: true)
             
         }
@@ -143,7 +138,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentMessage[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
+            var strMoreID = (self.currentMessage[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as! String
             // max_idは「以下」という判定になるので自身を含めない
             params["max_id"] = BigInteger(string: strMoreID).decrement()
         }
@@ -154,16 +149,16 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", params: cParameter) { (aNewMessage) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                self.newMessage = aNewMessage
+                self.newMessage = aNewMessage as Array<AnyObject>
                 var currentRowIndex: Int?
                 if (self.newMessage.count > 0) {
                     if (aMoreIndex == nil) {
                         // refreshによる更新
                         if (self.newMessage.count >= self.tweetCount) {
-                            var moreID = self.newMessage.first?.objectForKey("id_str") as String
+                            var moreID = self.newMessage.first?.objectForKey("id_str") as! String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentMessage.count > 0) {
-                                var sinceID = self.currentMessage.first?.objectForKey("id_str") as String
+                                var sinceID = self.currentMessage.first?.objectForKey("id_str") as! String
                                 readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : sinceID
@@ -181,14 +176,14 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                         }
                         for newTweet in self.newMessage {
                             self.currentMessage.insert(newTweet, atIndex: 0)
-                            self.sinceId = (newTweet as NSDictionary).objectForKey("id_str") as String?
+                            self.sinceId = (newTweet as! NSDictionary).objectForKey("id_str") as? String
                         }
                     } else {
                         // readMoreを押した場合
                         // tableの途中なのかbottomなのかの判定
                         if (aMoreIndex == self.currentMessage.count - 1) {
                             // bottom
-                            var moreID = self.newMessage.first?.objectForKey("id_str") as String
+                            var moreID = self.newMessage.first?.objectForKey("id_str") as! String
                             var readMoreDictionary = NSMutableDictionary(dictionary: [
                                 "moreID" : moreID,
                                 "sinceID" : "sinceID"
@@ -199,8 +194,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                         } else {
                             // 途中
                             if (self.newMessage.count >= self.tweetCount) {
-                                var moreID = self.newMessage.first?.objectForKey("id_str") as String
-                                var sinceID = (self.currentMessage[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
+                                var moreID = self.newMessage.first?.objectForKey("id_str") as! String
+                                var sinceID = (self.currentMessage[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : sinceID
@@ -223,13 +218,13 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewMessage.count) + "件更新")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                 } else {
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                 }
             })
@@ -258,7 +253,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             return
         }
         for message in self.currentMessage[0...(cMessageMin - 2)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as NSDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as! NSDictionary)
             cleanMessageArray.append(dic)
         }
         userDefaults.setObject(cleanMessageArray.reverse(), forKey: "directMessage")

@@ -38,12 +38,10 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init() {
-        super.init()
-    }
+
     
-    init(aMessageID: String, aMessageBody: String, aScreeName: String, aUserName: String, aProfileImage: String, aPostDetail: String) {
-        super.init()
+    convenience init(aMessageID: String, aMessageBody: String, aScreeName: String, aUserName: String, aProfileImage: String, aPostDetail: String) {
+        self.init()
         self.messageID = aMessageID
         self.messageBody = aMessageBody
         self.screenName = aScreeName
@@ -71,7 +69,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         
         self.view.addSubview(self.profileImageLabel)
         
-        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 15))
+        self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 1.7, cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
             self.userNameLabel.setTitle("@" + self.screenName, forState: .Normal)
@@ -83,11 +81,10 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
-        self.userNameLabel.frame.size.height = self.userNameLabel.titleLabel!.frame.size.height
         self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.view.addSubview(self.userNameLabel)
         
-        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 2.0 + self.userNameLabel.frame.size.height + 5, cWindowSize.size.width * 0.9, 15))
+        self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height - 10, cWindowSize.size.width * 0.9, 15))
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
             self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
@@ -97,14 +94,13 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
-        self.screenNameLabel.frame.size.height = self.screenNameLabel.titleLabel!.frame.size.height
         self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.view.addSubview(self.screenNameLabel)
         
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + self.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody!) as NSString
+        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody!) as String
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false

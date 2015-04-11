@@ -17,7 +17,7 @@ class StackListTableViewController: UITableViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リストを選択"
         var userDefault = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = userDefault.objectForKey("username") as? NSString
+        self.twitterScreenName = userDefault.objectForKey("username") as? String
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -28,8 +28,7 @@ class StackListTableViewController: UITableViewController {
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
+    init() {
         var favStream = ListTableViewController.Stream(
             image: "",
             name: "お気に入り",
@@ -44,7 +43,9 @@ class StackListTableViewController: UITableViewController {
             id: "")
         self.stackListArray.append(myselfStream)
         self.stackListArray.append(favStream)
+        super.init(style: UITableViewStyle.Plain)
     }
+
     
 
     override func viewDidLoad() {
@@ -75,10 +76,10 @@ class StackListTableViewController: UITableViewController {
                     for list in aStackList {
                         var streamElement = ListTableViewController.Stream(
                             image: "",
-                            name: list.objectForKey("full_name") as String,
+                            name: list.objectForKey("full_name") as! String,
                             type: "list",
-                            uri: list.objectForKey("uri") as String,
-                            id: list.objectForKey("id_str") as String)
+                            uri: list.objectForKey("uri") as! String,
+                            id: list.objectForKey("id_str") as! String)
                         self.stackListArray.append(streamElement)
                     }
                     self.tableView.reloadData()
@@ -138,7 +139,7 @@ class StackListTableViewController: UITableViewController {
             if (selectedArray.count > 0) {
                 let cViewControllers = self.navigationController!.viewControllers as NSArray
                 let cViewControllersCount = cViewControllers.count as Int
-                let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as ListTableViewController
+                let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as! ListTableViewController
                 for index in selectedArray {
                     cParentController.streamList.append(self.stackListArray[index.row])
                 }

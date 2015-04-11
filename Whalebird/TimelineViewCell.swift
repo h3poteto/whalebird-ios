@@ -91,7 +91,7 @@ class TimelineViewCell: UITableViewCell {
             DummyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
             DummyLabel.numberOfLines = 0
             DummyLabel.textAlignment = NSTextAlignment.Left
-            DummyLabel.text = aDictionary.objectForKey("text") as NSString
+            DummyLabel.text = aDictionary.objectForKey("text") as! NSString as String
             DummyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             DummyLabel.sizeToFit()
             height += DummyLabel.frame.size.height + TimelineViewCell.ImagePadding
@@ -113,13 +113,7 @@ class TimelineViewCell: UITableViewCell {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    override init() {
-        super.init()
-    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -127,6 +121,14 @@ class TimelineViewCell: UITableViewCell {
         let cWindowSize = UIScreen.mainScreen().bounds
         self.maxSize = cWindowSize.size
         
+    }
+    
+    convenience init() {
+        self.init()
+    }
+    
+    convenience init(frame: CGRect) {
+        self.init(frame: frame)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -239,24 +241,24 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
             var q_main = dispatch_get_main_queue()
-            var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as NSString)
+            var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
             self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
-                var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as NSString)
+                var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as! String)
                 self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "assets/Warning.png"))
             }
             
-            let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as NSString
+            let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as! String
             //------------------------------------
             //  nameLabel
             //------------------------------------
             if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
                 self.nameLabel.text = "@" + cScreenName
             } else {
-                self.nameLabel.text = aDictionary.objectForKey("user")?.objectForKey("name") as NSString
+                self.nameLabel.text = aDictionary.objectForKey("user")?.objectForKey("name") as? String
             }
             self.nameLabel.textAlignment = NSTextAlignment.Left
             self.nameLabel.textColor = UIColor.blackColor()
@@ -281,7 +283,7 @@ class TimelineViewCell: UITableViewCell {
             self.bodyLabel.numberOfLines = 0
             self.bodyLabel.textAlignment = NSTextAlignment.Left
             self.bodyLabel.textColor = UIColor.blackColor()
-            self.bodyLabel.text = WhalebirdAPIClient.escapeString(aDictionary.objectForKey("text") as String!) as NSString
+            self.bodyLabel.text = WhalebirdAPIClient.escapeString(aDictionary.objectForKey("text") as! String)
             self.bodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             self.bodyLabel.sizeToFit()
             
@@ -291,7 +293,7 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             self.postDetailLable.textAlignment = NSTextAlignment.Right
             self.postDetailLable.textColor = UIColor.grayColor()
-            self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.objectForKey("created_at") as NSString)
+            self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.objectForKey("created_at") as! String)
             self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height
             self.postDetailLable.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             
@@ -302,7 +304,7 @@ class TimelineViewCell: UITableViewCell {
             if (retweeted) {
                 self.retweetedLabel?.textAlignment = NSTextAlignment.Right
                 self.retweetedLabel?.textColor = UIColor.grayColor()
-                self.retweetedLabel?.text = "Retweeted by @" + (aDictionary.objectForKey("retweeted")?.objectForKey("screen_name") as String)
+                self.retweetedLabel?.text = "Retweeted by @" + (aDictionary.objectForKey("retweeted")?.objectForKey("screen_name") as! String)
                 self.retweetedLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
                 self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height
                 self.retweetedLabel?.center.x = self.maxSize.width / 2.0

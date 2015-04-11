@@ -43,15 +43,15 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     class func convertRetweet(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
-        var mutableDictionary = aDictionary.mutableCopy() as NSMutableDictionary
-        let cOriginalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as String
-        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as String!)
-        let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("name") as String
-        let cOriginalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("screen_name") as String
-        let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as NSDictionary).objectForKey("profile_image_url") as String
-        let cPostName = mutableDictionary.objectForKey("user")?.objectForKey("name") as String
-        let cPostScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as String
-        let cPostProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as String
+        var mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
+        let cOriginalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as! String
+        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as! String)
+        let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("name") as! String
+        let cOriginalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("screen_name") as! String
+        let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("profile_image_url") as! String
+        let cPostName = mutableDictionary.objectForKey("user")?.objectForKey("name") as! String
+        let cPostScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as! String
+        let cPostProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String
         
         mutableDictionary.setValue(cOriginalText, forKey: "text")
         mutableDictionary.setValue(cOriginalCreatedAt, forKey: "created_at")
@@ -75,8 +75,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     class func convertMedia(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
-        var mutableDictionary = aDictionary.mutableCopy() as NSMutableDictionary
-        var cOriginalMedia = mutableDictionary.objectForKey("entities")!.objectForKey("media") as NSArray
+        var mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
+        var cOriginalMedia = mutableDictionary.objectForKey("entities")!.objectForKey("media") as! NSArray
         var mediaURLArray = NSMutableArray()
         for media in cOriginalMedia {
             mediaURLArray.addObject(media.objectForKey("media_url")!)
@@ -99,13 +99,13 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
             var selectedAccount: ACAccount!
             for aclist in twitterAccounts {
                 if (cUsername == aclist.username) {
-                    selectedAccount = aclist as ACAccount
+                    selectedAccount = aclist as! ACAccount
                 }
             }
             if (selectedAccount == nil) {
                 var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
                 notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
             } else {
                 self.account = selectedAccount
@@ -134,22 +134,21 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         }
     }
     
-    
-    func connection(connection: NSURLConnection!, didReceiveResponse response: NSURLResponse!) {
+    func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
         println(response)
     }
     
-    func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
+    func connection(connection: NSURLConnection,didReceiveData data: NSData){
         var jsonError:NSError?
         var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
         
         if (jsonObject != nil) {
-            var object: NSMutableDictionary! = jsonObject!.mutableCopy() as NSMutableDictionary
+            var object: NSMutableDictionary! = jsonObject!.mutableCopy() as! NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
-                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as String!), forKey: "created_at")
+                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as! String!), forKey: "created_at")
                 println(object.objectForKey("user")?.objectForKey("screen_name"))
-                object.setValue(object.objectForKey("favorited") as Int, forKey: "favorited?")
+                object.setValue(object.objectForKey("favorited") as! Int, forKey: "favorited?")
                 if (object.objectForKey("retweeted_status") == nil) {
                     object.setValue(nil, forKey: "retweeted")
                 } else {
@@ -161,7 +160,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                     object = UserstreamAPIClient.convertMedia(object) as NSMutableDictionary
                 }
                 self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
-                self.timelineTable?.sinceId = object.objectForKey("id_str") as String?
+                self.timelineTable?.sinceId = object.objectForKey("id_str") as? String
                 self.timelineTable?.tableView.reloadData()
             }
         }

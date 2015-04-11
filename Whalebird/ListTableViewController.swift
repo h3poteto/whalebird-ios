@@ -40,9 +40,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
-    }
 
 
     override func viewDidLoad() {
@@ -67,11 +64,11 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
             self.streamList.removeAll()
             for streamList in userStreamList! {
                 self.streamList.insert(Stream(
-                    image: streamList.objectForKey("image") as String,
-                    name: streamList.objectForKey("name") as String,
-                    type: streamList.objectForKey("type") as String,
-                    uri: streamList.objectForKey("uri") as String,
-                    id: streamList.objectForKey("id") as String),
+                    image: streamList.objectForKey("image") as! String,
+                    name: streamList.objectForKey("name") as! String,
+                    type: streamList.objectForKey("type") as! String,
+                    uri: streamList.objectForKey("uri") as! String,
+                    id: streamList.objectForKey("id") as! String),
                     atIndex: 0)
             }
         } else {

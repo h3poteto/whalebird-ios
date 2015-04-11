@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     var alertPosition: CGFloat = 0.0
 
 
-    func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         Fabric.with([Crashlytics()])
         
@@ -55,24 +55,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         var settingsViewController = SettingsTableViewController(style: UITableViewStyle.Grouped)
         var settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
         var controllers = NSArray(array: [timelineNavigationController, replyNavigationController, listNavigationController, directMessageNavigationController, settingsNavigationController])
-        self.rootController.setViewControllers(controllers, animated: true)
+        self.rootController.setViewControllers(controllers as [AnyObject], animated: true)
         self.window?.addSubview(self.rootController.view)
         self.window?.makeKeyAndVisible()
         
-        self.alertPosition = (self.rootController.selectedViewController as UINavigationController).navigationBar.frame.origin.y + (self.rootController.selectedViewController as UINavigationController).navigationBar.frame.size.height
+        self.alertPosition = (self.rootController.selectedViewController as! UINavigationController).navigationBar.frame.origin.y + (self.rootController.selectedViewController as! UINavigationController).navigationBar.frame.size.height
         
         // RemoteNotificationからの復帰処理
         if (launchOptions != nil) {
-            var userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as NSDictionary!
+            var userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as! NSDictionary
             var dummyArray: Array<AnyObject> = []
-            if (userInfo.objectForKey("aps")?.objectForKey("category") as String == "reply") {
+            if (userInfo.objectForKey("aps")?.objectForKey("category") as! String == "reply") {
                 var detailView = TweetDetailViewController(
-                    aTweetID: userInfo.objectForKey("id") as String,
-                    aTweetBody: userInfo.objectForKey("text") as String,
-                    aScreenName: userInfo.objectForKey("screen_name") as String,
-                    aUserName: userInfo.objectForKey("name") as String,
-                    aProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                    aPostDetail: userInfo.objectForKey("created_at") as String,
+                    aTweetID: userInfo.objectForKey("id") as! String,
+                    aTweetBody: userInfo.objectForKey("text")as! String,
+                    aScreenName: userInfo.objectForKey("screen_name")as! String,
+                    aUserName: userInfo.objectForKey("name") as! String,
+                    aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
+                    aPostDetail: userInfo.objectForKey("created_at") as! String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
                     aFavorited: userInfo.objectForKey("favorited") as? Bool,
@@ -82,26 +82,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailView, animated: true)
-            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "direct_message") {
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
+            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as! String == "direct_message") {
                 var messageViewController = MessageDetailViewController(
-                    aMessageID: userInfo.objectForKey("id") as String,
-                    aMessageBody: userInfo.objectForKey("text") as String,
-                    aScreeName: userInfo.objectForKey("screen_name") as String,
-                    aUserName: userInfo.objectForKey("name") as String,
-                    aProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                    aPostDetail: userInfo.objectForKey("created_at") as String)
+                    aMessageID: userInfo.objectForKey("id") as! String,
+                    aMessageBody: userInfo.objectForKey("text") as! String,
+                    aScreeName: userInfo.objectForKey("screen_name") as! String,
+                    aUserName: userInfo.objectForKey("name") as! String,
+                    aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
+                    aPostDetail: userInfo.objectForKey("created_at") as! String)
                 
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
-            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "retweet") {
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
+            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as! String == "retweet") {
                 if (userInfo.objectForKey("id") != nil) {
                     var detailView = TweetDetailViewController(
-                        aTweetID: userInfo.objectForKey("id") as String,
-                        aTweetBody: userInfo.objectForKey("text") as String,
-                        aScreenName: userInfo.objectForKey("screen_name") as String,
-                        aUserName: userInfo.objectForKey("name") as String,
-                        aProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                        aPostDetail: userInfo.objectForKey("created_at") as String,
+                        aTweetID: userInfo.objectForKey("id") as! String,
+                        aTweetBody: userInfo.objectForKey("text") as! String,
+                        aScreenName: userInfo.objectForKey("screen_name") as! String,
+                        aUserName: userInfo.objectForKey("name") as! String,
+                        aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
+                        aPostDetail: userInfo.objectForKey("created_at") as! String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
@@ -111,17 +111,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     )
                     
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailView, animated: true)
+                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                 }
-            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as String == "favorite") {
+            } else if(userInfo.objectForKey("aps")?.objectForKey("category") as! String == "favorite") {
                 if (userInfo.objectForKey("id") != nil) {
                     var detailView = TweetDetailViewController(
-                        aTweetID: userInfo.objectForKey("id") as String,
-                        aTweetBody: userInfo.objectForKey("text") as String,
-                        aScreenName: userInfo.objectForKey("screen_name") as String,
-                        aUserName: userInfo.objectForKey("name") as String,
-                        aProfileImage: userInfo.objectForKey("profile_image_url") as String,
-                        aPostDetail: userInfo.objectForKey("created_at") as String,
+                        aTweetID: userInfo.objectForKey("id") as! String,
+                        aTweetBody: userInfo.objectForKey("text") as! String,
+                        aScreenName: userInfo.objectForKey("screen_name") as! String,
+                        aUserName: userInfo.objectForKey("name") as! String,
+                        aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
+                        aPostDetail: userInfo.objectForKey("created_at") as! String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     )
                     
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailView, animated: true)
+                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                 }
             }
         }
@@ -156,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             notice.show()
             var loginSettingsView = SettingsTableViewController()
             self.rootController.presentedViewController
-            (self.rootController.selectedViewController as UINavigationController).pushViewController(loginSettingsView, animated: true)
+            (self.rootController.selectedViewController as! UINavigationController).pushViewController(loginSettingsView, animated: true)
         }
         
         
@@ -169,25 +169,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication!) {
+    func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication!) {
+    func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication!) {
+    func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication!) {
+    func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication!) {
+    func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
@@ -210,8 +210,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         println(userInfo)
         var userDefault = NSUserDefaults.standardUserDefaults()
-        var message = (userInfo["aps"] as NSDictionary).objectForKey("alert") as String
-        var category = (userInfo["aps"] as NSDictionary).objectForKey("category") as String
+        var message = (userInfo["aps"] as! NSDictionary).objectForKey("alert") as! String
+        var category = (userInfo["aps"] as! NSDictionary).objectForKey("category") as! String
         if (application.applicationState == UIApplicationState.Active && (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag"))) {
             if (userDefault.integerForKey("notificationType") == 2 ) {
                 // wbによる通知
@@ -227,12 +227,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
                         var dummyArray: Array<AnyObject> = []
                         var detailViewController = TweetDetailViewController(
-                            aTweetID: userInfo["id"] as String,
-                            aTweetBody: userInfo["text"] as String,
-                            aScreenName: userInfo["screen_name"] as String,
-                            aUserName: userInfo["name"] as String,
-                            aProfileImage: userInfo["profile_image_url"] as String,
-                            aPostDetail: userInfo["created_at"] as String,
+                            aTweetID: userInfo["id"] as! String,
+                            aTweetBody: userInfo["text"] as! String,
+                            aScreenName: userInfo["screen_name"] as! String,
+                            aUserName: userInfo["name"] as! String,
+                            aProfileImage: userInfo["profile_image_url"] as! String,
+                            aPostDetail: userInfo["created_at"] as! String,
                             aRetweetedName: nil,
                             aRetweetedProfileImage: nil,
                             aFavorited: userInfo["favorited"] as? Bool,
@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         )
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                        (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                     })
                     let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: {action in
                     })
@@ -254,13 +254,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     var alertController = UIAlertController(title: "DirectMessage", message: message, preferredStyle: .Alert)
                     let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                         var messageViewController = MessageDetailViewController(
-                            aMessageID: userInfo["id"] as String,
-                            aMessageBody: userInfo["text"] as String,
-                            aScreeName: userInfo["screen_name"] as String,
-                            aUserName: userInfo["name"] as String,
-                            aProfileImage: userInfo["profile_image_url"] as String,
-                            aPostDetail: userInfo["created_at"] as String)
-                        (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
+                            aMessageID: userInfo["id"] as! String,
+                            aMessageBody: userInfo["text"] as! String,
+                            aScreeName: userInfo["screen_name"] as! String,
+                            aUserName: userInfo["name"] as! String,
+                            aProfileImage: userInfo["profile_image_url"] as! String,
+                            aPostDetail: userInfo["created_at"] as! String)
+                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                     })
                     let cOkAction = UIAlertAction(title: "閉じる", style: .Default, handler: { (action) -> Void in
                     })
@@ -292,12 +292,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             case "reply":
                 var dummyArray: Array<AnyObject> = []
                 var detailViewController = TweetDetailViewController(
-                    aTweetID: userInfo["id"] as String,
-                    aTweetBody: userInfo["text"] as String,
-                    aScreenName: userInfo["screen_name"] as String,
-                    aUserName: userInfo["name"] as String,
-                    aProfileImage: userInfo["profile_image_url"] as String,
-                    aPostDetail: userInfo["created_at"] as String,
+                    aTweetID: userInfo["id"] as! String,
+                    aTweetBody: userInfo["text"] as! String,
+                    aScreenName: userInfo["screen_name"] as! String,
+                    aUserName: userInfo["name"] as! String,
+                    aProfileImage: userInfo["profile_image_url"] as! String,
+                    aPostDetail: userInfo["created_at"] as! String,
                     aRetweetedName: nil,
                     aRetweetedProfileImage: nil,
                     aFavorited: userInfo["favorited"] as? Bool,
@@ -307,28 +307,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                 break
             case "direct_message":
                 var messageViewController = MessageDetailViewController(
-                    aMessageID: userInfo["id"] as String,
-                    aMessageBody: userInfo["text"] as String,
-                    aScreeName: userInfo["screen_name"] as String,
-                    aUserName: userInfo["name"] as String,
-                    aProfileImage: userInfo["profile_image_url"] as String,
-                    aPostDetail: userInfo["created_at"] as String)
-                (self.rootController.selectedViewController as UINavigationController).pushViewController(messageViewController, animated: true)
+                    aMessageID: userInfo["id"] as! String,
+                    aMessageBody: userInfo["text"] as! String,
+                    aScreeName: userInfo["screen_name"] as! String,
+                    aUserName: userInfo["name"] as! String,
+                    aProfileImage: userInfo["profile_image_url"] as! String,
+                    aPostDetail: userInfo["created_at"] as! String)
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                 break
             case "favorite":
                 if (userInfo["id"] != nil) {
                     var dummyArray: Array<AnyObject> = []
                     var detailViewController = TweetDetailViewController(
-                        aTweetID: userInfo["id"] as String,
-                        aTweetBody: userInfo["text"] as String,
-                        aScreenName: userInfo["screen_name"] as String,
-                        aUserName: userInfo["name"] as String,
-                        aProfileImage: userInfo["profile_image_url"] as String,
-                        aPostDetail: userInfo["created_at"] as String,
+                        aTweetID: userInfo["id"] as! String,
+                        aTweetBody: userInfo["text"] as! String,
+                        aScreenName: userInfo["screen_name"] as! String,
+                        aUserName: userInfo["name"] as! String,
+                        aProfileImage: userInfo["profile_image_url"] as! String,
+                        aPostDetail: userInfo["created_at"] as! String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo["favorited"] as? Bool,
@@ -337,19 +337,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aParentIndex: nil
                     )
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                 }
                 break
             case "retweet":
                 if (userInfo["id"] != nil) {
                     var dummyArray: Array<AnyObject> = []
                     var detailViewController = TweetDetailViewController(
-                        aTweetID: userInfo["id"] as String,
-                        aTweetBody: userInfo["text"] as String,
-                        aScreenName: userInfo["screen_name"] as String,
-                        aUserName: userInfo["name"] as String,
-                        aProfileImage: userInfo["profile_image_url"] as String,
-                        aPostDetail: userInfo["created_at"] as String,
+                        aTweetID: userInfo["id"] as! String,
+                        aTweetBody: userInfo["text"] as! String,
+                        aScreenName: userInfo["screen_name"] as! String,
+                        aUserName: userInfo["name"] as! String,
+                        aProfileImage: userInfo["profile_image_url"] as! String,
+                        aPostDetail: userInfo["created_at"] as! String,
                         aRetweetedName: nil,
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo["favorited"] as? Bool,
@@ -358,7 +358,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aParentIndex: nil
                     )
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as UINavigationController).pushViewController(detailViewController, animated: true)
+                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                 }
                 break
             default:
@@ -388,7 +388,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let suffix = ".0"
         var shortedVersion = version
         while shortedVersion.hasSuffix(suffix) {
-            let endIndex = countElements(shortedVersion) - countElements(suffix)
+            let endIndex = count(shortedVersion) - count(suffix)
             let range = Range(start:advance(shortedVersion.startIndex, 0), end: advance(shortedVersion.startIndex, endIndex))
             shortedVersion = shortedVersion.substringWithRange(range)
         }

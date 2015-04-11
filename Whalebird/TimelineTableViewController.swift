@@ -37,14 +37,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.tabBarItem.image = UIImage(named: "assets/Home.png")
     }
     
-    override init() {
-        super.init()
-    }
     
     override init(style: UITableViewStyle) {
         super.init(style: UITableViewStyle.Plain)
         self.view.backgroundColor = UIColor.whiteColor()
     }
+    
     
 
     override func viewDidLoad() {
@@ -70,7 +68,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             for tweet in homeTimeline! {
                 self.currentTimeline.insert(tweet, atIndex: 0)
             }
-            var moreID = self.currentTimeline.last?.objectForKey("id_str") as String
+            var moreID = self.currentTimeline.last?.objectForKey("id_str") as! String
             var readMoreDictionary = NSMutableDictionary(dictionary: [
                 "moreID" : moreID,
                 "sinceID" : "sinceID"
@@ -138,7 +136,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
 
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
+        cell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
 
         return cell!
     }
@@ -146,20 +144,20 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
+        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
         return height
     }
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
+        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
         return height
     }
 
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
-        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as String != "moreID") {
+        let cTweetData = self.currentTimeline[indexPath.row] as! NSDictionary
+        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as! String != "moreID") {
             var sinceID = cTweetData.objectForKey("sinceID") as? String
             if (sinceID == "sinceID") {
                 sinceID = nil
@@ -167,12 +165,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
         } else {
             var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as String,
-                aTweetBody: cTweetData.objectForKey("text") as String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-                aPostDetail: cTweetData.objectForKey("created_at") as String,
+                aTweetID: cTweetData.objectForKey("id_str") as! String,
+                aTweetBody: cTweetData.objectForKey("text")as! String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                aPostDetail: cTweetData.objectForKey("created_at") as! String,
                 aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
                 aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
@@ -194,7 +192,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("moreID") as String
+            var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as! String
             // max_idは「以下」という判定になるので自身を含めない
             // iPhone5以下は32bitなので，Intで扱える範囲を超える
             params["max_id"] = BigInteger(string: strMoreID).decrement()
@@ -208,7 +206,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = []
                 for timeline in aNewTimeline {
-                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
                     self.newTimeline.append(mutableTimeline)
                 }
                 var currentRowIndex: Int?
@@ -217,10 +215,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                         // refreshによる更新
                         // index位置固定は保留
                         if (self.newTimeline.count >= self.tweetCount) {
-                            var moreID = self.newTimeline.first?.objectForKey("id_str") as String
+                            var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
                             var readMoreDictionary = NSMutableDictionary()
                             if (self.currentTimeline.count > 0) {
-                                var sinceID = self.currentTimeline.first?.objectForKey("id_str") as String
+                                var sinceID = self.currentTimeline.first?.objectForKey("id_str") as! String
                                 readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : sinceID
@@ -238,14 +236,14 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                         }
                         for newTweet in self.newTimeline {
                             self.currentTimeline.insert(newTweet, atIndex: 0)
-                            self.sinceId = (newTweet as NSDictionary).objectForKey("id_str") as String?
+                            self.sinceId = (newTweet as! NSDictionary).objectForKey("id_str") as? String
                         }
                     } else {
                         // readMoreを押した場合
                         // tableの途中なのかbottomなのかの判定
                         if (aMoreIndex == self.currentTimeline.count - 1) {
                             // bottom
-                            var moreID = self.newTimeline.first?.objectForKey("id_str") as String
+                            var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
                             var readMoreDictionary = NSMutableDictionary(dictionary: [
                                 "moreID" : moreID,
                                 "sinceID" : "sinceID"
@@ -256,8 +254,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                         } else {
                             // 途中
                             if (self.newTimeline.count >= self.tweetCount) {
-                                var moreID = self.newTimeline.first?.objectForKey("id_str") as String
-                                var sinceID = (self.currentTimeline[aMoreIndex! + 1] as NSDictionary).objectForKey("id_str") as String
+                                var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
+                                var sinceID = (self.currentTimeline[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
                                 var readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : sinceID
@@ -282,13 +280,13 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewTimeline.count) + "件更新")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                 } else {
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                 }
             })
@@ -321,7 +319,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             return
         }
         for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as NSDictionary)
+            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as! NSDictionary)
             cleanTimelineArray.append(dic)
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")

@@ -36,9 +36,6 @@ class SettingsTableViewController: UITableViewController{
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
-    }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -129,7 +126,7 @@ class SettingsTableViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        let header:UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
         header.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
     }
@@ -161,7 +158,7 @@ class SettingsTableViewController: UITableViewController{
     }
 
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer: UITableViewHeaderFooterView = view as UITableViewHeaderFooterView
+        let footer: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         footer.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
     }
 
@@ -609,7 +606,7 @@ class SettingsTableViewController: UITableViewController{
                     var selectedAccount: ACAccount!
                     for aclist in twitterAccounts {
                         if (cUsername == aclist.username) {
-                            selectedAccount = aclist as ACAccount
+                            selectedAccount = aclist as! ACAccount
                         }
                     }
                     if (selectedAccount == nil) {

@@ -26,17 +26,13 @@ class EditImageViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
-    override init() {
-        super.init()
-    }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(aPickerImage: UIImage, aPicker: UIImagePickerController) {
-        super.init()
+    convenience init(aPickerImage: UIImage, aPicker: UIImagePickerController) {
+        self.init()
         self.pickerImage = aPickerImage
         self.picker = aPicker
     }
@@ -172,7 +168,7 @@ class EditImageViewController: UIViewController {
         if (longLength < targetHeight) {
             longLength = targetHeight
         }
-        bitmap = CGBitmapContextCreate(nil, UInt(targetWidth), UInt(targetHeight), CGImageGetBitsPerComponent(imageRef), UInt(longLength * 4), colorSpaceInfo, bitmapInfo)
+        bitmap = CGBitmapContextCreate(nil, Int(targetWidth), Int(targetHeight), CGImageGetBitsPerComponent(imageRef), Int(longLength * 4), colorSpaceInfo, bitmapInfo)
 
 
         // 回転時の原点に合わせて予め移動させる

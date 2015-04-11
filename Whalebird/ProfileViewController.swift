@@ -71,12 +71,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var userDefault = NSUserDefaults.standardUserDefaults()
     }
     
-    override init() {
-        super.init()
-    }
-    
-    init(aScreenName: NSString) {
-        super.init()
+    convenience init(aScreenName: String) {
+        self.init()
         self.twitterScreenName = aScreenName
         self.title = "@" + aScreenName
     }
@@ -131,7 +127,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             var error = NSError?()
             dispatch_async(q_main, {()->Void in
                 if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
-                    var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as NSString)
+                    var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as! String)
                     self.profileHeaderImage.removeFromSuperview()
                     self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "assets/profile_back.jpg"))
                     self.scrollView.addSubview(self.profileHeaderImage)
@@ -142,12 +138,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 var q_sub = dispatch_get_main_queue()
                 dispatch_async(q_sub, {()->Void in
                     
-                    self.privateAccount = aUserData.objectForKey("private_account?") as Bool
+                    self.privateAccount = aUserData.objectForKey("private_account?") as! Bool
                     
                     // フォローイベント
-                    if (aUserData.objectForKey("follow_request_sent?") as Bool) {
+                    if (aUserData.objectForKey("follow_request_sent?") as! Bool) {
                     } else {
-                        if (aUserData.objectForKey("following?") as Bool) {
+                        if (aUserData.objectForKey("following?") as! Bool) {
                             self.navigationItem.rightBarButtonItem = self.unfollowButton
                         } else {
                             self.navigationItem.rightBarButtonItem = self.followButton
@@ -166,14 +162,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                     
                     // プロフィール表示
-                    var profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as String)
+                    var profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as! String)
                     self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                     self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
                     self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
                     self.scrollView.addSubview(self.profileImage)
                     
                     self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
-                    self.userNameLabel.text = aUserData.objectForKey("name") as String!
+                    self.userNameLabel.text = aUserData.objectForKey("name") as! String!
                     self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
                     self.userNameLabel.textColor = UIColor.blackColor()
                     self.userNameLabel.sizeToFit()
@@ -189,7 +185,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.userNameLabel)
                     
                     self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
-                    if (aUserData.objectForKey("follower?") as Bool) {
+                    if (aUserData.objectForKey("follower?") as! Bool) {
                         self.followStatusLabel.text = "フォローされています"
                     } else {
                         self.followStatusLabel.text = "フォローされていません"
@@ -240,8 +236,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //  status
                     //-----------------------------
                     
-                    var tweetNumText = ("ツイート：" + String(aUserData.objectForKey("statuses_count") as Int)) as NSString
-                    var tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                    var tweetNumText = ("ツイート：" + String(aUserData.objectForKey("statuses_count") as! Int)) as NSString
+                    var tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFontOfSize(14)])
                     var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                     tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                     
@@ -256,8 +252,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.tweetNumLabel)
                     
                     
-                    var followText = ("フォロー：" + String(aUserData.objectForKey("friends_count") as Int)) as NSString
-                    var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                    var followText = ("フォロー：" + String(aUserData.objectForKey("friends_count") as! Int)) as NSString
+                    var followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                     var followRange: NSRange = followText.rangeOfString("フォロー：")
                     followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
                     
@@ -271,8 +267,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.followNumLabel)
                     self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                     
-                    var followerText = ("フォロワー：" + String(aUserData.objectForKey("followers_count") as Int)) as NSString
-                    var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
+                    var followerText = ("フォロワー：" + String(aUserData.objectForKey("followers_count") as! Int)) as NSString
+                    var followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
                     var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                     followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
                     
@@ -336,27 +332,28 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
             timelineCell!.cleanCell()
-            timelineCell!.configureCell(self.currentTimeline[indexPath.row] as NSDictionary)
+            timelineCell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
             return timelineCell!
         case 1:
-            var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.textLabel?.text = (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
-            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
+            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String!)
             
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
             break
         case 2:
-            var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("profile_image_url") as NSString)
+            var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("name") as? String
+            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             cell?.detailTextLabel?.textColor = UIColor.grayColor()
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
-            cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String!)
+            cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String
+            )
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
             break
         case 3:
@@ -376,7 +373,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var height = CGFloat(60)
         switch(self.tableType) {
         case 0:
-            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as NSDictionary)
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             self.tableView.frame.size.height = self.tableView.contentSize.height
             break
@@ -396,14 +393,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            let cTweetData = self.currentTimeline[indexPath.row] as NSDictionary
+            let cTweetData = self.currentTimeline[indexPath.row] as! NSDictionary
             var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as String,
-                aTweetBody: cTweetData.objectForKey("text") as String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-                aPostDetail: cTweetData.objectForKey("created_at") as String,
+                aTweetID: cTweetData.objectForKey("id_str") as! String,
+                aTweetBody: cTweetData.objectForKey("text") as! String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                aPostDetail: cTweetData.objectForKey("created_at") as! String,
                 aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
                 aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
@@ -414,11 +411,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.navigationController!.pushViewController(detailView, animated: true)
             break
         case 1:
-            var userProfileView = ProfileViewController(aScreenName: (self.followUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(aScreenName: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         case 2:
-            var userProfileView = ProfileViewController(aScreenName: (self.followerUsers[indexPath.row] as NSDictionary).objectForKey("screen_name") as String)
+            var userProfileView = ProfileViewController(aScreenName: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
             self.navigationController!.pushViewController(userProfileView, animated: true)
             break
         default:
@@ -435,7 +432,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "count" : "20"
         ]
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentTimeline[aMoreIndex!] as NSDictionary).objectForKey("id_str") as String
+            var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("id_str") as! String
             // max_idは「以下」という判定になるので自身を含めない
             params["max_id"] = BigInteger(string: strMoreID).decrement()
         }
@@ -449,7 +446,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = []
                 for timeline in aNewTimeline {
-                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
                     self.newTimeline.append(mutableTimeline)
                 }
                 if (aMoreIndex == nil) {
@@ -489,7 +486,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 var user = aFollows as NSDictionary
                 self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followUsers = self.followUsers + (user.objectForKey("users") as Array<AnyObject>)
+                self.followUsers = self.followUsers + (user.objectForKey("users") as! Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
@@ -516,7 +513,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 var user = aFollows as NSDictionary
                 self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followerUsers = self.followerUsers + (user.objectForKey("users") as Array<AnyObject>)
+                self.followerUsers = self.followerUsers + (user.objectForKey("users") as! Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followerUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
@@ -549,7 +546,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
             self.tweetNumLabel.titleLabel?.textColor = self.unselectedTextColor
             self.followNumLabel.backgroundColor = self.selectedButtonColor
-            var attributed = self.followNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+            var attributed = self.followNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             var range = NSRangeFromString(self.followNumLabel.titleLabel?.text)
             attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
             self.followNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
@@ -573,7 +570,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.followNumLabel.backgroundColor = self.unselectedButtonColor
             self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
             self.followerNumLabel.backgroundColor = self.selectedButtonColor
-            var attributed = self.followerNumLabel.titleLabel?.attributedText as NSMutableAttributedString
+            var attributed = self.followerNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             var range = NSRangeFromString(self.followerNumLabel.titleLabel?.text)
             attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
             self.followerNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
@@ -625,7 +622,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォローしました")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     if (self.privateAccount) {
                     } else{
@@ -657,7 +654,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     SVProgressHUD.dismiss()
                     var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォロー解除しました")
                     notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as AppDelegate).alertPosition
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     self.navigationItem.rightBarButtonItem = self.followButton
                 })

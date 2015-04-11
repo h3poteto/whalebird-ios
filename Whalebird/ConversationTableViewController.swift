@@ -23,12 +23,8 @@ class ConversationTableViewController: UITableViewController {
         super.init(style: style)
     }
     
-    override init() {
-        super.init()
-    }
-    
-    init(aTweetID: String) {
-        super.init()
+    convenience init(aTweetID: String) {
+        self.init()
         self.rootTweetID = aTweetID
     }
 
@@ -73,7 +69,7 @@ class ConversationTableViewController: UITableViewController {
         
         self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.newConversation[indexPath.row] as NSDictionary)
+        cell!.configureCell(self.newConversation[indexPath.row] as! NSDictionary)
 
         return cell!
     }
@@ -81,7 +77,7 @@ class ConversationTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as NSDictionary)
+            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as! NSDictionary)
         } else {
             height = 60.0
         }
@@ -94,7 +90,7 @@ class ConversationTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height: CGFloat!
         if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as NSDictionary)
+            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as! NSDictionary)
         } else {
             height = 60.0
         }
@@ -103,14 +99,14 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.newConversation[indexPath.row] as NSDictionary
+        let cTweetData = self.newConversation[indexPath.row] as! NSDictionary
         var detailView = TweetDetailViewController(
-            aTweetID: cTweetData.objectForKey("id_str") as String,
-            aTweetBody: cTweetData.objectForKey("text") as String,
-            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as String,
-            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as String,
-            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as String,
-            aPostDetail: cTweetData.objectForKey("created_at") as String,
+            aTweetID: cTweetData.objectForKey("id_str") as! String,
+            aTweetBody: cTweetData.objectForKey("text") as! String,
+            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+            aPostDetail: cTweetData.objectForKey("created_at") as! String,
             aRetweetedName: nil,
             aRetweetedProfileImage: nil,
             aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
@@ -134,7 +130,7 @@ class ConversationTableViewController: UITableViewController {
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
                 for timeline in aNewConversation {
-                    var mutableTimeline = timeline.mutableCopy() as NSMutableDictionary
+                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
                     self.newConversation.insert(mutableTimeline, atIndex: 0)
                 }
                 self.tableView.reloadData()
