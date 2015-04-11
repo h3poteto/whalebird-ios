@@ -123,10 +123,6 @@ class TimelineViewCell: UITableViewCell {
         
     }
     
-    convenience init() {
-        self.init()
-    }
-    
     convenience init(frame: CGRect) {
         self.init(frame: frame)
     }

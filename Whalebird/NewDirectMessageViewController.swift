@@ -27,10 +27,6 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init() {
-        self.init()
-    }
-    
     convenience init(aReplyToUser: String?) {
         self.init()
         self.replyToUser = aReplyToUser
