@@ -62,7 +62,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         var userDictionay = NSMutableDictionary(dictionary: [
             "name" : cOriginalName,
             "screen_name" : cOriginalScreenName,
-            "profile_image_url" : cOriginalProfileImageURL
+            "profile_image_url" : cOriginalProfileImageURL,
+            "protected?" : false
         ])
         mutableDictionary.setValue(userDictionay, forKey: "user")
         

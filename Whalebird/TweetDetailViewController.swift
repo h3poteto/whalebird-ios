@@ -31,6 +31,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var media: Array<String>?
     var parentArray: Array<AnyObject>?
     var parentIndex: Int?
+    var fProtected: Bool!
     
     var blankView: UIScrollView!
     var screenNameLabel: UIButton!
@@ -63,7 +64,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init(coder: aDecoder)
     }
     
-    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?) {
+    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?, aProtected: Bool?) {
         self.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
@@ -85,6 +86,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.parentArray = aParentArray
         }
         self.parentIndex = aParentIndex
+        if (aProtected != nil) {
+            self.fProtected = aProtected!
+        } else {
+            self.fProtected = false
+        }
 
         self.title = "詳細"
     }
@@ -447,38 +453,56 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     func tappedMore() {
         var retweetSelectSheet = UIAlertController(title: "Retweet", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oficialRetweetAction = UIAlertAction(title: "公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
-            // 公式RTの処理．直接POSTしちゃって構わない
-            var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
-            let cOkAction = UIAlertAction(title: "RTする", style: .Default, handler: {action in
-                println("OK")
-                var params:Dictionary<String, String> = [
-                    "id" : self.tweetID
-                ]
-                let cParameter: Dictionary<String, AnyObject> = [
-                    "settings" : params
-                ]
-                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-                WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
-                    var q_main = dispatch_get_main_queue()
-                    dispatch_async(q_main, {()->Void in
-                        SVProgressHUD.dismiss()
-                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
-                        notice.alpha = 0.8
-                        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                        notice.show()
+            if (self.fProtected == true) {
+                var protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    return true
+                })
+                protectedAlert.addAction(okAction)
+                self.presentViewController(protectedAlert, animated: true, completion: nil)
+            } else {
+                // 公式RTの処理．直接POSTしちゃって構わない
+                var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
+                let cOkAction = UIAlertAction(title: "RTする", style: .Default, handler: {action in
+                    println("OK")
+                    var params:Dictionary<String, String> = [
+                        "id" : self.tweetID
+                    ]
+                    let cParameter: Dictionary<String, AnyObject> = [
+                        "settings" : params
+                    ]
+                    SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+                    WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
+                        var q_main = dispatch_get_main_queue()
+                        dispatch_async(q_main, {()->Void in
+                            SVProgressHUD.dismiss()
+                            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
+                            notice.alpha = 0.8
+                            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                            notice.show()
+                        })
                     })
                 })
-            })
-            let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
-                println("Cancel")
-            })
-            alertController.addAction(cCancelAction)
-            alertController.addAction(cOkAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+                let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
+                    println("Cancel")
+                })
+                alertController.addAction(cCancelAction)
+                alertController.addAction(cOkAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
         let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
-            var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.screenName + " " + self.tweetBody!, aReplyToID: self.tweetID, aTopCursor: true)
-            self.navigationController!.pushViewController(retweetView, animated: true)
+            if (self.fProtected == true) {
+                var protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+                    return true
+                })
+                protectedAlert.addAction(okAction)
+                self.presentViewController(protectedAlert, animated: true, completion: nil)
+            } else {
+                var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.screenName + " " + self.tweetBody!, aReplyToID: self.tweetID, aTopCursor: true)
+                self.navigationController!.pushViewController(retweetView, animated: true)
+            }
         }
         let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
         }

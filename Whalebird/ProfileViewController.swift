@@ -408,7 +408,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                 aMedia: cTweetData.objectForKey("media") as? NSArray,
                 aParentArray: &self.currentTimeline,
-                aParentIndex: indexPath.row
+                aParentIndex: indexPath.row,
+                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
             )
             self.navigationController!.pushViewController(detailView, animated: true)
             break

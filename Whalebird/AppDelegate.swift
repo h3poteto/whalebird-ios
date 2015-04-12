@@ -78,7 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aFavorited: userInfo.objectForKey("favorited") as? Bool,
                     aMedia: userInfo.objectForKey("media") as? NSArray,
                     aParentArray: &dummyArray,
-                    aParentIndex: nil
+                    aParentIndex: nil,
+                    aProtected: userInfo.objectForKey("protected") as? Bool
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -107,7 +108,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
                         aMedia: userInfo.objectForKey("media") as? NSArray,
                         aParentArray: &dummyArray,
-                        aParentIndex: nil
+                        aParentIndex: nil,
+                        aProtected: userInfo.objectForKey("protected") as? Bool
                     )
                     
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -127,7 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
                         aMedia: userInfo.objectForKey("media") as? NSArray,
                         aParentArray: &dummyArray,
-                        aParentIndex: nil
+                        aParentIndex: nil,
+                        aProtected: userInfo.objectForKey("protected") as? Bool
                     )
                     
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -238,7 +241,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aFavorited: userInfo["favorited"] as? Bool,
                             aMedia: userInfo["media"] as? NSArray,
                             aParentArray: &dummyArray,
-                            aParentIndex: nil
+                            aParentIndex: nil,
+                            aProtected: userInfo["protected"] as? Bool
                         )
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -303,7 +307,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     aFavorited: userInfo["favorited"] as? Bool,
                     aMedia: userInfo["media"] as? NSArray,
                     aParentArray: &dummyArray,
-                    aParentIndex: nil
+                    aParentIndex: nil,
+                    aProtected: userInfo["protected"] as? Bool
                 )
                 
                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -334,7 +339,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aFavorited: userInfo["favorited"] as? Bool,
                         aMedia: userInfo["media"] as? NSArray,
                         aParentArray: &dummyArray,
-                        aParentIndex: nil
+                        aParentIndex: nil,
+                        aProtected: userInfo["protected"] as? Bool
                     )
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
@@ -355,7 +361,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aFavorited: userInfo["favorited"] as? Bool,
                         aMedia: userInfo["media"] as? NSArray,
                         aParentArray: &dummyArray,
-                        aParentIndex: nil
+                        aParentIndex: nil,
+                        aProtected: userInfo["protected"] as? Bool
                     )
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
