@@ -11,14 +11,16 @@ import QuartzCore
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    //===================================
-    //  instance variable
-    //===================================
+    //=============================================
+    //  class variables
+    //=============================================
+    static let StatusHeight = CGFloat(40)
+    static let TextMargin = CGFloat(5)
     
-    var HeaderImageHeight = CGFloat(160)
-    let StatusHeight = CGFloat(40)
-    let TextMargin = CGFloat(5)
-    
+    //===================================
+    //  instance variables
+    //===================================
+    var headerImageHeight = CGFloat(160)
     var privateAccount = false
     
     var twitterScreenName: String!
@@ -59,7 +61,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var tableType: Int = Int(0)
     
     //==========================================
-    //  instance method
+    //  instance methods
     //==========================================
     
     required init(coder aDecoder: NSCoder) {
@@ -89,7 +91,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedFollow")
         self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedUnfollow")
         
-        self.tableView = UITableView(frame: CGRectMake(0, self.HeaderImageHeight + self.StatusHeight, self.windowSize.size.width, 100))
+        self.tableView = UITableView(frame: CGRectMake(0, self.headerImageHeight + ProfileViewController.StatusHeight, self.windowSize.size.width, 100))
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.scrollEnabled = false
@@ -118,7 +120,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         //-------------------------
         //  header
         //-------------------------
-        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.HeaderImageHeight))
+        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.headerImageHeight))
         self.profileHeaderImage.image = UIImage(named: "assets/profile_back.jpg")
         self.scrollView.addSubview(self.profileHeaderImage)
             
@@ -168,7 +170,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
                     self.scrollView.addSubview(self.profileImage)
                     
-                    self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
+                    self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
                     self.userNameLabel.text = aUserData.objectForKey("name") as! String!
                     self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
                     self.userNameLabel.textColor = UIColor.blackColor()
@@ -184,7 +186,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
                     self.scrollView.addSubview(self.userNameLabel)
                     
-                    self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
+                    self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
                     if (aUserData.objectForKey("follower?") as! Bool) {
                         self.followStatusLabel.text = "フォローされています"
                     } else {
@@ -204,7 +206,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followStatusLabel.center.x = self.windowSize.width     / 2.0
                     self.scrollView.addSubview(self.followStatusLabel)
                     
-                    self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.followStatusLabel.frame.origin.y + self.followStatusLabel.frame.size.height + self.TextMargin, self.windowSize.width * 0.8, 15))
+                    self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.followStatusLabel.frame.origin.y + self.followStatusLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
                     self.descriptionLabel.numberOfLines = 5
                     self.descriptionLabel.text = aUserData.objectForKey("description") as? String
                     self.descriptionLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 11)
@@ -221,10 +223,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.descriptionLabel)
                     
                     // table位置調節
-                    if (self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height > self.HeaderImageHeight) {
-                        self.HeaderImageHeight = self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + self.TextMargin
-                        self.tableView.frame.origin.y = self.HeaderImageHeight + self.StatusHeight
-                        self.profileHeaderImage.frame.size.height = self.HeaderImageHeight
+                    if (self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height > self.headerImageHeight) {
+                        self.headerImageHeight = self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + ProfileViewController.TextMargin
+                        self.tableView.frame.origin.y = self.headerImageHeight + ProfileViewController.StatusHeight
+                        self.profileHeaderImage.frame.size.height = self.headerImageHeight
                         if (self.profileHeaderImageSrc != nil) {
                             self.profileHeaderImage.sd_setImageWithURL(self.profileHeaderImageSrc!, placeholderImage: UIImage(named: "assets/noimage.png"))
                         } else {
@@ -241,7 +243,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     var tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
                     tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
                     
-                    self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                    self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
                     
                     self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Normal)
                     self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
@@ -257,7 +259,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     var followRange: NSRange = followText.rangeOfString("フォロー：")
                     followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
                     
-                    self.followNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                    self.followNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width / 3.0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
                     self.followNumLabel.setAttributedTitle(followAttributedString, forState: .Normal)
                     self.followNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                     self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
@@ -272,7 +274,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     var followerRange: NSRange = followerText.rangeOfString("フォロワー：")
                     followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
                     
-                    self.followerNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.HeaderImageHeight, self.windowSize.size.width / 3.0, self.StatusHeight))
+                    self.followerNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
                     self.followerNumLabel.setAttributedTitle(followerAttributedString, forState: .Normal)
                     self.followerNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
                     self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
@@ -374,14 +376,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch(self.tableType) {
         case 0:
             height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
-            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             self.tableView.frame.size.height = self.tableView.contentSize.height
             break
         case 1:
-            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         case 2:
-            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.HeaderImageHeight + self.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
+            self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             break
         default:
             break

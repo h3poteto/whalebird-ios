@@ -10,6 +10,9 @@ import UIKit
 
 class ReplyTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
     
+    //=============================================
+    //  instance variables
+    //=============================================
     var newTimeline: Array<AnyObject> = []
     var currentTimeline: Array<AnyObject> = []
     
@@ -19,9 +22,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     var sinceId: String?
     let tweetCount = Int(50)
     
-    //========================================
-    //  instance method
-    //========================================
+    //=============================================
+    //  instance methods
+    //=============================================
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

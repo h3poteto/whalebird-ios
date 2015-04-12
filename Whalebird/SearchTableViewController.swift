@@ -9,14 +9,20 @@
 import UIKit
 
 class SearchTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
-    
+
+    //=============================================
+    //  instance variables
+    //=============================================
     var tweetCount = Int(50)
     var tweetSearchBar: UISearchBar!
     var currentResult: Array<AnyObject> = []
     var newResult: Array<AnyObject> = []
     var resultCell: Array<AnyObject> = []
     var saveButton: UIBarButtonItem!
-    
+
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

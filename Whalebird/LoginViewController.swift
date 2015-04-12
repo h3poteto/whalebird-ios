@@ -17,11 +17,18 @@ class ExWebView: UIWebView {
 }
 
 class LoginViewController: UIViewController, UIWebViewDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     var loginWebView: UIWebView!
     var redirectedTwitter: Bool = false
     var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String)!
     var whalebirdAPIWithKey: String = (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String) + "users/sign_in?"
 
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "ログイン"
@@ -31,7 +38,6 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         super.init(coder: aDecoder)
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

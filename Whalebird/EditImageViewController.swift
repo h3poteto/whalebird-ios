@@ -13,6 +13,10 @@ protocol EditImageViewControllerDelegate {
 }
 
 class EditImageViewController: UIViewController {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     let toolBoxHeight = CGFloat(50)
     
     var toolBoxView: UIToolbar!
@@ -23,6 +27,10 @@ class EditImageViewController: UIViewController {
     
     var delegate: EditImageViewControllerDelegate!
     
+    
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

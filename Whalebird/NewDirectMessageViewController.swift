@@ -9,7 +9,10 @@
 import UIKit
 
 class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
-    
+ 
+    //=============================================
+    //  instance variables
+    //=============================================
     var replyToUser: String!
     
     var sendToUserLabel: UILabel!
@@ -17,7 +20,9 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     var cancelButton: UIBarButtonItem!
     var sendButton: UIBarButtonItem!
     
-    
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "DM送信"

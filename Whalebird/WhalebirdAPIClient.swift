@@ -9,10 +9,7 @@
 import UIKit
 
 class WhalebirdAPIClient: NSObject {
-    
-    var sessionManager: AFHTTPRequestOperationManager!
-    var whalebirdAPIURL: String = NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String
-    
+
     // シングルトンにするよ
     class var sharedClient: WhalebirdAPIClient {
         struct sharedStruct {
@@ -21,8 +18,15 @@ class WhalebirdAPIClient: NSObject {
         return sharedStruct._sharedClient
     }
     
+    //=============================================
+    //  instance variables
+    //=============================================
+    var sessionManager: AFHTTPRequestOperationManager!
+    var whalebirdAPIURL: String = NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String
+
+    
     //===========================================
-    //  class method
+    //  class methods
     //===========================================
     class func convertLocalTime(aUtctime: String) -> String {
         var utcDateFormatter = NSDateFormatter()
@@ -67,7 +71,7 @@ class WhalebirdAPIClient: NSObject {
         return escapeStr
     }
     //===========================================
-    //  instance method
+    //  instance methods
     //===========================================
     
     func cleanDictionary(dict: NSDictionary)->NSMutableDictionary {

@@ -9,9 +9,15 @@
 import Foundation
 
 class BigInteger: NSObject {
+    //=============================================
+    //  instance variables
+    //=============================================
     var quads:Array<Int> = []
     var negative = false
     
+    //=============================================
+    //  instance methods
+    //=============================================
     override init() {
         super.init()
     }

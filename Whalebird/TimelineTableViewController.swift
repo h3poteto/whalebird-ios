@@ -12,6 +12,10 @@ import Accounts
 import Social
 
 class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     let tweetCount = Int(50)
     
     var accountStore: ACAccountStore = ACAccountStore()
@@ -25,7 +29,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     var sinceId: String?
     
     //=========================================
-    //  instance method
+    //  instance methods
     //=========================================
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

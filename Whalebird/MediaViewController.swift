@@ -10,12 +10,19 @@ import UIKit
 
 class MediaViewController: UIViewController, UIScrollViewDelegate {
     
+    //=============================================
+    //  instance variables
+    //=============================================
     var mediaImage: UIImage!
     var blankView: UIView!
     var mediaImageView: UIImageView!
     var mediaScrollView: UIScrollView!
     var cWindowSize: CGRect!
     
+    
+    //==============================================
+    //  instance methods
+    //==============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

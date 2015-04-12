@@ -18,13 +18,15 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         var id: String = ""
     }
     
-    
+    //=============================================
+    //  instance variables
+    //=============================================
     var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     var searchItemButton: UIBarButtonItem!
     
     //==============================================
-    //  instance method
+    //  instance methods
     //==============================================
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {

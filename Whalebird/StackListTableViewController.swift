@@ -9,10 +9,16 @@
 import UIKit
 
 class StackListTableViewController: UITableViewController {
-    
+
+    //=============================================
+    //  instance variables
+    //=============================================
     var twitterScreenName: String?
     var stackListArray: Array<ListTableViewController.Stream> = []
-    
+
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リストを選択"

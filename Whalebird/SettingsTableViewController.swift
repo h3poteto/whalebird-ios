@@ -11,7 +11,9 @@ import Accounts
 import Social
 
 class SettingsTableViewController: UITableViewController{
-    
+    //============================================
+    //  instance variables
+    //============================================
     var twitterAccounts: NSArray!
     var userstreamFlag: Bool = false
     var notificationForegroundFlag: Bool = true
@@ -26,6 +28,10 @@ class SettingsTableViewController: UITableViewController{
     var account: ACAccount!
     var accountStore: ACAccountStore!
     
+    
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "設定"

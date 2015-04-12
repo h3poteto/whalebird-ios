@@ -20,13 +20,16 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         return sharedStruct._sharedClient
     }
     
+    //=============================================
+    //  instance variables
+    //=============================================
     var account: ACAccount!
     var accountStore = ACAccountStore()
     var connection: NSURLConnection?
     var timelineTable: TimelineTableViewController?
     
     //=======================================
-    //  class method
+    //  class methods
     //=======================================
     // localeの設定をしないと，実機で落ちる
     class func convertUTCTime(aSrctime: String) -> String {
@@ -86,7 +89,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     //=======================================
-    //  instance method
+    //  instance methods
     //=======================================
     
     func startStreaming(aTargetStream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {

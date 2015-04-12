@@ -9,8 +9,15 @@
 import UIKit
 
 class MinuteTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     var minutesArray: Array<AnyObject> = []
     
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

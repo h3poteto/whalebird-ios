@@ -9,7 +9,15 @@
 import UIKit
 
 class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource, UINavigationControllerDelegate, UITabBarControllerDelegate {
-    let PageControlViewHeight = CGFloat(20)
+
+    //=============================================
+    //  class variables
+    //=============================================
+    static let PageControlViewHeight = CGFloat(20)
+    
+    //=============================================
+    //  instance variables
+    //=============================================
     var swipeView: SwipeView!
     
     var pageControl: UIPageControl!
@@ -18,6 +26,9 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     var startIndex = Int(0)
     var currentScroll: Array<CGPoint> = []
 
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -47,7 +58,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
             0,
             self.navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.height,
             self.view.frame.width,
-            self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.height - self.PageControlViewHeight
+            self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.height - SwipeViewController.PageControlViewHeight
             ))
         
         self.swipeView.delegate = self
@@ -64,9 +75,9 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         let cWindowSize = UIScreen.mainScreen().bounds
         self.pageControl = UIPageControl(frame: CGRectMake(
             0,
-            cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - self.PageControlViewHeight,
+            cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - SwipeViewController.PageControlViewHeight,
             cWindowSize.size.width,
-            self.PageControlViewHeight))
+            SwipeViewController.PageControlViewHeight))
         self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
         self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)

@@ -9,6 +9,10 @@
 import UIKit
 
 class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditImageViewControllerDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     let optionItemBarHeight = CGFloat(40)
     let imageViewSpan = CGFloat(20)
     let progressColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
@@ -33,11 +37,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var fTopCursor = false
     var fUploadProgress = false
     
-
-    // 右上は送信
-    // アラートは敬語
     //======================================
-    //  instance method
+    //  instance methods
     //======================================
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

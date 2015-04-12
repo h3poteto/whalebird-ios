@@ -10,10 +10,16 @@ import UIKit
 
 class ConversationTableViewController: UITableViewController {
     
+    //=============================================
+    //  instance variables
+    //=============================================
     var rootTweetID: String!
     var newConversation: Array<AnyObject> = []
     var conversationCell: Array<AnyObject> = []
     
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "会話"

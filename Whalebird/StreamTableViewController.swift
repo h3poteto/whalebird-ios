@@ -9,6 +9,10 @@
 import UIKit
 
 class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     let tweetCount = Int(50)
     
     var streamElement: ListTableViewController.Stream!
@@ -20,7 +24,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     var sinceId: String?
     var fCellSelect: Bool = false
     
-    
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }

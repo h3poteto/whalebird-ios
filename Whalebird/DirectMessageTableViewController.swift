@@ -10,6 +10,9 @@ import UIKit
 
 class DirectMessageTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
 
+    //=============================================
+    //  instance variables
+    //=============================================
     var newMessage: Array<AnyObject> = []
     var currentMessage: Array<AnyObject> = []
     
@@ -20,7 +23,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     let tweetCount = Int(50)
     
     //============================================
-    //  instance method
+    //  instance methods
     //============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

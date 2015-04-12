@@ -9,10 +9,17 @@
 import UIKit
 
 class WebViewController: UIViewController, UIWebViewDelegate {
+
+    //=============================================
+    //  instance variables
+    //=============================================
     var webView: UIWebView!
     var openURL: String!
     var whalebirdURL = NSBundle.mainBundle().objectForInfoDictionaryKey("weburl") as! String
-    
+
+    //=============================================
+    //  instance methods
+    //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -21,7 +28,6 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    
     convenience init(aOpenURL: String, aTitle: String) {
         self.init()
         self.openURL = aOpenURL
