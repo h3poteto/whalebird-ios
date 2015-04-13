@@ -279,7 +279,11 @@ class WhalebirdAPIClient: NSObject {
             errorMessage = "予期しないエラーが発生しました"
         } else {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
+            if let jsonData = NSJSONSerialization.JSONObjectWithData(operation.responseData, options: nil, error: nil) as? NSDictionary {
+                errorMessage = jsonData.objectForKey("errors") as! String
+            }
         }
+
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Error", message: errorMessage)
         notice.alpha = 0.8
         notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
