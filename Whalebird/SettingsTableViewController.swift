@@ -490,6 +490,7 @@ class SettingsTableViewController: UITableViewController{
         default:
             break
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     
