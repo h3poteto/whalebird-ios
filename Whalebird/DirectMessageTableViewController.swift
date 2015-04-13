@@ -131,6 +131,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             self.navigationController!.pushViewController(detailView, animated: true)
             
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func updateMessage(aSinceID: String?, aMoreIndex: Int?) {

@@ -122,6 +122,7 @@ class ConversationTableViewController: UITableViewController {
             aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
         )
         self.navigationController!.pushViewController(detailView, animated: true)
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     

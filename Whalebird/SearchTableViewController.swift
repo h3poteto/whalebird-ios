@@ -129,6 +129,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
         )
         self.navigationController!.pushViewController(detailView, animated: true)
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
    
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {

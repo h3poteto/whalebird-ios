@@ -139,6 +139,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             )
             self.navigationController!.pushViewController(detailView, animated: true)
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
 

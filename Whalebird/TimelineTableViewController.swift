@@ -185,6 +185,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             )
             self.navigationController!.pushViewController(detailView, animated: true)
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
 
