@@ -261,6 +261,7 @@ class TimelineViewCell: UITableViewCell {
                 self.retweetedLabel?.textColor = UIColor.grayColor()
                 self.retweetedLabel?.text = "Retweeted by @" + (aDictionary.objectForKey("retweeted")?.objectForKey("screen_name") as! String)
                 self.retweetedLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
+                self.retweetedLabel?.sizeToFit()
                 self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height
                 self.retweetedLabel?.center.x = self.maxSize.width / 2.0
             }
