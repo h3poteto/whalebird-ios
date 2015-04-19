@@ -133,15 +133,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     }
    
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        
         self.tweetSearchBar.showsCancelButton = true
-        for childView in searchBar.subviews {
-            for subView in childView.subviews {
-                if (subView.isKindOfClass(UIButton.classForCoder())){
-                    let cancelButton = subView as! UIButton
-                    cancelButton.setTitle("キャンセル", forState: .Normal)
-                }
-            }
-        }
         self.tweetSearchBar.autocorrectionType = UITextAutocorrectionType.No
         self.navigationItem.rightBarButtonItem = nil
         return true

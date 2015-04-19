@@ -84,10 +84,6 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.pageControl.numberOfPages = self.swipeItems.count
         self.pageControl.currentPage = self.startIndex
         self.view.addSubview(self.pageControl)
-
-        var backButton = UIBarButtonItem()
-        backButton.title = "戻る"
-        self.navigationItem.backBarButtonItem = backButton
     }
 
     override func didReceiveMemoryWarning() {

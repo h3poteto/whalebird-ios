@@ -196,9 +196,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var backButton = UIBarButtonItem()
-        backButton.title = "戻る"
-        self.navigationItem.backBarButtonItem = backButton
         var swipeView = SwipeViewController(aStream: self.streamList, aStartIndex: indexPath.row)
         self.navigationController?.pushViewController(swipeView, animated: true)
     }
