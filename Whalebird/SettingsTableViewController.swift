@@ -650,65 +650,52 @@ class SettingsTableViewController: UITableViewController{
         } else {
             self.notificationForegroundSwitch.enabled = true
         }
-        self.syncWhalebirdServer()
-        //tableView.reloadData()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+            SVProgressHUD.dismiss()
+        }
     }
     
     func tappedNotificationReplySwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
         self.notificationReplyFlag = !self.notificationReplyFlag
-        self.syncWhalebirdServer()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+            SVProgressHUD.dismiss()
+        }
     }
     
     func tappedNotificationFavSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationFavFlag, forKey: "notificationFavFlag")
         self.notificationFavFlag = !self.notificationFavFlag
-        self.syncWhalebirdServer()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+            SVProgressHUD.dismiss()
+        }
     }
     
     func tappedNotificationRTSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationRTFlag, forKey: "notificationRTFlag")
         self.notificationRTFlag = !self.notificationRTFlag
-        self.syncWhalebirdServer()
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+            SVProgressHUD.dismiss()
+        }
     }
     
     func tappedNotificationDMSwitch() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setBool(!self.notificationDMFlag, forKey: "notificationDMFlag")
         self.notificationDMFlag = !self.notificationDMFlag
-        self.syncWhalebirdServer()
-    }
-    
-    func syncWhalebirdServer() {
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        self.deviceToken = userDefault.stringForKey("deviceToken")
-        var params: Dictionary<String, AnyObject> = [
-            "notification" : self.notificationBackgroundFlag,
-            "reply" : self.notificationReplyFlag,
-            "retweet" : self.notificationRTFlag,
-            "favorite" : self.notificationFavFlag,
-            "direct_message" : self.notificationDMFlag
-        ]
-        if (self.deviceToken != nil) {
-            params["device_token"] = self.deviceToken!
-        }
-        let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
-        ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: cParameter) { (operation) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                println(operation)
-                self.tableView.reloadData()
-                SVProgressHUD.dismiss()
-            })
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+            SVProgressHUD.dismiss()
         }
     }
-    
+
     func accountAlert() {
         var alertController = UIAlertController(title: "Account not found", message: "iPhoneの設定からtwitterアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
         let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel) { (action) -> Void in

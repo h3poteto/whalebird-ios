@@ -208,6 +208,50 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
+    func syncPushSettings(callback: (AnyObject) ->Void) {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let deviceToken = userDefault.stringForKey("deviceToken")
+        var notificationBackgroundFlag = true
+        if userDefault.objectForKey("notificationBackgroundFlag") != nil {
+            notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
+        }
+        var notificationReplyFlag = true
+        if userDefault.objectForKey("notificationReplyFlag") != nil {
+            notificationReplyFlag = userDefault.boolForKey("notificationReplyFlag")
+        }
+        var notificationRTFlag = true
+        if userDefault.objectForKey("notificationRTFlag") != nil {
+            notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+        }
+        var notificationFavFlag = true
+        if userDefault.objectForKey("notificationFavFlag") != nil {
+            notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+        }
+        var notificationDMFlag = true
+        if userDefault.objectForKey("notificationDMFlag") != nil {
+            notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+        }
+        var params: Dictionary<String, AnyObject> = [
+            "notification" : notificationBackgroundFlag,
+            "reply" : notificationReplyFlag,
+            "retweet" : notificationRTFlag,
+            "favorite" : notificationFavFlag,
+            "direct_message" : notificationDMFlag
+        ]
+        if (deviceToken != nil) {
+            params["device_token"] = deviceToken!
+        }
+        let cParameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: cParameter) { (operation) -> Void in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                callback(operation)
+            })
+        }
+    }
+    
     func deleteSsessionAPI(path: String, params: Dictionary<String, AnyObject>,callback: (AnyObject) -> Void) {
         self.loadCookie()
         if (self.sessionManager != nil) {

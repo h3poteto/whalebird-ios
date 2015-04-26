@@ -71,10 +71,10 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if (self.redirectedTwitter && request.URL!.host == self.whalebirdAPIURL.host && (request.URL!.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession()
-            
-            var index = self.navigationController!.viewControllers.count
-            var parent = (self.navigationController!.viewControllers as NSArray).objectAtIndex(index - 2) as! SettingsTableViewController
-            parent.syncWhalebirdServer()
+            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+            WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
+                SVProgressHUD.dismiss()
+            })
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             self.navigationController!.popViewControllerAnimated(true)
             return false

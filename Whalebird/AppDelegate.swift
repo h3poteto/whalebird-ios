@@ -204,6 +204,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setObject(deviceTokenString, forKey: "deviceToken")
         println(deviceTokenString)
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+        }
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
