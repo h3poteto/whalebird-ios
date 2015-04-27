@@ -37,6 +37,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var fTopCursor = false
     var fUploadProgress = false
     
+    var pasteboard: UIPasteboard?
+    
     //======================================
     //  instance methods
     //======================================
@@ -92,7 +94,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
         
-        
+        self.pasteboard = UIPasteboard.generalPasteboard()
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,6 +104,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        self.encodeClipboardURL()
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -377,6 +380,16 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 notice.show()
                 self.navigationController?.popViewControllerAnimated(true)
             })
+        }
+    }
+    
+    func encodeClipboardURL() {
+        if let clipboardText = self.pasteboard?.valueForPasteboardType("public.text") as? String {
+            if clipboardText.hasPrefix("http://") || clipboardText.hasPrefix("https://") {
+                if let encodedURL = clipboardText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
+                    self.pasteboard?.setValue(encodedURL, forPasteboardType: "public.text")
+                }
+            }
         }
     }
 }
