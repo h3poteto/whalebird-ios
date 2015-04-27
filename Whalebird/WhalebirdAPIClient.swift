@@ -70,6 +70,17 @@ class WhalebirdAPIClient: NSObject {
         
         return escapeStr
     }
+    
+    class func encodeClipboardURL() {
+        var pasteboard = UIPasteboard.generalPasteboard()
+        if let clipboardText = pasteboard.valueForPasteboardType("public.text") as? String {
+            if clipboardText.hasPrefix("http://") || clipboardText.hasPrefix("https://") {
+                if let encodedURL = clipboardText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
+                    pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
+                }
+            }
+        }
+    }
     //===========================================
     //  instance methods
     //===========================================
