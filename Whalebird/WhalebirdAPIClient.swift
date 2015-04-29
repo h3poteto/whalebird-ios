@@ -77,6 +77,12 @@ class WhalebirdAPIClient: NSObject {
             if clipboardText.hasPrefix("http://") || clipboardText.hasPrefix("https://") {
                 if let encodedURL = clipboardText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
                     pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
+                    var shortener = UrlShortener()
+                    shortener.shortenUrl(encodedURL, withService: UrlShortenerServiceIsgd, completion: { (shortUrl) -> Void in
+                        pasteboard.setValue(shortUrl, forPasteboardType: "public.text")
+                    }, error: { (error) -> Void in
+                        
+                    })
                 }
             }
         }

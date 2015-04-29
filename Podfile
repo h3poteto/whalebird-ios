@@ -14,6 +14,7 @@ pod 'SDWebImage'
 pod 'RNCryptor'
 pod 'Fabric','~>1.0'
 pod 'Fabric/Crashlytics'
+pod 'UrlShortener', git: "https://github.com/h3poteto/URL-Shortener.git"
 
 post_install do | installer |
   require 'fileutils'
