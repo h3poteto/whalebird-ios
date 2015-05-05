@@ -79,14 +79,17 @@ class WhalebirdAPIClient: NSObject {
                     pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
                     var shortener = UrlShortener()
                     shortener.shortenUrl(encodedURL, withService: UrlShortenerServiceIsgd, completion: { (shortUrl) -> Void in
-                        pasteboard.setValue(shortUrl, forPasteboardType: "public.text")
+                        if shortUrl.hasPrefix("http://") || shortUrl.hasPrefix("https://") {
+                            pasteboard.setValue(shortUrl, forPasteboardType: "public.text")
+                        }
                     }, error: { (error) -> Void in
-                        
+                        pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
                     })
                 }
             }
         }
     }
+    
     //===========================================
     //  instance methods
     //===========================================

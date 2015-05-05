@@ -74,7 +74,6 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        WhalebirdAPIClient.encodeClipboardURL()
     }
     
     func onCancelTapped() {

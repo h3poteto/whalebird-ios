@@ -102,7 +102,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        WhalebirdAPIClient.encodeClipboardURL()
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
