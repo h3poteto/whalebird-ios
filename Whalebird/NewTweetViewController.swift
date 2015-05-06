@@ -343,8 +343,14 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (count(newTweetText.text as String) > 0 || self.newTweetMedias.count > 0) {
             postTweet(newTweetText.text)
             return true
+        } else {
+            var blankTweetAlert = UIAlertController(title: "ツイートできません", message: "本文を入力してください", preferredStyle: .Alert)
+            let cOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            })
+            blankTweetAlert.addAction(cOkAction)
+            self.presentViewController(blankTweetAlert, animated: true, completion: nil)
+            return false
         }
-        return false
     }
     
     
