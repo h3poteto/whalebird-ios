@@ -70,13 +70,16 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if (self.redirectedTwitter && request.URL!.host == self.whalebirdAPIURL.host && (request.URL!.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
-            WhalebirdAPIClient.sharedClient.initAPISession()
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-            WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
-                SVProgressHUD.dismiss()
+            WhalebirdAPIClient.sharedClient.initAPISession({ () -> Void in
+                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+                WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
+                    SVProgressHUD.dismiss()
+                })
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                self.navigationController!.popViewControllerAnimated(true)
+            }, failure: { (error) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false                
             })
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            self.navigationController!.popViewControllerAnimated(true)
             return false
         } else if ((request.URL!.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {
             self.redirectedTwitter = true

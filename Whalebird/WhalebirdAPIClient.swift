@@ -106,7 +106,7 @@ class WhalebirdAPIClient: NSObject {
         return mutableDict
     }
     
-    func initAPISession() {
+    func initAPISession(success:() -> Void, failure:(NSError) -> Void) {
         self.sessionManager = AFHTTPRequestOperationManager()
         self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         var requestURL = self.whalebirdAPIURL + "users/apis.json"
@@ -115,10 +115,12 @@ class WhalebirdAPIClient: NSObject {
             self.saveCookie()
             var userDefault = NSUserDefaults.standardUserDefaults()
             userDefault.setObject(responseObject["screen_name"], forKey: "username")
+            success()
         }) { (operation, error) -> Void in
             println(error)
             self.displayErrorMessage(operation, error: error)
             SVProgressHUD.dismiss()
+            failure(error)
         }
         
     }

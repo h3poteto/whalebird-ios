@@ -55,6 +55,8 @@ class SettingsTableViewController: UITableViewController{
         super.viewWillAppear(animated)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         SVProgressHUD.dismiss()
+        // ログインからの復帰時に更新する必要がある
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
