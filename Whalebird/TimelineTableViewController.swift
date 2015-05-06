@@ -8,8 +8,6 @@
 //
 
 import UIKit
-import Accounts
-import Social
 
 class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -17,9 +15,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     //  instance variables
     //=============================================
     let tweetCount = Int(50)
-    
-    var accountStore: ACAccountStore = ACAccountStore()
-    var account: ACAccount = ACAccount()
     var newTimeline: Array<AnyObject> = []
     var currentTimeline: Array<AnyObject> = []
     
@@ -321,7 +316,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
-        if (cTimelineMin <= 0) {
+        if (cTimelineMin <= 1) {
             return
         }
         for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
@@ -330,5 +325,15 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "homeTimeline")
         userDefaults.setObject(self.sinceId, forKey: "homeTimelineSinceId")
+    }
+    
+    func clearData() {
+        self.currentTimeline = []
+        self.newTimeline = []
+        self.sinceId = nil
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(nil, forKey: "homeTimelineSinceID")
+        userDefaults.setObject(nil, forKey: "homeTimeline")
+        self.tableView.reloadData()
     }
 }

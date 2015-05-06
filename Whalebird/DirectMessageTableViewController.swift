@@ -263,4 +263,14 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         userDefaults.setObject(cleanMessageArray.reverse(), forKey: "directMessage")
         userDefaults.setObject(self.sinceId, forKey: "directMessageSinceId")
     }
+    
+    func clearData() {
+        self.currentMessage = []
+        self.newMessage = []
+        self.sinceId = nil
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(nil, forKey: "directMessageSinceID")
+        userDefaults.setObject(nil, forKey: "directMessage")
+        self.tableView.reloadData()
+    }
 }

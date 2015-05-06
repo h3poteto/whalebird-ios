@@ -722,13 +722,28 @@ class SettingsTableViewController: UITableViewController{
             
             // timelineやlist情報もすべて削除する必要がある
             userDefault.setObject(nil, forKey: "username")
-            userDefault.setObject(nil, forKey: "homeTimelineSinceID")
-            userDefault.setObject(nil, forKey: "homeTimeline")
-            userDefault.setObject(nil, forKey: "replyTimelineSinceId")
-            userDefault.setObject(nil, forKey: "replyTimeline")
-            userDefault.setObject(nil, forKey: "directMessageSinceId")
-            userDefault.setObject(nil, forKey: "directMessage")
-            userDefault.setObject(nil, forKey: "streamList")
+            self.tableView.reloadData()
+            
+            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+                if let controllers = appDelegate.rootController.viewControllers {
+                    for navController in controllers {
+                        if let targetController = navController.topViewController {
+                            if targetController.isKindOfClass(TimelineTableViewController) {
+                                (targetController as! TimelineTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(ReplyTableViewController) {
+                                (targetController as! ReplyTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(DirectMessageTableViewController) {
+                                (targetController as! DirectMessageTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(ListTableViewController) {
+                                (targetController as! ListTableViewController).clearData()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

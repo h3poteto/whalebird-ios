@@ -282,5 +282,15 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: "replyTimeline")
         userDefaults.setObject(self.sinceId, forKey: "replyTimelineSinceId")
     }
+    
+    func clearData() {
+        self.currentTimeline = []
+        self.newTimeline = []
+        self.sinceId = nil
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(nil, forKey: "replyTimelineSinceID")
+        userDefaults.setObject(nil, forKey: "replyTimeline")
+        self.tableView.reloadData()
+    }
 }
 

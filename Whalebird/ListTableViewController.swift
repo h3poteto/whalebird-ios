@@ -74,20 +74,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
                     atIndex: 0)
             }
         } else {
-            var favStream = ListTableViewController.Stream(
-                image: "",
-                name: "お気に入り",
-                type: "myself",
-                uri: "users/apis/user_favorites.json",
-                id: "")
-            var myselfStream = ListTableViewController.Stream(
-                image: "",
-                name: "送信済みツイート",
-                type: "myself",
-                uri: "users/apis/user_timeline.json",
-                id: "")
-            self.streamList.append(myselfStream)
-            self.streamList.append(favStream)
+            self.initStreamList()
         }
         
     }
@@ -209,5 +196,30 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     func displaySearch() {
         var searchView = SearchTableViewController()
         self.navigationController?.pushViewController(searchView, animated: true)
+    }
+    
+    func initStreamList() {
+        self.streamList = []
+        var favStream = ListTableViewController.Stream(
+            image: "",
+            name: "お気に入り",
+            type: "myself",
+            uri: "users/apis/user_favorites.json",
+            id: "")
+        var myselfStream = ListTableViewController.Stream(
+            image: "",
+            name: "送信済みツイート",
+            type: "myself",
+            uri: "users/apis/user_timeline.json",
+            id: "")
+        self.streamList.append(myselfStream)
+        self.streamList.append(favStream)
+    }
+    
+    func clearData() {
+        self.initStreamList()
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(nil, forKey: "streamList")
+        self.tableView.reloadData()
     }
 }
