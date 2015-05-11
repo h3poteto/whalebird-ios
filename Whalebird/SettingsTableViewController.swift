@@ -14,7 +14,7 @@ class SettingsTableViewController: UITableViewController{
     //============================================
     //  instance variables
     //============================================
-    var twitterAccounts: NSArray!
+    var twitterAccounts = NSArray()
     var userstreamFlag: Bool = false
     var notificationForegroundFlag: Bool = true
     var notificationBackgroundFlag: Bool = true
@@ -23,10 +23,10 @@ class SettingsTableViewController: UITableViewController{
     var notificationRTFlag: Bool = true
     var notificationDMFlag: Bool = true
     var deviceToken = String?()
-    var notificationForegroundSwitch: UISwitch!
+    var notificationForegroundSwitch: UISwitch?
     
-    var account: ACAccount!
-    var accountStore: ACAccountStore!
+    var account: ACAccount?
+    var accountStore: ACAccountStore?
     
     
     //=============================================
@@ -134,9 +134,9 @@ class SettingsTableViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        
-        header.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
+        if let header:UITableViewHeaderFooterView = view as? UITableViewHeaderFooterView {
+            header.textLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
+        }
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -214,10 +214,10 @@ class SettingsTableViewController: UITableViewController{
                 if (userDefault.objectForKey("notificationForegroundFlag") != nil) {
                     self.notificationForegroundFlag = userDefault.boolForKey("notificationForegroundFlag")
                 }
-                self.notificationForegroundSwitch.on = self.notificationForegroundFlag
+                self.notificationForegroundSwitch?.on = self.notificationForegroundFlag
                 // そもそもの通知がオフの時は使えなくする必要がある
-                self.notificationForegroundSwitch.enabled = self.notificationBackgroundFlag
-                self.notificationForegroundSwitch.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                self.notificationForegroundSwitch?.enabled = self.notificationBackgroundFlag
+                self.notificationForegroundSwitch?.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = self.notificationForegroundSwitch
                 break
             default:
@@ -392,8 +392,8 @@ class SettingsTableViewController: UITableViewController{
             break
         }
         
-        cell.textLabel!.text = cellTitle
-        cell.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
+        cell.textLabel?.text = cellTitle
+        cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         cell.detailTextLabel?.text = cellDetailTitle
         cell.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
@@ -406,7 +406,7 @@ class SettingsTableViewController: UITableViewController{
             switch(indexPath.row) {
             case 0:
                 var loginViewController = LoginViewController()
-                self.navigationController!.pushViewController(loginViewController, animated: true)
+                self.navigationController?.pushViewController(loginViewController, animated: true)
                 break
             case 1:
                 var alertController = UIAlertController(title: "Remove Account Information", message: "アカウント情報を削除してよろしいですか？", preferredStyle: UIAlertControllerStyle.Alert)
@@ -420,9 +420,9 @@ class SettingsTableViewController: UITableViewController{
                 break
             case 2:
                 var userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("username") != nil) {
-                    var profileViewController = ProfileViewController(aScreenName: (userDefault.stringForKey("username") as String!))
-                    self.navigationController!.pushViewController(profileViewController, animated: true)
+                if let username = userDefault.stringForKey("username") {
+                    var profileViewController = ProfileViewController(aScreenName: username)
+                    self.navigationController?.pushViewController(profileViewController, animated: true)
                 }
                 break
             default:
@@ -475,15 +475,15 @@ class SettingsTableViewController: UITableViewController{
             switch(indexPath.row) {
             case 0:
                 var inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: "お問い合わせ")
-                self.navigationController!.pushViewController(inquiryView, animated: true)
+                self.navigationController?.pushViewController(inquiryView, animated: true)
                 break
             case 1:
                 var helpView = WebViewController(aOpenURL: "helps", aTitle: "ヘルプ")
-                self.navigationController!.pushViewController(helpView, animated: true)
+                self.navigationController?.pushViewController(helpView, animated: true)
                 break
             case 2:
                 var reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil, aTopCursor: nil)
-                self.navigationController!.pushViewController(reply, animated: true)
+                self.navigationController?.pushViewController(reply, animated: true)
                 break
             default:
                 break
@@ -597,40 +597,41 @@ class SettingsTableViewController: UITableViewController{
         } else {
             // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
             self.accountStore = ACAccountStore()
-            var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
-            self.accountStore.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
-                if (error != nil) {
-                    println(error)
-                }
-                if (!granted) {
-                    var alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
-                    var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
-                    alertController.addAction(closeAction)
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                    return
-                }
-                var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
-                if (twitterAccounts.count > 0) {
-                    let cUsername = userDefault.stringForKey("username")
-                    var selectedAccount: ACAccount!
-                    for aclist in twitterAccounts {
-                        if (cUsername == aclist.username) {
-                            selectedAccount = aclist as! ACAccount
+            if var twitterAccountType: ACAccountType = self.accountStore?.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
+                self.accountStore?.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
+                    if (error != nil) {
+                        println(error)
+                    }
+                    if (!granted) {
+                        var alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
+                        var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
+                        alertController.addAction(closeAction)
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                        return
+                    }
+                    if var twitterAccounts: NSArray = self.accountStore?.accountsWithAccountType(twitterAccountType) {
+                        if twitterAccounts.count > 0 {
+                            let cUsername = userDefault.stringForKey("username")
+                            var selectedAccount: ACAccount?
+                            for aclist in twitterAccounts {
+                                if (cUsername == aclist.username) {
+                                    selectedAccount = aclist as? ACAccount
+                                }
+                            }
+                            if (selectedAccount) != nil {
+                                self.tableView.reloadData()
+                                self.accountAlert()
+                            } else {
+                                userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+                                self.userstreamFlag = !self.userstreamFlag
+                            }
+                        } else {
+                            self.tableView.reloadData()
+                            self.accountAlert()
                         }
                     }
-                    if (selectedAccount == nil) {
-                        self.tableView.reloadData()
-                        self.accountAlert()
-                    } else {
-                        userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
-                        self.userstreamFlag = !self.userstreamFlag
-                    }
-                } else {
-                    self.tableView.reloadData()
-                    self.accountAlert()
                 }
             }
-
         }
     }
     
@@ -648,9 +649,9 @@ class SettingsTableViewController: UITableViewController{
         userDefault.setBool(false, forKey: "notificationForegroundFlag")
         self.notificationBackgroundFlag = !self.notificationBackgroundFlag
         if (!self.notificationBackgroundFlag) {
-            self.notificationForegroundSwitch.enabled = false
+            self.notificationForegroundSwitch?.enabled = false
         } else {
-            self.notificationForegroundSwitch.enabled = true
+            self.notificationForegroundSwitch?.enabled = true
         }
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
