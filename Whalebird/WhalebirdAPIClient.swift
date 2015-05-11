@@ -34,34 +34,36 @@ class WhalebirdAPIClient: NSObject {
         utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         utcDateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        var utcDate = utcDateFormatter.dateFromString(aUtctime)
         
         var jstDateFormatter =  NSDateFormatter()
         jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         jstDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         jstDateFormatter.dateFormat = "MM月dd日 HH:mm"
         var jstDate = String()
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        if (userDefault.objectForKey("displayTimeType") != nil && userDefault.integerForKey("displayTimeType") == 2) {
-            var current = NSDate(timeIntervalSinceNow: 0)
-            var timeInterval = current.timeIntervalSinceDate(utcDate!)
-            if (timeInterval < 60) {
-                jstDate = "1分以内"
-            } else if(timeInterval < 3600) {
-                jstDate = String(Int(timeInterval / 60.0)) + "分前"
-            } else if(timeInterval < 3600 * 24) {
-                jstDate = String(Int(timeInterval / 3600.0)) + "時間前"
+        
+        if var utcDate = utcDateFormatter.dateFromString(aUtctime) {
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            if (userDefault.objectForKey("displayTimeType") != nil && userDefault.integerForKey("displayTimeType") == 2) {
+                var current = NSDate(timeIntervalSinceNow: 0)
+                var timeInterval = current.timeIntervalSinceDate(utcDate)
+                if (timeInterval < 60) {
+                    jstDate = "1分以内"
+                } else if(timeInterval < 3600) {
+                    jstDate = String(Int(timeInterval / 60.0)) + "分前"
+                } else if(timeInterval < 3600 * 24) {
+                    jstDate = String(Int(timeInterval / 3600.0)) + "時間前"
+                } else {
+                    jstDate = String(Int(timeInterval / (3600.0 * 24.0))) + "日前"
+                }
             } else {
-                jstDate = String(Int(timeInterval / (3600.0 * 24.0))) + "日前"
+                jstDate = jstDateFormatter.stringFromDate(utcDate)
             }
-        } else {
-            jstDate = jstDateFormatter.stringFromDate(utcDate!)
         }
         return jstDate
     }
     
     class func escapeString(aString: String) -> String {
-        var escapeStr: String!
+        var escapeStr = String()
         
         escapeStr = aString.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
@@ -98,9 +100,13 @@ class WhalebirdAPIClient: NSObject {
         var mutableDict: NSMutableDictionary = NSMutableDictionary(dictionary: dict)
         mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
             if (obj.isKindOfClass(NSNull.classForCoder())) {
-                mutableDict.setObject("", forKey: (key as! NSString))
+                if let safeKey = key as? NSString {
+                    mutableDict.setObject("", forKey: safeKey)
+                }
             } else if (obj.isKindOfClass(NSDictionary.classForCoder())) {
-                mutableDict.setObject(self.cleanDictionary(obj as! NSDictionary), forKey: (key as! NSString))
+                if let safeObject = obj as? NSDictionary, let safeKey = key as? NSString {
+                    mutableDict.setObject(self.cleanDictionary(safeObject), forKey: (safeKey))
+                }
             }
         }
         return mutableDict
@@ -130,8 +136,8 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil) {
-                    callback((responseObject as! NSArray).reverseObjectEnumerator().allObjects)
+                if let object = responseObject as? NSArray {
+                    callback(object.reverseObjectEnumerator().allObjects)
                 } else {
                     println("blank response")
                 }
@@ -150,8 +156,8 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil) {
-                    callback(responseObject as! NSDictionary)
+                if let object = responseObject as? NSDictionary {
+                    callback(object)
                 } else {
                     println("blank response")
                     var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Request Error", message: "情報がありません")
@@ -210,8 +216,9 @@ class WhalebirdAPIClient: NSObject {
                 if (responseObject != nil) {
                     println(responseObject)
                     var jsonError: NSError?
-                    var jsonData = NSJSONSerialization.JSONObjectWithData(responseObject as! NSData, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as! NSDictionary
-                    complete(jsonData)
+                    if let object = responseObject as? NSData, var jsonData = NSJSONSerialization.JSONObjectWithData(object, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) as? NSDictionary {
+                        complete(jsonData)
+                    }
                 }
                 }) { (operation, error) -> Void in
                     println(error)
@@ -232,7 +239,6 @@ class WhalebirdAPIClient: NSObject {
     
     func syncPushSettings(callback: (AnyObject) ->Void) {
         let userDefault = NSUserDefaults.standardUserDefaults()
-        let deviceToken = userDefault.stringForKey("deviceToken")
         var notificationBackgroundFlag = true
         if userDefault.objectForKey("notificationBackgroundFlag") != nil {
             notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
@@ -260,8 +266,8 @@ class WhalebirdAPIClient: NSObject {
             "favorite" : notificationFavFlag,
             "direct_message" : notificationDMFlag
         ]
-        if (deviceToken != nil) {
-            params["device_token"] = deviceToken!
+        if let deviceToken = userDefault.stringForKey("deviceToken") {
+            params["device_token"] = deviceToken
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
@@ -310,14 +316,14 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func loadCookie() {
-        var cookiesData = NSUserDefaults.standardUserDefaults().objectForKey("cookiesKey") as? NSData
-        if (cookiesData != nil) {
-            var cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData!) as! NSArray
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as! NSHTTPCookie)
+        if var cookiesData = NSUserDefaults.standardUserDefaults().objectForKey("cookiesKey") as? NSData {
+            if var cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData) as? NSArray {
+                for cookie in cookies {
+                    NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as! NSHTTPCookie)
+                }
+                self.sessionManager = AFHTTPRequestOperationManager()
+                self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
             }
-            self.sessionManager = AFHTTPRequestOperationManager()
-            self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         }
     }
     
