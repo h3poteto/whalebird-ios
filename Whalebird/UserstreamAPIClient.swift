@@ -33,15 +33,17 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     // localeの設定をしないと，実機で落ちる
     class func convertUTCTime(aSrctime: String) -> String {
+        var dstDate = String()
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss ZZZ yyyy"
         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         dateFormatter.locale = NSLocale(localeIdentifier: "UTC")
-        var srcDate = dateFormatter.dateFromString(aSrctime as String)
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        var dstDate = dateFormatter.stringFromDate(srcDate!)
+        if var srcDate = dateFormatter.dateFromString(aSrctime as String) {
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+            dstDate = dateFormatter.stringFromDate(srcDate)
+        }
         return dstDate
     }
     
@@ -80,7 +82,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     class func convertMedia(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
         var mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
-        var cOriginalMedia = mutableDictionary.objectForKey("entities")!.objectForKey("media") as! NSArray
+        var cOriginalMedia = mutableDictionary.objectForKey("entities")?.objectForKey("media") as! NSArray
         var mediaURLArray = NSMutableArray()
         for media in cOriginalMedia {
             mediaURLArray.addObject(media.objectForKey("media_url")!)
@@ -95,36 +97,37 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     func startStreaming(aTargetStream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
         var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: aTargetStream, parameters: params)
-        var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)!
-        var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
-        if (twitterAccounts.count > 0) {
-            var userDefault = NSUserDefaults.standardUserDefaults()
-            let cUsername = userDefault.stringForKey("username")
-            var selectedAccount: ACAccount!
-            for aclist in twitterAccounts {
-                if (cUsername == aclist.username) {
-                    selectedAccount = aclist as! ACAccount
+        if var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
+            var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
+            if (twitterAccounts.count > 0) {
+                var userDefault = NSUserDefaults.standardUserDefaults()
+                let cUsername = userDefault.stringForKey("username")
+                var selectedAccount: ACAccount?
+                for aclist in twitterAccounts {
+                    if (cUsername == aclist.username) {
+                        selectedAccount = aclist as? ACAccount
+                    }
+                }
+                if (selectedAccount == nil) {
+                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+                    notice.alpha = 0.8
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                    notice.show()
+                } else {
+                    self.account = selectedAccount
+                    request.account = self.account
+                    self.connection = NSURLConnection(request: request.preparedURLRequest(), delegate: self)
+                    self.connection?.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
+                    self.connection?.start()
+                    callback(self.account)
                 }
             }
-            if (selectedAccount == nil) {
-                var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
-            } else {
-                self.account = selectedAccount
-                request.account = self.account
-                self.connection = NSURLConnection(request: request.preparedURLRequest(), delegate: self)
-                self.connection!.scheduleInRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
-                self.connection!.start()
-                callback(self.account)
-            }
-         }
+        }
     }
     
     func stopStreaming(callback:()->Void) {
         if (self.connection != nil) {
-            self.connection!.cancel()
+            self.connection?.cancel()
             self.connection = nil
             callback()
         }
@@ -144,13 +147,11 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     func connection(connection: NSURLConnection,didReceiveData data: NSData){
         var jsonError:NSError?
-        var jsonObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError)
-        
-        if (jsonObject != nil) {
-            var object: NSMutableDictionary! = jsonObject!.mutableCopy() as! NSMutableDictionary
+        if var jsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) {
+            var object: NSMutableDictionary = jsonObject.mutableCopy() as! NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
-                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as! String!), forKey: "created_at")
+                object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as! String), forKey: "created_at")
                 println(object.objectForKey("user")?.objectForKey("screen_name"))
                 object.setValue(object.objectForKey("favorited") as! Int, forKey: "favorited?")
                 if (object.objectForKey("retweeted_status") == nil) {
