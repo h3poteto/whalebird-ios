@@ -618,7 +618,7 @@ class SettingsTableViewController: UITableViewController{
                                     selectedAccount = aclist as? ACAccount
                                 }
                             }
-                            if (selectedAccount) != nil {
+                            if (selectedAccount) == nil {
                                 self.tableView.reloadData()
                                 self.accountAlert()
                             } else {
