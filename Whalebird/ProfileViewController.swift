@@ -68,7 +68,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         var userDefault = NSUserDefaults.standardUserDefaults()
     }
@@ -171,7 +171,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.profileImage)
                     
                     self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
-                    self.userNameLabel.text = aUserData.objectForKey("name") as! String!
+                    self.userNameLabel.text = aUserData.objectForKey("name") as? String
                     self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
                     self.userNameLabel.textColor = UIColor.blackColor()
                     self.userNameLabel.sizeToFit()
@@ -334,7 +334,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
             timelineCell!.cleanCell()
-            timelineCell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
+            if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+                timelineCell!.configureCell(targetTimeline)
+            }
             return timelineCell!
         case 1:
             var profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
@@ -375,7 +377,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var height = CGFloat(60)
         switch(self.tableType) {
         case 0:
-            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+            if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+                height = TimelineViewCell.estimateCellHeight(targetTimeline)
+            }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             self.tableView.frame.size.height = self.tableView.contentSize.height
             break
@@ -395,31 +399,32 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            let cTweetData = self.currentTimeline[indexPath.row] as! NSDictionary
-            var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as! String,
-                aTweetBody: cTweetData.objectForKey("text") as! String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                aPostDetail: cTweetData.objectForKey("created_at") as! String,
-                aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
-                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-                aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.currentTimeline,
-                aParentIndex: indexPath.row,
-                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-            )
-            self.navigationController!.pushViewController(detailView, animated: true)
+            if let cTweetData = self.currentTimeline[indexPath.row] as? NSDictionary {
+                var detailView = TweetDetailViewController(
+                    aTweetID: cTweetData.objectForKey("id_str") as! String,
+                    aTweetBody: cTweetData.objectForKey("text") as! String,
+                    aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                    aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                    aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                    aPostDetail: cTweetData.objectForKey("created_at") as! String,
+                    aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                    aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
+                    aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                    aMedia: cTweetData.objectForKey("media") as? NSArray,
+                    aParentArray: &self.currentTimeline,
+                    aParentIndex: indexPath.row,
+                    aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
+                )
+                self.navigationController?.pushViewController(detailView, animated: true)
+            }
             break
         case 1:
             var userProfileView = ProfileViewController(aScreenName: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
-            self.navigationController!.pushViewController(userProfileView, animated: true)
+            self.navigationController?.pushViewController(userProfileView, animated: true)
             break
         case 2:
             var userProfileView = ProfileViewController(aScreenName: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
-            self.navigationController!.pushViewController(userProfileView, animated: true)
+            self.navigationController?.pushViewController(userProfileView, animated: true)
             break
         default:
             break
@@ -435,9 +440,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "count" : "20"
         ]
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("id_str") as! String
-            // max_idは「以下」という判定になるので自身を含めない
-            params["max_id"] = BigInteger(string: strMoreID).decrement()
+            if var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("id_str") as? String {
+                // max_idは「以下」という判定になるので自身を含めない
+                params["max_id"] = BigInteger(string: strMoreID).decrement()
+            }
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
@@ -449,8 +455,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = []
                 for timeline in aNewTimeline {
-                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
-                    self.newTimeline.append(mutableTimeline)
+                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        self.newTimeline.append(mutableTimeline)
+                    }
                 }
                 if (aMoreIndex == nil) {
                     for newTweet in self.newTimeline {
