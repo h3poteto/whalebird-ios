@@ -75,32 +75,27 @@ class ConversationTableViewController: UITableViewController {
         
         self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        if (self.newConversation[indexPath.row] as? NSDictionary != nil) {
-            cell!.configureCell(self.newConversation[indexPath.row] as! NSDictionary)
+        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+            cell!.configureCell(targetMessage)
         }
 
         return cell!
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as! NSDictionary)
-        } else {
-            height = 60.0
+        var height = CGFloat(60)
+        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
-        
         return height
     }
 
 
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        if (self.conversationCell.count > 0 && indexPath.row < self.conversationCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.newConversation[indexPath.row] as! NSDictionary)
-        } else {
-            height = 60.0
+        var height = CGFloat(60)
+        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
     }
