@@ -41,10 +41,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //======================================
     //  instance methods
     //======================================
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "ツイート送信"
     }
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -115,11 +116,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     func keyboardDidShow(notification: NSNotification) {
         
         var windowSize = UIScreen.mainScreen().bounds.size
-        var info = notification.userInfo as NSDictionary?
-        if (info != nil) {
+        if var info = notification.userInfo as NSDictionary? {
             self.optionItemBar?.removeFromSuperview()
-            var keyboardSize = info!.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue() as CGRect?
-            self.optionItemBar = UIToolbar(frame: CGRectMake(0, keyboardSize!.origin.y - self.optionItemBarHeight, windowSize.width, self.optionItemBarHeight))
+            if var keyboardSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue() as CGRect? {
+                self.optionItemBar = UIToolbar(frame: CGRectMake(0, keyboardSize.origin.y - self.optionItemBarHeight, windowSize.width, self.optionItemBarHeight))
+            }
             self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
             // 配置するボタン
             var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
@@ -144,18 +145,18 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func onCancelTapped() {
         if (self.newTweetText.text.isEmpty) {
-            self.navigationController!.popViewControllerAnimated(true)
+            self.navigationController?.popViewControllerAnimated(true)
         } else {
             var minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
             let closeAction = UIAlertAction(title: "破棄する", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 self.newTweetText.text = ""
-                self.navigationController!.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
             })
             let minuteAction = UIAlertAction(title: "下書き保存", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 var minuteTableView = MinuteTableViewController()
                 minuteTableView.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
                 self.newTweetText.text = ""
-                self.navigationController!.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
             })
             let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 
@@ -224,7 +225,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func openMinute() {
         var minuteTableView = MinuteTableViewController()
-        self.navigationController!.pushViewController(minuteTableView, animated: true)
+        self.navigationController?.pushViewController(minuteTableView, animated: true)
         
     }
     
@@ -289,40 +290,42 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
-            let image:UIImage = info[UIImagePickerControllerOriginalImage]  as! UIImage
-            // カメラで撮影するだけでは保存はされていない
-            if (picker.sourceType == UIImagePickerControllerSourceType.Camera) {
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            if let image:UIImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                // カメラで撮影するだけでは保存はされていない
+                if (picker.sourceType == UIImagePickerControllerSourceType.Camera) {
+                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                }
+                // 編集画面を挟む
+                var imageEditView = EditImageViewController(aPickerImage: image, aPicker: picker)
+                picker.presentViewController(imageEditView, animated: true, completion: nil)
+                imageEditView.delegate = self
             }
-            // 編集画面を挟む
-            var imageEditView = EditImageViewController(aPickerImage: image, aPicker: picker)
-            picker.presentViewController(imageEditView, animated: true, completion: nil)
-            imageEditView.delegate = self
         }
     }
 
     func removeImage(id: AnyObject) {
         // upload中は移動を伴うキャンセルはロックする
-        var closeButton = id as! UIButton
-        var removeIndex = closeButton.tag
-        if (self.fUploadProgress) {
-            if (removeIndex == self.newTweetMedias.count) {
-                // 今まさにupload中のものだったとき
-                WhalebirdAPIClient.sharedClient.cancelRequest()
-            }
-        } else {
-            closeButton.removeFromSuperview()
-            self.newTweetMedias.removeAtIndex(removeIndex)
-            // ここでuploadImageViewの削除と位置調節
-            self.newTweetMediaViews[removeIndex].removeFromSuperview()
-            self.newTweetMediaViews.removeAtIndex(removeIndex)
-            self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
-            self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
-            for (var index = 0; index < self.newTweetMediaViews.count; index++) {
-                self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
-                    y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
-                self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
-                self.newTweetMediaCloseButton[index].tag = index
+        if var closeButton = id as? UIButton {
+            var removeIndex = closeButton.tag
+            if (self.fUploadProgress) {
+                if (removeIndex == self.newTweetMedias.count) {
+                    // 今まさにupload中のものだったとき
+                    WhalebirdAPIClient.sharedClient.cancelRequest()
+                }
+            } else {
+                closeButton.removeFromSuperview()
+                self.newTweetMedias.removeAtIndex(removeIndex)
+                // ここでuploadImageViewの削除と位置調節
+                self.newTweetMediaViews[removeIndex].removeFromSuperview()
+                self.newTweetMediaViews.removeAtIndex(removeIndex)
+                self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
+                self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
+                for (var index = 0; index < self.newTweetMediaViews.count; index++) {
+                    self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
+                        y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
+                    self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
+                    self.newTweetMediaCloseButton[index].tag = index
+                }
             }
         }
     }
