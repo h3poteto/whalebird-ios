@@ -56,7 +56,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //=====================================
     //  instance method
     //=====================================
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     

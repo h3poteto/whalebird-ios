@@ -57,19 +57,20 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         }
         self.mediaImageView.center = CGPointMake(self.cWindowSize.size.width / 2.0, self.cWindowSize.size.height / 2.0)
         
-        let closeImage = UIImage(named: "assets/Close-Filled.png")
-        var closeImagePosY: CGFloat = self.mediaImageView.frame.origin.y - closeImage!.size.height * 2.0
-        if (closeImagePosY < 20.0) {
-            closeImagePosY = 20.0
-        }
-        var closeButton = UIButton(frame: CGRectMake(closeImage!.size.width * 0.5, closeImagePosY, closeImage!.size.width * 1.5, closeImage!.size.height * 1.5))
-        closeButton.setBackgroundImage(closeImage, forState: .Normal)
-        closeButton.addTarget(self, action: "mediaClose", forControlEvents: UIControlEvents.TouchDown)
-        
         // ピンチインで拡大縮小する対象としてblankViewを用意しておく
         self.blankView = UIView(frame: self.view.bounds)
         self.blankView.addSubview(self.mediaImageView)
-        self.blankView.addSubview(closeButton)
+        
+        if let closeImage = UIImage(named: "assets/Close-Filled.png") {
+            var closeImagePosY: CGFloat = self.mediaImageView.frame.origin.y - closeImage.size.height * 2.0
+            if (closeImagePosY < 20.0) {
+                closeImagePosY = 20.0
+            }
+            var closeButton = UIButton(frame: CGRectMake(closeImage.size.width * 0.5, closeImagePosY, closeImage.size.width * 1.5, closeImage.size.height * 1.5))
+            closeButton.setBackgroundImage(closeImage, forState: .Normal)
+            closeButton.addTarget(self, action: "mediaClose", forControlEvents: UIControlEvents.TouchDown)
+            self.blankView.addSubview(closeButton)
+        }
         self.mediaScrollView.addSubview(self.blankView)
         
         self.mediaScrollView.delegate = self
