@@ -62,12 +62,13 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             for tweet in replyTimeline! {
                 self.currentTimeline.insert(tweet, atIndex: 0)
             }
-            var moreID = self.currentTimeline.last?.objectForKey("id_str") as! String
-            var readMoreDictionary = NSMutableDictionary(dictionary: [
-                "moreID" : moreID,
-                "sinceID" : "sinceID"
-                ])
-            self.currentTimeline.insert(readMoreDictionary, atIndex: self.currentTimeline.count)
+            if var moreID = self.currentTimeline.last?.objectForKey("id_str") as? String {
+                var readMoreDictionary = NSMutableDictionary(dictionary: [
+                    "moreID" : moreID,
+                    "sinceID" : "sinceID"
+                    ])
+                self.currentTimeline.insert(readMoreDictionary, atIndex: self.currentTimeline.count)
+            }
         }
     }
 
@@ -96,50 +97,57 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
+        if self.currentTimeline[indexPath.row] as? NSDictionary != nil {
+            cell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
+        }
 
         return cell!
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if self.currentTimeline[indexPath.row] as? NSDictionary != nil {
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        }
         return height
     }
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if self.currentTimeline[indexPath.row] as? NSDictionary != nil {
+            height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        }
         return height
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.currentTimeline[indexPath.row] as! NSDictionary
-        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as! String != "moreID") {
-            var sinceID = cTweetData.objectForKey("sinceID") as? String
-            if (sinceID == "sinceID") {
-                sinceID = nil
+        if let cTweetData = self.currentTimeline[indexPath.row] as? NSDictionary {
+            if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as! String != "moreID") {
+                var sinceID = cTweetData.objectForKey("sinceID") as? String
+                if (sinceID == "sinceID") {
+                    sinceID = nil
+                }
+                self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
+            } else {
+                var detailView = TweetDetailViewController(
+                    aTweetID: cTweetData.objectForKey("id_str") as! String,
+                    aTweetBody: cTweetData.objectForKey("text") as! String,
+                    aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                    aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                    aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                    aPostDetail: cTweetData.objectForKey("created_at") as! String,
+                    aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                    aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
+                    aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                    aMedia: cTweetData.objectForKey("media") as? NSArray,
+                    aParentArray: &self.currentTimeline,
+                    aParentIndex: indexPath.row,
+                    aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
+                )
+                self.navigationController!.pushViewController(detailView, animated: true)
             }
-            self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
-        } else {
-            var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as! String,
-                aTweetBody: cTweetData.objectForKey("text") as! String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                aPostDetail: cTweetData.objectForKey("created_at") as! String,
-                aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
-                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-                aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.currentTimeline,
-                aParentIndex: indexPath.row,
-                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-            )
-            self.navigationController!.pushViewController(detailView, animated: true)
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
 
@@ -152,9 +160,10 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as! String
-            // max_idは「以下」という判定になるので自身を含めない
-            params["max_id"] = BigInteger(string: strMoreID).decrement()
+            if var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as? String {
+                // max_idは「以下」という判定になるので自身を含めない
+                params["max_id"] = BigInteger(string: strMoreID).decrement()
+            }
         }
         var parameter: Dictionary<String, AnyObject> = [
             "settings" : params
@@ -165,8 +174,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = []
                 for timeline in aNewTimeline {
-                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
-                    self.newTimeline.append(mutableTimeline)
+                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        self.newTimeline.append(mutableTimeline)
+                    }
                 }
                 var currentRowIndex: Int?
                 if (self.newTimeline.count > 0) {
@@ -260,7 +270,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     
     func tappedNewTweet(sender: AnyObject) {
         var newTweetView = NewTweetViewController()
-        self.navigationController!.pushViewController(newTweetView, animated: true)
+        self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
