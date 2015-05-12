@@ -190,58 +190,63 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
 
         
-        let cImportImage = UIImage(named: "assets/Import-Line.png")
-        self.ts_imageWithSize(cImportImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aImportImage) -> Void in
-            self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
-            self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
-            self.replyButton.center = CGPoint(x: self.cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-            self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
-            self.blankView.addSubview(self.replyButton)
+        if let cImportImage = UIImage(named: "assets/Import-Line.png") {
+            self.ts_imageWithSize(cImportImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aImportImage) -> Void in
+                self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
+                self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
+                self.replyButton.center = CGPoint(x: self.cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
+                self.blankView.addSubview(self.replyButton)
+            }
         }
         
-        let cConversationImage = UIImage(named: "assets/Conversation-Line.png")
-        self.ts_imageWithSize(cConversationImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aConversationImage) -> Void in
-            self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
-            self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
-            self.conversationButton.center = CGPoint(x: self.cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-            self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
-            self.blankView.addSubview(self.conversationButton)
+        if let cConversationImage = UIImage(named: "assets/Conversation-Line.png") {
+            self.ts_imageWithSize(cConversationImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aConversationImage) -> Void in
+                self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
+                self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
+                self.conversationButton.center = CGPoint(x: self.cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
+                self.blankView.addSubview(self.conversationButton)
+            }
         }
-        var starImage: UIImage!
+        var starImage: UIImage?
         if (self.fFavorited == true) {
             starImage = UIImage(named: "assets/Star-Filled.png")
         } else {
             starImage = UIImage(named: "assets/Star-Line.png")
         }
-        self.ts_imageWithSize(starImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
-            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
-            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-            self.favButton.center = CGPoint(x: self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-            self.blankView.addSubview(self.favButton)
+        if starImage != nil {
+            self.ts_imageWithSize(starImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
+                self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                self.favButton.center = CGPoint(x: self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                self.blankView.addSubview(self.favButton)
+            }
         }
         
         let cUsername = userDefault.stringForKey("username")
         
         if (cUsername == self.screenName) {
-            let cTrashImage = UIImage(named: "assets/Trash-Line.png")
-            self.ts_imageWithSize(cTrashImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight, callback: { (aTrashImage) -> Void in
-                self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
-                self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
-                self.deleteButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
-                self.blankView.addSubview(self.deleteButton)
-            })
+            if let cTrashImage = UIImage(named: "assets/Trash-Line.png") {
+                self.ts_imageWithSize(cTrashImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight, callback: { (aTrashImage) -> Void in
+                    self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
+                    self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
+                    self.deleteButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                    self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
+                    self.blankView.addSubview(self.deleteButton)
+                })
+            }
         } else {
-            var cMoreImage = UIImage(named: "assets/More-Line.png")
-            
-            self.ts_imageWithSize(cMoreImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight, callback: { (aMoreImage) -> Void in
-                self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
-                self.moreButton.setBackgroundImage(aMoreImage, forState: .Normal)
-                self.moreButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
-                self.blankView.addSubview(self.moreButton)
-            })
+            if var cMoreImage = UIImage(named: "assets/More-Line.png") {
+                self.ts_imageWithSize(cMoreImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight, callback: { (aMoreImage) -> Void in
+                    self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
+                    self.moreButton.setBackgroundImage(aMoreImage, forState: .Normal)
+                    self.moreButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                    self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
+                    self.blankView.addSubview(self.moreButton)
+                })
+            }
         }
         
         self.blankView.contentSize = CGSizeMake(self.cWindowSize.width, self.favButton.frame.origin.y + self.favButton.frame.size.height + 20)
@@ -309,39 +314,39 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     func tappedReply() {
         var userDefault = NSUserDefaults.standardUserDefaults()
-        let userScreenName = userDefault.objectForKey("username") as! String
-        
-        var replyList: Array<String> = []
-        var tScreenName = ""
-        var fReply = false
-        replyList.append("@" + self.screenName)
-        for char in self.tweetBody! {
-            if (fReply) {
-                if (char == " " || char == "　" || !self.checkScreenName(char)) {
-                    if ("@" + userScreenName != tScreenName) {
-                        replyList.append(tScreenName)
+        if let userScreenName = userDefault.objectForKey("username") as? String {
+            var replyList: Array<String> = []
+            var tScreenName = ""
+            var fReply = false
+            replyList.append("@" + self.screenName)
+            for char in self.tweetBody! {
+                if (fReply) {
+                    if (char == " " || char == "　" || !self.checkScreenName(char)) {
+                        if ("@" + userScreenName != tScreenName) {
+                            replyList.append(tScreenName)
+                        }
+                        tScreenName = ""
+                        fReply = false
+                    } else {
+                        tScreenName.append(char)
                     }
-                    tScreenName = ""
-                    fReply = false
-                } else {
+                }else if (char == "@") {
                     tScreenName.append(char)
+                    fReply = true
                 }
-            }else if (char == "@") {
-                tScreenName.append(char)
-                fReply = true
             }
+            var replyListStr = ""
+            for name in replyList {
+                replyListStr += name + " "
+            }
+            var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetID, aTopCursor: nil)
+            self.navigationController!.pushViewController(newTweetView, animated: true)
         }
-        var replyListStr = ""
-        for name in replyList {
-            replyListStr += name + " "
-        }
-        var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetID, aTopCursor: nil)
-        self.navigationController!.pushViewController(newTweetView, animated: true)
     }
     
     func tappedConversation() {
         var conversationView = ConversationTableViewController(aTweetID: self.tweetID)
-        self.navigationController!.pushViewController(conversationView, animated: true)
+        self.navigationController?.pushViewController(conversationView, animated: true)
     }
     
     //-------------------------------------------------
@@ -366,18 +371,21 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = false
-                    var cStarImage = UIImage(named: "assets/Star-Line.png")
-                    self.ts_imageWithSize(cStarImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
-                        self.favButton.removeFromSuperview()
-                        self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
-                        self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                        self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                        self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-                        self.blankView.addSubview(self.favButton)
+                    if let cStarImage = UIImage(named: "assets/Star-Line.png") {
+                        self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
+                            self.favButton.removeFromSuperview()
+                            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                            self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                            self.blankView.addSubview(self.favButton)
+                        }
                     }
                     // 親要素のツイート情報を書き換え
                     if (self.parentArray != nil && self.parentIndex != nil) {
-                        (self.parentArray![self.parentIndex!] as! NSMutableDictionary).setObject(0, forKey: "favorited?")
+                        if var parentObject = self.parentArray![self.parentIndex!] as? NSMutableDictionary {
+                            parentObject.setObject(0, forKey: "favorited?")
+                        }
                     }
                 })
             }
@@ -400,18 +408,21 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.show()
                     // アイコンの挿げ替え
                     self.fFavorited = true
-                    var cStarImage = UIImage(named: "assets/Star-Filled.png")
-                    self.ts_imageWithSize(cStarImage!, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
-                        self.favButton.removeFromSuperview()
-                        self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
-                        self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                        self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                        self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-                        self.blankView.addSubview(self.favButton)
+                    if let cStarImage = UIImage(named: "assets/Star-Filled.png") {
+                        self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
+                            self.favButton.removeFromSuperview()
+                            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                            self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                            self.blankView.addSubview(self.favButton)
+                        }
                     }
                     // 親要素のツイート情報を書き換え
                     if (self.parentArray != nil && self.parentIndex != nil) {
-                        (self.parentArray![self.parentIndex!] as! NSMutableDictionary).setObject(1, forKey: "favorited?")
+                        if var parentObject = self.parentArray![self.parentIndex!] as? NSMutableDictionary {
+                            parentObject.setObject(1, forKey: "favorited?")
+                        }
                     }
                 })
             }
@@ -437,7 +448,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.alpha = 0.8
                     notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
-                    self.navigationController!.popViewControllerAnimated(true)
+                    self.navigationController?.popViewControllerAnimated(true)
                 })
             })
         })
@@ -501,7 +512,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.presentViewController(protectedAlert, animated: true, completion: nil)
             } else {
                 var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.screenName + " " + self.tweetBody!, aReplyToID: self.tweetID, aTopCursor: true)
-                self.navigationController!.pushViewController(retweetView, animated: true)
+                self.navigationController?.pushViewController(retweetView, animated: true)
             }
         }
         let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
@@ -515,23 +526,23 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     func tappedNewTweet(sender: AnyObject) {
         var newTweetView = NewTweetViewController()
-        self.navigationController!.pushViewController(newTweetView, animated: true)
+        self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
     func tappedUserProfile() {
         var userProfileView = ProfileViewController(aScreenName: self.screenName)
-        self.navigationController!.pushViewController(userProfileView, animated: true)
+        self.navigationController?.pushViewController(userProfileView, animated: true)
     }
     
     func tappedRetweetedProfile() {
         var userProfileView = ProfileViewController(aScreenName: self.retweetedName!)
-        self.navigationController!.pushViewController(userProfileView, animated: true)
+        self.navigationController?.pushViewController(userProfileView, animated: true)
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         if (URL.scheme?.hasPrefix("at") == true) {
             var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("at:@", withString: "", options: nil, range: nil))
-            self.navigationController!.pushViewController(userView, animated: true)
+            self.navigationController?.pushViewController(userView, animated: true)
             return false
         } else {
             UIApplication.sharedApplication().openURL(URL)
@@ -541,10 +552,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     
     // 画像が押された時
     func tappedMedia(sender: AnyObject) {
-        var button = sender as! UIButton
-        let mediaImage = button.backgroundImageForState(UIControlState.Normal)
-        var mediaView = MediaViewController(aMediaImage: mediaImage)
-        self.presentViewController(mediaView, animated: true, completion: nil)
+        if var button = sender as? UIButton {
+            let mediaImage = button.backgroundImageForState(UIControlState.Normal)
+            var mediaView = MediaViewController(aMediaImage: mediaImage)
+            self.presentViewController(mediaView, animated: true, completion: nil)
+        }
     }
     
     // twitter独自のscreen name判定
@@ -559,10 +571,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 return false
             } else {
                 var charSet = NSCharacterSet.alphanumericCharacterSet()
-                var aScanner = NSScanner.localizedScannerWithString(str) as! NSScanner
-                aScanner.charactersToBeSkipped = nil
-                aScanner.scanCharactersFromSet(charSet, intoString: nil)
-                return aScanner.atEnd
+                if var aScanner = NSScanner.localizedScannerWithString(str) as? NSScanner {
+                    aScanner.charactersToBeSkipped = nil
+                    aScanner.scanCharactersFromSet(charSet, intoString: nil)
+                    return aScanner.atEnd
+                } else {
+                    return false
+                }
             }
         }
     }
