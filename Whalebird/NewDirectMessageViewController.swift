@@ -77,7 +77,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     func onCancelTapped() {
-        self.navigationController!.popViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(true)
     
     }
     
