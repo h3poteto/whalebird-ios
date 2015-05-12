@@ -60,12 +60,13 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             for message in directMessage! {
                 self.currentMessage.insert(message, atIndex: 0)
             }
-            var moreID = self.currentMessage.last?.objectForKey("id_str") as! String
-            var readMoreDictionary = NSMutableDictionary(dictionary: [
-                "moreID" : moreID,
-                "sinceID" : "sinceID"
-                ])
-            self.currentMessage.insert(readMoreDictionary, atIndex: self.currentMessage.count)
+            if var moreID = self.currentMessage.last?.objectForKey("id_str") as? String {
+                var readMoreDictionary = NSMutableDictionary(dictionary: [
+                    "moreID" : moreID,
+                    "sinceID" : "sinceID"
+                    ])
+                self.currentMessage.insert(readMoreDictionary, atIndex: self.currentMessage.count)
+            }
         }
 
     }
@@ -93,45 +94,52 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        cell!.configureCell(self.currentMessage[indexPath.row] as! NSDictionary)
+        if let targetMessage = self.currentMessage[indexPath.row] as? NSDictionary {
+            cell!.configureCell(targetMessage)
+        }
 
 
         return cell!
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if let targetMessage = self.currentMessage[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        }
         return height
     }
 
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentMessage[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if let targetMessage = self.currentMessage[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        }
         return height
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cMessageData = self.currentMessage[indexPath.row] as! NSDictionary
-        if (cMessageData.objectForKey("moreID") != nil && cMessageData.objectForKey("moreID") as! String != "moreID") {
-            var sinceID = cMessageData.objectForKey("sinceID") as? String
-            if (sinceID == "sinceID") {
-                sinceID = nil
+        if let cMessageData = self.currentMessage[indexPath.row] as? NSDictionary {
+            if (cMessageData.objectForKey("moreID") != nil && cMessageData.objectForKey("moreID") as! String != "moreID") {
+                var sinceID = cMessageData.objectForKey("sinceID") as? String
+                if (sinceID == "sinceID") {
+                    sinceID = nil
+                }
+                self.updateMessage(sinceID, aMoreIndex: indexPath.row)
+            } else {
+                var detailView = MessageDetailViewController(
+                    aMessageID: cMessageData.objectForKey("id_str") as! String,
+                    aMessageBody: cMessageData.objectForKey("text") as! String,
+                    aScreeName: cMessageData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                    aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as! String,
+                    aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                    aPostDetail: cMessageData.objectForKey("created_at") as! String)
+                self.navigationController!.pushViewController(detailView, animated: true)
+                
             }
-            self.updateMessage(sinceID, aMoreIndex: indexPath.row)
-        } else {
-            var detailView = MessageDetailViewController(
-                aMessageID: cMessageData.objectForKey("id_str") as! String,
-                aMessageBody: cMessageData.objectForKey("text") as! String,
-                aScreeName: cMessageData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as! String,
-                aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                aPostDetail: cMessageData.objectForKey("created_at") as! String)
-            self.navigationController!.pushViewController(detailView, animated: true)
-            
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func updateMessage(aSinceID: String?, aMoreIndex: Int?) {
@@ -142,9 +150,10 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentMessage[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as! String
-            // max_idは「以下」という判定になるので自身を含めない
-            params["max_id"] = BigInteger(string: strMoreID).decrement()
+            if var strMoreID = (self.currentMessage[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as? String {
+                // max_idは「以下」という判定になるので自身を含めない
+                params["max_id"] = BigInteger(string: strMoreID).decrement()
+            }
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
