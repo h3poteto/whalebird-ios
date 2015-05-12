@@ -75,7 +75,9 @@ class ConversationTableViewController: UITableViewController {
         
         self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        cell!.configureCell(self.newConversation[indexPath.row] as! NSDictionary)
+        if (self.newConversation[indexPath.row] as? NSDictionary != nil) {
+            cell!.configureCell(self.newConversation[indexPath.row] as! NSDictionary)
+        }
 
         return cell!
     }
@@ -105,24 +107,25 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.newConversation[indexPath.row] as! NSDictionary
-        var detailView = TweetDetailViewController(
-            aTweetID: cTweetData.objectForKey("id_str") as! String,
-            aTweetBody: cTweetData.objectForKey("text") as! String,
-            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-            aPostDetail: cTweetData.objectForKey("created_at") as! String,
-            aRetweetedName: nil,
-            aRetweetedProfileImage: nil,
-            aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-            aMedia: cTweetData.objectForKey("media") as? NSArray,
-            aParentArray: &self.newConversation,
-            aParentIndex: indexPath.row,
-            aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-        )
-        self.navigationController!.pushViewController(detailView, animated: true)
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if let cTweetData = self.newConversation[indexPath.row] as? NSDictionary {
+            var detailView = TweetDetailViewController(
+                aTweetID: cTweetData.objectForKey("id_str") as! String,
+                aTweetBody: cTweetData.objectForKey("text") as! String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                aPostDetail: cTweetData.objectForKey("created_at") as! String,
+                aRetweetedName: nil,
+                aRetweetedProfileImage: nil,
+                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                aMedia: cTweetData.objectForKey("media") as? NSArray,
+                aParentArray: &self.newConversation,
+                aParentIndex: indexPath.row,
+                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
+            )
+            self.navigationController?.pushViewController(detailView, animated: true)
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
     }
     
     
@@ -138,8 +141,9 @@ class ConversationTableViewController: UITableViewController {
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
                 for timeline in aNewConversation {
-                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
-                    self.newConversation.insert(mutableTimeline, atIndex: 0)
+                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        self.newConversation.insert(mutableTimeline, atIndex: 0)                        
+                    }
                 }
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
