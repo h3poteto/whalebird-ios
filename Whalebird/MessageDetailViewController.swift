@@ -107,7 +107,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + MessageDetailViewController.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody!) as String
+        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody) as String
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
@@ -136,7 +136,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
 
     func tappedReplyMessage() {
         var newMessage = NewDirectMessageViewController(aReplyToUser: self.screenName)
-        self.navigationController!.pushViewController(newMessage, animated: true)
+        self.navigationController?.pushViewController(newMessage, animated: true)
     }
     
 
