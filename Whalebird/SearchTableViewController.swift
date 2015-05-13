@@ -84,52 +84,50 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.resultCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        cell!.configureCell(self.currentResult[indexPath.row] as! NSDictionary)
-        // Configure the cell...
+        if var targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+            cell!.configureCell(targetResult)
+        }
 
         return cell!
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        if (self.resultCell.count > 0 && indexPath.row < self.resultCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as! NSDictionary)
-        } else {
-            height = 60.0
+        var height = CGFloat(60)
+        if let targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        if (self.resultCell.count > 0 && indexPath.row < self.resultCell.count) {
-            height = TimelineViewCell.estimateCellHeight(self.currentResult[indexPath.row] as! NSDictionary)
-        } else {
-            height = 60.0
+        var height = CGFloat(60)
+        if let targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
     }
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.currentResult[indexPath.row] as! NSDictionary
-        var detailView = TweetDetailViewController(
-            aTweetID: cTweetData.objectForKey("id_str") as! String,
-            aTweetBody: cTweetData.objectForKey("text") as! String,
-            aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-            aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-            aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-            aPostDetail: cTweetData.objectForKey("created_at") as! String,
-            aRetweetedName: nil,
-            aRetweetedProfileImage: nil,
-            aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-            aMedia: cTweetData.objectForKey("media") as? NSArray,
-            aParentArray: &self.currentResult,
-            aParentIndex: indexPath.row,
-            aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
-        )
-        self.navigationController!.pushViewController(detailView, animated: true)
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if let cTweetData = self.currentResult[indexPath.row] as? NSDictionary {
+            var detailView = TweetDetailViewController(
+                aTweetID: cTweetData.objectForKey("id_str") as! String,
+                aTweetBody: cTweetData.objectForKey("text") as! String,
+                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                aPostDetail: cTweetData.objectForKey("created_at") as! String,
+                aRetweetedName: nil,
+                aRetweetedProfileImage: nil,
+                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                aMedia: cTweetData.objectForKey("media") as? NSArray,
+                aParentArray: &self.currentResult,
+                aParentIndex: indexPath.row,
+                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
+            )
+            self.navigationController?.pushViewController(detailView, animated: true)
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
     }
    
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
@@ -161,8 +159,9 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             dispatch_async(q_main, { () -> Void in
                 self.newResult = []
                 for timeline in aNewResult {
-                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
-                    self.newResult.append(mutableTimeline)
+                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        self.newResult.append(mutableTimeline)
+                    }
                 }
                 if (self.newResult.count > 0) {
                     for newResult in self.newResult {
