@@ -140,14 +140,15 @@ class StackListTableViewController: UITableViewController {
     }
 
     func decideSelected(sender: AnyObject) {
-        self.navigationController!.popViewControllerAnimated(true)
-        if let selectedArray = self.tableView.indexPathsForSelectedRows() as Array! {
+        self.navigationController?.popViewControllerAnimated(true)
+        if let selectedArray = self.tableView.indexPathsForSelectedRows() as Array? {
             if (selectedArray.count > 0) {
                 let cViewControllers = self.navigationController!.viewControllers as NSArray
                 let cViewControllersCount = cViewControllers.count as Int
-                let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as! ListTableViewController
-                for index in selectedArray {
-                    cParentController.streamList.append(self.stackListArray[index.row])
+                if let cParentController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as? ListTableViewController {
+                    for index in selectedArray {
+                        cParentController.streamList.append(self.stackListArray[index.row])
+                    }
                 }
             }
         }
