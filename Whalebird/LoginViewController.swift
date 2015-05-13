@@ -10,9 +10,10 @@ import UIKit
 
 class ExWebView: UIWebView {
     override func loadRequest(request: NSURLRequest) {
-        var mRequest = request.mutableCopy() as! NSMutableURLRequest
-        mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
-        super.loadRequest(mRequest)
+        if var mRequest = request.mutableCopy() as? NSMutableURLRequest {
+            mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
+            super.loadRequest(mRequest)
+        }
     }
 }
 
@@ -76,7 +77,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
                     SVProgressHUD.dismiss()
                 })
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.navigationController!.popViewControllerAnimated(true)
+                self.navigationController?.popViewControllerAnimated(true)
             }, failure: { (error) -> Void in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false                
             })
