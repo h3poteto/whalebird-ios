@@ -97,8 +97,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        if self.currentTimeline[indexPath.row] as? NSDictionary != nil {
-            cell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            cell!.configureCell(targetTimeline)
         }
 
         return cell!
@@ -106,16 +106,16 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.currentTimeline[indexPath.row] as? NSDictionary {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
     }
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.currentTimeline[indexPath.row] as? NSDictionary {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
     }
