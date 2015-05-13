@@ -61,10 +61,9 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.tableView.separatorInset = UIEdgeInsetsZero
         
         var userDefaults = NSUserDefaults.standardUserDefaults()
-        var userStreamList = userDefaults.arrayForKey("streamList") as Array?
-        if (userStreamList != nil) {
+        if var userStreamList = userDefaults.arrayForKey("streamList") as Array? {
             self.streamList.removeAll()
-            for streamList in userStreamList! {
+            for streamList in userStreamList {
                 self.streamList.insert(Stream(
                     image: streamList.objectForKey("image") as! String,
                     name: streamList.objectForKey("name") as! String,
@@ -122,8 +121,8 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel!.text = self.streamList[indexPath.row].name
-        cell.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
+        cell.textLabel?.text = self.streamList[indexPath.row].name
+        cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         switch self.streamList[indexPath.row].type {
         case "list":
             cell.imageView?.image = UIImage(named: "assets/List-Dots.png")
