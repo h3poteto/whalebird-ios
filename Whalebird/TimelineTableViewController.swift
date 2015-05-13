@@ -30,7 +30,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "タイムライン"
         self.tabBarItem.image = UIImage(named: "assets/Home.png")
@@ -62,17 +62,17 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var getSinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
         self.sinceId = getSinceId
         
-        var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
-        if (homeTimeline != nil) {
-            for tweet in homeTimeline! {
+        if var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array? {
+            for tweet in homeTimeline {
                 self.currentTimeline.insert(tweet, atIndex: 0)
             }
-            var moreID = self.currentTimeline.last?.objectForKey("id_str") as! String
-            var readMoreDictionary = NSMutableDictionary(dictionary: [
-                "moreID" : moreID,
-                "sinceID" : "sinceID"
-                ])
-            self.currentTimeline.insert(readMoreDictionary, atIndex: self.currentTimeline.count)
+            if var moreID = self.currentTimeline.last?.objectForKey("id_str") as? String {
+                var readMoreDictionary = NSMutableDictionary(dictionary: [
+                    "moreID" : moreID,
+                    "sinceID" : "sinceID"
+                    ])
+                self.currentTimeline.insert(readMoreDictionary, atIndex: self.currentTimeline.count)
+            }
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -135,52 +135,59 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
 
         cell!.cleanCell()
-        cell!.configureCell(self.currentTimeline[indexPath.row] as! NSDictionary)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            cell!.configureCell(targetTimeline)
+        }
 
         return cell!
     }
     
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline)
+        }
         return height
     }
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height: CGFloat!
-        height = TimelineViewCell.estimateCellHeight(self.currentTimeline[indexPath.row] as! NSDictionary)
+        var height = CGFloat(60)
+        if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline)
+        }
         return height
     }
 
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cTweetData = self.currentTimeline[indexPath.row] as! NSDictionary
-        if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as! String != "moreID") {
-            var sinceID = cTweetData.objectForKey("sinceID") as? String
-            if (sinceID == "sinceID") {
-                sinceID = nil
+        if let cTweetData = self.currentTimeline[indexPath.row] as? NSDictionary {
+            if (cTweetData.objectForKey("moreID") != nil && cTweetData.objectForKey("moreID") as! String != "moreID") {
+                var sinceID = cTweetData.objectForKey("sinceID") as? String
+                if (sinceID == "sinceID") {
+                    sinceID = nil
+                }
+                self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
+            } else {
+                var detailView = TweetDetailViewController(
+                    aTweetID: cTweetData.objectForKey("id_str") as! String,
+                    aTweetBody: cTweetData.objectForKey("text")as! String,
+                    aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
+                    aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
+                    aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
+                    aPostDetail: cTweetData.objectForKey("created_at") as! String,
+                    aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
+                    aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
+                    aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
+                    aMedia: cTweetData.objectForKey("media") as? NSArray,
+                    aParentArray: &self.currentTimeline,
+                    aParentIndex: indexPath.row,
+                    aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
+                )
+                self.navigationController?.pushViewController(detailView, animated: true)
             }
-            self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
-        } else {
-            var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as! String,
-                aTweetBody: cTweetData.objectForKey("text")as! String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                aPostDetail: cTweetData.objectForKey("created_at") as! String,
-                aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
-                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-                aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.currentTimeline,
-                aParentIndex: indexPath.row,
-                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-            )
-            self.navigationController!.pushViewController(detailView, animated: true)
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
 
@@ -193,10 +200,11 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as! String
-            // max_idは「以下」という判定になるので自身を含めない
-            // iPhone5以下は32bitなので，Intで扱える範囲を超える
-            params["max_id"] = BigInteger(string: strMoreID).decrement()
+            if var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as? String {
+                // max_idは「以下」という判定になるので自身を含めない
+                // iPhone5以下は32bitなので，Intで扱える範囲を超える
+                params["max_id"] = BigInteger(string: strMoreID).decrement()
+            }
         }
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
@@ -207,8 +215,9 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
             dispatch_async(q_main, {()->Void in
                 self.newTimeline = []
                 for timeline in aNewTimeline {
-                    var mutableTimeline = timeline.mutableCopy() as! NSMutableDictionary
-                    self.newTimeline.append(mutableTimeline)
+                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        self.newTimeline.append(mutableTimeline)
+                    }
                 }
                 var currentRowIndex: Int?
                 if (self.newTimeline.count > 0) {
@@ -304,7 +313,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     
     func tappedNewTweet() {
         var newTweetView = NewTweetViewController()
-        self.navigationController!.pushViewController(newTweetView, animated: true)
+        self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {

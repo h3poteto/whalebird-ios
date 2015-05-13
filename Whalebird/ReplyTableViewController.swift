@@ -144,7 +144,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
                 )
-                self.navigationController!.pushViewController(detailView, animated: true)
+                self.navigationController?.pushViewController(detailView, animated: true)
             }
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }

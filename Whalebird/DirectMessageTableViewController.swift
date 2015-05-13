@@ -135,7 +135,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                     aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as! String,
                     aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
                     aPostDetail: cMessageData.objectForKey("created_at") as! String)
-                self.navigationController!.pushViewController(detailView, animated: true)
+                self.navigationController?.pushViewController(detailView, animated: true)
                 
             }
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
