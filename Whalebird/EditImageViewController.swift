@@ -213,9 +213,11 @@ class EditImageViewController: UIViewController {
 
         CGContextDrawImage(bitmap, CGRectMake(0, 0, sendWidth, sendHeight), imageRef)
         var ref = CGBitmapContextCreateImage(bitmap)
-        var newImage = UIImage(CGImage: ref) as UIImage!
-        
-        return newImage
+        if let newImage = UIImage(CGImage: ref) as UIImage? {
+            return newImage
+        } else {
+            return srcImage
+        }
     }
     
     func radian(degree: Float) -> CGFloat {
