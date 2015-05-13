@@ -150,7 +150,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }
         var newTweetView = NewTweetViewController()
-        self.navigationController!.pushViewController(newTweetView, animated: true)
+        self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
