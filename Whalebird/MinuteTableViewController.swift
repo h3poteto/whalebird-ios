@@ -30,9 +30,8 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
         self.init()
         // ここでNSUserDefaultから下書きを読み込み
         var userDefault = NSUserDefaults.standardUserDefaults()
-        var readMinutesArray: AnyObject? = userDefault.objectForKey("minutesArray")
-        if (readMinutesArray != nil ) {
-            self.minutesArray = userDefault.objectForKey("minutesArray") as! Array<AnyObject>
+        if var readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
+            self.minutesArray = readMinutesArray
         }
     }
 
@@ -85,27 +84,22 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "MinuteCell")
-        cell.textLabel!.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
+        cell.textLabel?.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
 
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cViewControllers = self.navigationController!.viewControllers as NSArray
-        let cViewControllersCount = cViewControllers.count  as Int
-        let cParentController: NewTweetViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as! NewTweetViewController
-        cParentController.newTweetText.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as! String
-        cParentController.replyToID = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("replyToID") as? String
-        self.navigationController!.popViewControllerAnimated(true)
+        if let cViewControllers = self.navigationController?.viewControllers as NSArray? {
+            let cViewControllersCount = cViewControllers.count  as Int
+            if let cParentController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as? NewTweetViewController {
+                cParentController.newTweetText.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
+                cParentController.replyToID = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("replyToID") as? String
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        }
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     
     // Override to support editing the table view.
@@ -122,30 +116,6 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     }
     
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // 配列の先頭に下書きを追加して，NSUserDefaultにも保存
     func addMinute(minuteString: String!, minuteReplyToID: String?) {
