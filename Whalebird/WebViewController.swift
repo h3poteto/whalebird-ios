@@ -41,7 +41,9 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         self.webView.scalesPageToFit = true
         self.webView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.webView.delegate = self
-        self.webView.loadRequest(NSURLRequest(URL: NSURL(string: self.whalebirdURL + self.openURL)!))
+        if let requestURL = NSURL(string: self.whalebirdURL + self.openURL) {
+            self.webView.loadRequest(NSURLRequest(URL: requestURL))
+        }
         self.view.addSubview(self.webView)
         // Do any additional setup after loading the view.
     }
