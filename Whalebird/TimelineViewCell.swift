@@ -203,7 +203,7 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             if (retweeted) {
                 var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as! String)
-                self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "assets/Warning.png"))
+                self.retweetedProfileImageLabel?.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "assets/Warning.png"))
             }
             
             let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as! String
