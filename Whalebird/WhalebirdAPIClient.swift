@@ -349,11 +349,15 @@ class WhalebirdAPIClient: NSObject {
             errorMessage = "ログインしなおしてください"
         } else if (operation.response.statusCode == 200) {
             errorMessage = "予期しないエラーが発生しました"
-        } else {
+        } else if (operation.response.statusCode == 499) {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
             if let jsonData = NSJSONSerialization.JSONObjectWithData(operation.responseData, options: nil, error: nil) as? NSDictionary {
-                errorMessage = jsonData.objectForKey("errors") as! String
+                if jsonData.objectForKey("errors") as? String != nil {
+                    errorMessage = jsonData.objectForKey("errors") as! String
+                }
             }
+        } else {
+            errorMessage = "Status Code: " + String(operation.response.statusCode)
         }
 
         var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Error", message: errorMessage)
