@@ -26,8 +26,8 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
         super.init(style: style)
     }
     
-    convenience init() {
-        self.init()
+    init() {
+        super.init(style: UITableViewStyle.Plain)
         // ここでNSUserDefaultから下書きを読み込み
         var userDefault = NSUserDefaults.standardUserDefaults()
         if var readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
