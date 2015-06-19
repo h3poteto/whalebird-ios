@@ -159,7 +159,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             "settings" : params
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", params: cParameter) { (aNewMessage) -> Void in
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", params: cParameter) { [unowned self] (aNewMessage) -> Void in
             var q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 self.newMessage = aNewMessage as Array<AnyObject>
@@ -262,10 +262,10 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanMessageArray: Array<NSMutableDictionary> = []
         let cMessageMin = min(self.currentMessage.count, self.tweetCount)
-        if (cMessageMin <= 0) {
+        if (cMessageMin < 1) {
             return
         }
-        for message in self.currentMessage[0...(cMessageMin - 2)] {
+        for message in self.currentMessage[0...(cMessageMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(message as! NSDictionary)
             cleanMessageArray.append(dic)
         }

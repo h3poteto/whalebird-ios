@@ -325,10 +325,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
-        if (cTimelineMin <= 1) {
+        if (cTimelineMin < 1) {
             return
         }
-        for timeline in self.currentTimeline[0...(cTimelineMin - 2)] {
+        for timeline in self.currentTimeline[0...(cTimelineMin - 1)] {
             var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as! NSDictionary)
             cleanTimelineArray.append(dic)
         }
