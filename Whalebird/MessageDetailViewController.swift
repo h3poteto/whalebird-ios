@@ -121,7 +121,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.view.addSubview(self.postDetailLabel)
         
-        self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedReplyMessage")
+        self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: "tappedReplyMessage")
         self.navigationItem.rightBarButtonItem = self.replyMessageButton
     }
 
