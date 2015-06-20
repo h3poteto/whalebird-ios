@@ -12,7 +12,6 @@ class NotificationUnread: NSObject {
     class func decrementUnreadBadge() {
         UIApplication.sharedApplication().applicationIconBadgeNumber--
         var params: Dictionary<String, AnyObject> = [:]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/read.json", params: params) { (response) -> Void in
         }
     }
