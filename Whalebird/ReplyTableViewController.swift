@@ -265,7 +265,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        NotificationUnread.clearUnreadBadge()
     }
     
     func tappedNewTweet(sender: AnyObject) {

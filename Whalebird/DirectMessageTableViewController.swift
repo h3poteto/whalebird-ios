@@ -249,7 +249,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         self.refreshMessage.beginRefreshing()
         updateMessage(self.sinceId, aMoreIndex: nil)
         self.refreshMessage.endRefreshing()
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        NotificationUnread.clearUnreadBadge()
     }
     
     

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02F66BA45B9041EDB31326DE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F93BA7217F214FE3BC6C20D1 /* libPods.a */; };
+		E9073A9E1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */; };
+		E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */; };
 		E9124399199524E000795EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9124398199524E000795EF0 /* AppDelegate.swift */; };
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
@@ -93,6 +95,7 @@
 /* Begin PBXFileReference section */
 		6302B3575397933379859006 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUnread.swift; sourceTree = "<group>"; };
 		E9124393199524E000795EF0 /* Whalebird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whalebird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9124397199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9124398199524E000795EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -226,6 +229,7 @@
 			children = (
 				E9D493BE1A35BBDB00DE2051 /* Settings.bundle */,
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
+				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
 				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
 				E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */,
@@ -449,6 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */,
+				E9073A9E1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */,
 				E9E9206D1A8E011E002F24D0 /* MinuteTableViewController.swift in Sources */,
 				E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */,
 				E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */,
@@ -490,6 +495,7 @@
 				E92C49F81A9C6D27006BD492 /* ListTableViewController.swift in Sources */,
 				E92C49E91A9C6CAE006BD492 /* MediaViewController.swift in Sources */,
 				E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */,
+				E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */,
 				E92C49F41A9C6D19006BD492 /* UserstreamAPIClient.swift in Sources */,
 				E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */,
 				E92C49F01A9C6CC0006BD492 /* NewTweetViewController.swift in Sources */,

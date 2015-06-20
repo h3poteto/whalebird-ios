@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             self.alertPosition = navigationController.navigationBar.frame.origin.y + navigationController.navigationBar.frame.size.height
         }
         
-        // RemoteNotificationからの復帰処理
+        // RemoteNotificationからのアプリ起動処理
         if (launchOptions != nil) {
             if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary {
                 var dummyArray: Array<AnyObject> = []
@@ -87,6 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aProtected: userInfo.objectForKey("protected") as? Bool
                     )
                     
+                    NotificationUnread.decrementUnreadBadge()
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                 } else if(userInfo.objectForKey("aps")?.objectForKey("category") as? String == "direct_message") {
@@ -98,6 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
                         aPostDetail: userInfo.objectForKey("created_at") as! String)
                     
+                    NotificationUnread.decrementUnreadBadge()
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                 } else if(userInfo.objectForKey("aps")?.objectForKey("category") as? String == "retweet") {
                     if (userInfo.objectForKey("id") != nil) {
@@ -228,6 +230,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if let aps = userInfo["aps"] as? NSDictionary {
             if let message = aps.objectForKey("alert") as? String, let category = aps.objectForKey("category") as? String {
                 if (application.applicationState == UIApplicationState.Active && (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag"))) {
+                    // 起動中の通知
+                    
                     if (userDefault.integerForKey("notificationType") == 2 ) {
                         // wbによる通知
                         var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
@@ -256,7 +260,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                     aParentIndex: nil,
                                     aProtected: userInfo["protected"] as? Bool
                                 )
-                                
+                                NotificationUnread.decrementUnreadBadge()
                                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                             })
@@ -275,7 +279,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                     aScreeName: userInfo["screen_name"] as! String,
                                     aUserName: userInfo["name"] as! String,
                                     aProfileImage: userInfo["profile_image_url"] as! String,
-                                    aPostDetail: userInfo["created_at"] as! String)
+                                    aPostDetail: userInfo["created_at"] as! String
+                                )
+                                NotificationUnread.decrementUnreadBadge()
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                             })
                             let cOkAction = UIAlertAction(title: "閉じる", style: .Default, handler: { (action) -> Void in
@@ -304,6 +310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         }
                     }
                 } else if (application.applicationState != UIApplicationState.Active) {
+                    // 起動済みで通知から復旧した時
                     switch(category) {
                     case "reply":
                         var dummyArray: Array<AnyObject> = []
@@ -323,6 +330,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aProtected: userInfo["protected"] as? Bool
                         )
                         
+                        NotificationUnread.decrementUnreadBadge()
+                        
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         break
@@ -333,7 +342,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aScreeName: userInfo["screen_name"] as! String,
                             aUserName: userInfo["name"] as! String,
                             aProfileImage: userInfo["profile_image_url"] as! String,
-                            aPostDetail: userInfo["created_at"] as! String)
+                            aPostDetail: userInfo["created_at"] as! String
+                        )
+                        NotificationUnread.decrementUnreadBadge()
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                         break
                     case "favorite":

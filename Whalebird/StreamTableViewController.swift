@@ -324,7 +324,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        NotificationUnread.clearUnreadBadge()
     }
     
     
