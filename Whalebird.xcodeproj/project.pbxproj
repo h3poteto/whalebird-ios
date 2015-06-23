@@ -14,6 +14,8 @@
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
 		E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
+		E916DF581B386BD00028CCC3 /* FirendsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E916DF571B386BD00028CCC3 /* FirendsList.swift */; };
+		E916DF591B386BD00028CCC3 /* FirendsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E916DF571B386BD00028CCC3 /* FirendsList.swift */; };
 		E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */; };
 		E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */; };
 		E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */; };
@@ -104,6 +106,7 @@
 		E91243AA199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E91243AB199524E000795EF0 /* WhalebirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhalebirdTests.swift; sourceTree = "<group>"; };
 		E91243B5199525C200795EF0 /* TimelineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewController.swift; sourceTree = "<group>"; };
+		E916DF571B386BD00028CCC3 /* FirendsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirendsList.swift; sourceTree = "<group>"; };
 		E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectMessageTableViewController.swift; sourceTree = "<group>"; };
 		E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
 		E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewDirectMessageViewController.swift; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 			children = (
 				E9D493BE1A35BBDB00DE2051 /* Settings.bundle */,
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
+				E916DF571B386BD00028CCC3 /* FirendsList.swift */,
 				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
 				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
 				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
@@ -475,6 +479,7 @@
 				E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
+				E916DF581B386BD00028CCC3 /* FirendsList.swift in Sources */,
 				E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
@@ -492,6 +497,7 @@
 				E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */,
 				E92C49F61A9C6D1E006BD492 /* StreamTableViewController.swift in Sources */,
 				E92C49F21A9C6D14006BD492 /* MinuteTableViewController.swift in Sources */,
+				E916DF591B386BD00028CCC3 /* FirendsList.swift in Sources */,
 				E92C49F81A9C6D27006BD492 /* ListTableViewController.swift in Sources */,
 				E92C49E91A9C6CAE006BD492 /* MediaViewController.swift in Sources */,
 				E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */,
@@ -619,7 +625,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				APIURL = "http://192.168.55.13:3000/";
+				APIURL = "http://192.168.11.10:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;

@@ -179,6 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         SVProgressHUD.setBackgroundColor(UIColor.blackColor())
         SVProgressHUD.setForegroundColor(UIColor.whiteColor())
         
+        FriendsList.sharedClient.saveFirendsInCache()
         
         return true
     }
