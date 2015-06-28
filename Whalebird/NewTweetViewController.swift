@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditImageViewControllerDelegate {
+class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditImageViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     //=============================================
     //  instance variables
@@ -36,6 +36,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var newTweetMediaCloseButton: Array<UIButton> = []
     var fTopCursor = false
     var fUploadProgress = false
+    var screenNameRange: NSRange?
+    var friendsTable: UITableView?
+    var friendsList: Array<String>?
     
     
     //======================================
@@ -110,6 +113,35 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.currentCharactersView != nil) {
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
+        
+        // TODO ここの判定が死ぬほどむずい
+        // @で始まっている連語であることを確認，アルファベットの
+        
+        if text == "@" {
+            self.screenNameRange = NSRange(location: range.location, length: 0)
+        } else if text == " " || text == "　" {
+            self.screenNameRange = nil
+        }
+        
+        if self.screenNameRange != nil {
+            self.screenNameRange!.length = range.location - self.screenNameRange!.location
+            // @を切り捨てる
+            var name = ((textView.text as NSString).substringWithRange(self.screenNameRange!) + text)
+            if count(name) > 0 {
+                var screen_name = (name as NSString).substringFromIndex(1)
+                if let textRange = textView.selectedTextRange {
+                    let position = textView.caretRectForPosition(textRange.start)
+                    FriendsList.sharedClient.searchFriends(screen_name, callback: { (friends) -> Void in
+                        // ここでtable更新
+                        self.displayFriendsTable(friends, position: position)
+                    })
+                }
+            } else {
+                // table削除
+                self.removeFriendsTable()
+            }
+        }
+        
         return true
     }
     
@@ -387,5 +419,50 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 self.navigationController?.popViewControllerAnimated(true)
             })
         }
+    }
+    
+    func displayFriendsTable(friendsList: Array<String>, position: CGRect) {
+        self.friendsList = friendsList
+        // position計算
+        var tableTop = self.navigationController!.navigationBar.frame.size.height +  UIApplication.sharedApplication().statusBarFrame.height + position.origin.y + position.height
+        
+        var tableHeight = self.maxSize.height
+        if let optionBar = self.optionItemBar {
+            tableHeight = optionBar.frame.origin.y - tableTop
+        }
+        if self.friendsTable == nil {
+            self.friendsTable = UITableView(frame: CGRectMake(0, tableTop, self.maxSize.width, tableHeight))
+            self.friendsTable!.delegate = self
+            self.friendsTable!.dataSource = self
+            self.view.addSubview(self.friendsTable!)
+        } else {
+            self.friendsTable!.frame = CGRectMake(0, tableTop, self.maxSize.width, tableHeight)
+            self.friendsTable!.reloadData()
+        }
+    }
+    
+    func removeFriendsTable() {
+        self.friendsTable?.removeFromSuperview()
+        self.friendsTable = nil
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.friendsList != nil {
+            return self.friendsList!.count
+        } else {
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+        if self.friendsList != nil {
+            cell.textLabel?.text = self.friendsList![indexPath.row] as String
+        }
+        return cell
     }
 }

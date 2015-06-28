@@ -24,9 +24,6 @@ class FriendsList: NSObject {
     var friendsList: Array<String>?
     var userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     
-    override init() {
-        super.init()
-    }
     
     func saveFirendsInCache() {
         if let screen_name = self.userDefaults.stringForKey("username") {
@@ -38,15 +35,13 @@ class FriendsList: NSObject {
                 "settings" : params
             ]
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/friend_screen_names.json", params: parameter) { (aFollows) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    if let screen_names = aFollows as? Array<AnyObject> {
-                        for name in screen_names {
-                            self.friendsList?.append((name.objectForKey("screen_name") as! String))
-                        }
-                        self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
+                if let screen_names = aFollows as? Array<AnyObject> {
+                    self.friendsList = []
+                    for name in screen_names {
+                        self.friendsList?.append((name.objectForKey("screen_name") as! String))
                     }
-                })
+                    self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
+                }
             }
         }
     }
@@ -59,6 +54,22 @@ class FriendsList: NSObject {
                 return friends
             }
             return nil
+        }
+    }
+    
+    func searchFriends(screen_name: String, callback:(Array<String>) -> Void) {
+        if count(screen_name) > 0 {
+            if let list = self.getFriendsFromCache() {
+                var matchFriends:Array<String> = []
+                for name in list {
+                    if name.hasPrefix(screen_name) {
+                        matchFriends.append(name)
+                    }
+                }
+                callback(matchFriends)
+            } else {
+                callback([])
+            }
         }
     }
 }
