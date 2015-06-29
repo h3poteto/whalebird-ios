@@ -114,9 +114,6 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
         
-        // TODO ここの判定が死ぬほどむずい
-        // @で始まっている連語であることを確認，アルファベットの
-        
         if text == "@" {
             self.screenNameRange = NSRange(location: range.location, length: 0)
         } else if text == " " || text == "　" {
@@ -125,9 +122,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         
         if self.screenNameRange != nil {
             self.screenNameRange!.length = range.location - self.screenNameRange!.location
-            // @を切り捨てる
             var name = ((textView.text as NSString).substringWithRange(self.screenNameRange!) + text)
             if count(name) > 0 {
+                // nameには@が含まれているので切り捨てたい
                 var screen_name = (name as NSString).substringFromIndex(1)
                 if let textRange = textView.selectedTextRange {
                     let position = textView.caretRectForPosition(textRange.start)
@@ -446,6 +443,18 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.friendsTable = nil
     }
     
+    func selectFriend(screen_name: String) {
+        let beginning = self.newTweetText.beginningOfDocument
+        if self.screenNameRange != nil {
+            if let start = self.newTweetText.positionFromPosition(beginning, offset: self.screenNameRange!.location) {
+                let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length + 1)
+                let textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                self.newTweetText.replaceRange(textRange, withText: "@" + screen_name + " ")
+                self.screenNameRange = nil
+            }
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -464,5 +473,12 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             cell.textLabel?.text = self.friendsList![indexPath.row] as String
         }
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if self.friendsList != nil {
+            self.selectFriend(self.friendsList![indexPath.row])
+        }
+        self.removeFriendsTable()
     }
 }
