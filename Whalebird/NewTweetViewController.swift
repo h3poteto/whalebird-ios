@@ -118,6 +118,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.screenNameRange = NSRange(location: range.location, length: 0)
         } else if text == " " || text == "　" {
             self.screenNameRange = nil
+            self.removeFriendsTable()
         }
         
         if self.screenNameRange != nil {
