@@ -447,8 +447,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         let beginning = self.newTweetText.beginningOfDocument
         if self.screenNameRange != nil {
             if let start = self.newTweetText.positionFromPosition(beginning, offset: self.screenNameRange!.location) {
-                let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length + 1)
-                let textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                var textRange: UITextRange!
+                if let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length + 1) {
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                } else {
+                    let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length)
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                }
                 self.newTweetText.replaceRange(textRange, withText: "@" + screen_name + " ")
                 self.screenNameRange = nil
             }
