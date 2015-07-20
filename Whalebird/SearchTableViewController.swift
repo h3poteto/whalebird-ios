@@ -154,29 +154,31 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
             "q" : self.tweetSearchBar.text
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", params: cParameter) { (aNewResult) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, { () -> Void in
-                self.newResult = []
-                for timeline in aNewResult {
-                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                        self.newResult.append(mutableTimeline)
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", displayError: true, params: cParameter,
+            completed: { (aNewResult) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, { () -> Void in
+                    self.newResult = []
+                    for timeline in aNewResult {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newResult.append(mutableTimeline)
+                        }
                     }
-                }
-                if (self.newResult.count > 0) {
-                    for newResult in self.newResult {
-                        self.currentResult.insert(newResult, atIndex: 0)
+                    if (self.newResult.count > 0) {
+                        for newResult in self.newResult {
+                            self.currentResult.insert(newResult, atIndex: 0)
+                        }
+                        self.tableView.reloadData()
                     }
-                    self.tableView.reloadData()
-                }
-                SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewResult.count) + "件")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
-                self.tweetSearchBar.resignFirstResponder()
-            })
-        }
+                    SVProgressHUD.dismiss()
+                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewResult.count) + "件")
+                    notice.alpha = 0.8
+                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                    notice.show()
+                    self.tweetSearchBar.resignFirstResponder()
+                })
+            }, failed: { () -> Void in
+        })
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {

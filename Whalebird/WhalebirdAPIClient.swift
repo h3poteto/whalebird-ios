@@ -131,19 +131,22 @@ class WhalebirdAPIClient: NSObject {
         
     }
     
-    func getArrayAPI(path: String, params: Dictionary<String, AnyObject>, callback: (NSArray) ->Void) {
+    func getArrayAPI(path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: (NSArray) ->Void, failed: () -> Void) {
         self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
             self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if let object = responseObject as? NSArray {
-                    callback(object.reverseObjectEnumerator().allObjects)
+                    completed(object.reverseObjectEnumerator().allObjects)
                 } else {
                     println("blank response")
                 }
             }, failure: { (operation, error) -> Void in
                 println(error)
-                self.displayErrorMessage(operation, error: error)
+                if displayError {
+                    self.displayErrorMessage(operation, error: error)
+                }
+                failed()
                 SVProgressHUD.dismiss()
             })
         } else {

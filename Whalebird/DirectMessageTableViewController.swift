@@ -159,89 +159,91 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             "settings" : params
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", params: cParameter) { [unowned self] (aNewMessage) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                self.newMessage = aNewMessage as Array<AnyObject>
-                var currentRowIndex: Int?
-                if (self.newMessage.count > 0) {
-                    if (aMoreIndex == nil) {
-                        // refreshによる更新
-                        if (self.newMessage.count >= self.tweetCount) {
-                            var moreID = self.newMessage.first?.objectForKey("id_str") as! String
-                            var readMoreDictionary = NSMutableDictionary()
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/direct_messages.json", displayError: true, params: cParameter,
+            completed: { [unowned self] (aNewMessage) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.newMessage = aNewMessage as Array<AnyObject>
+                    var currentRowIndex: Int?
+                    if (self.newMessage.count > 0) {
+                        if (aMoreIndex == nil) {
+                            // refreshによる更新
+                            if (self.newMessage.count >= self.tweetCount) {
+                                var moreID = self.newMessage.first?.objectForKey("id_str") as! String
+                                var readMoreDictionary = NSMutableDictionary()
+                                if (self.currentMessage.count > 0) {
+                                    var sinceID = self.currentMessage.first?.objectForKey("id_str") as! String
+                                    readMoreDictionary = NSMutableDictionary(dictionary: [
+                                        "moreID" : moreID,
+                                        "sinceID" : sinceID
+                                        ])
+                                } else {
+                                    readMoreDictionary = NSMutableDictionary(dictionary: [
+                                        "moreID" : moreID,
+                                        "sinceID" : "sinceID"
+                                        ])
+                                }
+                                self.newMessage.insert(readMoreDictionary, atIndex: 0)
+                            }
                             if (self.currentMessage.count > 0) {
-                                var sinceID = self.currentMessage.first?.objectForKey("id_str") as! String
-                                readMoreDictionary = NSMutableDictionary(dictionary: [
-                                    "moreID" : moreID,
-                                    "sinceID" : sinceID
-                                    ])
-                            } else {
-                                readMoreDictionary = NSMutableDictionary(dictionary: [
+                                currentRowIndex = self.newMessage.count
+                            }
+                            for newTweet in self.newMessage {
+                                self.currentMessage.insert(newTweet, atIndex: 0)
+                                self.sinceId = (newTweet as! NSDictionary).objectForKey("id_str") as? String
+                            }
+                        } else {
+                            // readMoreを押した場合
+                            // tableの途中なのかbottomなのかの判定
+                            if (aMoreIndex == self.currentMessage.count - 1) {
+                                // bottom
+                                var moreID = self.newMessage.first?.objectForKey("id_str") as! String
+                                var readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : "sinceID"
                                     ])
-                            }
-                            self.newMessage.insert(readMoreDictionary, atIndex: 0)
-                        }
-                        if (self.currentMessage.count > 0) {
-                            currentRowIndex = self.newMessage.count
-                        }
-                        for newTweet in self.newMessage {
-                            self.currentMessage.insert(newTweet, atIndex: 0)
-                            self.sinceId = (newTweet as! NSDictionary).objectForKey("id_str") as? String
-                        }
-                    } else {
-                        // readMoreを押した場合
-                        // tableの途中なのかbottomなのかの判定
-                        if (aMoreIndex == self.currentMessage.count - 1) {
-                            // bottom
-                            var moreID = self.newMessage.first?.objectForKey("id_str") as! String
-                            var readMoreDictionary = NSMutableDictionary(dictionary: [
-                                "moreID" : moreID,
-                                "sinceID" : "sinceID"
-                                ])
-                            self.newMessage.insert(readMoreDictionary, atIndex: 0)
-                            self.currentMessage.removeLast()
-                            self.currentMessage += self.newMessage.reverse()
-                        } else {
-                            // 途中
-                            if (self.newMessage.count >= self.tweetCount) {
-                                var moreID = self.newMessage.first?.objectForKey("id_str") as! String
-                                var sinceID = (self.currentMessage[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
-                                var readMoreDictionary = NSMutableDictionary(dictionary: [
-                                    "moreID" : moreID,
-                                    "sinceID" : sinceID
-                                    ])
                                 self.newMessage.insert(readMoreDictionary, atIndex: 0)
+                                self.currentMessage.removeLast()
+                                self.currentMessage += self.newMessage.reverse()
+                            } else {
+                                // 途中
+                                if (self.newMessage.count >= self.tweetCount) {
+                                    var moreID = self.newMessage.first?.objectForKey("id_str") as! String
+                                    var sinceID = (self.currentMessage[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
+                                    var readMoreDictionary = NSMutableDictionary(dictionary: [
+                                        "moreID" : moreID,
+                                        "sinceID" : sinceID
+                                        ])
+                                    self.newMessage.insert(readMoreDictionary, atIndex: 0)
+                                }
+                                self.currentMessage.removeAtIndex(aMoreIndex!)
+                                for newTweet in self.newMessage {
+                                    self.currentMessage.insert(newTweet, atIndex: aMoreIndex!)
+                                }
+                                
                             }
-                            self.currentMessage.removeAtIndex(aMoreIndex!)
-                            for newTweet in self.newMessage {
-                                self.currentMessage.insert(newTweet, atIndex: aMoreIndex!)
-                            }
-                            
                         }
+                        self.tableView.reloadData()
+                        var userDefault = NSUserDefaults.standardUserDefaults()
+                        if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
+                            var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                            self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                        }
+                        SVProgressHUD.dismiss()
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewMessage.count) + "件更新")
+                        notice.alpha = 0.8
+                        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                        notice.show()
+                    } else {
+                        SVProgressHUD.dismiss()
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                        notice.alpha = 0.8
+                        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                        notice.show()
                     }
-                    self.tableView.reloadData()
-                    var userDefault = NSUserDefaults.standardUserDefaults()
-                    if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                        var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
-                        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
-                    }
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewMessage.count) + "件更新")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                } else {
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                }
-            })
-        }
+                })
+            }, failed: { () -> Void in
+        })
     }
 
     

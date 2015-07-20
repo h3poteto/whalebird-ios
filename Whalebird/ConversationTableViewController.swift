@@ -132,18 +132,20 @@ class ConversationTableViewController: UITableViewController {
             "settings" : params
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", params: parameter) { (aNewConversation) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, { () -> Void in
-                for timeline in aNewConversation {
-                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                        self.newConversation.insert(mutableTimeline, atIndex: 0)                        
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", displayError: true, params: parameter,
+            completed: { (aNewConversation) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, { () -> Void in
+                    for timeline in aNewConversation {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newConversation.insert(mutableTimeline, atIndex: 0)
+                        }
                     }
-                }
-                self.tableView.reloadData()
-                SVProgressHUD.dismiss()
-            })
-        }
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
+                })
+            }, failed: { () -> Void in
+        })
     }
 
 }

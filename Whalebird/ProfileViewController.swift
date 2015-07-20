@@ -450,33 +450,35 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "screen_name" : self.twitterScreenName
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", params: cParameter) { [unowned self] (aNewTimeline) -> Void in
-            var q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                self.newTimeline = []
-                for timeline in aNewTimeline {
-                    if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                        self.newTimeline.append(mutableTimeline)
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: cParameter,
+            completed: { [unowned self] (aNewTimeline) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.newTimeline = []
+                    for timeline in aNewTimeline {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newTimeline.append(mutableTimeline)
+                        }
                     }
-                }
-                if (aMoreIndex == nil) {
-                    for newTweet in self.newTimeline {
-                        self.currentTimeline.insert(newTweet, atIndex: 0)
+                    if (aMoreIndex == nil) {
+                        for newTweet in self.newTimeline {
+                            self.currentTimeline.insert(newTweet, atIndex: 0)
+                        }
+                    } else {
+                        for newTweet in self.newTimeline.reverse() {
+                            self.currentTimeline.append(newTweet)
+                        }
                     }
-                } else {
-                    for newTweet in self.newTimeline.reverse() {
-                        self.currentTimeline.append(newTweet)
-                    }
-                }
-
-                // ここでtableView.contentSizeを再計算しないとだめっぽい
-                self.tableView.frame.size.height = CGFloat(self.currentTimeline.count) * 200.0 + self.headerHeight
-                self.tableView.reloadData()
-                self.scrollView.pullToRefreshView.stopAnimating()
-                self.scrollView.contentInset.top = self.headerHeight
-                SVProgressHUD.dismiss()
-            })
-        }
+                    
+                    // ここでtableView.contentSizeを再計算しないとだめっぽい
+                    self.tableView.frame.size.height = CGFloat(self.currentTimeline.count) * 200.0 + self.headerHeight
+                    self.tableView.reloadData()
+                    self.scrollView.pullToRefreshView.stopAnimating()
+                    self.scrollView.contentInset.top = self.headerHeight
+                    SVProgressHUD.dismiss()
+                })
+            }, failed: { () -> Void in
+        })
         
     }
     

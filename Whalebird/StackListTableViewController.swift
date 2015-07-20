@@ -75,23 +75,26 @@ class StackListTableViewController: UITableViewController {
                 "settings" : params
             ]
             SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-            WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", params: cParameter) { (aStackList) -> Void in
-                var q_main = dispatch_get_main_queue()
-                println(aStackList)
-                dispatch_async(q_main, {()->Void in
-                    for list in aStackList {
-                        var streamElement = ListTableViewController.Stream(
-                            image: "",
-                            name: list.objectForKey("full_name") as! String,
-                            type: "list",
-                            uri: list.objectForKey("uri") as! String,
-                            id: list.objectForKey("id_str") as! String)
-                        self.stackListArray.append(streamElement)
-                    }
-                    self.tableView.reloadData()
-                    SVProgressHUD.dismiss()
-                })
-            }
+            WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", displayError: true, params: cParameter,
+                completed: { (aStackList) -> Void in
+                    var q_main = dispatch_get_main_queue()
+                    println(aStackList)
+                    dispatch_async(q_main, {()->Void in
+                        for list in aStackList {
+                            var streamElement = ListTableViewController.Stream(
+                                image: "",
+                                name: list.objectForKey("full_name") as! String,
+                                type: "list",
+                                uri: list.objectForKey("uri") as! String,
+                                id: list.objectForKey("id_str") as! String)
+                            self.stackListArray.append(streamElement)
+                        }
+                        self.tableView.reloadData()
+                        SVProgressHUD.dismiss()
+                    })
+                }, failed: { () -> Void in
+                }
+            )
         }
 
     }
