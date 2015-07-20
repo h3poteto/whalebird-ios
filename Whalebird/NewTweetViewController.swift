@@ -136,6 +136,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 }
             } else {
                 // table削除
+                self.screenNameRange = nil
                 self.removeFriendsTable()
             }
         }
