@@ -601,7 +601,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -615,7 +615,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a7165932-53e5-4231-b791-b75b3829f0a5";
+				PROVISIONING_PROFILE = "ad30f739-3e98-4f55-97cc-5fd50a6ab091";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -658,7 +658,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -672,7 +672,7 @@
 					"$(SDKROOT)/usr/lib/system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a7165932-53e5-4231-b791-b75b3829f0a5";
+				PROVISIONING_PROFILE = "ad30f739-3e98-4f55-97cc-5fd50a6ab091";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				WebURL = "http://whalebird.org/";
 			};
