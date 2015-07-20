@@ -77,7 +77,12 @@ class EditImageViewController: UIViewController {
     }
     
     func tappedCancel() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        // カメラのときは戻すだけだと操作不能になるのでpicker自体を消す
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+            if self.picker.sourceType == UIImagePickerControllerSourceType.Camera {
+                self.picker.dismissViewControllerAnimated(true, completion: nil)
+            }
+        })
     }
     
     //-----------------------------------------
