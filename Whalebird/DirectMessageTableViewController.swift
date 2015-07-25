@@ -127,7 +127,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     
     func updateMessage(aSinceID: String?, aMoreIndex: Int?) {
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        self.timelineModel.updateTimeline("users/apis/direct_messages.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex,
+        self.timelineModel.updateTimeline("users/apis/direct_messages.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
                 var userDefault = NSUserDefaults.standardUserDefaults()

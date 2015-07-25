@@ -56,7 +56,9 @@ class TimelineModel: NSObject {
         return self.currentTimeline[index] as? NSDictionary
     }
     
-    func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+    func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: ListTableViewController.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+
+        var apiURL = APIPath
         var params: Dictionary<String, String> = [
             "count" : String(self.tweetCount)
         ]
@@ -70,10 +72,33 @@ class TimelineModel: NSObject {
                 params["max_id"] = BigInteger(string: strMoreID).decrement()
             }
         }
-        let cParameter: Dictionary<String, AnyObject> = [
+        var requestParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: cParameter,
+        
+        // リストのと場合だけパラメータを上書きする必要がある
+        if streamElement != nil {
+            apiURL = "users/apis/list_timeline.json"
+            switch streamElement!.type {
+            case "list":
+                params["list_id"] = streamElement!.id as String!
+                break
+            case "myself":
+                apiURL = streamElement!.uri
+                break
+            case "search":
+                apiURL = streamElement!.uri
+                break
+            default:
+                break
+            }
+            
+            var userDefault = NSUserDefaults.standardUserDefaults()
+            requestParameter["settings"] = params
+            requestParameter["screen_name"] = userDefault.objectForKey("username") as! String
+            requestParameter["q"] = streamElement!.name
+        }
+        WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, displayError: true, params: requestParameter,
             completed: {aNewTimeline in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in

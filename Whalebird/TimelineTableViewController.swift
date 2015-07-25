@@ -174,7 +174,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex,
+        self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
                 var userDefault = NSUserDefaults.standardUserDefaults()

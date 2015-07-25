@@ -144,7 +144,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         return true
     }
 
-   
+    // このへんはオブジェクトをキャッシュしないので，timelineの処理とは違う
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         var params: Dictionary<String, String> = [
             "count" : String(self.tweetCount)

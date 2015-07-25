@@ -432,7 +432,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-
+    // 途中読み込みがないので，変則的なメソッド追加でtimelineModelに寄せられそう
     func updateTimeline(aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
