@@ -73,29 +73,19 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         
         // Home用のUserstream
         // TODO: timelineのモデル化によりこれは機能しなくなる
-        //self.prepareUserstream()
+        self.timelineModel.prepareUserstream()
     }
     
     func prepareUserstream() {
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
-            let cStreamURL = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
-            let cParams: Dictionary<String,String> = [
-                "with" : "followings"
-            ]
-            UserstreamAPIClient.sharedClient.timelineTable = self
-            UserstreamAPIClient.sharedClient.startStreaming(cStreamURL!, params: cParams, callback: {data in
-            })
-        }
+        self.timelineModel.prepareUserstream()
     }
     
     func appDidBecomeActive(notification: NSNotification) {
-        //self.prepareUserstream()
+        self.timelineModel.prepareUserstream()
     }
     
     func appWillResignActive(notification: NSNotification) {
-        UserstreamAPIClient.sharedClient.stopStreaming { () -> Void in
-        }
+        self.timelineModel.stopUserstream()
     }
 
     override func didReceiveMemoryWarning() {

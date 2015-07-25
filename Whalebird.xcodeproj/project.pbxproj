@@ -233,37 +233,11 @@
 		E9124395199524E000795EF0 /* Whalebird */ = {
 			isa = PBXGroup;
 			children = (
+				E9AB53B51B63CFBB00C53942 /* ViewController */,
+				E9AB53B41B63CF4E00C53942 /* Model */,
 				E9D493BE1A35BBDB00DE2051 /* Settings.bundle */,
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
-				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
-				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
-				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
-				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
-				E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */,
-				E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */,
-				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
-				E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */,
-				E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */,
-				E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */,
-				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
-				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
-				E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */,
-				E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */,
-				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
-				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
-				E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */,
-				E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */,
-				E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */,
-				E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */,
-				E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */,
-				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
-				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
-				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
-				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
-				E9AB53B11B63B79400C53942 /* TimelineModel.swift */,
-				E9514A761A9AF39700BC4811 /* BigInteger.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
-				E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */,
 				E99603A11A20E23400D23629 /* application.h */,
 				E9D86A401A41336F00920984 /* OriginalCryp.h */,
 				E9D86A411A41336F00920984 /* OriginalCryp.m */,
@@ -301,6 +275,48 @@
 				E91243AA199524E000795EF0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E9AB53B41B63CF4E00C53942 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
+				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
+				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
+				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
+				E9AB53B11B63B79400C53942 /* TimelineModel.swift */,
+				E9514A761A9AF39700BC4811 /* BigInteger.swift */,
+				E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		E9AB53B51B63CFBB00C53942 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */,
+				E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */,
+				E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */,
+				E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */,
+				E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */,
+				E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */,
+				E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */,
+				E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */,
+				E92D4C75199CF2B80017B751 /* ProfileViewController.swift */,
+				E96F678C199645E4004038DF /* NewTweetViewController.swift */,
+				E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */,
+				E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */,
+				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
+				E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */,
+				E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */,
+				E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */,
+				E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */,
+				E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */,
+				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
+				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
+				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
+			);
+			name = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -26,7 +26,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     var account: ACAccount!
     var accountStore = ACAccountStore()
     var connection: NSURLConnection?
-    var timelineTable: TimelineTableViewController?
+    var timeline: TimelineModel!
     
     //=======================================
     //  class methods
@@ -164,9 +164,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 } else {
                     object = UserstreamAPIClient.convertMedia(object) as NSMutableDictionary
                 }
-                //self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
-                //self.timelineTable?.sinceId = object.objectForKey("id_str") as? String
-                self.timelineTable?.tableView.reloadData()
+                self.timeline.realtimeUpdate(object)
             }
         }
     }

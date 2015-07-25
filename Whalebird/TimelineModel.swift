@@ -17,7 +17,7 @@ class TimelineModel: NSObject {
     var currentTimeline: Array<AnyObject> = []
     
     var sinceId: String?
-    
+    var userstreamApiClient: UserstreamAPIClient?
     
     // class methods
     class func selectMoreIdCell(tweetData: NSDictionary)-> Bool {
@@ -46,6 +46,7 @@ class TimelineModel: NSObject {
             }
         }
     }
+
     
     func count()-> Int {
         return self.currentTimeline.count
@@ -171,5 +172,32 @@ class TimelineModel: NSObject {
         }
         userDefaults.setObject(cleanTimelineArray.reverse(), forKey: timelineKey)
         userDefaults.setObject(self.sinceId, forKey: sinceIdKey)
+    }
+    
+    // userstream用
+    func prepareUserstream() {
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
+            let cStreamURL = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
+            let cParams: Dictionary<String,String> = [
+                "with" : "followings"
+            ]
+            UserstreamAPIClient.sharedClient.timeline = self
+            UserstreamAPIClient.sharedClient.startStreaming(cStreamURL!, params: cParams, callback: {data in
+            })
+        }
+    }
+    
+    func realtimeUpdate(object: NSMutableDictionary) {
+        self.currentTimeline.insert(object, atIndex: 0)
+        self.sinceId = object.objectForKey("id_str") as? String
+        // TODO: これなんとかしないと
+        // できればオブジェクトを介したやりとりをしたくない，せめてブロックでなんとかならないかなぁ
+        //self.timelineTable?.tableView.reloadData(
+    }
+    
+    func stopUserstream() {
+        UserstreamAPIClient.sharedClient.stopStreaming { () -> Void in
+        }
     }
 }
