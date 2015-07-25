@@ -29,9 +29,9 @@ class TimelineModel: NSObject {
     }
     
     
-    convenience init(getSinceId: String?, initTimeline: Array<AnyObject>?) {
+    convenience init(initSinceId: String?, initTimeline: Array<AnyObject>?) {
         self.init()
-        self.sinceId = getSinceId
+        self.sinceId = initSinceId
         
         if initTimeline != nil {
             for tweet in initTimeline! {
@@ -56,7 +56,7 @@ class TimelineModel: NSObject {
         return self.currentTimeline[index] as? NSDictionary
     }
     
-    func updateTimeline(aSinceID: String?, aMoreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+    func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
         var params: Dictionary<String, String> = [
             "count" : String(self.tweetCount)
         ]
@@ -73,7 +73,7 @@ class TimelineModel: NSObject {
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/home_timeline.json", displayError: true, params: cParameter,
+        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: cParameter,
             completed: {aNewTimeline in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
@@ -174,7 +174,9 @@ class TimelineModel: NSObject {
         userDefaults.setObject(self.sinceId, forKey: sinceIdKey)
     }
     
+    //----------------------------------------------
     // userstream用
+    //----------------------------------------------
     func prepareUserstream() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
@@ -200,4 +202,5 @@ class TimelineModel: NSObject {
         UserstreamAPIClient.sharedClient.stopStreaming { () -> Void in
         }
     }
+    //------------------------------------------------
 }

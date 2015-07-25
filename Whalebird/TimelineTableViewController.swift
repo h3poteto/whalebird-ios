@@ -57,10 +57,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
         var userDefaults = NSUserDefaults.standardUserDefaults()
-        var getSinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
+        var sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
         var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
         
-        self.timelineModel = TimelineModel(getSinceId: getSinceId, initTimeline: homeTimeline)
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
         
         // userstream発火のために必要
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -174,7 +174,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
         
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        self.timelineModel.updateTimeline(aSinceID, aMoreIndex: aMoreIndex,
+        self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
                 var userDefault = NSUserDefaults.standardUserDefaults()
