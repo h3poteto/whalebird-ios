@@ -164,8 +164,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 } else {
                     object = UserstreamAPIClient.convertMedia(object) as NSMutableDictionary
                 }
-                self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
-                self.timelineTable?.sinceId = object.objectForKey("id_str") as? String
+                //self.timelineTable?.currentTimeline.insert(object, atIndex: 0)
+                //self.timelineTable?.sinceId = object.objectForKey("id_str") as? String
                 self.timelineTable?.tableView.reloadData()
             }
         }
