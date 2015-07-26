@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TimelineModelDelegate {
+    func updateTimelineFromUserstream(timelineModel: TimelineModel)
+}
+
 class TimelineModel: NSObject {
     //=============================================
     //  instance variables
@@ -18,6 +22,8 @@ class TimelineModel: NSObject {
     
     var sinceId: String?
     var userstreamApiClient: UserstreamAPIClient?
+    
+    var delegate: TimelineModelDelegate!
     
     // class methods
     class func selectMoreIdCell(tweetData: NSDictionary)-> Bool {
@@ -307,9 +313,8 @@ class TimelineModel: NSObject {
     func realtimeUpdate(object: NSMutableDictionary) {
         self.currentTimeline.insert(object, atIndex: 0)
         self.sinceId = object.objectForKey("id_str") as? String
-        // TODO: これなんとかしないと
-        // できればオブジェクトを介したやりとりをしたくない，せめてブロックでなんとかならないかなぁ
-        //self.timelineTable?.tableView.reloadData(
+        // hometimelineの更新
+        self.delegate.updateTimelineFromUserstream(self)
     }
     
     func stopUserstream() {

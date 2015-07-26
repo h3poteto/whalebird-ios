@@ -9,7 +9,7 @@
 
 import UIKit
 
-class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate, TimelineModelDelegate {
 
     //=============================================
     //  instance variables
@@ -61,6 +61,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
+        self.timelineModel.delegate = self
         
         // userstream発火のために必要
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -210,6 +211,10 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     func tappedNewTweet() {
         var newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
+    }
+    
+    func updateTimelineFromUserstream(timelineModel: TimelineModel) {
+        self.tableView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
