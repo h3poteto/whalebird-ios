@@ -99,7 +99,7 @@ class TimelineModel: NSObject {
             requestParameter["screen_name"] = userDefault.objectForKey("username") as! String
             requestParameter["q"] = streamElement!.name
         }
-        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
+        WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, displayError: true, params: requestParameter,
             completed: {aNewTimeline in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
