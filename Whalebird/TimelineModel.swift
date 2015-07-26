@@ -181,7 +181,7 @@ class TimelineModel: NSObject {
     
     
     func updateTimelineWithoutMoreCell(APIPath: String, requestParameter: Dictionary<String, AnyObject>, moreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: requestParameter,
+        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
             completed: { [unowned self] (aNewTimeline) -> Void in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
