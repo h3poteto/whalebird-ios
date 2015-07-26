@@ -216,8 +216,7 @@ class TimelineModel: NSObject {
                     self.newTimeline = []
                     for timeline in aNewResult {
                         if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                            self.newTimeline
-                                .append(mutableTimeline)
+                            self.newTimeline.append(mutableTimeline)
                         }
                     }
                     if (self.newTimeline.count > 0) {
@@ -226,6 +225,28 @@ class TimelineModel: NSObject {
                         }
                         completed(aNewResult.count, nil)
                     } else {
+                        noUpdated()
+                    }
+                })
+            }, failed: { () -> Void in
+                failed()
+        })
+    }
+    
+    func updateTimelineOnlyNew(APIPath: String, requestParameter: Dictionary<String, AnyObject>, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", displayError: true, params: requestParameter,
+            completed: { (aNewTimeline) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, { () -> Void in
+                    for timeline in aNewTimeline {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newTimeline.insert(mutableTimeline, atIndex: 0)
+                        }
+                    }
+                    if self.newTimeline.count > 0 {
+                        self.currentTimeline = self.newTimeline
+                        completed(aNewTimeline.count, nil)
+                    } else{
                         noUpdated()
                     }
                 })

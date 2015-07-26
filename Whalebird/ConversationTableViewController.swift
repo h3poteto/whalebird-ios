@@ -14,9 +14,8 @@ class ConversationTableViewController: UITableViewController {
     //  instance variables
     //=============================================
     var rootTweetID: String!
-    var newConversation: Array<AnyObject> = []
     var conversationCell: Array<AnyObject> = []
-    
+    var timelineModel: TimelineModel!
     //=============================================
     //  instance methods
     //=============================================
@@ -32,6 +31,7 @@ class ConversationTableViewController: UITableViewController {
     convenience init(aTweetID: String) {
         self.init()
         self.rootTweetID = aTweetID
+        self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -64,7 +64,7 @@ class ConversationTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.newConversation.count
+        return self.timelineModel.count()
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -75,7 +75,7 @@ class ConversationTableViewController: UITableViewController {
         
         self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
             cell!.configureCell(targetMessage)
         }
 
@@ -84,7 +84,7 @@ class ConversationTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
@@ -94,7 +94,7 @@ class ConversationTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.newConversation[indexPath.row] as? NSDictionary {
+        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
@@ -102,7 +102,7 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.newConversation[indexPath.row] as? NSDictionary {
+        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
             var detailView = TweetDetailViewController(
                 aTweetID: cTweetData.objectForKey("id_str") as! String,
                 aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -114,7 +114,7 @@ class ConversationTableViewController: UITableViewController {
                 aRetweetedProfileImage: nil,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                 aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.newConversation,
+                aParentArray: &self.timelineModel.newTimeline,
                 aParentIndex: indexPath.row,
                 aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
             )
@@ -132,19 +132,14 @@ class ConversationTableViewController: UITableViewController {
             "settings" : params
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", displayError: true, params: parameter,
-            completed: { (aNewConversation) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, { () -> Void in
-                    for timeline in aNewConversation {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                            self.newConversation.insert(mutableTimeline, atIndex: 0)
-                        }
-                    }
-                    self.tableView.reloadData()
-                    SVProgressHUD.dismiss()
-                })
+        self.timelineModel.updateTimelineOnlyNew("users/apis/conversations.json", requestParameter: parameter,
+            completed: { (count, currentRowIndex) -> Void in
+                self.tableView.reloadData()
+                SVProgressHUD.dismiss()
+            }, noUpdated: { () -> Void in
+                SVProgressHUD.dismiss()
             }, failed: { () -> Void in
+            
         })
     }
 
