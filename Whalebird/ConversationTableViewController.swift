@@ -114,7 +114,7 @@ class ConversationTableViewController: UITableViewController {
                 aRetweetedProfileImage: nil,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                 aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.timelineModel.newTimeline,
+                aTimelineModel: self.timelineModel,
                 aParentIndex: indexPath.row,
                 aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
             )

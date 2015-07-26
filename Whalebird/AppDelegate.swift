@@ -69,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // RemoteNotificationからのアプリ起動処理
         if (launchOptions != nil) {
             if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary {
-                var dummyArray: Array<AnyObject> = []
                 if (userInfo.objectForKey("aps")?.objectForKey("category") as? String == "reply") {
                     var detailView = TweetDetailViewController(
                         aTweetID: userInfo.objectForKey("id") as! String,
@@ -82,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aRetweetedProfileImage: nil,
                         aFavorited: userInfo.objectForKey("favorited") as? Bool,
                         aMedia: userInfo.objectForKey("media") as? NSArray,
-                        aParentArray: &dummyArray,
+                        aTimelineModel: nil,
                         aParentIndex: nil,
                         aProtected: userInfo.objectForKey("protected") as? Bool
                     )
@@ -114,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aRetweetedProfileImage: nil,
                             aFavorited: userInfo.objectForKey("favorited") as? Bool,
                             aMedia: userInfo.objectForKey("media") as? NSArray,
-                            aParentArray: &dummyArray,
+                            aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo.objectForKey("protected") as? Bool
                         )
@@ -135,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aRetweetedProfileImage: nil,
                             aFavorited: userInfo.objectForKey("favorited") as? Bool,
                             aMedia: userInfo.objectForKey("media") as? NSArray,
-                            aParentArray: &dummyArray,
+                            aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo.objectForKey("protected") as? Bool
                         )
@@ -246,7 +245,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         case "reply":
                             var alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
-                                var dummyArray: Array<AnyObject> = []
                                 var detailViewController = TweetDetailViewController(
                                     aTweetID: userInfo["id"] as! String,
                                     aTweetBody: userInfo["text"] as! String,
@@ -258,7 +256,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                     aRetweetedProfileImage: nil,
                                     aFavorited: userInfo["favorited"] as? Bool,
                                     aMedia: userInfo["media"] as? NSArray,
-                                    aParentArray: &dummyArray,
+                                    aTimelineModel: nil,
                                     aParentIndex: nil,
                                     aProtected: userInfo["protected"] as? Bool
                                 )
@@ -315,7 +313,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // 起動済みで通知から復旧した時
                     switch(category) {
                     case "reply":
-                        var dummyArray: Array<AnyObject> = []
                         var detailViewController = TweetDetailViewController(
                             aTweetID: userInfo["id"] as! String,
                             aTweetBody: userInfo["text"] as! String,
@@ -327,7 +324,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aRetweetedProfileImage: nil,
                             aFavorited: userInfo["favorited"] as? Bool,
                             aMedia: userInfo["media"] as? NSArray,
-                            aParentArray: &dummyArray,
+                            aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo["protected"] as? Bool
                         )
@@ -351,7 +348,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         break
                     case "favorite":
                         if (userInfo["id"] != nil) {
-                            var dummyArray: Array<AnyObject> = []
                             var detailViewController = TweetDetailViewController(
                                 aTweetID: userInfo["id"] as! String,
                                 aTweetBody: userInfo["text"] as! String,
@@ -363,7 +359,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                 aRetweetedProfileImage: nil,
                                 aFavorited: userInfo["favorited"] as? Bool,
                                 aMedia: userInfo["media"] as? NSArray,
-                                aParentArray: &dummyArray,
+                                aTimelineModel: nil,
                                 aParentIndex: nil,
                                 aProtected: userInfo["protected"] as? Bool
                             )
@@ -373,7 +369,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         break
                     case "retweet":
                         if (userInfo["id"] != nil) {
-                            var dummyArray: Array<AnyObject> = []
                             var detailViewController = TweetDetailViewController(
                                 aTweetID: userInfo["id"] as! String,
                                 aTweetBody: userInfo["text"] as! String,
@@ -385,7 +380,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                 aRetweetedProfileImage: nil,
                                 aFavorited: userInfo["favorited"] as? Bool,
                                 aMedia: userInfo["media"] as? NSArray,
-                                aParentArray: &dummyArray,
+                                aTimelineModel: nil,
                                 aParentIndex: nil,
                                 aProtected: userInfo["protected"] as? Bool
                             )

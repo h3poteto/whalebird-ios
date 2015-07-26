@@ -159,7 +159,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                     aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
                     aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                     aMedia: cTweetData.objectForKey("media") as? NSArray,
-                    aParentArray: &self.timelineModel.currentTimeline,
+                    aTimelineModel: self.timelineModel,
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
                 )

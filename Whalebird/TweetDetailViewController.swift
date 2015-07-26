@@ -29,9 +29,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     var retweetedProfileImage: String?
     var fFavorited: Bool!
     var media: Array<String>?
-    var parentArray: Array<AnyObject>?
     var parentIndex: Int?
     var fProtected: Bool!
+    var timelineModel: TimelineModel?
     
     var blankView: UIScrollView!
     var screenNameLabel: UIButton!
@@ -64,7 +64,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init(coder: aDecoder)
     }
     
-    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, inout aParentArray: Array<AnyObject>, aParentIndex: Int?, aProtected: Bool?) {
+    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, aTimelineModel: TimelineModel?, aParentIndex: Int?, aProtected: Bool?) {
         self.init()
         self.tweetID = aTweetID
         self.tweetBody = aTweetBody
@@ -82,9 +82,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (aMedia != nil && aMedia?.count > 0) {
             self.media = aMedia as! Array<String>!
         }
-        if (aParentArray.count > 0) {
-            self.parentArray = aParentArray
-        }
+        self.timelineModel = aTimelineModel
         self.parentIndex = aParentIndex
         if (aProtected != nil) {
             self.fProtected = aProtected!
@@ -381,11 +379,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                             self.blankView.addSubview(self.favButton)
                         }
                     }
-                    // 親要素のツイート情報を書き換え
-                    if (self.parentArray != nil && self.parentIndex != nil) {
-                        if var parentObject = self.parentArray![self.parentIndex!] as? NSMutableDictionary {
-                            parentObject.setObject(0, forKey: "favorited?")
-                        }
+                    if self.timelineModel != nil && self.parentIndex != nil {
+                        self.timelineModel!.deleteFavorite(self.parentIndex!)
                     }
                 })
             }
@@ -419,10 +414,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                         }
                     }
                     // 親要素のツイート情報を書き換え
-                    if (self.parentArray != nil && self.parentIndex != nil) {
-                        if var parentObject = self.parentArray![self.parentIndex!] as? NSMutableDictionary {
-                            parentObject.setObject(1, forKey: "favorited?")
-                        }
+                    if self.timelineModel != nil && self.parentIndex != nil {
+                        self.timelineModel!.addFavorite(self.parentIndex!)
                     }
                 })
             }

@@ -276,6 +276,18 @@ class TimelineModel: NSObject {
         userDefaults.setObject(self.sinceId, forKey: sinceIdKey)
     }
     
+    func addFavorite(index: Int) {
+        if var object = self.getTeetAtIndex(index) as? NSMutableDictionary {
+            object.setObject(1, forKey: "favorited?")
+        }
+    }
+    
+    func deleteFavorite(index: Int) {
+        if var object = self.getTeetAtIndex(index) as? NSMutableDictionary {
+            object.setObject(0, forKey: "favorited?")
+        }
+    }
+    
     //----------------------------------------------
     // userstream用
     //----------------------------------------------
