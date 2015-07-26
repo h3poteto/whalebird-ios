@@ -13,12 +13,10 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     //=============================================
     //  instance variables
     //=============================================
-    var tweetCount = Int(50)
     var tweetSearchBar: UISearchBar!
-    var currentResult: Array<AnyObject> = []
-    var newResult: Array<AnyObject> = []
     var resultCell: Array<AnyObject> = []
     var saveButton: UIBarButtonItem!
+    var timelineModel: TimelineModel!
 
     //=============================================
     //  instance methods
@@ -49,6 +47,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         
         self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "saveResult")
         
+        self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -71,7 +71,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.currentResult.count
+        return self.timelineModel.count()
     }
 
     
@@ -84,7 +84,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.resultCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        if var targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+        if var targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
             cell!.configureCell(targetResult)
         }
 
@@ -93,7 +93,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+        if let targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
@@ -101,7 +101,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.currentResult[indexPath.row] as? NSDictionary {
+        if let targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
@@ -109,7 +109,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.currentResult[indexPath.row] as? NSDictionary {
+        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
             var detailView = TweetDetailViewController(
                 aTweetID: cTweetData.objectForKey("id_str") as! String,
                 aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -121,7 +121,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 aRetweetedProfileImage: nil,
                 aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                 aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aParentArray: &self.currentResult,
+                aParentArray: &self.timelineModel.currentTimeline,
                 aParentIndex: indexPath.row,
                 aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
             )
@@ -144,40 +144,29 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         return true
     }
 
-    // このへんはオブジェクトをキャッシュしないので，timelineの処理とは違う
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         var params: Dictionary<String, String> = [
-            "count" : String(self.tweetCount)
+            "count" : String(self.timelineModel.tweetCount)
         ]
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
             "q" : self.tweetSearchBar.text
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/search.json", displayError: true, params: cParameter,
-            completed: { (aNewResult) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, { () -> Void in
-                    self.newResult = []
-                    for timeline in aNewResult {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                            self.newResult.append(mutableTimeline)
-                        }
-                    }
-                    if (self.newResult.count > 0) {
-                        for newResult in self.newResult {
-                            self.currentResult.insert(newResult, atIndex: 0)
-                        }
-                        self.tableView.reloadData()
-                    }
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(aNewResult.count) + "件")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                    self.tweetSearchBar.resignFirstResponder()
-                })
+        self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
+            completed: { (count, currentRowIndex) -> Void in
+                SVProgressHUD.dismiss()
+                self.tableView.reloadData()
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件")
+                notice.alpha = 0.8
+                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                notice.show()
+                self.tweetSearchBar.resignFirstResponder()
+            }, noUpdated: { () -> Void in
+            
             }, failed: { () -> Void in
+            
         })
     }
     

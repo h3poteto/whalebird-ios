@@ -47,6 +47,7 @@ class TimelineModel: NSObject {
         }
     }
 
+
     
     func count()-> Int {
         return self.currentTimeline.count
@@ -54,34 +55,6 @@ class TimelineModel: NSObject {
     
     func getTeetAtIndex(index: Int)-> NSDictionary? {
         return self.currentTimeline[index] as? NSDictionary
-    }
-    
-    func updateTimelineWithoutMoreCell(APIPath: String, requestParameter: Dictionary<String, AnyObject>, moreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: requestParameter,
-            completed: { [unowned self] (aNewTimeline) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    self.newTimeline = []
-                    for timeline in aNewTimeline {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                            self.newTimeline.append(mutableTimeline)
-                        }
-                    }
-                    if (moreIndex == nil) {
-                        for newTweet in self.newTimeline {
-                            self.currentTimeline.insert(newTweet, atIndex: 0)
-                        }
-                    } else {
-                        for newTweet in self.newTimeline.reverse() {
-                            self.currentTimeline.append(newTweet)
-                        }
-                    }
-                    
-                    completed(aNewTimeline.count, nil)
-                })
-            }, failed: { () -> Void in
-                failed()
-        })
     }
     
     func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: ListTableViewController.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
@@ -197,6 +170,61 @@ class TimelineModel: NSObject {
                             }
                         }
                         completed(aNewTimeline.count, currentRowIndex)
+                    } else {
+                        noUpdated()
+                    }
+                })
+            }, failed: { () -> Void in
+                failed()
+        })
+    }
+    
+    
+    func updateTimelineWithoutMoreCell(APIPath: String, requestParameter: Dictionary<String, AnyObject>, moreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: requestParameter,
+            completed: { [unowned self] (aNewTimeline) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.newTimeline = []
+                    for timeline in aNewTimeline {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newTimeline.append(mutableTimeline)
+                        }
+                    }
+                    if (moreIndex == nil) {
+                        for newTweet in self.newTimeline {
+                            self.currentTimeline.insert(newTweet, atIndex: 0)
+                        }
+                    } else {
+                        for newTweet in self.newTimeline.reverse() {
+                            self.currentTimeline.append(newTweet)
+                        }
+                    }
+                    
+                    completed(aNewTimeline.count, nil)
+                })
+            }, failed: { () -> Void in
+                failed()
+        })
+    }
+    
+    func updateTimelineWitoutMoreAndSince(APIPath: String, requestParameter: Dictionary<String, AnyObject>, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
+            completed: { (aNewResult) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, { () -> Void in
+                    self.newTimeline = []
+                    for timeline in aNewResult {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newTimeline
+                                .append(mutableTimeline)
+                        }
+                    }
+                    if (self.newTimeline.count > 0) {
+                        for newResult in self.newTimeline {
+                            self.currentTimeline.insert(newResult, atIndex: 0)
+                        }
+                        completed(aNewResult.count, nil)
                     } else {
                         noUpdated()
                     }
