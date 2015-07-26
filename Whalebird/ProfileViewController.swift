@@ -44,8 +44,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var followButton: UIBarButtonItem!
     var unfollowButton: UIBarButtonItem!
     
-    var newTimeline: Array<AnyObject> = []
-    var currentTimeline: Array<AnyObject> = []
     var followUsers: Array<AnyObject> = []
     var followUsersNextCursor: String?
     var followerUsers: Array<AnyObject> = []
@@ -59,6 +57,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     var tableType: Int = Int(0)
+    var timelineModel: TimelineModel!
     
     //==========================================
     //  instance methods
@@ -77,6 +76,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.init()
         self.twitterScreenName = aScreenName
         self.title = "@" + aScreenName
+        self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
     }
     
     override func viewDidLoad() {
@@ -306,7 +306,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var row = 0
         switch(self.tableType){
         case 0:
-            row = self.currentTimeline.count
+            row = self.timelineModel.count()
             break
         case 1:
             row = self.followUsers.count
@@ -318,7 +318,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             row = self.privateAccountAnnounce.count
             break
         default:
-            row = self.currentTimeline.count
+            row = self.timelineModel.count()
             break
         }
         return row
@@ -334,7 +334,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
             timelineCell!.cleanCell()
-            if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
                 timelineCell!.configureCell(targetTimeline)
             }
             return timelineCell!
@@ -377,7 +377,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var height = CGFloat(60)
         switch(self.tableType) {
         case 0:
-            if let targetTimeline = self.currentTimeline[indexPath.row] as? NSDictionary {
+            if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
                 height = TimelineViewCell.estimateCellHeight(targetTimeline)
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
@@ -399,7 +399,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            if let cTweetData = self.currentTimeline[indexPath.row] as? NSDictionary {
+            if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
                 var detailView = TweetDetailViewController(
                     aTweetID: cTweetData.objectForKey("id_str") as! String,
                     aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -411,7 +411,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
                     aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
                     aMedia: cTweetData.objectForKey("media") as? NSArray,
-                    aParentArray: &self.currentTimeline,
+                    aParentArray: &self.timelineModel.currentTimeline,
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
                 )
@@ -440,7 +440,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "count" : "20"
         ]
         if (aMoreIndex != nil) {
-            if var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("id_str") as? String {
+            if var strMoreID = (self.timelineModel.getTeetAtIndex(aMoreIndex!))!.objectForKey("id_str") as? String {
                 // max_idは「以下」という判定になるので自身を含めない
                 params["max_id"] = BigInteger(string: strMoreID).decrement()
             }
@@ -450,36 +450,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "screen_name" : self.twitterScreenName
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: cParameter,
-            completed: { [unowned self] (aNewTimeline) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    self.newTimeline = []
-                    for timeline in aNewTimeline {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
-                            self.newTimeline.append(mutableTimeline)
-                        }
-                    }
-                    if (aMoreIndex == nil) {
-                        for newTweet in self.newTimeline {
-                            self.currentTimeline.insert(newTweet, atIndex: 0)
-                        }
-                    } else {
-                        for newTweet in self.newTimeline.reverse() {
-                            self.currentTimeline.append(newTweet)
-                        }
-                    }
-                    
-                    // ここでtableView.contentSizeを再計算しないとだめっぽい
-                    self.tableView.frame.size.height = CGFloat(self.currentTimeline.count) * 200.0 + self.headerHeight
-                    self.tableView.reloadData()
-                    self.scrollView.pullToRefreshView.stopAnimating()
-                    self.scrollView.contentInset.top = self.headerHeight
-                    SVProgressHUD.dismiss()
-                })
+        self.timelineModel.updateTimelineWithoutMoreCell("users/apis/user_timeline.json",
+            requestParameter: cParameter,
+            moreIndex: aMoreIndex,
+            completed: { (count, currentRowIndex) -> Void in
+                // ここでtableView.contentSizeを再計算しないとだめっぽい
+                self.tableView.frame.size.height = CGFloat(self.timelineModel.count()) * 200.0 + self.headerHeight
+                self.tableView.reloadData()
+                self.scrollView.pullToRefreshView.stopAnimating()
+                self.scrollView.contentInset.top = self.headerHeight
+                SVProgressHUD.dismiss()
+            }, noUpdated: { () -> Void in
+            
             }, failed: { () -> Void in
+            
         })
-        
     }
     
     func updateFollowUser(aNextCursor: String?) {
@@ -600,7 +585,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (!self.privateAccount) {
             switch(self.tableType) {
             case 0:
-                self.updateTimeline(self.currentTimeline.count - 1)
+                self.updateTimeline(self.timelineModel.count() - 1)
                 break
             case 1:
                 self.updateFollowUser(self.followUsersNextCursor)

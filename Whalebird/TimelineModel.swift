@@ -56,6 +56,34 @@ class TimelineModel: NSObject {
         return self.currentTimeline[index] as? NSDictionary
     }
     
+    func updateTimelineWithoutMoreCell(APIPath: String, requestParameter: Dictionary<String, AnyObject>, moreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+        WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/user_timeline.json", displayError: true, params: requestParameter,
+            completed: { [unowned self] (aNewTimeline) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.newTimeline = []
+                    for timeline in aNewTimeline {
+                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                            self.newTimeline.append(mutableTimeline)
+                        }
+                    }
+                    if (moreIndex == nil) {
+                        for newTweet in self.newTimeline {
+                            self.currentTimeline.insert(newTweet, atIndex: 0)
+                        }
+                    } else {
+                        for newTweet in self.newTimeline.reverse() {
+                            self.currentTimeline.append(newTweet)
+                        }
+                    }
+                    
+                    completed(aNewTimeline.count, nil)
+                })
+            }, failed: { () -> Void in
+                failed()
+        })
+    }
+    
     func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: ListTableViewController.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
 
         var apiURL = APIPath
@@ -98,7 +126,7 @@ class TimelineModel: NSObject {
             requestParameter["screen_name"] = userDefault.objectForKey("username") as! String
             requestParameter["q"] = streamElement!.name
         }
-        WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, displayError: true, params: requestParameter,
+        WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
             completed: {aNewTimeline in
                 var q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
