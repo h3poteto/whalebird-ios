@@ -8,13 +8,19 @@
 
 import UIKit
 
+protocol StackListTableViewControllerDelegate {
+    func decidedStackStreamList(stackStreamList: StreamList)
+}
+
 class StackListTableViewController: UITableViewController {
 
     //=============================================
     //  instance variables
     //=============================================
     var twitterScreenName: String?
-    var stackListArray: Array<ListTableViewController.Stream> = []
+    var stackStreamList: StreamList!
+    
+    var delegate: StackListTableViewControllerDelegate!
 
     //=============================================
     //  instance methods
@@ -35,21 +41,9 @@ class StackListTableViewController: UITableViewController {
     }
     
     init() {
-        var favStream = ListTableViewController.Stream(
-            image: "",
-            name: "お気に入り",
-            type: "myself",
-            uri: "users/apis/user_favorites.json",
-            id: "")
-        var myselfStream = ListTableViewController.Stream(
-            image: "",
-            name: "送信済みツイート",
-            type: "myself",
-            uri: "users/apis/user_timeline.json",
-            id: "")
-        self.stackListArray.append(myselfStream)
-        self.stackListArray.append(favStream)
         super.init(style: UITableViewStyle.Plain)
+        self.stackStreamList = StreamList()
+        self.stackStreamList.initStreamList()
     }
 
     
@@ -81,13 +75,13 @@ class StackListTableViewController: UITableViewController {
                     println(aStackList)
                     dispatch_async(q_main, {()->Void in
                         for list in aStackList {
-                            var streamElement = ListTableViewController.Stream(
-                                image: "",
+                            self.stackStreamList.addNewStream(
+                                "",
                                 name: list.objectForKey("full_name") as! String,
                                 type: "list",
                                 uri: list.objectForKey("uri") as! String,
-                                id: list.objectForKey("id_str") as! String)
-                            self.stackListArray.append(streamElement)
+                                id: list.objectForKey("id_str") as! String
+                            )
                         }
                         self.tableView.reloadData()
                         SVProgressHUD.dismiss()
@@ -115,13 +109,13 @@ class StackListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.stackListArray.count
+        return self.stackStreamList.count()
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = self.stackListArray[indexPath.row].name
+        cell.textLabel?.text = self.stackStreamList.getStreamAtIndex(indexPath.row).name
         cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
         return cell
@@ -146,14 +140,14 @@ class StackListTableViewController: UITableViewController {
         self.navigationController?.popViewControllerAnimated(true)
         if let selectedArray = self.tableView.indexPathsForSelectedRows() as Array? {
             if (selectedArray.count > 0) {
-                let cViewControllers = self.navigationController!.viewControllers as NSArray
-                let cViewControllersCount = cViewControllers.count as Int
-                if let cParentController = cViewControllers.objectAtIndex(cViewControllersCount - 1) as? ListTableViewController {
-                    for index in selectedArray {
-                        cParentController.streamList.append(self.stackListArray[index.row])
-                    }
+                var selectedStreamList = StreamList()
+                selectedStreamList.initWithEmpty()
+                for index in selectedArray {
+                    selectedStreamList.add(self.stackStreamList.getStreamAtIndex(index.row))
                 }
+                self.delegate.decidedStackStreamList(selectedStreamList)
             }
         }
+        // ListTableViewをアップデートする
     }
 }

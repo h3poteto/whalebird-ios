@@ -63,7 +63,7 @@ class TimelineModel: NSObject {
         return self.currentTimeline[index] as? NSDictionary
     }
     
-    func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: ListTableViewController.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
+    func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: StreamList.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
 
         var apiURL = APIPath
         var params: Dictionary<String, String> = [

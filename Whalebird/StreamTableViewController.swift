@@ -13,7 +13,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     //=============================================
     //  instance variables
     //=============================================
-    var streamElement: ListTableViewController.Stream!
+    var streamElement: StreamList.Stream!
 
     var parentNavigation: UINavigationController!
     var refreshTimeline: ODRefreshControl!
@@ -37,7 +37,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
     
     
-    convenience init(aStreamElement: ListTableViewController.Stream, aParentNavigation: UINavigationController) {
+    convenience init(aStreamElement: StreamList.Stream, aParentNavigation: UINavigationController) {
         self.init()
         self.streamElement = aStreamElement
         self.parentNavigation = aParentNavigation

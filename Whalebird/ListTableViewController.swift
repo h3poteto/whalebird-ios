@@ -8,22 +8,14 @@
 
 import UIKit
 
-class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    struct Stream {
-        var image: String = ""
-        var name: String = ""
-        var type: String = ""
-        var uri: String = ""
-        var id: String = ""
-    }
+class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource, StackListTableViewControllerDelegate {
     
     //=============================================
     //  instance variables
     //=============================================
-    var streamList: Array<Stream> = []
     var addItemButton: UIBarButtonItem!
     var searchItemButton: UIBarButtonItem!
+    var streamList: StreamList!
     
     //==============================================
     //  instance methods
@@ -60,22 +52,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.separatorInset = UIEdgeInsetsZero
         
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        if var userStreamList = userDefaults.arrayForKey("streamList") as Array? {
-            self.streamList.removeAll()
-            for streamList in userStreamList {
-                self.streamList.insert(Stream(
-                    image: streamList.objectForKey("image") as! String,
-                    name: streamList.objectForKey("name") as! String,
-                    type: streamList.objectForKey("type") as! String,
-                    uri: streamList.objectForKey("uri") as! String,
-                    id: streamList.objectForKey("id") as! String),
-                    atIndex: 0)
-            }
-        } else {
-            self.initStreamList()
-        }
-        
+        self.streamList = StreamList()
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,23 +62,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        
-        var safeArray = NSMutableArray()
-        if (self.streamList.count > 0) {
-            for i in 0...self.streamList.count-1 {
-                var list = self.streamList[i]
-                var dictionary = NSMutableDictionary()
-                dictionary.setObject((list.image as String), forKey: "image")
-                dictionary.setObject((list.name as String), forKey: "name")
-                dictionary.setObject((list.type as String), forKey: "type")
-                dictionary.setObject((list.uri as String), forKey: "uri")
-                dictionary.setObject((list.id as String), forKey: "id")
-                safeArray.insertObject(dictionary, atIndex: 0)
-            }
-        }
-        userDefaults.setObject(safeArray, forKey: "streamList")
+        self.streamList.saveStreamList()
     }
 
     // MARK: - Table view data source
@@ -115,15 +76,15 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.streamList.count
+        return self.streamList.count()
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = self.streamList[indexPath.row].name
+        cell.textLabel?.text = self.streamList.getStreamAtIndex(indexPath.row).name
         cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
-        switch self.streamList[indexPath.row].type {
+        switch self.streamList.getStreamAtIndex(indexPath.row).type {
         case "list":
             cell.imageView?.image = UIImage(named: "assets/List-Dots.png")
             break
@@ -164,7 +125,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            self.streamList.removeAtIndex(indexPath.row)
+            self.streamList.deleteStreamAtIndex(indexPath.row)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -175,50 +136,33 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         // streamListを入れ替える
-        var fromCellData = self.streamList[fromIndexPath.row]
-        var toCellData = self.streamList[toIndexPath.row]
-        self.streamList[fromIndexPath.row] = toCellData
-        self.streamList[toIndexPath.row] = fromCellData
+        self.streamList.moveStreamAtIndex(fromIndexPath.row, toIndex: toIndexPath.row)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var swipeView = SwipeViewController(aStream: self.streamList, aStartIndex: indexPath.row)
+        var swipeView = SwipeViewController(aStreamList: self.streamList, aStartIndex: indexPath.row)
         self.navigationController?.pushViewController(swipeView, animated: true)
     }
     
 
     func addNewItem(sender: AnyObject) {
         var stackListTableView = StackListTableViewController()
+        stackListTableView.delegate = self
         self.navigationController?.pushViewController(stackListTableView, animated: true)
     }
 
+    func decidedStackStreamList(stackStreamList: StreamList) {
+        self.streamList.mergeStreamList(stackStreamList)
+    }
+    
     func displaySearch() {
-        var searchView = SearchTableViewController()
+        var searchView = SearchTableViewController(aStreamList: self.streamList)
         self.navigationController?.pushViewController(searchView, animated: true)
     }
     
-    func initStreamList() {
-        self.streamList = []
-        var favStream = ListTableViewController.Stream(
-            image: "",
-            name: "お気に入り",
-            type: "myself",
-            uri: "users/apis/user_favorites.json",
-            id: "")
-        var myselfStream = ListTableViewController.Stream(
-            image: "",
-            name: "送信済みツイート",
-            type: "myself",
-            uri: "users/apis/user_timeline.json",
-            id: "")
-        self.streamList.append(myselfStream)
-        self.streamList.append(favStream)
-    }
     
     func clearData() {
-        self.initStreamList()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(nil, forKey: "streamList")
+        self.streamList.clearData()
         self.tableView.reloadData()
     }
 }

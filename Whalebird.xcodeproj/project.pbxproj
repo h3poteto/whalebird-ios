@@ -55,6 +55,8 @@
 		E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
+		E975227F1B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
+		E97522801B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
 		E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */; };
 		E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */; };
 		E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
@@ -123,6 +125,7 @@
 		E93433161A9C66F0004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
+		E975227E1B65292E00AEB430 /* StreamList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamList.swift; sourceTree = "<group>"; };
 		E97594291A4127F800BFD41F /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeViewController.swift; sourceTree = "<group>"; };
 		E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetDetailViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
+				E975227E1B65292E00AEB430 /* StreamList.swift */,
 				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
 				E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */,
 				E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */,
@@ -510,6 +514,7 @@
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
 				E916DF581B386BD00028CCC3 /* FriendsList.swift in Sources */,
 				E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */,
+				E975227F1B65292E00AEB430 /* StreamList.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
 				E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */,
@@ -532,6 +537,7 @@
 				E92C49E91A9C6CAE006BD492 /* MediaViewController.swift in Sources */,
 				E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */,
 				E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */,
+				E97522801B65292E00AEB430 /* StreamList.swift in Sources */,
 				E92C49F41A9C6D19006BD492 /* UserstreamAPIClient.swift in Sources */,
 				E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */,
 				E92C49F01A9C6CC0006BD492 /* NewTweetViewController.swift in Sources */,

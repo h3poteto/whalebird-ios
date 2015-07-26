@@ -17,6 +17,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     var resultCell: Array<AnyObject> = []
     var saveButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
+    var streamList: StreamList!
 
     //=============================================
     //  instance methods
@@ -32,6 +33,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(aStreamList: StreamList) {
+        self.init()
+        self.streamList = aStreamList
     }
     
     override func viewDidLoad() {
@@ -176,16 +182,13 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     func saveResult() {
         if (count(self.tweetSearchBar.text) > 0) {
-            var searchStream = ListTableViewController.Stream(
-                image: "",
+            self.streamList.addNewStream(
+                "",
                 name: self.tweetSearchBar.text,
                 type: "search",
                 uri: "users/apis/search.json",
-                id: "")
-            let cViewControllers = self.navigationController!.viewControllers as NSArray
-            let cViewControllersCount = cViewControllers.count as Int
-            let cParentController: ListTableViewController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as! ListTableViewController
-            cParentController.streamList.append(searchStream)
+                id: ""
+            )
             self.navigationController!.popViewControllerAnimated(true)
         }
     }
