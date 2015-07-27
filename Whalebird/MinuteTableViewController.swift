@@ -8,12 +8,17 @@
 
 import UIKit
 
+protocol MinuteTableViewControllerDelegate {
+    func rewriteTweetWithMinute(minute: NSDictionary)
+}
+
 class MinuteTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
 
     //=============================================
     //  instance variables
     //=============================================
-    var minutesArray: Array<AnyObject> = []
+    var minuteModel: MinuteModel!
+    var delegate: MinuteTableViewControllerDelegate!
     
     //=============================================
     //  instance methods
@@ -28,11 +33,8 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     
     init() {
         super.init(style: UITableViewStyle.Plain)
-        // ここでNSUserDefaultから下書きを読み込み
+        self.minuteModel = MinuteModel()
         var userDefault = NSUserDefaults.standardUserDefaults()
-        if var readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
-            self.minutesArray = readMinutesArray
-        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -78,25 +80,23 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.minutesArray.count
+        return self.minuteModel.count()
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "MinuteCell")
-        cell.textLabel?.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
+        if let minute = self.minuteModel.getMinuteAtIndex(indexPath.row) {
+            cell.textLabel?.text = minute.objectForKey("text") as? String
+        }
 
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cViewControllers = self.navigationController?.viewControllers as NSArray? {
-            let cViewControllersCount = cViewControllers.count  as Int
-            if let cParentController = cViewControllers.objectAtIndex(cViewControllersCount - 2) as? NewTweetViewController {
-                cParentController.newTweetText.text = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("text") as? String
-                cParentController.replyToID = (self.minutesArray[indexPath.row] as! NSDictionary).objectForKey("replyToID") as? String
-                self.navigationController?.popViewControllerAnimated(true)
-            }
+        if let minute = self.minuteModel.getMinuteAtIndex(indexPath.row) {
+            self.delegate.rewriteTweetWithMinute(minute)
+            self.navigationController?.popViewControllerAnimated(true)
         }
     }
 
@@ -106,9 +106,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
-            var userDefault = NSUserDefaults.standardUserDefaults()
-            self.minutesArray.removeAtIndex(indexPath.row)
-            userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+            self.minuteModel.saveMinuteAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -119,13 +117,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     
     // 配列の先頭に下書きを追加して，NSUserDefaultにも保存
     func addMinute(minuteString: String!, minuteReplyToID: String?) {
-        var minuteDictionary = NSMutableDictionary(dictionary: ["text" : minuteString])
-        if (minuteReplyToID != nil) {
-            minuteDictionary.setValue(minuteReplyToID!, forKey: "replyToID")
-        }
-        self.minutesArray.insert(minuteDictionary, atIndex: 0)
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+        self.minuteModel.addMinuteAtFirst(minuteString, replyToID: minuteReplyToID)
     }
 
 }

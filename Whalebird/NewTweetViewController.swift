@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditImageViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditImageViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, MinuteTableViewControllerDelegate {
 
     //=============================================
     //  instance variables
@@ -187,6 +187,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 var minuteTableView = MinuteTableViewController()
                 minuteTableView.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
                 self.newTweetText.text = ""
+                minuteTableView.delegate = self
                 self.navigationController?.popViewControllerAnimated(true)
             })
             let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
@@ -256,6 +257,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func openMinute() {
         var minuteTableView = MinuteTableViewController()
+        minuteTableView.delegate = self
         self.navigationController?.pushViewController(minuteTableView, animated: true)
         
     }
@@ -487,5 +489,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.selectFriend(self.friendsList![indexPath.row])
         }
         self.removeFriendsTable()
+    }
+    
+    // 下書きが確定されたとき
+    func rewriteTweetWithMinute(minute: NSDictionary) {
+        self.newTweetText.text = minute.objectForKey("text") as? String
+        self.replyToID = minute.objectForKey("replyToID") as? String
     }
 }
