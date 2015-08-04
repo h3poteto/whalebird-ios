@@ -24,7 +24,6 @@
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
 		E92C49C41A9C69D2006BD492 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E92C49D81A9C6A3F006BD492 /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
-		E92C49DF1A9C6B77006BD492 /* OriginalCryp.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D86A411A41336F00920984 /* OriginalCryp.m */; };
 		E92C49E31A9C6BBB006BD492 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E92C49E41A9C6BC3006BD492 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
 		E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9124398199524E000795EF0 /* AppDelegate.swift */; };
@@ -79,7 +78,6 @@
 		E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD81E11A32FA9E00763660 /* WebViewController.swift */; };
 		E9D142801A382E3500EA3E67 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */; };
 		E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E9D493BE1A35BBDB00DE2051 /* Settings.bundle */; };
-		E9D86A421A41336F00920984 /* OriginalCryp.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D86A411A41336F00920984 /* OriginalCryp.m */; };
 		E9DD20711A9C723A002C3FF1 /* OriginalCrypTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD20701A9C723A002C3FF1 /* OriginalCrypTests.swift */; };
 		E9DD20751A9C7782002C3FF1 /* WhalebirdAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD20741A9C7782002C3FF1 /* WhalebirdAPIClientTests.swift */; };
 		E9DD20771A9C7FFA002C3FF1 /* UserstreamAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD20761A9C7FFA002C3FF1 /* UserstreamAPIClientTests.swift */; };
@@ -151,8 +149,6 @@
 		E9CD81E11A32FA9E00763660 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		E9D493BE1A35BBDB00DE2051 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		E9D86A401A41336F00920984 /* OriginalCryp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalCryp.h; sourceTree = "<group>"; };
-		E9D86A411A41336F00920984 /* OriginalCryp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OriginalCryp.m; sourceTree = "<group>"; };
 		E9DD20701A9C723A002C3FF1 /* OriginalCrypTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OriginalCrypTests.swift; sourceTree = "<group>"; };
 		E9DD20741A9C7782002C3FF1 /* WhalebirdAPIClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhalebirdAPIClientTests.swift; sourceTree = "<group>"; };
 		E9DD20761A9C7FFA002C3FF1 /* UserstreamAPIClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClientTests.swift; sourceTree = "<group>"; };
@@ -245,8 +241,6 @@
 				E9124398199524E000795EF0 /* AppDelegate.swift */,
 				E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */,
 				E99603A11A20E23400D23629 /* application.h */,
-				E9D86A401A41336F00920984 /* OriginalCryp.h */,
-				E9D86A411A41336F00920984 /* OriginalCryp.m */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
 				E9124396199524E000795EF0 /* Supporting Files */,
 			);
@@ -532,7 +526,6 @@
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
-				E9D86A421A41336F00920984 /* OriginalCryp.m in Sources */,
 				E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */,
 				E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */,
 				E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */,
@@ -586,7 +579,6 @@
 				E92C49ED1A9C6CB8006BD492 /* NewDirectMessageViewController.swift in Sources */,
 				E92C49D81A9C6A3F006BD492 /* WhalebirdAPIClient.swift in Sources */,
 				E92C49E61A9C6C8B006BD492 /* ApplicationSecrets.swift in Sources */,
-				E92C49DF1A9C6B77006BD492 /* OriginalCryp.m in Sources */,
 				E92C49F31A9C6D17006BD492 /* TimelineViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
