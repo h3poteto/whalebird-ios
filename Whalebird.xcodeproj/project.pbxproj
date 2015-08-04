@@ -136,6 +136,7 @@
 		E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
 		E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whalebird-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.adhoc.xcconfig; sourceTree = "<group>"; };
 		E99603A11A20E23400D23629 /* application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = application.h; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -205,6 +206,7 @@
 		139551B5CDD3D85E95F73E64 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */,
 				6F4E1ED78368D8345CEAF0E4 /* Pods.debug.xcconfig */,
 				6302B3575397933379859006 /* Pods.release.xcconfig */,
 			);
@@ -826,7 +828,7 @@
 		};
 		E988D00B1B70E02C003BAD31 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6302B3575397933379859006 /* Pods.release.xcconfig */;
+			baseConfigurationReference = E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */;
 			buildSettings = {
 				APIURL = "http://api.whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -856,7 +858,7 @@
 		};
 		E988D00C1B70E02C003BAD31 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6302B3575397933379859006 /* Pods.release.xcconfig */;
+			baseConfigurationReference = E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */;
 			buildSettings = {
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";
