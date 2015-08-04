@@ -10,9 +10,9 @@ import UIKit
 import XCTest
 import RNCryptor
 
-class OriginalCrypTests: XCTestCase {
+class ApplicationSecretsTests: XCTestCase {
     func testEncryptData() {
-        let ApplicationPlain = WHALEBIRD_APPLICATION_KEY as NSString
+        let ApplicationPlain = ApplicationSecrets.ApplicationPlain
         var plainData = ApplicationPlain.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
         var error = NSError?()
         var encodeBase: NSData?
