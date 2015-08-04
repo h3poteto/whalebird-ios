@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ExWebView: UIWebView {
     override func loadRequest(request: NSURLRequest) {

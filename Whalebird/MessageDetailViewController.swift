@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SDWebImage
+import SVProgressHUD
+
 
 class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayoutManagerDelegate {
 

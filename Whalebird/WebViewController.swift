@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class WebViewController: UIViewController, UIWebViewDelegate {
 

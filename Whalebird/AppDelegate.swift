@@ -9,6 +9,8 @@
 import UIKit
 import Fabric
 import Crashlytics
+import NoticeView
+import SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {

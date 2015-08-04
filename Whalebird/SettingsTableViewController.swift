@@ -9,6 +9,7 @@
 import UIKit
 import Accounts
 import Social
+import SVProgressHUD
 
 class SettingsTableViewController: UITableViewController{
     //============================================

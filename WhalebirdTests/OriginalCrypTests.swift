@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import RNCryptor
 
 class OriginalCrypTests: XCTestCase {
     func testEncryptData() {
@@ -16,7 +17,7 @@ class OriginalCrypTests: XCTestCase {
         var error = NSError?()
         var encodeBase: NSData?
 
-        if let encryptData = OriginalCryp.encryptData(plainData, password: "whalebird", error: &error) {
+        if let encryptData = RNEncryptor.encryptData(plainData, password: "whalebird", error: &error) {
             encodeBase = encryptData.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.allZeros)
             XCTAssertNotNil(encodeBase, "encodeBase should not nil")
         } else {

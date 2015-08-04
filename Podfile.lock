@@ -27,6 +27,7 @@ PODS:
   - Fabric/Base (1.2.8)
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
+  - ObjectMapper (0.14)
   - ODRefreshControl (1.1.0)
   - OHAttributedLabel (3.5.5)
   - RNCryptor (2.2)
@@ -47,9 +48,10 @@ DEPENDENCIES:
   - DACircularProgress
   - Fabric
   - NoticeView
+  - ObjectMapper (~> 0.14)
   - ODRefreshControl
   - OHAttributedLabel
-  - RNCryptor
+  - RNCryptor (from `https://github.com/h3poteto/RNCryptor.git`, branch `master`)
   - SDWebImage
   - SVProgressHUD
   - SVPullToRefresh (HEAD)
@@ -59,10 +61,16 @@ DEPENDENCIES:
   - UrlShortener (from `https://github.com/h3poteto/URL-Shortener.git`)
 
 EXTERNAL SOURCES:
+  RNCryptor:
+    :branch: master
+    :git: https://github.com/h3poteto/RNCryptor.git
   UrlShortener:
     :git: https://github.com/h3poteto/URL-Shortener.git
 
 CHECKOUT OPTIONS:
+  RNCryptor:
+    :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
+    :git: https://github.com/h3poteto/RNCryptor.git
   UrlShortener:
     :commit: f2b7b2847a16eda12b6b7458ff8985dc930efc03
     :git: https://github.com/h3poteto/URL-Shortener.git
@@ -74,9 +82,10 @@ SPEC CHECKSUMS:
   Fabric: a9eabe53915e9f1db55a84dd2838737928675878
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0
+  ObjectMapper: 45b97fa0a68c3851daad3efca87bc6c1ab1718c0
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea
   OHAttributedLabel: 9b2eb99323dee6b3a81ef3bc8e98b084117bca2d
-  RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
+  RNCryptor: e22d058d92b9a24a971fea324aea7efc7b25c6f7
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   SVProgressHUD: 3afb875b9eb23acd1bed9b82495695c68621a8b2
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
@@ -85,4 +94,4 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 2ba85bee473885c2aada2bdfec584d39f1869338
   UrlShortener: fb6faa925f3abe3d7fdf7ee7cd825df9a4dd18d8
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.38.2

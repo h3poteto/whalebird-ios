@@ -8,6 +8,10 @@
 
 import UIKit
 import QuartzCore
+import SVProgressHUD
+import SVPullToRefresh
+import OHAttributedLabel
+import NoticeView
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 

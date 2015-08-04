@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SwipeView
+import ODRefreshControl
+import SVProgressHUD
 
 class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSource, UINavigationControllerDelegate, UITabBarControllerDelegate {
 

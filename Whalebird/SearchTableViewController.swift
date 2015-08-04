@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SVProgressHUD
+import NoticeView
 
 class SearchTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
 

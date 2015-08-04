@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SVProgressHUD
+import NoticeView
 
 class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
  
