@@ -66,8 +66,6 @@
 		E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
 		E97EA3181AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
 		E97EA3191AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
-		E97EA31B1AADEE4100C0E0E3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E97EA31A1AADEE4100C0E0E3 /* assets */; };
-		E97EA31C1AADEE4100C0E0E3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E97EA31A1AADEE4100C0E0E3 /* assets */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
@@ -136,7 +134,6 @@
 		E9797B1B199526F6000FC13C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E9797B1F1995325E000FC13C /* TimelineViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
 		E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
-		E97EA31A1AADEE4100C0E0E3 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whalebird-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E99603A11A20E23400D23629 /* application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = application.h; sourceTree = "<group>"; };
@@ -249,7 +246,6 @@
 				E9D86A401A41336F00920984 /* OriginalCryp.h */,
 				E9D86A411A41336F00920984 /* OriginalCryp.m */,
 				E912439F199524E000795EF0 /* Images.xcassets */,
-				E97EA31A1AADEE4100C0E0E3 /* assets */,
 				E9124396199524E000795EF0 /* Supporting Files */,
 			);
 			path = Whalebird;
@@ -435,7 +431,6 @@
 			files = (
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
-				E97EA31B1AADEE4100C0E0E3 /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +438,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E97EA31C1AADEE4100C0E0E3 /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

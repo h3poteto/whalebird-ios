@@ -35,7 +35,7 @@ class SettingsTableViewController: UITableViewController{
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "設定"
-        self.tabBarItem.image = UIImage(named: "assets/Settings-Line.png")
+        self.tabBarItem.image = UIImage(named: "Settings-Line")
     }
     
     override init(style: UITableViewStyle) {

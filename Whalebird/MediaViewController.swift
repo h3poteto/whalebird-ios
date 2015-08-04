@@ -61,7 +61,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.blankView = UIView(frame: self.view.bounds)
         self.blankView.addSubview(self.mediaImageView)
         
-        if let closeImage = UIImage(named: "assets/Close-Filled.png") {
+        if let closeImage = UIImage(named: "Close-Filled") {
             var closeImagePosY: CGFloat = self.mediaImageView.frame.origin.y - closeImage.size.height * 2.0
             if (closeImagePosY < 20.0) {
                 closeImagePosY = 20.0

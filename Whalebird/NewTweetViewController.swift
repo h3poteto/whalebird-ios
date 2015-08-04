@@ -155,8 +155,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
             // 配置するボタン
             var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-            self.photostreamButton = UIBarButtonItem(image: UIImage(named: "assets/Image.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
-            self.cameraButton = UIBarButtonItem(image: UIImage(named: "assets/Camera-Line.png"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
+            self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
+            self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
             self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.Plain, target: self, action: "openMinute")
             self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             
@@ -293,7 +293,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         uploadImageView.addSubview(progressView)
         
         var closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
-        closeImageView.setImage(UIImage(named: "assets/Close-Filled.png"), forState: UIControlState.Normal)
+        closeImageView.setImage(UIImage(named: "Close-Filled"), forState: UIControlState.Normal)
         closeImageView.addTarget(self, action: "removeImage:", forControlEvents: UIControlEvents.TouchUpInside)
         closeImageView.tag = self.newTweetMedias.count
         self.view.addSubview(closeImageView)

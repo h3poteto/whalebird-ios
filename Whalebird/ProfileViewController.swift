@@ -121,7 +121,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         //  header
         //-------------------------
         self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.headerImageHeight))
-        self.profileHeaderImage.image = UIImage(named: "assets/profile_back.jpg")
+        self.profileHeaderImage.image = UIImage(named: "profile_back")
         self.scrollView.addSubview(self.profileHeaderImage)
             
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
@@ -131,7 +131,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                     var headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as! String)
                     self.profileHeaderImage.removeFromSuperview()
-                    self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "assets/profile_back.jpg"))
+                    self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "profile_back"))
                     self.scrollView.addSubview(self.profileHeaderImage)
                     self.profileHeaderImageSrc = headerImageURL
                 }
@@ -167,7 +167,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     var profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as! String)
                     self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                     self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
-                    self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
+                    self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
                     self.scrollView.addSubview(self.profileImage)
                     
                     self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
@@ -228,9 +228,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.tableView.frame.origin.y = self.headerImageHeight + ProfileViewController.StatusHeight
                         self.profileHeaderImage.frame.size.height = self.headerImageHeight
                         if (self.profileHeaderImageSrc != nil) {
-                            self.profileHeaderImage.sd_setImageWithURL(self.profileHeaderImageSrc!, placeholderImage: UIImage(named: "assets/noimage.png"))
+                            self.profileHeaderImage.sd_setImageWithURL(self.profileHeaderImageSrc!, placeholderImage: UIImage(named: "noimage"))
                         } else {
-                            self.profileHeaderImage.image = UIImage(named: "assets/profile_back.jpg")
+                            self.profileHeaderImage.image = UIImage(named: "profile_back")
                         }
                     }
                     
@@ -347,7 +347,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String!)
             
-            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
+            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
             break
         case 2:
             var profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
@@ -358,7 +358,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String
             )
-            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "assets/noimage.png"))
+            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
             break
         case 3:
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
