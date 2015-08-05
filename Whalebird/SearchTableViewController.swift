@@ -118,6 +118,9 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+            var tweetModel = TweetModel(dict: cTweetData)
+            var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+            /*
             var detailView = TweetDetailViewController(
                 aTweetID: cTweetData.objectForKey("id_str") as! String,
                 aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -132,7 +135,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 aTimelineModel: self.timelineModel,
                 aParentIndex: indexPath.row,
                 aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
-            )
+            )*/
             self.navigationController?.pushViewController(detailView, animated: true)
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }

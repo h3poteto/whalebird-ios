@@ -144,6 +144,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 }
                 self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
             } else {
+                var tweetModel = TweetModel(dict: cTweetData)
+                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                /*
                 var detailView = TweetDetailViewController(
                     aTweetID: cTweetData.objectForKey("id_str") as! String,
                     aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -158,7 +161,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                     aTimelineModel: self.timelineModel,
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-                )
+                )*/
                 self.parentNavigation.pushViewController(detailView, animated: true)
             }
             

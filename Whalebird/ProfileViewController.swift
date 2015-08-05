@@ -404,6 +404,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch(self.tableType){
         case 0:
             if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+                var tweetModel = TweetModel(dict: cTweetData)
+                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                /*
                 var detailView = TweetDetailViewController(
                     aTweetID: cTweetData.objectForKey("id_str") as! String,
                     aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -418,7 +421,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     aTimelineModel: self.timelineModel,
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-                )
+                )*/
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
             break

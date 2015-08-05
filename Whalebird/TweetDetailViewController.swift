@@ -22,19 +22,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //=====================================
     //  instance variables
     //=====================================
-    var tweetID: String!
-    var tweetBody: String!
-    var screenName: String!
-    var userName: String!
-    var postDetail: String!
-    var profileImage: String!
-    var retweetedName: String?
-    var retweetedProfileImage: String?
-    var fFavorited: Bool!
-    var media: Array<String>?
-    var parentIndex: Int?
-    var fProtected: Bool!
     var timelineModel: TimelineModel?
+    var parentIndex: Int?
+    var tweetModel: TweetModel!
     
     var blankView: UIScrollView!
     var screenNameLabel: UIButton!
@@ -67,32 +57,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         super.init(coder: aDecoder)
     }
     
-    convenience init(aTweetID: String, aTweetBody: String, aScreenName: String, aUserName: String, aProfileImage: String, aPostDetail: String, aRetweetedName: String?, aRetweetedProfileImage: String?, aFavorited: Bool?, aMedia: NSArray?, aTimelineModel: TimelineModel?, aParentIndex: Int?, aProtected: Bool?) {
+    convenience init(aTweetModel: TweetModel!, aTimelineModel: TimelineModel?, aParentIndex: Int?) {
         self.init()
-        self.tweetID = aTweetID
-        self.tweetBody = aTweetBody
-        self.screenName = aScreenName
-        self.postDetail = WhalebirdAPIClient.convertLocalTime(aPostDetail)
-        self.profileImage = aProfileImage
-        self.userName = aUserName
-        self.retweetedName = aRetweetedName
-        self.retweetedProfileImage = aRetweetedProfileImage
-        if (aFavorited != nil) {
-            self.fFavorited = aFavorited!
-        } else {
-            self.fFavorited = false
-        }
-        if (aMedia != nil && aMedia?.count > 0) {
-            self.media = aMedia as! Array<String>!
-        }
+        self.tweetModel = aTweetModel
         self.timelineModel = aTimelineModel
         self.parentIndex = aParentIndex
-        if (aProtected != nil) {
-            self.fProtected = aProtected!
-        } else {
-            self.fProtected = false
-        }
-
         self.title = "詳細"
     }
     
@@ -115,16 +84,16 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImageLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
-        var imageURL = NSURL(string: self.profileImage)
+        var imageURL = NSURL(string: self.tweetModel.profileImage)
         self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "noimage"))
         self.profileImageLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
         self.profileImageLabel.sizeToFit()
         
         self.blankView.addSubview(self.profileImageLabel)
         
-        if (self.retweetedProfileImage != nil) {
+        if (self.tweetModel.retweetedProfileImage != nil) {
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
-            var imageURL = NSURL(string: self.retweetedProfileImage!)
+            var imageURL = NSURL(string: self.tweetModel.retweetedProfileImage!)
             self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning"))
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
@@ -132,9 +101,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.cWindowSize.size.width * 0.03, self.cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
-            self.userNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+            self.userNameLabel.setTitle("@" + self.tweetModel.screenName, forState: UIControlState.Normal)
         } else {
-            self.userNameLabel.setTitle(self.userName, forState: .Normal)
+            self.userNameLabel.setTitle(self.tweetModel.userName, forState: .Normal)
         }
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.userNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.BoldFont, size: 15)
@@ -148,7 +117,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
-            self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+            self.screenNameLabel.setTitle("@" + self.tweetModel.screenName, forState: UIControlState.Normal)
         }
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         self.screenNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
@@ -162,7 +131,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + TweetDetailViewController.LabelPadding + 5, self.cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetBody)
+        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetModel.tweetBody)
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
@@ -175,13 +144,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         self.postDetailLabel = UILabel(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height, self.cWindowSize.size.width * 0.9, 15))
         self.postDetailLabel.textAlignment = NSTextAlignment.Right
-        self.postDetailLabel.text = self.postDetail
+        self.postDetailLabel.text = self.tweetModel.postDetail
         self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.blankView.addSubview(self.postDetailLabel)
         
-        if (self.retweetedName != nil) {
+        if (self.tweetModel.retweetedName != nil) {
             self.retweetedNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + TweetDetailViewController.LabelPadding, self.cWindowSize.size.width * 0.9, 15))
-            self.retweetedNameLabel?.setTitle("Retweeted by @" + self.retweetedName!, forState: UIControlState.Normal)
+            self.retweetedNameLabel?.setTitle("Retweeted by @" + self.tweetModel.retweetedName!, forState: UIControlState.Normal)
             self.retweetedNameLabel?.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
             self.retweetedNameLabel?.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
             self.retweetedNameLabel?.contentEdgeInsets = UIEdgeInsetsZero
@@ -211,7 +180,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             }
         }
         var starImage: UIImage?
-        if (self.fFavorited == true) {
+        if (self.tweetModel.fFavorited == true) {
             starImage = UIImage(named: "Star-Filled")
         } else {
             starImage = UIImage(named: "Star-Line")
@@ -228,7 +197,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         let cUsername = userDefault.stringForKey("username")
         
-        if (cUsername == self.screenName) {
+        if (cUsername == self.tweetModel.screenName) {
             if let cTrashImage = UIImage(named: "Trash-Line") {
                 self.ts_imageWithSize(cTrashImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight, callback: { (aTrashImage) -> Void in
                     self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
@@ -254,10 +223,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         
         // 画像があった場合の処理
-        if (self.media != nil) {
+        if (self.tweetModel.media != nil) {
             var startPosY = self.favButton.frame.origin.y + self.favButton.frame.size.height + 20.0
             self.innerMediaButton = []
-            for mediaURL in self.media! {
+            for mediaURL in self.tweetModel.media! {
                 var eachMediaButton = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, startPosY, self.cWindowSize.size.width * 0.9, 100))
                 self.innerMediaButton!.append(eachMediaButton)
                 var imageURL = NSURL(string: mediaURL)
@@ -319,8 +288,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             var replyList: Array<String> = []
             var tScreenName = ""
             var fReply = false
-            replyList.append("@" + self.screenName)
-            for char in self.tweetBody! {
+            replyList.append("@" + self.tweetModel.screenName)
+            for char in self.tweetModel.tweetBody! {
                 if (fReply) {
                     if (char == " " || char == "　" || !self.checkScreenName(char)) {
                         if ("@" + userScreenName != tScreenName) {
@@ -340,13 +309,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             for name in replyList {
                 replyListStr += name + " "
             }
-            var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetID, aTopCursor: nil)
+            var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetModel.tweetID, aTopCursor: nil)
             self.navigationController!.pushViewController(newTweetView, animated: true)
         }
     }
     
     func tappedConversation() {
-        var conversationView = ConversationTableViewController(aTweetID: self.tweetID)
+        var conversationView = ConversationTableViewController(aTweetID: self.tweetModel.tweetID)
         self.navigationController?.pushViewController(conversationView, animated: true)
     }
     
@@ -354,9 +323,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //  memo: favDeleteアクションもここで実装
     //-------------------------------------------------
     func tappedFavorite() {
-        if (self.fFavorited == true) {
+        if (self.tweetModel.fFavorited == true) {
             var params:Dictionary<String, String> = [
-                "id" : self.tweetID
+                "id" : self.tweetModel.tweetID
             ]
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
@@ -371,7 +340,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
-                    self.fFavorited = false
+                    self.tweetModel.fFavorited = false
                     if let cStarImage = UIImage(named: "Star-Line") {
                         self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
                             self.favButton.removeFromSuperview()
@@ -390,7 +359,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             
         } else {
             var params:Dictionary<String, String> = [
-                "id" : self.tweetID
+                "id" : self.tweetModel.tweetID
             ]
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
@@ -405,7 +374,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
                     // アイコンの挿げ替え
-                    self.fFavorited = true
+                    self.tweetModel.fFavorited = true
                     if let cStarImage = UIImage(named: "Star-Filled") {
                         self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
                             self.favButton.removeFromSuperview()
@@ -430,7 +399,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let cOkAction = UIAlertAction(title: "削除する", style: .Default, handler: {action in
             println("OK")
             var params:Dictionary<String, String> = [
-                "id" : self.tweetID
+                "id" : self.tweetModel.tweetID
             ]
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params
@@ -460,7 +429,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     func tappedMore() {
         var retweetSelectSheet = UIAlertController(title: "Retweet", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let oficialRetweetAction = UIAlertAction(title: "公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
-            if (self.fProtected == true) {
+            if (self.tweetModel.fProtected == true) {
                 var protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.Alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     return true
@@ -473,7 +442,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 let cOkAction = UIAlertAction(title: "RTする", style: .Default, handler: {action in
                     println("OK")
                     var params:Dictionary<String, String> = [
-                        "id" : self.tweetID
+                        "id" : self.tweetModel.tweetID
                     ]
                     let cParameter: Dictionary<String, AnyObject> = [
                         "settings" : params
@@ -499,7 +468,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             }
         }
         let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.Default) { (action) -> Void in
-            if (self.fProtected == true) {
+            if (self.tweetModel.fProtected == true) {
                 var protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.Alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                     return true
@@ -507,7 +476,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 protectedAlert.addAction(okAction)
                 self.presentViewController(protectedAlert, animated: true, completion: nil)
             } else {
-                var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.screenName + " " + self.tweetBody!, aReplyToID: self.tweetID, aTopCursor: true)
+                var retweetView = NewTweetViewController(aTweetBody: "RT @" + self.tweetModel.screenName + " " + self.tweetModel.tweetBody!, aReplyToID: self.tweetModel.tweetID, aTopCursor: true)
                 self.navigationController?.pushViewController(retweetView, animated: true)
             }
         }
@@ -526,12 +495,12 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
     
     func tappedUserProfile() {
-        var userProfileView = ProfileViewController(aScreenName: self.screenName)
+        var userProfileView = ProfileViewController(aScreenName: self.tweetModel.screenName)
         self.navigationController?.pushViewController(userProfileView, animated: true)
     }
     
     func tappedRetweetedProfile() {
-        var userProfileView = ProfileViewController(aScreenName: self.retweetedName!)
+        var userProfileView = ProfileViewController(aScreenName: self.tweetModel.retweetedName!)
         self.navigationController?.pushViewController(userProfileView, animated: true)
     }
     

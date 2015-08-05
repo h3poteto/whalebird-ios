@@ -45,7 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if let barButtonFont: UIFont = UIFont(name: TimelineViewCell.NormalFont, size: 16) {
             UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], forState: UIControlState.Normal)
         }
-        
+        var chdic = [
+            "yes" : "asumiss"
+        ]
+        var dic = [
+            "name" : "hoge",
+            "child" : chdic
+        ]
         // tabBar設定
         self.rootController = UITabBarController()
         self.rootController.delegate = self
@@ -70,8 +76,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         // RemoteNotificationからのアプリ起動処理
         if (launchOptions != nil) {
-            if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary {
-                if (userInfo.objectForKey("aps")?.objectForKey("category") as? String == "reply") {
+            if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject : AnyObject] {
+                if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "reply" {
+                    var tweetModel = TweetModel(notificationDict: userInfo)
+                    var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                    /*
                     var detailView = TweetDetailViewController(
                         aTweetID: userInfo.objectForKey("id") as! String,
                         aTweetBody: userInfo.objectForKey("text")as! String,
@@ -86,24 +95,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         aTimelineModel: nil,
                         aParentIndex: nil,
                         aProtected: userInfo.objectForKey("protected") as? Bool
-                    )
+                    )*/
                     
                     NotificationUnread.decrementUnreadBadge()
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
-                } else if(userInfo.objectForKey("aps")?.objectForKey("category") as? String == "direct_message") {
+                } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "direct_message" {
                     var messageViewController = MessageDetailViewController(
-                        aMessageID: userInfo.objectForKey("id") as! String,
-                        aMessageBody: userInfo.objectForKey("text") as! String,
-                        aScreeName: userInfo.objectForKey("screen_name") as! String,
-                        aUserName: userInfo.objectForKey("name") as! String,
-                        aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
-                        aPostDetail: userInfo.objectForKey("created_at") as! String)
+                        aMessageID: userInfo["id"] as! String,
+                        aMessageBody: userInfo["text"] as! String,
+                        aScreeName: userInfo["screen_name"] as! String,
+                        aUserName: userInfo["name"] as! String,
+                        aProfileImage: userInfo["profile_image_url"] as! String,
+                        aPostDetail: userInfo["created_at"] as! String)
                     
                     NotificationUnread.decrementUnreadBadge()
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
-                } else if(userInfo.objectForKey("aps")?.objectForKey("category") as? String == "retweet") {
-                    if (userInfo.objectForKey("id") != nil) {
+                } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "retweet" {
+                    if (userInfo["id"] != nil) {
+                        var tweetModel = TweetModel(notificationDict: userInfo)
+                        var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        /*
                         var detailView = TweetDetailViewController(
                             aTweetID: userInfo.objectForKey("id") as! String,
                             aTweetBody: userInfo.objectForKey("text") as! String,
@@ -118,13 +130,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo.objectForKey("protected") as? Bool
-                        )
+                        )*/
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                     }
-                } else if(userInfo.objectForKey("aps")?.objectForKey("category") as? String == "favorite") {
-                    if (userInfo.objectForKey("id") != nil) {
+                } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "favorite" {
+                    if (userInfo["id"] != nil) {
+                        var tweetModel = TweetModel(notificationDict: userInfo)
+                        var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        /*
                         var detailView = TweetDetailViewController(
                             aTweetID: userInfo.objectForKey("id") as! String,
                             aTweetBody: userInfo.objectForKey("text") as! String,
@@ -139,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo.objectForKey("protected") as? Bool
-                        )
+                        )*/
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
@@ -247,6 +262,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         case "reply":
                             var alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
+                                var tweetModel = TweetModel(notificationDict: userInfo)
+                                var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                                /*
                                 var detailViewController = TweetDetailViewController(
                                     aTweetID: userInfo["id"] as! String,
                                     aTweetBody: userInfo["text"] as! String,
@@ -261,7 +279,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                     aTimelineModel: nil,
                                     aParentIndex: nil,
                                     aProtected: userInfo["protected"] as? Bool
-                                )
+                                )*/
                                 NotificationUnread.decrementUnreadBadge()
                                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
@@ -315,6 +333,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // 起動済みで通知から復旧した時
                     switch(category) {
                     case "reply":
+                        var tweetModel = TweetModel(notificationDict: userInfo)
+                        var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        /*
                         var detailViewController = TweetDetailViewController(
                             aTweetID: userInfo["id"] as! String,
                             aTweetBody: userInfo["text"] as! String,
@@ -329,7 +350,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             aTimelineModel: nil,
                             aParentIndex: nil,
                             aProtected: userInfo["protected"] as? Bool
-                        )
+                        )*/
                         
                         NotificationUnread.decrementUnreadBadge()
                         
@@ -350,6 +371,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         break
                     case "favorite":
                         if (userInfo["id"] != nil) {
+                            var tweetModel = TweetModel(notificationDict: userInfo)
+                            var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                            /*
                             var detailViewController = TweetDetailViewController(
                                 aTweetID: userInfo["id"] as! String,
                                 aTweetBody: userInfo["text"] as! String,
@@ -364,13 +388,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                 aTimelineModel: nil,
                                 aParentIndex: nil,
                                 aProtected: userInfo["protected"] as? Bool
-                            )
+                            )*/
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }
                         break
                     case "retweet":
                         if (userInfo["id"] != nil) {
+                            var tweetModel = TweetModel(notificationDict: userInfo)
+                            var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                            /*
                             var detailViewController = TweetDetailViewController(
                                 aTweetID: userInfo["id"] as! String,
                                 aTweetBody: userInfo["text"] as! String,
@@ -385,7 +412,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                 aTimelineModel: nil,
                                 aParentIndex: nil,
                                 aProtected: userInfo["protected"] as? Bool
-                            )
+                            )*/
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }

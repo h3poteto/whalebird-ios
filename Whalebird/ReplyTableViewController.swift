@@ -115,6 +115,9 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 }
                 self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
             } else {
+                var tweetModel = TweetModel(dict: cTweetData)
+                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                /*
                 var detailView = TweetDetailViewController(
                     aTweetID: cTweetData.objectForKey("id_str") as! String,
                     aTweetBody: cTweetData.objectForKey("text") as! String,
@@ -129,7 +132,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                     aTimelineModel: self.timelineModel,
                     aParentIndex: indexPath.row,
                     aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-                )
+                )*/
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
