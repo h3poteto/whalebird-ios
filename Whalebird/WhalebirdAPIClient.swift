@@ -11,6 +11,7 @@ import AFNetworking
 import UrlShortener
 import SVProgressHUD
 import NoticeView
+import IJReachability
 
 class WhalebirdAPIClient: NSObject {
 
@@ -117,6 +118,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func initAPISession(success:() -> Void, failure:(NSError) -> Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.sessionManager = AFHTTPRequestOperationManager()
         self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         var requestURL = self.whalebirdAPIURL + "users/apis.json"
@@ -136,6 +141,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func getArrayAPI(path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: (NSArray) ->Void, failed: () -> Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
@@ -159,6 +168,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func getDictionaryAPI(path: String, params: Dictionary<String, AnyObject>, callback: (NSDictionary) ->Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
@@ -183,6 +196,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func postAnyObjectAPI(path: String, params: Dictionary<String, AnyObject>, callback: (AnyObject) ->Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
@@ -203,6 +220,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func postImage(image: UIImage, progress: (Float) -> Void, complete: (NSDictionary) -> Void, failed: (NSError)-> Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.loadCookie()
         if (self.sessionManager != nil) {
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
@@ -288,6 +309,10 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func deleteSsessionAPI(path: String, params: Dictionary<String, AnyObject>,callback: (AnyObject) -> Void) {
+        if !self.confirmConnectedNetwork() {
+            SVProgressHUD.dismiss()
+            return
+        }
         self.loadCookie()
         if (self.sessionManager != nil) {
             var requestURL = self.whalebirdAPIURL + path
@@ -371,5 +396,16 @@ class WhalebirdAPIClient: NSObject {
         notice.alpha = 0.8
         notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
         notice.show()
+    }
+    
+    func confirmConnectedNetwork() ->Bool {
+        if !IJReachability.isConnectedToNetwork() {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
+            return false
+        }
+        return true
     }
 }

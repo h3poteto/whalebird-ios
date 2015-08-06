@@ -26,6 +26,7 @@ PODS:
     - Fabric/Base (= 1.2.8)
   - Fabric/Base (1.2.8)
   - HexColors (2.2.1)
+  - IJReachability (0.1.0)
   - NoticeView (3.0.7)
   - ODRefreshControl (1.1.0)
   - OHAttributedLabel (3.5.5)
@@ -46,6 +47,7 @@ DEPENDENCIES:
   - Crashlytics
   - DACircularProgress
   - Fabric
+  - IJReachability (from `https://github.com/Isuru-Nanayakkara/IJReachability.git`)
   - NoticeView
   - ODRefreshControl
   - OHAttributedLabel
@@ -59,6 +61,8 @@ DEPENDENCIES:
   - UrlShortener (from `https://github.com/h3poteto/URL-Shortener.git`)
 
 EXTERNAL SOURCES:
+  IJReachability:
+    :git: https://github.com/Isuru-Nanayakkara/IJReachability.git
   RNCryptor:
     :branch: master
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -66,6 +70,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/h3poteto/URL-Shortener.git
 
 CHECKOUT OPTIONS:
+  IJReachability:
+    :commit: da69c8f4bed9f82203bb49180fb36091b4cd0d28
+    :git: https://github.com/Isuru-Nanayakkara/IJReachability.git
   RNCryptor:
     :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -79,6 +86,7 @@ SPEC CHECKSUMS:
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
   Fabric: a9eabe53915e9f1db55a84dd2838737928675878
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  IJReachability: 3eff33caca50869df09b257bcf712031a56a8575
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea
   OHAttributedLabel: 9b2eb99323dee6b3a81ef3bc8e98b084117bca2d

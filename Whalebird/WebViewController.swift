@@ -8,6 +8,8 @@
 
 import UIKit
 import SVProgressHUD
+import IJReachability
+import NoticeView
 
 class WebViewController: UIViewController, UIWebViewDelegate {
 
@@ -42,10 +44,18 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         self.webView.scalesPageToFit = true
         self.webView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.webView.delegate = self
-        if let requestURL = NSURL(string: self.whalebirdURL + self.openURL) {
-            self.webView.loadRequest(NSURLRequest(URL: requestURL))
+        if IJReachability.isConnectedToNetwork() {
+            if let requestURL = NSURL(string: self.whalebirdURL + self.openURL) {
+                self.webView.loadRequest(NSURLRequest(URL: requestURL))
+            }
+             self.view.addSubview(self.webView)
+        } else {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
         }
-        self.view.addSubview(self.webView)
+       
         // Do any additional setup after loading the view.
     }
 

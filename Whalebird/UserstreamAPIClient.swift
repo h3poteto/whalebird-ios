@@ -10,6 +10,7 @@ import UIKit
 import Social
 import Accounts
 import NoticeView
+import IJReachability
 
 class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
 
@@ -97,6 +98,9 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     //=======================================
     
     func startStreaming(aTargetStream: NSURL, params: Dictionary<String,String>, callback:(ACAccount)->Void) {
+        if !self.confirmConnectedNetwork() {
+            return
+        }
         var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: aTargetStream, parameters: params)
         if var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
             var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
@@ -169,5 +173,14 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
             }
         }
     }
-    
+    func confirmConnectedNetwork() ->Bool {
+        if !IJReachability.isConnectedToNetwork() {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
+            return false
+        }
+        return true
+    }
 }

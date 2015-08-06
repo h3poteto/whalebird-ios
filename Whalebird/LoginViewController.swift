@@ -8,6 +8,8 @@
 
 import UIKit
 import SVProgressHUD
+import IJReachability
+import NoticeView
 
 class ExWebView: UIWebView {
     override func loadRequest(request: NSURLRequest) {
@@ -48,8 +50,15 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.loginWebView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         self.loginWebView.delegate = self
         var request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
-        self.loginWebView.loadRequest(request)
-        self.view.addSubview(self.loginWebView)
+        if IJReachability.isConnectedToNetwork() {
+            self.loginWebView.loadRequest(request)
+            self.view.addSubview(self.loginWebView)
+        } else {
+            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
+        }
         // SVProgressHUDの表示スタイル設定
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
     }
