@@ -120,22 +120,6 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
             var tweetModel = TweetModel(dict: cTweetData)
             var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
-            /*
-            var detailView = TweetDetailViewController(
-                aTweetID: cTweetData.objectForKey("id_str") as! String,
-                aTweetBody: cTweetData.objectForKey("text") as! String,
-                aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-                aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                aPostDetail: cTweetData.objectForKey("created_at") as! String,
-                aRetweetedName: nil,
-                aRetweetedProfileImage: nil,
-                aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-                aMedia: cTweetData.objectForKey("media") as? NSArray,
-                aTimelineModel: self.timelineModel,
-                aParentIndex: indexPath.row,
-                aProtected: cTweetData.objectForKey("user")?.objectForKey("protected") as? Bool
-            )*/
             self.navigationController?.pushViewController(detailView, animated: true)
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }

@@ -80,23 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "reply" {
                     var tweetModel = TweetModel(notificationDict: userInfo)
                     var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                    /*
-                    var detailView = TweetDetailViewController(
-                        aTweetID: userInfo.objectForKey("id") as! String,
-                        aTweetBody: userInfo.objectForKey("text")as! String,
-                        aScreenName: userInfo.objectForKey("screen_name")as! String,
-                        aUserName: userInfo.objectForKey("name") as! String,
-                        aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
-                        aPostDetail: userInfo.objectForKey("created_at") as! String,
-                        aRetweetedName: nil,
-                        aRetweetedProfileImage: nil,
-                        aFavorited: userInfo.objectForKey("favorited") as? Bool,
-                        aMedia: userInfo.objectForKey("media") as? NSArray,
-                        aTimelineModel: nil,
-                        aParentIndex: nil,
-                        aProtected: userInfo.objectForKey("protected") as? Bool
-                    )*/
-                    
                     NotificationUnread.decrementUnreadBadge()
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
@@ -115,22 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     if (userInfo["id"] != nil) {
                         var tweetModel = TweetModel(notificationDict: userInfo)
                         var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        /*
-                        var detailView = TweetDetailViewController(
-                            aTweetID: userInfo.objectForKey("id") as! String,
-                            aTweetBody: userInfo.objectForKey("text") as! String,
-                            aScreenName: userInfo.objectForKey("screen_name") as! String,
-                            aUserName: userInfo.objectForKey("name") as! String,
-                            aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
-                            aPostDetail: userInfo.objectForKey("created_at") as! String,
-                            aRetweetedName: nil,
-                            aRetweetedProfileImage: nil,
-                            aFavorited: userInfo.objectForKey("favorited") as? Bool,
-                            aMedia: userInfo.objectForKey("media") as? NSArray,
-                            aTimelineModel: nil,
-                            aParentIndex: nil,
-                            aProtected: userInfo.objectForKey("protected") as? Bool
-                        )*/
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
@@ -139,22 +106,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     if (userInfo["id"] != nil) {
                         var tweetModel = TweetModel(notificationDict: userInfo)
                         var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        /*
-                        var detailView = TweetDetailViewController(
-                            aTweetID: userInfo.objectForKey("id") as! String,
-                            aTweetBody: userInfo.objectForKey("text") as! String,
-                            aScreenName: userInfo.objectForKey("screen_name") as! String,
-                            aUserName: userInfo.objectForKey("name") as! String,
-                            aProfileImage: userInfo.objectForKey("profile_image_url") as! String,
-                            aPostDetail: userInfo.objectForKey("created_at") as! String,
-                            aRetweetedName: nil,
-                            aRetweetedProfileImage: nil,
-                            aFavorited: userInfo.objectForKey("favorited") as? Bool,
-                            aMedia: userInfo.objectForKey("media") as? NSArray,
-                            aTimelineModel: nil,
-                            aParentIndex: nil,
-                            aProtected: userInfo.objectForKey("protected") as? Bool
-                        )*/
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
@@ -264,22 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
                                 var tweetModel = TweetModel(notificationDict: userInfo)
                                 var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                                /*
-                                var detailViewController = TweetDetailViewController(
-                                    aTweetID: userInfo["id"] as! String,
-                                    aTweetBody: userInfo["text"] as! String,
-                                    aScreenName: userInfo["screen_name"] as! String,
-                                    aUserName: userInfo["name"] as! String,
-                                    aProfileImage: userInfo["profile_image_url"] as! String,
-                                    aPostDetail: userInfo["created_at"] as! String,
-                                    aRetweetedName: nil,
-                                    aRetweetedProfileImage: nil,
-                                    aFavorited: userInfo["favorited"] as? Bool,
-                                    aMedia: userInfo["media"] as? NSArray,
-                                    aTimelineModel: nil,
-                                    aParentIndex: nil,
-                                    aProtected: userInfo["protected"] as? Bool
-                                )*/
+
                                 NotificationUnread.decrementUnreadBadge()
                                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
@@ -335,22 +271,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     case "reply":
                         var tweetModel = TweetModel(notificationDict: userInfo)
                         var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        /*
-                        var detailViewController = TweetDetailViewController(
-                            aTweetID: userInfo["id"] as! String,
-                            aTweetBody: userInfo["text"] as! String,
-                            aScreenName: userInfo["screen_name"] as! String,
-                            aUserName: userInfo["name"] as! String,
-                            aProfileImage: userInfo["profile_image_url"] as! String,
-                            aPostDetail: userInfo["created_at"] as! String,
-                            aRetweetedName: nil,
-                            aRetweetedProfileImage: nil,
-                            aFavorited: userInfo["favorited"] as? Bool,
-                            aMedia: userInfo["media"] as? NSArray,
-                            aTimelineModel: nil,
-                            aParentIndex: nil,
-                            aProtected: userInfo["protected"] as? Bool
-                        )*/
                         
                         NotificationUnread.decrementUnreadBadge()
                         
@@ -373,22 +293,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         if (userInfo["id"] != nil) {
                             var tweetModel = TweetModel(notificationDict: userInfo)
                             var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                            /*
-                            var detailViewController = TweetDetailViewController(
-                                aTweetID: userInfo["id"] as! String,
-                                aTweetBody: userInfo["text"] as! String,
-                                aScreenName: userInfo["screen_name"] as! String,
-                                aUserName: userInfo["name"] as! String,
-                                aProfileImage: userInfo["profile_image_url"] as! String,
-                                aPostDetail: userInfo["created_at"] as! String,
-                                aRetweetedName: nil,
-                                aRetweetedProfileImage: nil,
-                                aFavorited: userInfo["favorited"] as? Bool,
-                                aMedia: userInfo["media"] as? NSArray,
-                                aTimelineModel: nil,
-                                aParentIndex: nil,
-                                aProtected: userInfo["protected"] as? Bool
-                            )*/
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }
@@ -397,22 +301,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         if (userInfo["id"] != nil) {
                             var tweetModel = TweetModel(notificationDict: userInfo)
                             var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                            /*
-                            var detailViewController = TweetDetailViewController(
-                                aTweetID: userInfo["id"] as! String,
-                                aTweetBody: userInfo["text"] as! String,
-                                aScreenName: userInfo["screen_name"] as! String,
-                                aUserName: userInfo["name"] as! String,
-                                aProfileImage: userInfo["profile_image_url"] as! String,
-                                aPostDetail: userInfo["created_at"] as! String,
-                                aRetweetedName: nil,
-                                aRetweetedProfileImage: nil,
-                                aFavorited: userInfo["favorited"] as? Bool,
-                                aMedia: userInfo["media"] as? NSArray,
-                                aTimelineModel: nil,
-                                aParentIndex: nil,
-                                aProtected: userInfo["protected"] as? Bool
-                            )*/
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }

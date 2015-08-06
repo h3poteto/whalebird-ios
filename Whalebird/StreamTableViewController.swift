@@ -146,22 +146,6 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
             } else {
                 var tweetModel = TweetModel(dict: cTweetData)
                 var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
-                /*
-                var detailView = TweetDetailViewController(
-                    aTweetID: cTweetData.objectForKey("id_str") as! String,
-                    aTweetBody: cTweetData.objectForKey("text") as! String,
-                    aScreenName: cTweetData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                    aUserName: cTweetData.objectForKey("user")?.objectForKey("name") as! String,
-                    aProfileImage: cTweetData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                    aPostDetail: cTweetData.objectForKey("created_at") as! String,
-                    aRetweetedName: cTweetData.objectForKey("retweeted")?.objectForKey("screen_name") as? String,
-                    aRetweetedProfileImage: cTweetData.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String,
-                    aFavorited: cTweetData.objectForKey("favorited?") as? Bool,
-                    aMedia: cTweetData.objectForKey("media") as? NSArray,
-                    aTimelineModel: self.timelineModel,
-                    aParentIndex: indexPath.row,
-                    aProtected: cTweetData.objectForKey("user")?.objectForKey("protected?") as? Bool
-                )*/
                 self.parentNavigation.pushViewController(detailView, animated: true)
             }
             
