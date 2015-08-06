@@ -27,7 +27,6 @@ PODS:
   - Fabric/Base (1.2.8)
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
-  - ObjectMapper (0.14)
   - ODRefreshControl (1.1.0)
   - OHAttributedLabel (3.5.5)
   - RNCryptor (2.2)
@@ -48,7 +47,6 @@ DEPENDENCIES:
   - DACircularProgress
   - Fabric
   - NoticeView
-  - ObjectMapper (~> 0.14)
   - ODRefreshControl
   - OHAttributedLabel
   - RNCryptor (from `https://github.com/h3poteto/RNCryptor.git`, branch `master`)
@@ -77,12 +75,11 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Crashlytics: ef9a58a4e806b316a1748c06432f6f847ba09ac6
+  Crashlytics: 93e2f86363d53c002c6366a9d87e41f2eaee87c3
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
   Fabric: a9eabe53915e9f1db55a84dd2838737928675878
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0
-  ObjectMapper: 45b97fa0a68c3851daad3efca87bc6c1ab1718c0
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea
   OHAttributedLabel: 9b2eb99323dee6b3a81ef3bc8e98b084117bca2d
   RNCryptor: e22d058d92b9a24a971fea324aea7efc7b25c6f7

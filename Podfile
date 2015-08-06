@@ -16,7 +16,6 @@ pod 'RNCryptor', git: "https://github.com/h3poteto/RNCryptor.git", branch: "mast
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'UrlShortener', git: "https://github.com/h3poteto/URL-Shortener.git"
-pod 'ObjectMapper', '~> 0.14'
 
 post_install do | installer |
   require 'fileutils'
