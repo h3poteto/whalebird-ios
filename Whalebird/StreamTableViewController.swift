@@ -138,7 +138,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cTweetData) {
-                var sinceID = cTweetData.objectForKey("sinceID") as? String
+                var sinceID = cTweetData["sinceID"] as? String
                 if (sinceID == "sinceID") {
                     sinceID = nil
                 }

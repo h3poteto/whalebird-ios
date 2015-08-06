@@ -108,19 +108,20 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cMessageData = self.timelineModel.getTeetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cMessageData) {
-                var sinceID = cMessageData.objectForKey("sinceID") as? String
+                var sinceID = cMessageData["sinceID"] as? String
                 if (sinceID == "sinceID") {
                     sinceID = nil
                 }
                 self.updateMessage(sinceID, aMoreIndex: indexPath.row)
             } else {
                 var detailView = MessageDetailViewController(
-                    aMessageID: cMessageData.objectForKey("id_str") as! String,
-                    aMessageBody: cMessageData.objectForKey("text") as! String,
-                    aScreeName: cMessageData.objectForKey("user")?.objectForKey("screen_name") as! String,
-                    aUserName: cMessageData.objectForKey("user")?.objectForKey("name") as! String,
-                    aProfileImage: cMessageData.objectForKey("user")?.objectForKey("profile_image_url") as! String,
-                    aPostDetail: cMessageData.objectForKey("created_at") as! String)
+                    aMessageID: cMessageData["id_str"] as! String,
+                    aMessageBody: cMessageData["text"] as! String,
+                    aScreeName: (cMessageData["user"] as! [NSObject : AnyObject])["screen_name"] as! String,
+                    aUserName: (cMessageData["user"] as! [NSObject : AnyObject])["name"] as! String,
+                    aProfileImage: (cMessageData["user"] as! [NSObject : AnyObject])["profile_image_url"] as! String,
+                    aPostDetail: cMessageData["created_at"] as! String
+                )
                 self.navigationController?.pushViewController(detailView, animated: true)
                 
             }

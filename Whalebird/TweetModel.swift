@@ -22,19 +22,19 @@ class TweetModel: NSObject {
     var fProtected: Bool!
     
     
-    init(dict: NSDictionary) {
+    init(dict: [NSObject : AnyObject]) {
         super.init()
-        self.tweetID = dict.objectForKey("id_str") as! String
-        self.tweetBody = dict.objectForKey("text")as! String
-        self.screenName = dict.objectForKey("user")?.objectForKey("screen_name") as! String
-        self.userName = dict.objectForKey("user")?.objectForKey("name") as! String
-        self.profileImage = dict.objectForKey("user")?.objectForKey("profile_image_url") as! String
-        self.postDetail = dict.objectForKey("created_at") as! String
-        self.retweetedName = dict.objectForKey("retweeted")?.objectForKey("screen_name") as? String
-        self.retweetedProfileImage = dict.objectForKey("retweeted")?.objectForKey("profile_image_url") as? String
-        self.fFavorited = optionalToBool(dict.objectForKey("favorited?") as? Bool)
-        self.media = dict.objectForKey("media") as? Array<String>
-        self.fProtected = optionalToBool(dict.objectForKey("user")?.objectForKey("protected?") as? Bool)
+        self.tweetID = dict["id_str"] as! String
+        self.tweetBody = dict["text"] as! String
+        self.screenName = (dict["user"] as! [NSObject : AnyObject])["screen_name"] as! String
+        self.userName = (dict["user"] as! [NSObject : AnyObject])["name"] as! String
+        self.profileImage = (dict["user"] as! [NSObject : AnyObject])["profile_image_url"] as! String
+        self.postDetail = dict["created_at"] as! String
+        self.retweetedName = (dict["retweeted"] as? [NSObject : AnyObject])?["screen_name"] as? String
+        self.retweetedProfileImage = (dict["retweeted"] as? [NSObject : AnyObject])?["profile_image_url"] as? String
+        self.fFavorited = optionalToBool(dict["favorited?"] as? Bool)
+        self.media = dict["media"] as? Array<String>
+        self.fProtected = optionalToBool((dict["user"] as? [NSObject : AnyObject])?["protected?"] as? Bool)
     }
     
     init (notificationDict: [NSObject : AnyObject]) {

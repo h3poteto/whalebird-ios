@@ -59,8 +59,8 @@ class TimelineModel: NSObject {
         return self.currentTimeline.count
     }
     
-    func getTeetAtIndex(index: Int)-> NSDictionary? {
-        return self.currentTimeline[index] as? NSDictionary
+    func getTeetAtIndex(index: Int)-> [NSObject : AnyObject]? {
+        return self.currentTimeline[index] as? [NSObject : AnyObject]
     }
     
     func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: StreamList.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
@@ -283,14 +283,14 @@ class TimelineModel: NSObject {
     }
     
     func addFavorite(index: Int) {
-        if var object = self.getTeetAtIndex(index) as? NSMutableDictionary {
-            object.setObject(1, forKey: "favorited?")
+        if var object = self.getTeetAtIndex(index) {
+            object["favorited?"] = 1
         }
     }
     
     func deleteFavorite(index: Int) {
-        if var object = self.getTeetAtIndex(index) as? NSMutableDictionary {
-            object.setObject(0, forKey: "favorited?")
+        if var object = self.getTeetAtIndex(index) {
+            object["favorited?"] = 0
         }
     }
     

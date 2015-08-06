@@ -447,7 +447,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "count" : "20"
         ]
         if (aMoreIndex != nil) {
-            if var strMoreID = (self.timelineModel.getTeetAtIndex(aMoreIndex!))!.objectForKey("id_str") as? String {
+            if var strMoreID = self.timelineModel.getTeetAtIndex(aMoreIndex!)?["id_str"] as? String {
                 // max_idは「以下」という判定になるので自身を含めない
                 params["max_id"] = BigInteger(string: strMoreID).decrement()
             }
