@@ -323,75 +323,50 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //  memo: favDeleteアクションもここで実装
     //-------------------------------------------------
     func tappedFavorite() {
-        if (self.tweetModel.fFavorited == true) {
-            var params:Dictionary<String, String> = [
-                "id" : self.tweetModel.tweetID
-            ]
-            let cParameter: Dictionary<String, AnyObject> = [
-                "settings" : params
-            ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り削除")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                    // アイコンの挿げ替え
-                    self.tweetModel.fFavorited = false
-                    if let cStarImage = UIImage(named: "Star-Line") {
-                        self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
-                            self.favButton.removeFromSuperview()
-                            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
-                            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                            self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-                            self.blankView.addSubview(self.favButton)
-                        }
-                    }
-                    if self.timelineModel != nil && self.parentIndex != nil {
-                        self.timelineModel!.deleteFavorite(self.parentIndex!)
-                    }
-                })
+        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        self.tweetModel.favoriteTweet({ () -> Void in
+            SVProgressHUD.dismiss()
+            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り追加")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
+            // アイコンの挿げ替え
+            self.tweetModel.fFavorited = true
+            if let cStarImage = UIImage(named: "Star-Filled") {
+                self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
+                    self.favButton.removeFromSuperview()
+                    self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                    self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                    self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                    self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                    self.blankView.addSubview(self.favButton)
+                }
             }
-            
-        } else {
-            var params:Dictionary<String, String> = [
-                "id" : self.tweetModel.tweetID
-            ]
-            let cParameter: Dictionary<String, AnyObject> = [
-                "settings" : params
-            ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: cParameter) { (operation) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り追加")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                    // アイコンの挿げ替え
-                    self.tweetModel.fFavorited = true
-                    if let cStarImage = UIImage(named: "Star-Filled") {
-                        self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
-                            self.favButton.removeFromSuperview()
-                            self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
-                            self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
-                            self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                            self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
-                            self.blankView.addSubview(self.favButton)
-                        }
-                    }
-                    // 親要素のツイート情報を書き換え
-                    if self.timelineModel != nil && self.parentIndex != nil {
-                        self.timelineModel!.addFavorite(self.parentIndex!)
-                    }
-                })
+            // 親要素のツイート情報を書き換え
+            if self.timelineModel != nil && self.parentIndex != nil {
+                self.timelineModel!.addFavorite(self.parentIndex!)
             }
-        }
+        }, unfavorited: { () -> Void in
+            SVProgressHUD.dismiss()
+            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "お気に入り削除")
+            notice.alpha = 0.8
+            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+            notice.show()
+            // アイコンの挿げ替え
+            if let cStarImage = UIImage(named: "Star-Line") {
+                self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
+                    self.favButton.removeFromSuperview()
+                    self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
+                    self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
+                    self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
+                    self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                    self.blankView.addSubview(self.favButton)
+                }
+            }
+            if self.timelineModel != nil && self.parentIndex != nil {
+                self.timelineModel!.deleteFavorite(self.parentIndex!)
+            }
+        })
     }
 
     func tappedDelete() {

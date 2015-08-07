@@ -58,4 +58,31 @@ class TweetModel: NSObject {
         }
     }
     
+    func favoriteTweet(favorited: ()-> Void, unfavorited: ()-> Void) {
+        var params:Dictionary<String, String> = [
+            "id" : self.tweetID
+        ]
+        let cParameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        if (self.fFavorited == true) {
+            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.fFavorited = false
+                    unfavorited()
+                })
+            }
+            
+        } else {
+            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: cParameter) { (operation) -> Void in
+                var q_main = dispatch_get_main_queue()
+                dispatch_async(q_main, {()->Void in
+                    self.fFavorited = true
+                    favorited()
+                })
+            }
+        }
+    }
+    
 }
