@@ -131,7 +131,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + TweetDetailViewController.LabelPadding + 5, self.cWindowSize.size.width * 0.9, 15))
-        self.tweetBodyLabel.attributedText = self.customAttributedString(self.tweetModel.tweetBody)
+        self.tweetBodyLabel.attributedText = self.tweetModel.customAttributedString()
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
@@ -285,31 +285,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     func tappedReply() {
         var userDefault = NSUserDefaults.standardUserDefaults()
         if let userScreenName = userDefault.objectForKey("username") as? String {
-            var replyList: Array<String> = []
-            var tScreenName = ""
-            var fReply = false
-            replyList.append("@" + self.tweetModel.screenName)
-            for char in self.tweetModel.tweetBody! {
-                if (fReply) {
-                    if (char == " " || char == "　" || !self.checkScreenName(char)) {
-                        if ("@" + userScreenName != tScreenName) {
-                            replyList.append(tScreenName)
-                        }
-                        tScreenName = ""
-                        fReply = false
-                    } else {
-                        tScreenName.append(char)
-                    }
-                }else if (char == "@") {
-                    tScreenName.append(char)
-                    fReply = true
-                }
-            }
-            var replyListStr = ""
-            for name in replyList {
-                replyListStr += name + " "
-            }
-            var newTweetView = NewTweetViewController(aTweetBody: replyListStr, aReplyToID: self.tweetModel.tweetID, aTopCursor: nil)
+            var newTweetView = NewTweetViewController(
+                aTweetBody: self.tweetModel.replyList(userScreenName),
+                aReplyToID: self.tweetModel.tweetID,
+                aTopCursor: nil
+            )
             self.navigationController!.pushViewController(newTweetView, animated: true)
         }
     }
@@ -478,57 +458,4 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.presentViewController(mediaView, animated: true, completion: nil)
         }
     }
-    
-    // twitter独自のscreen name判定
-    // _ はscreen nameと判定．他の文字は半角英数字のみ許可
-    func checkScreenName(aCharacter: Character) -> Bool {
-        if (aCharacter == "_") {
-            return true
-        } else {
-            // 半角全角判定
-            var str = String(aCharacter)
-            if (str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
-                return false
-            } else {
-                var charSet = NSCharacterSet.alphanumericCharacterSet()
-                if var aScanner = NSScanner.localizedScannerWithString(str) as? NSScanner {
-                    aScanner.charactersToBeSkipped = nil
-                    aScanner.scanCharactersFromSet(charSet, intoString: nil)
-                    return aScanner.atEnd
-                } else {
-                    return false
-                }
-            }
-        }
-    }
-    
-    func customAttributedString(rawString: String) -> NSMutableAttributedString {
-        var escapedTweetBody = WhalebirdAPIClient.escapeString(rawString)
-        var screenNameList: Array<String> = []
-        var tScreenName = ""
-        var fReply = false
-        for char in rawString {
-            if (fReply) {
-                if (char == " " || char == "　" || !self.checkScreenName(char)) {
-                    screenNameList.append(tScreenName)
-                    tScreenName = ""
-                    fReply = false
-                } else {
-                    tScreenName.append(char)
-                }
-            }else if (char == "@") {
-                tScreenName.append(char)
-                fReply = true
-            }
-        }
-        var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
-        attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
-        for screen in screenNameList {
-            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
-            attributedString.addAttributes([NSLinkAttributeName: "at:" + screen], range: nameRange)
-        }
-        return attributedString
-    }
-    
-    
 }
