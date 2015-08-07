@@ -100,4 +100,19 @@ class TweetModel: NSObject {
         })
     }
     
+    func retweetTweet(completed: ()-> Void) {
+        var params:Dictionary<String, String> = [
+            "id" : self.tweetID
+        ]
+        let cParameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                completed()
+            })
+        })
+    }
+    
 }

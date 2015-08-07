@@ -405,23 +405,13 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 // 公式RTの処理．直接POSTしちゃって構わない
                 var alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .Alert)
                 let cOkAction = UIAlertAction(title: "RTする", style: .Default, handler: {action in
-                    println("OK")
-                    var params:Dictionary<String, String> = [
-                        "id" : self.tweetModel.tweetID
-                    ]
-                    let cParameter: Dictionary<String, AnyObject> = [
-                        "settings" : params
-                    ]
                     SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-                    WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
-                        var q_main = dispatch_get_main_queue()
-                        dispatch_async(q_main, {()->Void in
-                            SVProgressHUD.dismiss()
-                            var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
-                            notice.alpha = 0.8
-                            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                            notice.show()
-                        })
+                    self.tweetModel.retweetTweet({ () -> Void in
+                        SVProgressHUD.dismiss()
+                        var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "RTしました")
+                        notice.alpha = 0.8
+                        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                        notice.show()
                     })
                 })
                 let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in
