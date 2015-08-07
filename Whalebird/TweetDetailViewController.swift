@@ -372,24 +372,14 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     func tappedDelete() {
         var alertController = UIAlertController(title: "ツイート削除", message: "本当に削除しますか？", preferredStyle: .Alert)
         let cOkAction = UIAlertAction(title: "削除する", style: .Default, handler: {action in
-            println("OK")
-            var params:Dictionary<String, String> = [
-                "id" : self.tweetModel.tweetID
-            ]
-            let cParameter: Dictionary<String, AnyObject> = [
-                "settings" : params
-            ]
             SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-            WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: cParameter, callback: { (operation) -> Void in
-                var q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
-                    SVProgressHUD.dismiss()
-                    var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "削除完了")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
-                    self.navigationController?.popViewControllerAnimated(true)
-                })
+            self.tweetModel.deleteTweet({ () -> Void in
+                SVProgressHUD.dismiss()
+                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "削除完了")
+                notice.alpha = 0.8
+                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
+                notice.show()
+                self.navigationController?.popViewControllerAnimated(true)
             })
         })
         let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel, handler: {action in

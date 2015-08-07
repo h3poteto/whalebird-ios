@@ -85,4 +85,19 @@ class TweetModel: NSObject {
         }
     }
     
+    func deleteTweet(completed: ()-> Void) {
+        var params:Dictionary<String, String> = [
+            "id" : self.tweetID
+        ]
+        let cParameter: Dictionary<String, AnyObject> = [
+            "settings" : params
+        ]
+        WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: cParameter, callback: { (operation) -> Void in
+            var q_main = dispatch_get_main_queue()
+            dispatch_async(q_main, {()->Void in
+                completed()
+            })
+        })
+    }
+    
 }
