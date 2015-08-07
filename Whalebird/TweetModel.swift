@@ -29,7 +29,7 @@ class TweetModel: NSObject {
         self.screenName = (dict["user"] as! [NSObject : AnyObject])["screen_name"] as! String
         self.userName = (dict["user"] as! [NSObject : AnyObject])["name"] as! String
         self.profileImage = (dict["user"] as! [NSObject : AnyObject])["profile_image_url"] as! String
-        self.postDetail = dict["created_at"] as! String
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(dict["created_at"] as! String)
         self.retweetedName = (dict["retweeted"] as? [NSObject : AnyObject])?["screen_name"] as? String
         self.retweetedProfileImage = (dict["retweeted"] as? [NSObject : AnyObject])?["profile_image_url"] as? String
         self.fFavorited = optionalToBool(dict["favorited?"] as? Bool)
@@ -44,7 +44,7 @@ class TweetModel: NSObject {
         self.screenName = notificationDict["screen_name"] as! String
         self.userName = notificationDict["name"] as! String
         self.profileImage = notificationDict["profile_image_url"] as! String
-        self.postDetail = notificationDict["created_at"] as! String
+        self.postDetail = WhalebirdAPIClient.convertLocalTime(notificationDict["created_at"] as! String)
         self.fFavorited = optionalToBool(notificationDict["favorited"] as? Bool)
         self.media = notificationDict["media"] as? Array<String>
         self.fProtected = optionalToBool(notificationDict["protected"] as? Bool)

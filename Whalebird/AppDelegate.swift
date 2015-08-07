@@ -84,13 +84,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                 } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "direct_message" {
-                    var messageViewController = MessageDetailViewController(
-                        aMessageID: userInfo["id"] as! String,
-                        aMessageBody: userInfo["text"] as! String,
-                        aScreeName: userInfo["screen_name"] as! String,
-                        aUserName: userInfo["name"] as! String,
-                        aProfileImage: userInfo["profile_image_url"] as! String,
-                        aPostDetail: userInfo["created_at"] as! String)
+                    var messageModel = MessageModel(notificationDict: userInfo)
+                    var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                     
                     NotificationUnread.decrementUnreadBadge()
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
@@ -229,14 +224,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         case "direct_message":
                             var alertController = UIAlertController(title: "DirectMessage", message: message, preferredStyle: .Alert)
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                var messageViewController = MessageDetailViewController(
-                                    aMessageID: userInfo["id"] as! String,
-                                    aMessageBody: userInfo["text"] as! String,
-                                    aScreeName: userInfo["screen_name"] as! String,
-                                    aUserName: userInfo["name"] as! String,
-                                    aProfileImage: userInfo["profile_image_url"] as! String,
-                                    aPostDetail: userInfo["created_at"] as! String
-                                )
+                                var messageModel = MessageModel(notificationDict: userInfo)
+                                var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                                 NotificationUnread.decrementUnreadBadge()
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                             })
@@ -278,14 +267,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         break
                     case "direct_message":
-                        var messageViewController = MessageDetailViewController(
-                            aMessageID: userInfo["id"] as! String,
-                            aMessageBody: userInfo["text"] as! String,
-                            aScreeName: userInfo["screen_name"] as! String,
-                            aUserName: userInfo["name"] as! String,
-                            aProfileImage: userInfo["profile_image_url"] as! String,
-                            aPostDetail: userInfo["created_at"] as! String
-                        )
+                        var messageModel = MessageModel(notificationDict: userInfo)
+                        var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                         NotificationUnread.decrementUnreadBadge()
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                         break

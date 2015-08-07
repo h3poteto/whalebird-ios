@@ -114,14 +114,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                 }
                 self.updateMessage(sinceID, aMoreIndex: indexPath.row)
             } else {
-                var detailView = MessageDetailViewController(
-                    aMessageID: cMessageData["id_str"] as! String,
-                    aMessageBody: cMessageData["text"] as! String,
-                    aScreeName: (cMessageData["user"] as! [NSObject : AnyObject])["screen_name"] as! String,
-                    aUserName: (cMessageData["user"] as! [NSObject : AnyObject])["name"] as! String,
-                    aProfileImage: (cMessageData["user"] as! [NSObject : AnyObject])["profile_image_url"] as! String,
-                    aPostDetail: cMessageData["created_at"] as! String
-                )
+                var messageModel = MessageModel(dict: cMessageData)
+                var detailView = MessageDetailViewController(aMessageModel: messageModel)
                 self.navigationController?.pushViewController(detailView, animated: true)
                 
             }

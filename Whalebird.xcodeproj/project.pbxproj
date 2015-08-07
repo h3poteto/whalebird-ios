@@ -52,6 +52,8 @@
 		E92C49FC1A9C6D34006BD492 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD81E11A32FA9E00763660 /* WebViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */; };
+		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
+		E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E975227F1B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
@@ -124,6 +126,7 @@
 		E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigIntegerTests.swift; sourceTree = "<group>"; };
 		E93433131A9C650D004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E93433161A9C66F0004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
 		E975227E1B65292E00AEB430 /* StreamList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamList.swift; sourceTree = "<group>"; };
@@ -306,6 +309,7 @@
 				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
 				E9AB53B11B63B79400C53942 /* TimelineModel.swift */,
 				E988D0181B72283B003BAD31 /* TweetModel.swift */,
+				E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -535,6 +539,7 @@
 				E97522831B667EC600AEB430 /* MinuteModel.swift in Sources */,
 				E9D142801A382E3500EA3E67 /* SearchTableViewController.swift in Sources */,
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
+				E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
 				E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */,
@@ -586,6 +591,7 @@
 				E92C49C41A9C69D2006BD492 /* BigInteger.swift in Sources */,
 				E9DD20771A9C7FFA002C3FF1 /* UserstreamAPIClientTests.swift in Sources */,
 				E92C49E71A9C6CA8006BD492 /* SettingsTableViewController.swift in Sources */,
+				E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
 				E92C49F91A9C6D29006BD492 /* StackListTableViewController.swift in Sources */,
 				E92C49F71A9C6D25006BD492 /* SwipeViewController.swift in Sources */,
 				E92C49ED1A9C6CB8006BD492 /* NewDirectMessageViewController.swift in Sources */,

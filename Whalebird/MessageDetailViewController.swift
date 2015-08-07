@@ -21,12 +21,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
     //=============================================
     //  instance variables
     //=============================================
-    var messageID: String!
-    var messageBody: String!
-    var screenName: String!
-    var userName: String!
-    var profileImage: String!
-    var postDetail: String!
+    var messageModel: MessageModel!
     
     var screenNameLabel: UIButton!
     var userNameLabel: UIButton!
@@ -48,16 +43,9 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         fatalError("init(coder:) has not been implemented")
     }
     
-
-    
-    convenience init(aMessageID: String, aMessageBody: String, aScreeName: String, aUserName: String, aProfileImage: String, aPostDetail: String) {
+    convenience init(aMessageModel: MessageModel) {
         self.init()
-        self.messageID = aMessageID
-        self.messageBody = aMessageBody
-        self.screenName = aScreeName
-        self.userName = aUserName
-        self.profileImage = aProfileImage
-        self.postDetail = WhalebirdAPIClient.convertLocalTime(aPostDetail)
+        self.messageModel = aMessageModel
         self.title = "詳細"
     }
     
@@ -73,7 +61,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         var userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
-        var imageURL = NSURL(string: self.profileImage)
+        var imageURL = NSURL(string: self.messageModel.profileImage)
         self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage"))
         self.profileImageLabel.sizeToFit()
         
@@ -82,9 +70,9 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.userNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.navigationController!.navigationBar.frame.size.height * 1.7, cWindowSize.size.width * 0.9, 15))
         
         if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
-            self.userNameLabel.setTitle("@" + self.screenName, forState: .Normal)
+            self.userNameLabel.setTitle("@" + self.messageModel.screenName, forState: .Normal)
         } else {
-            self.userNameLabel.setTitle(self.userName, forState: .Normal)
+            self.userNameLabel.setTitle(self.messageModel.userName, forState: .Normal)
         }
         self.userNameLabel.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.userNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.BoldFont, size: 15)
@@ -97,7 +85,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height - 10, cWindowSize.size.width * 0.9, 15))
         if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
         } else {
-            self.screenNameLabel.setTitle("@" + self.screenName, forState: UIControlState.Normal)
+            self.screenNameLabel.setTitle("@" + self.messageModel.screenName, forState: UIControlState.Normal)
         }
         self.screenNameLabel.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         self.screenNameLabel.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
@@ -110,7 +98,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         
         self.tweetBodyLabel = UITextView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height + MessageDetailViewController.LabelPadding, cWindowSize.size.width * 0.9, 15))
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
-        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageBody) as String
+        self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageModel.messageBody) as String
         self.tweetBodyLabel.delegate = self
         self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
         self.tweetBodyLabel.editable = false
@@ -120,7 +108,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.view.addSubview(self.tweetBodyLabel)
         
         self.postDetailLabel = UILabel(frame: CGRectMake(cWindowSize.size.width * 0.05, self.tweetBodyLabel.frame.origin.y + self.tweetBodyLabel.frame.size.height + MessageDetailViewController.LabelPadding, cWindowSize.size.width * 0.9, 15))
-        self.postDetailLabel.text = self.postDetail
+        self.postDetailLabel.text = self.messageModel.postDetail
         self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.view.addSubview(self.postDetailLabel)
         
@@ -138,7 +126,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
     }
 
     func tappedReplyMessage() {
-        var newMessage = NewDirectMessageViewController(aReplyToUser: self.screenName)
+        var newMessage = NewDirectMessageViewController(aReplyToUser: self.messageModel.screenName)
         self.navigationController?.pushViewController(newMessage, animated: true)
     }
     
