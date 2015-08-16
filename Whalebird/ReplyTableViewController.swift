@@ -28,6 +28,11 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リプライ"
         self.tabBarItem.image = UIImage(named: "Speaking-Line")
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var sinceId = userDefaults.stringForKey("replyTimelineSinceId") as String?
+        var replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
+        
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: replyTimeline)
     }
     override init(style: UITableViewStyle) {
         super.init(style: style)
@@ -50,12 +55,6 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
         self.navigationItem.rightBarButtonItem = self.newTweetButton
-        
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("replyTimelineSinceId") as String?
-        var replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
-        
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: replyTimeline)
     }
 
     override func didReceiveMemoryWarning() {

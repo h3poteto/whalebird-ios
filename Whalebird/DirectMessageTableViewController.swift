@@ -27,6 +27,11 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "DM"
         self.tabBarItem.image = UIImage(named: "Mail")
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var sinceId = userDefaults.stringForKey("directMessageSinceId") as String?
+        var directMessage = userDefaults.arrayForKey("directMessage") as Array?
+        
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage)
     }
     
     override init(style: UITableViewStyle) {
@@ -48,12 +53,6 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         self.edgesForExtendedLayout = UIRectEdge.None
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-        
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("directMessageSinceId") as String?
-        var directMessage = userDefaults.arrayForKey("directMessage") as Array?
-        
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage)
 
     }
 

@@ -25,6 +25,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "リスト"
         self.tabBarItem.image = UIImage(named: "List-Boxes")
+         self.streamList = StreamList()
     }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -51,8 +52,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
         
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.separatorInset = UIEdgeInsetsZero
-        
-        self.streamList = StreamList()
     }
 
     override func didReceiveMemoryWarning() {

@@ -35,6 +35,12 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "タイムライン"
         self.tabBarItem.image = UIImage(named: "Home")
+        var userDefaults = NSUserDefaults.standardUserDefaults()
+        var sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
+        var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
+        
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
+        self.timelineModel.delegate = self
     }
     
     
@@ -58,13 +64,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.navigationItem.rightBarButtonItem = self.newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
-        var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
-        
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
-        self.timelineModel.delegate = self
         
         // userstream発火のために必要
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
