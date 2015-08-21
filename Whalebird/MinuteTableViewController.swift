@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MinuteTableViewControllerDelegate {
-    func rewriteTweetWithMinute(minute: NSDictionary)
+    func rewriteTweetWithMinute(minute: NSDictionary, index: Int)
 }
 
 class MinuteTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
@@ -95,7 +95,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let minute = self.minuteModel.getMinuteAtIndex(indexPath.row) {
-            self.delegate.rewriteTweetWithMinute(minute)
+            self.delegate.rewriteTweetWithMinute(minute, index: indexPath.row)
             self.navigationController?.popViewControllerAnimated(true)
         }
     }
@@ -118,6 +118,10 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     // 配列の先頭に下書きを追加して，NSUserDefaultにも保存
     func addMinute(minuteString: String!, minuteReplyToID: String?) {
         self.minuteModel.addMinuteAtFirst(minuteString, replyToID: minuteReplyToID)
+    }
+    
+    func deleteMinute(index: Int!) {
+        self.minuteModel.deleteMinuteAtIndex(index)
     }
 
 }

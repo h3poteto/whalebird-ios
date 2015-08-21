@@ -42,4 +42,10 @@ class MinuteModel: NSObject {
         var userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setObject(self.minutesArray, forKey: "minutesArray")
     }
+    
+    func deleteMinuteAtIndex(index: Int!) {
+        self.minutesArray.removeAtIndex(index)
+        var userDefault = NSUserDefaults.standardUserDefaults()
+        userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+    }
 }

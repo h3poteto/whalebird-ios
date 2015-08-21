@@ -43,6 +43,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var friendsTable: UITableView?
     var friendsList: Array<String>?
     
+    var minuteTableView: MinuteTableViewController?
+    var selectedMinute: Int?
+    
     
     //======================================
     //  instance methods
@@ -96,6 +99,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.newTweetText.selectedTextRange = self.newTweetText.textRangeFromPosition(self.newTweetText.beginningOfDocument, toPosition: self.newTweetText.beginningOfDocument)
         }
         self.currentCharacters = 140 - count(self.newTweetText.text)
+        
+        self.minuteTableView = MinuteTableViewController()
+        self.minuteTableView?.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -187,10 +193,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 self.navigationController?.popViewControllerAnimated(true)
             })
             let minuteAction = UIAlertAction(title: "下書き保存", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                var minuteTableView = MinuteTableViewController()
-                minuteTableView.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
+                self.minuteTableView?.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
                 self.newTweetText.text = ""
-                minuteTableView.delegate = self
                 self.navigationController?.popViewControllerAnimated(true)
             })
             let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
@@ -259,9 +263,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func openMinute() {
-        var minuteTableView = MinuteTableViewController()
-        minuteTableView.delegate = self
-        self.navigationController?.pushViewController(minuteTableView, animated: true)
+        if (self.minuteTableView != nil) {
+            self.navigationController?.pushViewController(self.minuteTableView!, animated: true)
+        }
         
     }
     
@@ -420,6 +424,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
+                if self.selectedMinute != nil {
+                    self.minuteTableView?.deleteMinute(self.selectedMinute!)
+                }
                 self.navigationController?.popViewControllerAnimated(true)
             })
         }
@@ -495,8 +502,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     // 下書きが確定されたとき
-    func rewriteTweetWithMinute(minute: NSDictionary) {
+    func rewriteTweetWithMinute(minute: NSDictionary, index: Int) {
         self.newTweetText.text = minute.objectForKey("text") as? String
         self.replyToID = minute.objectForKey("replyToID") as? String
+        self.selectedMinute = index
     }
 }
