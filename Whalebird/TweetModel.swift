@@ -142,30 +142,45 @@ class TweetModel: NSObject {
     
     func customAttributedString() -> NSMutableAttributedString {
         var escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody)
-        var screenNameList: Array<String> = []
-        var tScreenName = ""
-        var fReply = false
-        for char in self.tweetBody {
-            if (fReply) {
-                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
-                    screenNameList.append(tScreenName)
-                    tScreenName = ""
-                    fReply = false
-                } else {
-                    tScreenName.append(char)
-                }
-            }else if (char == "@") {
-                tScreenName.append(char)
-                fReply = true
-            }
-        }
         var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
-        for screen in screenNameList {
-            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screen)
-            attributedString.addAttributes([NSLinkAttributeName: "at:" + screen], range: nameRange)
+        
+        for screenName in self.listUpString("@") {
+            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
+            attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
+        }
+        for tag in self.listUpString("#") {
+            var tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
+            attributedString.addAttributes([NSLinkAttributeName: "tag:" + tag], range: tagRange)
         }
         return attributedString
+    }
+    
+    func listUpString(targetCharacter: Character) -> Array<String> {
+        var targetStringList: Array<String> = []
+        var tTargetString = ""
+        var fFindString = false
+        for char in self.tweetBody {
+            if (fFindString) {
+                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
+                    targetStringList.append(tTargetString)
+                    tTargetString = ""
+                    fFindString = false
+                } else {
+                    tTargetString.append(char)
+                }
+            }else if (char == targetCharacter) {
+                tTargetString.append(char)
+                fFindString = true
+            }
+        }
+        // 末尾に入っていた場合の処理
+        if fFindString {
+            targetStringList.append(tTargetString)
+            tTargetString = ""
+            fFindString = false
+        }
+        return targetStringList
     }
     
     func replyList(userScreenName: String) ->String {

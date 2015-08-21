@@ -19,7 +19,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     var resultCell: Array<AnyObject> = []
     var saveButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
-    var streamList: StreamList!
+    var streamList: StreamList?
+    var searchKeyword: String?
 
     //=============================================
     //  instance methods
@@ -42,6 +43,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.streamList = aStreamList
     }
     
+    convenience init(aStreamList: StreamList, keyword: String) {
+        self.init(aStreamList: aStreamList)
+        self.searchKeyword = keyword
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let window = UIScreen.mainScreen().bounds
@@ -61,6 +67,11 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.tableView.dataSource = self
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        
+        if self.searchKeyword != nil {
+            self.tweetSearchBar.text = self.searchKeyword!
+            self.executeSearch()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -141,6 +152,14 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
 
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.executeSearch()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        self.tweetSearchBar.resignFirstResponder()
+    }
+    
+    func executeSearch() {
         var params: Dictionary<String, String> = [
             "count" : String(self.timelineModel.tweetCount)
         ]
@@ -159,19 +178,15 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
                 notice.show()
                 self.tweetSearchBar.resignFirstResponder()
             }, noUpdated: { () -> Void in
-            
+                
             }, failed: { () -> Void in
-            
+                
         })
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.tweetSearchBar.resignFirstResponder()
     }
     
     func saveResult() {
         if (count(self.tweetSearchBar.text) > 0) {
-            self.streamList.addNewStream(
+            self.streamList?.addNewStream(
                 "",
                 name: self.tweetSearchBar.text,
                 type: "search",

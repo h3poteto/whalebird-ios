@@ -444,6 +444,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             var userView = ProfileViewController(aScreenName: URL.absoluteString!.stringByReplacingOccurrencesOfString("at:@", withString: "", options: nil, range: nil))
             self.navigationController?.pushViewController(userView, animated: true)
             return false
+        } else if (URL.scheme?.hasPrefix("tag") == true) {
+            var searchView = SearchTableViewController(aStreamList: StreamList(), keyword: URL.absoluteString!.stringByReplacingOccurrencesOfString("tag:%23", withString: "#", options: nil, range: nil))
+            self.navigationController?.pushViewController(searchView, animated: true)
+            return false
         } else {
             UIApplication.sharedApplication().openURL(URL)
             return false
