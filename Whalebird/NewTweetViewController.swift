@@ -39,13 +39,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     var newTweetMediaCloseButton: Array<UIButton> = []
     var fTopCursor = false
     var fUploadProgress = false
-    var screenNameRange: NSRange?
-    var friendsTable: UITableView?
-    var friendsList: Array<String>?
+    var suggestTable: UITableView?
+    var suggestList: Array<String>?
     
     var minuteTableView: MinuteTableViewController?
     var selectedMinute: Int?
     
+    var newTweetModel: NewTweetModel!
     
     //======================================
     //  instance methods
@@ -53,6 +53,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "ツイート送信"
+        self.newTweetModel = NewTweetModel()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -123,30 +124,23 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
         
-        if text == "@" {
-            self.screenNameRange = NSRange(location: range.location, length: 0)
-        } else if text == " " || text == "　" {
-            self.screenNameRange = nil
-            self.removeFriendsTable()
+        self.newTweetModel.findScreenNameRange(textView.text, text: text, range: range, finishSelect: { () -> Void in
+            self.removeSuggestTable()
+        }) { (friends) -> Void in
+            if let textRange = textView.selectedTextRange {
+                let position = textView.caretRectForPosition(textRange.start)
+                self.displaySuggestTable(friends, position: position)
+            }
         }
         
-        if self.screenNameRange != nil {
-            self.screenNameRange!.length = range.location - self.screenNameRange!.location
-            var name = ((textView.text as NSString).substringWithRange(self.screenNameRange!) + text)
-            if count(name) > 0 {
-                // nameには@が含まれているので切り捨てたい
-                var screen_name = (name as NSString).substringFromIndex(1)
-                if let textRange = textView.selectedTextRange {
-                    let position = textView.caretRectForPosition(textRange.start)
-                    FriendsList.sharedClient.searchFriends(screen_name, callback: { (friends) -> Void in
-                        // ここでtable更新
-                        self.displayFriendsTable(friends, position: position)
-                    })
-                }
-            } else {
-                // table削除
-                self.screenNameRange = nil
-                self.removeFriendsTable()
+        self.newTweetModel.findTagRange(textView.text, text: text, range: range, finishSelect: { () -> Void in
+            // table削除
+            self.removeSuggestTable()
+        }) { (tags) -> Void in
+            // tagsを元にテーブル更新
+            if let textRange = textView.selectedTextRange {
+                let position = textView.caretRectForPosition(textRange.start)
+                self.displaySuggestTable(tags, position: position)
             }
         }
         
@@ -432,8 +426,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
     }
     
-    func displayFriendsTable(friendsList: Array<String>, position: CGRect) {
-        self.friendsList = friendsList
+    func displaySuggestTable(suggest: Array<String>, position: CGRect) {
+        self.suggestList = suggest
         // position計算
         var tableTop = self.navigationController!.navigationBar.frame.size.height +  UIApplication.sharedApplication().statusBarFrame.height + position.origin.y + position.height
         
@@ -441,46 +435,59 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if let optionBar = self.optionItemBar {
             tableHeight = optionBar.frame.origin.y - tableTop
         }
-        if self.friendsTable == nil {
-            self.friendsTable = UITableView(frame: CGRectMake(0, tableTop, self.maxSize.width, tableHeight))
-            self.friendsTable!.delegate = self
-            self.friendsTable!.dataSource = self
-            self.view.addSubview(self.friendsTable!)
+        if self.suggestTable == nil {
+            self.suggestTable = UITableView(frame: CGRectMake(0, tableTop, self.maxSize.width, tableHeight))
+            self.suggestTable!.delegate = self
+            self.suggestTable!.dataSource = self
+            self.view.addSubview(self.suggestTable!)
         } else {
-            self.friendsTable!.frame = CGRectMake(0, tableTop, self.maxSize.width, tableHeight)
-            self.friendsTable!.reloadData()
+            self.suggestTable!.frame = CGRectMake(0, tableTop, self.maxSize.width, tableHeight)
+            self.suggestTable!.reloadData()
         }
     }
     
-    func removeFriendsTable() {
-        self.friendsTable?.removeFromSuperview()
-        self.friendsTable = nil
+    func removeSuggestTable() {
+        self.suggestTable?.removeFromSuperview()
+        self.suggestTable = nil
     }
     
-    func selectFriend(screen_name: String) {
+    func selectSuggestion(text: String) {
         let beginning = self.newTweetText.beginningOfDocument
-        if self.screenNameRange != nil {
-            if let start = self.newTweetText.positionFromPosition(beginning, offset: self.screenNameRange!.location) {
+        if self.newTweetModel.screenNameRange != nil {
+            if let start = self.newTweetText.positionFromPosition(beginning, offset: self.newTweetModel.screenNameRange!.location) {
                 var textRange: UITextRange!
-                if let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length + 1) {
+                if let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.screenNameRange!.length + 1) {
                     textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
                 } else {
-                    let end = self.newTweetText.positionFromPosition(start, offset: self.screenNameRange!.length)
+                    let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.screenNameRange!.length)
                     textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
                 }
-                self.newTweetText.replaceRange(textRange, withText: "@" + screen_name + " ")
-                self.screenNameRange = nil
+                self.newTweetText.replaceRange(textRange, withText: "@" + text + " ")
+                self.newTweetModel.clearRange()
+            }
+        } else if self.newTweetModel.tagRange != nil {
+            if let start = self.newTweetText.positionFromPosition(beginning, offset: self.newTweetModel.tagRange!.location) {
+                var textRange: UITextRange!
+                if let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.tagRange!.length + 1) {
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                } else {
+                    let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.tagRange!.length)
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                }
+                self.newTweetText.replaceRange(textRange, withText: "#" + text + " ")
+                self.newTweetModel.clearRange()
             }
         }
     }
+
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.friendsList != nil {
-            return self.friendsList!.count
+        if self.suggestList != nil {
+            return self.suggestList!.count
         } else {
             return 0
         }
@@ -488,17 +495,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-        if self.friendsList != nil {
-            cell.textLabel?.text = self.friendsList![indexPath.row] as String
+        if self.suggestList != nil {
+            cell.textLabel?.text = self.suggestList![indexPath.row] as String
         }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if self.friendsList != nil {
-            self.selectFriend(self.friendsList![indexPath.row])
+        if self.suggestList != nil {
+            self.selectSuggestion(self.suggestList![indexPath.row])
         }
-        self.removeFriendsTable()
+        self.removeSuggestTable()
     }
     
     // 下書きが確定されたとき

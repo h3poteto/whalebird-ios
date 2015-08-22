@@ -57,6 +57,8 @@
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
 		E95D32121B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
+		E95D32141B8850C600F969F9 /* NewTweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32131B8850C600F969F9 /* NewTweetModel.swift */; };
+		E95D32151B8850C600F969F9 /* NewTweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32131B8850C600F969F9 /* NewTweetModel.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E975227F1B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
 		E97522801B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
@@ -131,6 +133,7 @@
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
+		E95D32131B8850C600F969F9 /* NewTweetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetModel.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
 		E975227E1B65292E00AEB430 /* StreamList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamList.swift; sourceTree = "<group>"; };
 		E97522821B667EC600AEB430 /* MinuteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinuteModel.swift; sourceTree = "<group>"; };
@@ -307,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */,
+				E95D32131B8850C600F969F9 /* NewTweetModel.swift */,
 				E97522821B667EC600AEB430 /* MinuteModel.swift */,
 				E975227E1B65292E00AEB430 /* StreamList.swift */,
 				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
@@ -543,6 +547,7 @@
 				E97522831B667EC600AEB430 /* MinuteModel.swift in Sources */,
 				E9D142801A382E3500EA3E67 /* SearchTableViewController.swift in Sources */,
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
+				E95D32141B8850C600F969F9 /* NewTweetModel.swift in Sources */,
 				E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
@@ -599,6 +604,7 @@
 				E92C49E71A9C6CA8006BD492 /* SettingsTableViewController.swift in Sources */,
 				E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
 				E92C49F91A9C6D29006BD492 /* StackListTableViewController.swift in Sources */,
+				E95D32151B8850C600F969F9 /* NewTweetModel.swift in Sources */,
 				E92C49F71A9C6D25006BD492 /* SwipeViewController.swift in Sources */,
 				E92C49ED1A9C6CB8006BD492 /* NewDirectMessageViewController.swift in Sources */,
 				E92C49D81A9C6A3F006BD492 /* WhalebirdAPIClient.swift in Sources */,

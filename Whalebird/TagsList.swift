@@ -66,5 +66,25 @@ class TagsList: NSObject {
     func getTagAtIndex(index: Int) -> String? {
         return self.tagsList?[index]
     }
+    
+    func searchTags(tag: String, callback: (Array<String>)-> Void) {
+        if count(tag) > 0 {
+            if let list = self.getTagsList() {
+                var matchTags:Array<String> = []
+                for name in list {
+                    if name.hasPrefix(tag) {
+                        matchTags.append(name)
+                    }
+                }
+                callback(matchTags)
+            } else {
+                callback([])
+            }
+        }
+    }
+    
+    deinit {
+        self.saveTagsListInCache()
+    }
 
 }

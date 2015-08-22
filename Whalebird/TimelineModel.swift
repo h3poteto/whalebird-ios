@@ -25,8 +25,6 @@ class TimelineModel: NSObject {
     
     var delegate: TimelineModelDelegate!
     
-    var tagsList = TagsList()
-    
     // class methods
     class func selectMoreIdCell(tweetData: NSDictionary)-> Bool {
         if tweetData.objectForKey("moreID") != nil && tweetData.objectForKey("moreID") as! String != "moreID" {
@@ -63,7 +61,7 @@ class TimelineModel: NSObject {
     
     func getTeetAtIndex(index: Int)-> [NSObject : AnyObject]? {
         if let body = self.currentTimeline[index]["text"] as? String {
-            self.tagsList.findAndAddtag(body)
+            TagsList.sharedClient.findAndAddtag(body)
         }
         return self.currentTimeline[index] as? [NSObject : AnyObject]
     }
