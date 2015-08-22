@@ -75,7 +75,6 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         super.viewDidAppear(animated)
         
         // Home用のUserstream
-        // TODO: timelineのモデル化によりこれは機能しなくなる
         self.timelineModel.prepareUserstream()
     }
     

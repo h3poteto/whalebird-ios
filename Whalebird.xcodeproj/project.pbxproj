@@ -55,6 +55,8 @@
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
+		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
+		E95D32121B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E975227F1B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
 		E97522801B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
@@ -128,6 +130,7 @@
 		E93433161A9C66F0004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
+		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
 		E96F678C199645E4004038DF /* NewTweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTweetViewController.swift; sourceTree = "<group>"; };
 		E975227E1B65292E00AEB430 /* StreamList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamList.swift; sourceTree = "<group>"; };
 		E97522821B667EC600AEB430 /* MinuteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinuteModel.swift; sourceTree = "<group>"; };
@@ -307,6 +310,7 @@
 				E97522821B667EC600AEB430 /* MinuteModel.swift */,
 				E975227E1B65292E00AEB430 /* StreamList.swift */,
 				E916DF571B386BD00028CCC3 /* FriendsList.swift */,
+				E95D32101B87818000F969F9 /* TagsList.swift */,
 				E9AB53B11B63B79400C53942 /* TimelineModel.swift */,
 				E988D0181B72283B003BAD31 /* TweetModel.swift */,
 				E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */,
@@ -548,6 +552,7 @@
 				E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */,
 				E916DF581B386BD00028CCC3 /* FriendsList.swift in Sources */,
 				E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */,
+				E95D32111B87818000F969F9 /* TagsList.swift in Sources */,
 				E975227F1B65292E00AEB430 /* StreamList.swift in Sources */,
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
@@ -565,6 +570,7 @@
 				E92C49FB1A9C6D31006BD492 /* LoginViewController.swift in Sources */,
 				E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */,
 				E92C49F61A9C6D1E006BD492 /* StreamTableViewController.swift in Sources */,
+				E95D32121B87818000F969F9 /* TagsList.swift in Sources */,
 				E92C49F21A9C6D14006BD492 /* MinuteTableViewController.swift in Sources */,
 				E916DF591B386BD00028CCC3 /* FriendsList.swift in Sources */,
 				E92C49F81A9C6D27006BD492 /* ListTableViewController.swift in Sources */,

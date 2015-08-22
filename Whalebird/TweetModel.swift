@@ -45,6 +45,33 @@ class TweetModel: NSObject {
         }
     }
     
+    class func listUpSentence(rawString: String, startCharacter: Character) -> Array<String> {
+        var targetStringList: Array<String> = []
+        var tTargetString = ""
+        var fFindString = false
+        for char in rawString {
+            if (fFindString) {
+                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
+                    targetStringList.append(tTargetString)
+                    tTargetString = ""
+                    fFindString = false
+                } else {
+                    tTargetString.append(char)
+                }
+            }else if (char == startCharacter) {
+                tTargetString.append(char)
+                fFindString = true
+            }
+        }
+        // 末尾に入っていた場合の処理
+        if fFindString {
+            targetStringList.append(tTargetString)
+            tTargetString = ""
+            fFindString = false
+        }
+        return targetStringList
+    }
+    
     
     init(dict: [NSObject : AnyObject]) {
         super.init()
@@ -145,42 +172,15 @@ class TweetModel: NSObject {
         var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         
-        for screenName in self.listUpString("@") {
+        for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@") {
             var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
             attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
         }
-        for tag in self.listUpString("#") {
+        for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#") {
             var tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
             attributedString.addAttributes([NSLinkAttributeName: "tag:" + tag], range: tagRange)
         }
         return attributedString
-    }
-    
-    func listUpString(targetCharacter: Character) -> Array<String> {
-        var targetStringList: Array<String> = []
-        var tTargetString = ""
-        var fFindString = false
-        for char in self.tweetBody {
-            if (fFindString) {
-                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
-                    targetStringList.append(tTargetString)
-                    tTargetString = ""
-                    fFindString = false
-                } else {
-                    tTargetString.append(char)
-                }
-            }else if (char == targetCharacter) {
-                tTargetString.append(char)
-                fFindString = true
-            }
-        }
-        // 末尾に入っていた場合の処理
-        if fFindString {
-            targetStringList.append(tTargetString)
-            tTargetString = ""
-            fFindString = false
-        }
-        return targetStringList
     }
     
     func replyList(userScreenName: String) ->String {
@@ -188,22 +188,7 @@ class TweetModel: NSObject {
         var tScreenName = ""
         var fReply = false
         list.append("@" + self.screenName)
-        for char in self.tweetBody! {
-            if (fReply) {
-                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
-                    if ("@" + userScreenName != tScreenName) {
-                        list.append(tScreenName)
-                    }
-                    tScreenName = ""
-                    fReply = false
-                } else {
-                    tScreenName.append(char)
-                }
-            }else if (char == "@") {
-                tScreenName.append(char)
-                fReply = true
-            }
-        }
+        list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@")
         var replyListStr = ""
         for name in list {
             replyListStr += name + " "

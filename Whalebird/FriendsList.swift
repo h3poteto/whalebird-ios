@@ -6,11 +6,12 @@
 //  Copyright (c) 2015年 AkiraFukushima. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class FriendsList: NSObject {
     
     // シングルトンにするよ
+    // 取得した直後に保存できているわけではないのでシングルトンにして，fridensListを永続化させる．クラス初期化のコストが無駄．
     class var sharedClient: FriendsList {
         struct sharedStruct {
             static let _sharedClient = FriendsList()
@@ -26,6 +27,7 @@ class FriendsList: NSObject {
     var utcDateFormatter = NSDateFormatter()
     
     override init() {
+        super.init()
         let calendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)
         self.utcDateFormatter.calendar = calendar
         self.utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
