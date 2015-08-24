@@ -103,7 +103,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.resultCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        if var targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if var targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetResult)
         }
 
@@ -112,7 +112,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
@@ -120,7 +120,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetResult)
         }
         return height
@@ -128,7 +128,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             var tweetModel = TweetModel(dict: cTweetData)
             var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
             self.navigationController?.pushViewController(detailView, animated: true)

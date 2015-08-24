@@ -338,7 +338,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             
             timelineCell!.cleanCell()
-            if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+            if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
                 timelineCell!.configureCell(targetTimeline)
             }
             return timelineCell!
@@ -381,7 +381,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         var height = CGFloat(60)
         switch(self.tableType) {
         case 0:
-            if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+            if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
                 height = TimelineViewCell.estimateCellHeight(targetTimeline)
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
@@ -403,7 +403,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch(self.tableType){
         case 0:
-            if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+            if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
                 var tweetModel = TweetModel(dict: cTweetData)
                 var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
                 self.navigationController?.pushViewController(detailView, animated: true)
@@ -431,7 +431,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "count" : "20"
         ]
         if (aMoreIndex != nil) {
-            if var strMoreID = self.timelineModel.getTeetAtIndex(aMoreIndex!)?["id_str"] as? String {
+            if var strMoreID = self.timelineModel.getTweetAtIndex(aMoreIndex!)?["id_str"] as? String {
                 // max_idは「以下」という判定になるので自身を含めない
                 params["max_id"] = BigInteger(string: strMoreID).decrement()
             }

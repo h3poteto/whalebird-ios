@@ -79,7 +79,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
             cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetMessage)
         }
 
@@ -89,7 +89,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
@@ -98,14 +98,14 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cMessageData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cMessageData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cMessageData) {
                 var sinceID = cMessageData["sinceID"] as? String
                 if (sinceID == "sinceID") {

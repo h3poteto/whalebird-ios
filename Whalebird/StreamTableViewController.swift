@@ -101,7 +101,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         }
         
         cell!.cleanCell()
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetTimeline)
         }
         
@@ -110,7 +110,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
@@ -118,14 +118,14 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
     }
 
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cTweetData) {
                 self.fCellSelect = false
             } else {
@@ -136,7 +136,7 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cTweetData) {
                 var sinceID = cTweetData["sinceID"] as? String
                 if (sinceID == "sinceID") {

@@ -76,7 +76,7 @@ class ConversationTableViewController: UITableViewController {
         
         self.conversationCell.insert(cell!, atIndex: indexPath.row)
         cell!.cleanCell()
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetMessage)
         }
 
@@ -85,7 +85,7 @@ class ConversationTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
@@ -95,7 +95,7 @@ class ConversationTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetMessage)
         }
         return height
@@ -103,7 +103,7 @@ class ConversationTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             var tweetModel = TweetModel(dict: cTweetData)
             var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
             self.navigationController?.pushViewController(detailView, animated: true)

@@ -116,7 +116,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         }
 
         cell!.cleanCell()
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetTimeline)
         }
 
@@ -126,7 +126,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
@@ -134,7 +134,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
             height = TimelineViewCell.estimateCellHeight(targetTimeline)
         }
         return height
@@ -142,7 +142,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
 
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTeetAtIndex(indexPath.row) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
             if TimelineModel.selectMoreIdCell(cTweetData) {
                 var sinceID = cTweetData["sinceID"] as? String
                 if (sinceID == "sinceID") {

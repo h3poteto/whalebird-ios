@@ -59,11 +59,15 @@ class TimelineModel: NSObject {
         return self.currentTimeline.count
     }
     
-    func getTeetAtIndex(index: Int)-> [NSObject : AnyObject]? {
+    func getTweetAtIndex(index: Int)-> [NSObject : AnyObject]? {
         if let body = self.currentTimeline[index]["text"] as? String {
             TagsList.sharedClient.findAndAddtag(body)
         }
         return self.currentTimeline[index] as? [NSObject : AnyObject]
+    }
+    
+    func setTweetAtIndex(index: Int, object: [NSObject : AnyObject]) {
+        self.currentTimeline[index] = object
     }
     
     func updateTimeline(APIPath: String, aSinceID: String?, aMoreIndex: Int?, streamElement: StreamList.Stream? ,completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
@@ -286,14 +290,16 @@ class TimelineModel: NSObject {
     }
     
     func addFavorite(index: Int) {
-        if var object = self.getTeetAtIndex(index) {
+        if var object = self.getTweetAtIndex(index) {
             object["favorited?"] = 1
+            self.setTweetAtIndex(index, object: object)
         }
     }
     
     func deleteFavorite(index: Int) {
-        if var object = self.getTeetAtIndex(index) {
+        if var object = self.getTweetAtIndex(index) {
             object["favorited?"] = 0
+            self.setTweetAtIndex(index, object: object)
         }
     }
     
