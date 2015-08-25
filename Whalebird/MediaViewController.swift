@@ -18,7 +18,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     var mediaImageView: UIImageView!
     var mediaScrollView: UIScrollView!
     var cWindowSize: CGRect!
-    
+    var fZoom: Bool = true
     
     //==============================================
     //  instance methods
@@ -39,7 +39,13 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.cWindowSize = UIScreen.mainScreen().bounds
+        let wholeWindowSize = UIScreen.mainScreen().bounds
+        self.cWindowSize = CGRectMake(
+            wholeWindowSize.origin.x,
+            wholeWindowSize.origin.y + UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height,
+            wholeWindowSize.size.width,
+            wholeWindowSize.size.height - (UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height)
+        )
         
         self.mediaScrollView = UIScrollView(frame: self.view.bounds)
         self.mediaScrollView.backgroundColor = UIColor.blackColor()
@@ -61,16 +67,6 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.blankView = UIView(frame: self.view.bounds)
         self.blankView.addSubview(self.mediaImageView)
         
-        if let closeImage = UIImage(named: "Close-Filled") {
-            var closeImagePosY: CGFloat = self.mediaImageView.frame.origin.y - closeImage.size.height * 2.0
-            if (closeImagePosY < 20.0) {
-                closeImagePosY = 20.0
-            }
-            var closeButton = UIButton(frame: CGRectMake(closeImage.size.width * 0.5, closeImagePosY, closeImage.size.width * 1.5, closeImage.size.height * 1.5))
-            closeButton.setBackgroundImage(closeImage, forState: .Normal)
-            closeButton.addTarget(self, action: "mediaClose", forControlEvents: UIControlEvents.TouchDown)
-            self.blankView.addSubview(closeButton)
-        }
         self.mediaScrollView.addSubview(self.blankView)
         
         self.mediaScrollView.delegate = self
@@ -86,6 +82,10 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaImageView.userInteractionEnabled = true
         self.mediaScrollView.addGestureRecognizer(doubleTapGesture)
 
+        var closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "closeView")
+        self.navigationItem.leftBarButtonItem = closeButton
+        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController!.navigationBar.barTintColor = UIColor.blackColor()
 
     }
 
@@ -98,11 +98,29 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         return self.blankView
     }
     
-    func doubleTap(sender: AnyObject) {
-        self.mediaClose()
+    
+    func doubleTap(gesture: UITapGestureRecognizer) {
+        // ここ拡大縮小させたい
+        if self.fZoom {
+            let zoomRect = self.zoomRectToScale(2.0, center: gesture.locationInView(gesture.view))
+            self.mediaScrollView.zoomToRect(zoomRect, animated: true)
+            self.fZoom = false
+        } else {
+            self.mediaScrollView.setZoomScale(1.0, animated: true)
+            self.fZoom = true
+        }
     }
     
-    func mediaClose() {
+    func zoomRectToScale(scale: CGFloat, center: CGPoint) -> CGRect {
+        var zoomRect: CGRect = CGRect()
+        zoomRect.size.height = self.mediaScrollView.frame.size.height / scale
+        zoomRect.size.width = self.mediaScrollView.frame.size.width / scale
+        zoomRect.origin.x = center.x - zoomRect.size.width / 2.0
+        zoomRect.origin.y = center.y - zoomRect.size.height / 2.0
+        return zoomRect
+    }
+    
+    func closeView() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 

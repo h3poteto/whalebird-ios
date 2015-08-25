@@ -459,7 +459,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if var button = sender as? UIButton {
             let mediaImage = button.backgroundImageForState(UIControlState.Normal)
             var mediaView = MediaViewController(aMediaImage: mediaImage)
-            self.presentViewController(mediaView, animated: true, completion: nil)
+            var mediaNavigation = UINavigationController(rootViewController: mediaView)
+            self.presentViewController(mediaNavigation, animated: true, completion: nil)
         }
     }
 }
