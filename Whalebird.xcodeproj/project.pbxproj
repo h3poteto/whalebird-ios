@@ -75,6 +75,8 @@
 		E988D0191B72283B003BAD31 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988D0181B72283B003BAD31 /* TweetModel.swift */; };
 		E988D01A1B72283B003BAD31 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988D0181B72283B003BAD31 /* TweetModel.swift */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
+		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
+		E9A742C71B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
 		E9AB53B31B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
 		E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
@@ -92,6 +94,8 @@
 		E9E9206B1A8CE4E5002F24D0 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */; };
 		E9E9206D1A8E011E002F24D0 /* MinuteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */; };
 		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
+		E9FD9AF21B8E1CFB0026890A /* MediaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */; };
+		E9FD9AF31B8E1CFB0026890A /* MediaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +154,7 @@
 		E988D0181B72283B003BAD31 /* TweetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetModel.swift; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
 		E9AB53B11B63B79400C53942 /* TimelineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineModel.swift; sourceTree = "<group>"; };
 		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
 		E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationSecrets.swift; sourceTree = "<group>"; };
@@ -166,6 +171,7 @@
 		E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinuteTableViewController.swift; sourceTree = "<group>"; };
 		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
+		E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +359,8 @@
 			isa = PBXGroup;
 			children = (
 				E9797B1F1995325E000FC13C /* TimelineViewCell.swift */,
+				E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */,
+				E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -549,7 +557,9 @@
 				E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */,
 				E95D32141B8850C600F969F9 /* NewTweetModel.swift in Sources */,
 				E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
+				E9FD9AF21B8E1CFB0026890A /* MediaImageView.swift in Sources */,
 				E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */,
+				E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */,
 				E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */,
 				E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */,
 				E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */,
@@ -583,12 +593,14 @@
 				E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */,
 				E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */,
 				E97522841B667EC600AEB430 /* MinuteModel.swift in Sources */,
+				E9A742C71B915EAD00D6F373 /* AnimatedImageView.swift in Sources */,
 				E97522801B65292E00AEB430 /* StreamList.swift in Sources */,
 				E92C49F41A9C6D19006BD492 /* UserstreamAPIClient.swift in Sources */,
 				E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */,
 				E92C49F01A9C6CC0006BD492 /* NewTweetViewController.swift in Sources */,
 				E92C49E81A9C6CAB006BD492 /* TweetDetailViewController.swift in Sources */,
 				E988D01A1B72283B003BAD31 /* TweetModel.swift in Sources */,
+				E9FD9AF31B8E1CFB0026890A /* MediaImageView.swift in Sources */,
 				E92C49FC1A9C6D34006BD492 /* WebViewController.swift in Sources */,
 				E92C49EC1A9C6CB6006BD492 /* DirectMessageTableViewController.swift in Sources */,
 				E92C49EF1A9C6CBD006BD492 /* ProfileViewController.swift in Sources */,

@@ -7,15 +7,18 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MediaViewController: UIViewController, UIScrollViewDelegate {
     
     //=============================================
     //  instance variables
     //=============================================
-    var mediaImage: UIImage!
+    var mediaImage: UIImage?
+    var animatedImageURL: NSURL?
     var blankView: UIView!
-    var mediaImageView: UIImageView!
+    var mediaImageView: MediaImageView?
+    var animatedImageView: AnimatedImageView?
     var mediaScrollView: UIScrollView!
     var cWindowSize: CGRect!
     var fZoom: Bool = true
@@ -36,7 +39,12 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.init()
         self.mediaImage = aMediaImage
     }
-
+    
+    convenience init(aGifImageURL: NSURL) {
+        self.init()
+        self.animatedImageURL = aGifImageURL
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let wholeWindowSize = UIScreen.mainScreen().bounds
@@ -49,23 +57,16 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         
         self.mediaScrollView = UIScrollView(frame: self.view.bounds)
         self.mediaScrollView.backgroundColor = UIColor.blackColor()
-        self.mediaImageView = UIImageView(frame: self.view.bounds)
-        self.mediaImageView.image = self.mediaImage
-        self.mediaImageView.sizeToFit()
-        // 初期状態では画面に収まるようにリサイズしておく
-        if (self.mediaImageView.frame.size.width > self.cWindowSize.size.width) {
-            var scale = self.cWindowSize.size.width / self.mediaImageView.frame.size.width
-            self.mediaImageView.frame.size = CGSizeMake(self.cWindowSize.size.width, self.mediaImageView.frame.size.height * scale)
-        }
-        if (self.mediaImageView.frame.size.height > self.cWindowSize.size.height) {
-            var scale = self.cWindowSize.size.height / self.mediaImageView.frame.size.height
-            self.mediaImageView.frame.size = CGSizeMake(self.mediaImageView.frame.size.width * scale, self.cWindowSize.size.height)
-        }
-        self.mediaImageView.center = CGPointMake(self.cWindowSize.size.width / 2.0, self.cWindowSize.size.height / 2.0)
-        
         // ピンチインで拡大縮小する対象としてblankViewを用意しておく
         self.blankView = UIView(frame: self.view.bounds)
-        self.blankView.addSubview(self.mediaImageView)
+        
+        if self.mediaImage != nil {
+            self.mediaImageView = MediaImageView(image: self.mediaImage!, windowSize: self.cWindowSize)
+            self.blankView.addSubview(self.mediaImageView!)
+        } else if self.animatedImageURL != nil {
+            self.animatedImageView = AnimatedImageView(animatedImageURL: self.animatedImageURL!, windowSize: self.cWindowSize)
+            self.blankView.addSubview(self.animatedImageView!)
+        }
         
         self.mediaScrollView.addSubview(self.blankView)
         
@@ -79,7 +80,6 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         
         var doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTap:")
         doubleTapGesture.numberOfTapsRequired = 2
-        self.mediaImageView.userInteractionEnabled = true
         self.mediaScrollView.addGestureRecognizer(doubleTapGesture)
 
         var closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "closeView")

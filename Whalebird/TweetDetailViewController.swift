@@ -226,7 +226,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (self.tweetModel.media != nil) {
             var startPosY = self.favButton.frame.origin.y + self.favButton.frame.size.height + 20.0
             self.innerMediaButton = []
-            for mediaURL in self.tweetModel.media! {
+            for (index, mediaURL) in enumerate(self.tweetModel.media!) {
                 var eachMediaButton = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, startPosY, self.cWindowSize.size.width * 0.9, 100))
                 self.innerMediaButton!.append(eachMediaButton)
                 var imageURL = NSURL(string: mediaURL)
@@ -247,6 +247,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                         
                         // スクロール用に全体サイズも調節
                         self.blankView.contentSize = CGSizeMake(self.cWindowSize.width, mediaButton.frame.origin.y + mediaButton.frame.size.height + 20)
+                        mediaButton.tag = index
                     }
                     
                 })
@@ -458,7 +459,17 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     func tappedMedia(sender: AnyObject) {
         if var button = sender as? UIButton {
             let mediaImage = button.backgroundImageForState(UIControlState.Normal)
-            var mediaView = MediaViewController(aMediaImage: mediaImage)
+            let index = button.tag
+            var mediaView: MediaViewController!
+            if let url = self.tweetModel.video?[index] {
+                if count(url) > 0 {
+                    mediaView = MediaViewController(aGifImageURL: NSURL(string: url)!)
+                } else {
+                    mediaView = MediaViewController(aMediaImage: mediaImage)                    
+                }
+            } else {
+                mediaView = MediaViewController(aMediaImage: mediaImage)
+            }
             var mediaNavigation = UINavigationController(rootViewController: mediaView)
             self.presentViewController(mediaNavigation, animated: true, completion: nil)
         }

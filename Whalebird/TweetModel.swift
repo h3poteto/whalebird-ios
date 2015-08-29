@@ -19,6 +19,7 @@ class TweetModel: NSObject {
     var retweetedProfileImage: String?
     var fFavorited: Bool!
     var media: Array<String>?
+    var video: Array<String>?
     var fProtected: Bool!
     
     
@@ -72,6 +73,14 @@ class TweetModel: NSObject {
         return targetStringList
     }
     
+    class func mediaIsGif(media: String) -> Bool {
+        let gifSuffix = ".mp4"
+        if media.hasSuffix(gifSuffix) {
+            return true
+        }
+        return false
+    }
+    
     
     init(dict: [NSObject : AnyObject]) {
         super.init()
@@ -85,6 +94,7 @@ class TweetModel: NSObject {
         self.retweetedProfileImage = (dict["retweeted"] as? [NSObject : AnyObject])?["profile_image_url"] as? String
         self.fFavorited = optionalToBool(dict["favorited?"] as? Bool)
         self.media = dict["media"] as? Array<String>
+        self.video = dict["video"] as? Array<String>
         self.fProtected = optionalToBool((dict["user"] as? [NSObject : AnyObject])?["protected?"] as? Bool)
     }
     
@@ -98,6 +108,7 @@ class TweetModel: NSObject {
         self.postDetail = WhalebirdAPIClient.convertLocalTime(notificationDict["created_at"] as! String)
         self.fFavorited = optionalToBool(notificationDict["favorited"] as? Bool)
         self.media = notificationDict["media"] as? Array<String>
+        self.video = notificationDict["video"] as? Array<String>
         self.fProtected = optionalToBool(notificationDict["protected"] as? Bool)
     }
     

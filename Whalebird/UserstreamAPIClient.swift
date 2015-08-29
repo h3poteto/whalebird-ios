@@ -87,9 +87,25 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         var cOriginalMedia = mutableDictionary.objectForKey("entities")?.objectForKey("media") as! NSArray
         var mediaURLArray = NSMutableArray()
         for media in cOriginalMedia {
-            mediaURLArray.addObject(media.objectForKey("media_url")!)
+            mediaURLArray.addObject(media.objectForKey("media_url_https")!)
         }
         mutableDictionary.setValue(mediaURLArray, forKey: "media")
+        
+        // video
+        var videoURLArray = NSMutableArray()
+        var cOriginalVideo = mutableDictionary.objectForKey("extended_entities")?.objectForKey("media") as! NSArray
+        for anime in cOriginalVideo {
+            if anime.objectForKey("type") as! String == "animated_gif" {
+                var video: String! = ""
+                if let variants = anime.objectForKey("video_info")?.objectForKey("variants") as? NSArray {
+                    video = (variants.objectAtIndex(0) as! NSDictionary).objectForKey(("url")) as? String ?? ""
+                }
+                videoURLArray.addObject(video)
+            } else {
+                videoURLArray.addObject("")
+            }
+        }
+        mutableDictionary.setValue(videoURLArray, forKey: "video")
         return mutableDictionary
     }
     

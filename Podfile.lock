@@ -20,7 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Crashlytics (3.1.0)
+  - Crashlytics (3.1.1)
   - DACircularProgress (2.2.0)
   - Fabric (1.2.8):
     - Fabric/Base (= 1.2.8)
@@ -82,7 +82,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Crashlytics: 93e2f86363d53c002c6366a9d87e41f2eaee87c3
+  Crashlytics: 39ab395565bc03c29cdecd2b9d103ebf30930c10
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
   Fabric: a9eabe53915e9f1db55a84dd2838737928675878
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
