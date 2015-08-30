@@ -33,7 +33,7 @@ class TagsList: NSObject {
     }
     
     func findAndAddtag(rawString: String) {
-        for tag in TweetModel.listUpSentence(rawString, startCharacter: "#") {
+        for tag in TweetModel.listUpSentence(rawString, startCharacter: "#", fScreenName: false) {
             let tagString = tag.stringByReplacingOccurrencesOfString("#", withString: "", options: nil, range: nil)
             if count(tagString) > 0 {
                 self.addTag(tagString)

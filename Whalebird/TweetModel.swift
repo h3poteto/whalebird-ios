@@ -46,13 +46,13 @@ class TweetModel: NSObject {
         }
     }
     
-    class func listUpSentence(rawString: String, startCharacter: Character) -> Array<String> {
+    class func listUpSentence(rawString: String, startCharacter: Character, fScreenName: Bool) -> Array<String> {
         var targetStringList: Array<String> = []
         var tTargetString = ""
         var fFindString = false
         for char in rawString {
             if (fFindString) {
-                if (char == " " || char == "　" || !TweetModel.checkScreenName(char)) {
+                if (char == " " || char == "　" || (fScreenName && !TweetModel.checkScreenName(char))) {
                     targetStringList.append(tTargetString)
                     tTargetString = ""
                     fFindString = false
@@ -183,11 +183,11 @@ class TweetModel: NSObject {
         var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         
-        for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@") {
+        for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true) {
             var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
             attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
         }
-        for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#") {
+        for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#", fScreenName: false) {
             var tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
             attributedString.addAttributes([NSLinkAttributeName: "tag:" + tag], range: tagRange)
         }
@@ -199,7 +199,7 @@ class TweetModel: NSObject {
         var tScreenName = ""
         var fReply = false
         list.append("@" + self.screenName)
-        list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@")
+        list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true)
         var replyListStr = ""
         for name in list {
             replyListStr += name + " "
