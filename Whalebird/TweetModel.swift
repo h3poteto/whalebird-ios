@@ -189,7 +189,8 @@ class TweetModel: NSObject {
         }
         for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#", fScreenName: false) {
             var tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
-            attributedString.addAttributes([NSLinkAttributeName: "tag:" + tag], range: tagRange)
+            var encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            attributedString.addAttributes([NSLinkAttributeName: "tag:" + encodedTag!], range: tagRange)
         }
         return attributedString
     }

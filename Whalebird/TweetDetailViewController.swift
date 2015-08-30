@@ -446,7 +446,8 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.navigationController?.pushViewController(userView, animated: true)
             return false
         } else if (URL.scheme?.hasPrefix("tag") == true) {
-            var searchView = SearchTableViewController(aStreamList: StreamList(), keyword: URL.absoluteString!.stringByReplacingOccurrencesOfString("tag:%23", withString: "#", options: nil, range: nil))
+            var decodedURLString = URL.absoluteString!.stringByRemovingPercentEncoding
+            var searchView = SearchTableViewController(aStreamList: StreamList(), keyword: decodedURLString!.stringByReplacingOccurrencesOfString("tag:#", withString: "#", options: nil, range: nil))
             self.navigationController?.pushViewController(searchView, animated: true)
             return false
         } else {
