@@ -755,7 +755,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6302B3575397933379859006 /* Pods.release.xcconfig */;
 			buildSettings = {
-				APIURL = "http://api.whalebird.org/";
+				APIURL = "https://api.whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird;
@@ -881,7 +881,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */;
 			buildSettings = {
-				APIURL = "http://api.whalebird.org/";
+				APIURL = "https://api.whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird;
