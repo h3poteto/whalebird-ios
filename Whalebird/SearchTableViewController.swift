@@ -50,7 +50,6 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        _ = UIScreen.mainScreen().bounds
         self.tweetSearchBar = UISearchBar()
         self.tweetSearchBar.placeholder = "検索"
         self.tweetSearchBar.keyboardType = UIKeyboardType.Default

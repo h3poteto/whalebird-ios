@@ -73,7 +73,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        _ = NSUserDefaults.standardUserDefaults()
     }
     
     convenience init(aScreenName: String) {
@@ -130,7 +129,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
             let q_main = dispatch_get_main_queue()
-            _ = NSError?()
             dispatch_async(q_main, {()->Void in
                 if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
                     let headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as! String)

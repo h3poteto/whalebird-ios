@@ -195,8 +195,6 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  profileImageLabel
             //------------------------------------
-            _ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-            _ = dispatch_get_main_queue()
             let imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
             self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage"))
             //------------------------------------
