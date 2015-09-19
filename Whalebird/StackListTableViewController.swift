@@ -41,8 +41,8 @@ class StackListTableViewController: UITableViewController {
         self.twitterScreenName = userDefault.objectForKey("username") as? String
     }
     
-    init() {
-        super.init(style: UITableViewStyle.Plain)
+    convenience init() {
+        self.init(style: UITableViewStyle.Plain)
         self.stackStreamList = StreamList()
         self.stackStreamList.initStreamList()
     }

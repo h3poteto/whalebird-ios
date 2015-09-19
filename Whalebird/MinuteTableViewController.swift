@@ -31,10 +31,9 @@ class MinuteTableViewController: UITableViewController {
         super.init(style: style)
     }
     
-    init() {
-        super.init(style: UITableViewStyle.Plain)
+    convenience init() {
+        self.init(style: UITableViewStyle.Plain)
         self.minuteModel = MinuteModel()
-        _ = NSUserDefaults.standardUserDefaults()
     }
 
     required init(coder aDecoder: NSCoder) {
