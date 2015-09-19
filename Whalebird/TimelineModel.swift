@@ -60,7 +60,7 @@ class TimelineModel: NSObject {
     }
     
     func getTweetAtIndex(index: Int)-> [NSObject : AnyObject]? {
-        if let body = self.currentTimeline[index]["text"] as? String {
+        if let body = self.currentTimeline[index].valueForKey("text") as? String {
             TagsList.sharedClient.findAndAddtag(body)
         }
         return self.currentTimeline[index] as? [NSObject : AnyObject]
