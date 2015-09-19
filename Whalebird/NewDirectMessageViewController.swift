@@ -36,6 +36,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     
     convenience init(aReplyToUser: String?) {
         self.init()
+        self.title = "DM送信"        
         self.replyToUser = aReplyToUser
     }
     

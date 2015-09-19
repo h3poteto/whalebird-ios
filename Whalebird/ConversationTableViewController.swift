@@ -31,6 +31,7 @@ class ConversationTableViewController: UITableViewController {
     
     convenience init(aTweetID: String) {
         self.init()
+        self.title = "会話"         
         self.rootTweetID = aTweetID
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
     }

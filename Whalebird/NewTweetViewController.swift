@@ -52,12 +52,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //======================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.title = "ツイート送信"
+        self.newTweetModel = NewTweetModel()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
     
     convenience init(aTweetBody: String!, aReplyToID: String?, aTopCursor: Bool?) {
         self.init()

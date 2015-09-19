@@ -25,6 +25,7 @@ class MinuteTableViewController: UITableViewController {
     //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.minuteModel = MinuteModel()     
     }
     
     override init(style: UITableViewStyle) {
