@@ -5,7 +5,7 @@
 //  Created by akirafukushima on 2015/02/24.
 //  Copyright (c) 2015年 AkiraFukushima. All rights reserved.
 //
-import UIKit
+
 import XCTest
 @testable import Whalebird
 

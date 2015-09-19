@@ -50,11 +50,11 @@ class TagsList: NSObject {
     }
     
     func saveTagsListInCache() {
-        // unique制約
+        // TODO: unique制約
         if self.tagsList != nil {
             let set = NSOrderedSet(array: self.tagsList!)
-            if let _ = set.array as? Array<String> {
-                self.userDefaults.setObject(self.tagsList, forKey: "user_tags")
+            if let uniqueSet = set.array as? Array<String> {
+                self.userDefaults.setObject(uniqueSet, forKey: "user_tags")
             }
         }
     }

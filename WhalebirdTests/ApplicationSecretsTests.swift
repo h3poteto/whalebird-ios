@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 AkiraFukushima. All rights reserved.
 //
 
-import UIKit
 import XCTest
 import RNCryptor
 @testable import Whalebird
