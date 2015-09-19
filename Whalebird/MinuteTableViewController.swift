@@ -12,7 +12,7 @@ protocol MinuteTableViewControllerDelegate {
     func rewriteTweetWithMinute(minute: NSDictionary, index: Int)
 }
 
-class MinuteTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class MinuteTableViewController: UITableViewController {
 
     //=============================================
     //  instance variables
@@ -34,7 +34,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
     init() {
         super.init(style: UITableViewStyle.Plain)
         self.minuteModel = MinuteModel()
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        _ = NSUserDefaults.standardUserDefaults()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -85,7 +85,7 @@ class MinuteTableViewController: UITableViewController, UITableViewDataSource, U
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "MinuteCell")
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "MinuteCell")
         if let minute = self.minuteModel.getMinuteAtIndex(indexPath.row) {
             cell.textLabel?.text = minute.objectForKey("text") as? String
         }

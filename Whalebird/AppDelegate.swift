@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         Fabric.with([Crashlytics()])
         
-        var types: UIUserNotificationType = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
-        var notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
+        let types: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Sound, UIUserNotificationType.Alert]
+        let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
         application.registerForRemoteNotifications()
         application.registerUserNotificationSettings(notificationSettings)
         
@@ -45,29 +45,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if let barButtonFont: UIFont = UIFont(name: TimelineViewCell.NormalFont, size: 16) {
             UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], forState: UIControlState.Normal)
         }
-        var chdic = [
+        let chdic = [
             "yes" : "asumiss"
         ]
-        var dic = [
+        _ = [
             "name" : "hoge",
             "child" : chdic
         ]
         // tabBar設定
         self.rootController = UITabBarController()
         self.rootController.delegate = self
-        var timelineViewController = TimelineTableViewController()
-        var timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
-        var replyViewController = ReplyTableViewController()
-        var replyNavigationController = UINavigationController(rootViewController: replyViewController)
-        var listViewController = ListTableViewController()
-        var listNavigationController = UINavigationController(rootViewController: listViewController)
-        var directMessageViewController = DirectMessageTableViewController()
-        var directMessageNavigationController = UINavigationController(rootViewController: directMessageViewController)
-        var settingsViewController = SettingsTableViewController(style: UITableViewStyle.Grouped)
-        var settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
-        var controllers = NSArray(array: [timelineNavigationController, replyNavigationController, listNavigationController, directMessageNavigationController, settingsNavigationController])
-        self.rootController.setViewControllers(controllers as [AnyObject], animated: true)
-        self.window?.addSubview(self.rootController.view)
+        let timelineViewController = TimelineTableViewController()
+        let timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
+        let replyViewController = ReplyTableViewController()
+        let replyNavigationController = UINavigationController(rootViewController: replyViewController)
+        let listViewController = ListTableViewController()
+        let listNavigationController = UINavigationController(rootViewController: listViewController)
+        let directMessageViewController = DirectMessageTableViewController()
+        let directMessageNavigationController = UINavigationController(rootViewController: directMessageViewController)
+        let settingsViewController = SettingsTableViewController(style: UITableViewStyle.Grouped)
+        let settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
+        let controllers = NSArray(array: [timelineNavigationController, replyNavigationController, listNavigationController, directMessageNavigationController, settingsNavigationController])
+        self.rootController.setViewControllers((controllers as? [UIViewController]), animated: true)
+        self.window?.rootViewController = self.rootController
         self.window?.makeKeyAndVisible()
         
         if let navigationController = self.rootController.selectedViewController as? UINavigationController {
@@ -78,29 +78,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if (launchOptions != nil) {
             if let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject : AnyObject] {
                 if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "reply" {
-                    var tweetModel = TweetModel(notificationDict: userInfo)
-                    var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                    let tweetModel = TweetModel(notificationDict: userInfo)
+                    let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                     NotificationUnread.decrementUnreadBadge()
                     // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                 } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "direct_message" {
-                    var messageModel = MessageModel(notificationDict: userInfo)
-                    var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
+                    let messageModel = MessageModel(notificationDict: userInfo)
+                    let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                     
                     NotificationUnread.decrementUnreadBadge()
                     (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                 } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "retweet" {
                     if (userInfo["id"] != nil) {
-                        var tweetModel = TweetModel(notificationDict: userInfo)
-                        var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        let tweetModel = TweetModel(notificationDict: userInfo)
+                        let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
                     }
                 } else if (userInfo["aps"] as? [NSObject : AnyObject])?["category"] as? String == "favorite" {
                     if (userInfo["id"] != nil) {
-                        var tweetModel = TweetModel(notificationDict: userInfo)
-                        var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        let tweetModel = TweetModel(notificationDict: userInfo)
+                        let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                         
                         // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
@@ -113,22 +113,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // iOS7以下を切り捨てる
         if greaterThanOrEqual(8, minorVersion: 0, patchVersion: 0) {
         } else {
-            println("システムバージョン < iOS 8.0.0")
-            var systemAlert = UIAlertController(title: "iOSのアップデートをしてください", message: "対応OSはiOS8.0以上です", preferredStyle: UIAlertControllerStyle.Alert)
-            var closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+            print("システムバージョン < iOS 8.0.0")
+            let systemAlert = UIAlertController(title: "iOSのアップデートをしてください", message: "対応OSはiOS8.0以上です", preferredStyle: UIAlertControllerStyle.Alert)
+            let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
             })
             systemAlert.addAction(closeAction)
             self.rootController.presentViewController(systemAlert, animated: true, completion: nil)
         }
         
         // 認証前なら設定画面に飛ばす
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         if ( userDefault.objectForKey("username") == nil) {
-            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
             notice.alpha = 0.8
             notice.originY = self.alertPosition
             notice.show()
-            var loginSettingsView = SettingsTableViewController()
+            let loginSettingsView = SettingsTableViewController()
             self.rootController.presentedViewController
             if let selectedController = self.rootController.selectedViewController as? UINavigationController {
                 selectedController.pushViewController(loginSettingsView, animated: true)
@@ -173,24 +173,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         // <>と" "(空白)を取る
-        var characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
-        var deviceTokenString: String = ( deviceToken.description as NSString )
+        let characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
+        let deviceTokenString: String = ( deviceToken.description as NSString )
             .stringByTrimmingCharactersInSet( characterSet )
             .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setObject(deviceTokenString, forKey: "deviceToken")
-        println(deviceTokenString)
+        print(deviceTokenString)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
         }
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        println(error)
+        print(error)
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        println(userInfo)
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        print(userInfo)
+        let userDefault = NSUserDefaults.standardUserDefaults()
         if let aps = userInfo["aps"] as? NSDictionary {
             if let message = aps.objectForKey("alert") as? String, let category = aps.objectForKey("category") as? String {
                 if (application.applicationState == UIApplicationState.Active && (userDefault.objectForKey("notificationForegroundFlag") == nil || userDefault.boolForKey("notificationForegroundFlag"))) {
@@ -198,7 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     
                     if (userDefault.integerForKey("notificationType") == 2 ) {
                         // wbによる通知
-                        var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
+                        let notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                         notice.alpha = 0.8
                         notice.originY = self.alertPosition
                         notice.show()
@@ -206,10 +206,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         // デフォルトはアラート通知
                         switch(category) {
                         case "reply":
-                            var alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
+                            let alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .Alert)
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: {action in
-                                var tweetModel = TweetModel(notificationDict: userInfo)
-                                var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                                let tweetModel = TweetModel(notificationDict: userInfo)
+                                let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
 
                                 NotificationUnread.decrementUnreadBadge()
                                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
@@ -222,10 +222,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             self.rootController.presentViewController(alertController, animated: true, completion: nil)
                             break
                         case "direct_message":
-                            var alertController = UIAlertController(title: "DirectMessage", message: message, preferredStyle: .Alert)
+                            let alertController = UIAlertController(title: "DirectMessage", message: message, preferredStyle: .Alert)
                             let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                                var messageModel = MessageModel(notificationDict: userInfo)
-                                var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
+                                let messageModel = MessageModel(notificationDict: userInfo)
+                                let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                                 NotificationUnread.decrementUnreadBadge()
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                             })
@@ -237,14 +237,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                             break
                         case "favorite":
                             // wbによる通知
-                            var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
+                            let notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                             notice.alpha = 0.8
                             notice.originY = self.alertPosition
                             notice.show()
                             break
                         case "retweet":
                             // wbによる通知
-                            var notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
+                            let notice = WBSuccessNoticeView.successNoticeInView(self.window, title: message)
                             notice.alpha = 0.8
                             notice.originY = self.alertPosition
                             notice.show()
@@ -258,8 +258,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     // 起動済みで通知から復旧した時
                     switch(category) {
                     case "reply":
-                        var tweetModel = TweetModel(notificationDict: userInfo)
-                        var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                        let tweetModel = TweetModel(notificationDict: userInfo)
+                        let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                         
                         NotificationUnread.decrementUnreadBadge()
                         
@@ -267,23 +267,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         break
                     case "direct_message":
-                        var messageModel = MessageModel(notificationDict: userInfo)
-                        var messageViewController = MessageDetailViewController(aMessageModel: messageModel)
+                        let messageModel = MessageModel(notificationDict: userInfo)
+                        let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                         NotificationUnread.decrementUnreadBadge()
                         (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                         break
                     case "favorite":
                         if (userInfo["id"] != nil) {
-                            var tweetModel = TweetModel(notificationDict: userInfo)
-                            var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                            let tweetModel = TweetModel(notificationDict: userInfo)
+                            let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }
                         break
                     case "retweet":
                         if (userInfo["id"] != nil) {
-                            var tweetModel = TweetModel(notificationDict: userInfo)
-                            var detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+                            let tweetModel = TweetModel(notificationDict: userInfo)
+                            let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
                             // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                             (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                         }
@@ -318,8 +318,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let suffix = ".0"
         var shortedVersion = version
         while shortedVersion.hasSuffix(suffix) {
-            let endIndex = count(shortedVersion) - count(suffix)
-            let range = Range(start:advance(shortedVersion.startIndex, 0), end: advance(shortedVersion.startIndex, endIndex))
+            let endIndex = shortedVersion.characters.count - suffix.characters.count
+            let range = Range(start:shortedVersion.startIndex.advancedBy(0), end: shortedVersion.startIndex.advancedBy(endIndex))
             shortedVersion = shortedVersion.substringWithRange(range)
         }
         return shortedVersion;

@@ -20,11 +20,11 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Crashlytics (3.1.1)
+  - Crashlytics (3.3.1)
   - DACircularProgress (2.2.0)
-  - Fabric (1.2.8):
-    - Fabric/Base (= 1.2.8)
-  - Fabric/Base (1.2.8)
+  - Fabric (1.5.1):
+    - Fabric/Base (= 1.5.1)
+  - Fabric/Base (1.5.1)
   - HexColors (2.2.1)
   - IJReachability (0.1.0)
   - NoticeView (3.0.7)
@@ -47,7 +47,8 @@ DEPENDENCIES:
   - Crashlytics
   - DACircularProgress
   - Fabric
-  - IJReachability (from `https://github.com/Isuru-Nanayakkara/IJReachability.git`)
+  - IJReachability (from `https://github.com/thejourneydude/IJReachability.git`, branch
+    `swift2-with-autodetect`)
   - NoticeView
   - ODRefreshControl
   - OHAttributedLabel
@@ -62,7 +63,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   IJReachability:
-    :git: https://github.com/Isuru-Nanayakkara/IJReachability.git
+    :branch: swift2-with-autodetect
+    :git: https://github.com/thejourneydude/IJReachability.git
   RNCryptor:
     :branch: master
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -71,8 +73,8 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   IJReachability:
-    :commit: da69c8f4bed9f82203bb49180fb36091b4cd0d28
-    :git: https://github.com/Isuru-Nanayakkara/IJReachability.git
+    :commit: 16bfa1a633d641d39af9aa88ef3337380182f08f
+    :git: https://github.com/thejourneydude/IJReachability.git
   RNCryptor:
     :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -82,9 +84,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Crashlytics: 39ab395565bc03c29cdecd2b9d103ebf30930c10
+  Crashlytics: 0e61bdda9def51f1e99720f804eebe94865442b2
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
-  Fabric: a9eabe53915e9f1db55a84dd2838737928675878
+  Fabric: 03c3b3fe77e11a2bc31421b989a9c7adaa4779a5
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   IJReachability: 3eff33caca50869df09b257bcf712031a56a8575
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0

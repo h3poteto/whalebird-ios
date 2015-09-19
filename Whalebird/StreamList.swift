@@ -20,8 +20,8 @@ class StreamList: NSObject {
     
     override init() {
         super.init()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        if var userStreamList = userDefaults.arrayForKey("streamList") as Array? {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let userStreamList = userDefaults.arrayForKey("streamList") as Array? {
             self.lists.removeAll()
             for streamList in userStreamList {
                 self.lists.insert(Stream(
@@ -43,13 +43,13 @@ class StreamList: NSObject {
     
     func initStreamList() {
         self.lists.removeAll()
-        var favStream = self.dynamicType.Stream(
+        let favStream = self.dynamicType.Stream(
             image: "",
             name: "お気に入り",
             type: "myself",
             uri: "users/apis/user_favorites.json",
             id: "")
-        var myselfStream = self.dynamicType.Stream(
+        let myselfStream = self.dynamicType.Stream(
             image: "",
             name: "送信済みツイート",
             type: "myself",
@@ -60,13 +60,13 @@ class StreamList: NSObject {
     }
     
     func saveStreamList() {
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         
-        var safeArray = NSMutableArray()
+        let safeArray = NSMutableArray()
         if (self.lists.count > 0) {
             for i in 0...self.lists.count-1 {
-                var list = self.lists[i]
-                var dictionary = NSMutableDictionary()
+                let list = self.lists[i]
+                let dictionary = NSMutableDictionary()
                 dictionary.setObject((list.image as String), forKey: "image")
                 dictionary.setObject((list.name as String), forKey: "name")
                 dictionary.setObject((list.type as String), forKey: "type")
@@ -91,14 +91,14 @@ class StreamList: NSObject {
     }
     
     func moveStreamAtIndex(fromIndex: Int, toIndex: Int) {
-        var fromCellData = self.lists[fromIndex]
-        var toCellData = self.lists[toIndex]
+        let fromCellData = self.lists[fromIndex]
+        let toCellData = self.lists[toIndex]
         self.lists[fromIndex] = toCellData
         self.lists[toIndex] = fromCellData
     }
     
     func addNewStream(image: String, name: String, type: String, uri: String, id: String) {
-        var newStream = Stream(image: image, name: name, type: type, uri: uri, id: id)
+        let newStream = Stream(image: image, name: name, type: type, uri: uri, id: id)
         self.lists.append(newStream)
     }
     
@@ -112,7 +112,7 @@ class StreamList: NSObject {
     
     func clearData() {
         self.initStreamList()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(nil, forKey: "streamList")
     }
 }

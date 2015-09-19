@@ -38,16 +38,16 @@ class FriendsList: NSObject {
     
     // requestする必要があればtrueを返す
     func checkRequestResult() -> Bool {
-        var current = NSDate(timeIntervalSinceNow: 0)
+        let current = NSDate(timeIntervalSinceNow: 0)
         // 和暦の場合は強制的に西暦に治す
-        var today = self.utcDateFormatter.stringFromDate(current)
+        let today = self.utcDateFormatter.stringFromDate(current)
         
-        if let failedDateStr = self.userDefaults.stringForKey("failed_date") {
+        if let _ = self.userDefaults.stringForKey("failed_date") {
             return true
         } else {
             if let successDateStr = self.userDefaults.stringForKey("success_date") {
                 // successから1週間経っていればリトライさせたい
-                if today.toInt()! - successDateStr.toInt()! > 7 {
+                if Int(today)! - Int(successDateStr)! > 7 {
                     return true
                 } else {
                     return false
@@ -59,15 +59,15 @@ class FriendsList: NSObject {
     }
     
     func setFailedRequestCache() {
-        var current = NSDate(timeIntervalSinceNow: 0)
-        var today = self.utcDateFormatter.stringFromDate(current)
+        let current = NSDate(timeIntervalSinceNow: 0)
+        let today = self.utcDateFormatter.stringFromDate(current)
         self.userDefaults.setObject(today, forKey: "failed_date")
         self.userDefaults.removeObjectForKey("success_date")
     }
     
     func setSuccessRequestCache() {
-        var current = NSDate(timeIntervalSinceNow: 0)
-        var today = self.utcDateFormatter.stringFromDate(current)
+        let current = NSDate(timeIntervalSinceNow: 0)
+        let today = self.utcDateFormatter.stringFromDate(current)
         self.userDefaults.setObject(today, forKey: "success_date")
         self.userDefaults.removeObjectForKey("failed_date")
     }
@@ -86,13 +86,12 @@ class FriendsList: NSObject {
                 "settings" : params
             ]
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/friend_screen_names.json", displayError: false, params: parameter, completed: { (aFollows) -> Void in
-                if let screen_names = aFollows as? Array<AnyObject> {
-                    self.friendsList = []
-                    for name in screen_names {
-                        self.friendsList?.append((name.objectForKey("screen_name") as! String))
-                    }
-                    self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
+                let screen_names = aFollows as Array<AnyObject>
+                self.friendsList = []
+                for name in screen_names {
+                    self.friendsList?.append((name.objectForKey("screen_name") as! String))
                 }
+                self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
                 self.setSuccessRequestCache()
             }, failed: { () -> Void in
                 self.setFailedRequestCache()
@@ -112,7 +111,7 @@ class FriendsList: NSObject {
     }
     
     func searchFriends(screen_name: String, callback:(Array<String>) -> Void) {
-        if count(screen_name) > 0 {
+        if screen_name.characters.count > 0 {
             if let list = self.getFriendsFromCache() {
                 var matchFriends:Array<String> = []
                 for name in list {

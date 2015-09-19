@@ -13,8 +13,8 @@ class MinuteModel: NSObject {
     
     override init() {
         super.init()
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        if var readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        if let readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
             self.minutesArray = readMinutesArray
         }
     }
@@ -28,24 +28,24 @@ class MinuteModel: NSObject {
     }
     
     func saveMinuteAtIndex(index: Int) {
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         self.minutesArray.removeAtIndex(index)
         userDefault.setObject(self.minutesArray, forKey: "minutesArray")
     }
     
     func addMinuteAtFirst(body: String!, replyToID: String?) {
-        var minuteDictionary = NSMutableDictionary(dictionary: ["text" : body])
+        let minuteDictionary = NSMutableDictionary(dictionary: ["text" : body])
         if (replyToID != nil) {
             minuteDictionary.setValue(replyToID!, forKey: "replyToID")
         }
         self.minutesArray.insert(minuteDictionary, atIndex: 0)
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setObject(self.minutesArray, forKey: "minutesArray")
     }
     
     func deleteMinuteAtIndex(index: Int!) {
         self.minutesArray.removeAtIndex(index)
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         userDefault.setObject(self.minutesArray, forKey: "minutesArray")
     }
 }

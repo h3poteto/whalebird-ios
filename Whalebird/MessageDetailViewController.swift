@@ -39,7 +39,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.title = "DM"
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -58,10 +58,10 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         super.viewDidLoad()
 
         let cWindowSize = UIScreen.mainScreen().bounds
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         
         self.profileImageLabel = UIImageView(frame: CGRectMake(cWindowSize.size.width * 0.05, self.navigationController!.navigationBar.frame.size.height * 2.0, cWindowSize.size.width * 0.9, 40))
-        var imageURL = NSURL(string: self.messageModel.profileImage)
+        let imageURL = NSURL(string: self.messageModel.profileImage)
         self.profileImageLabel.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage"))
         self.profileImageLabel.sizeToFit()
         
@@ -100,7 +100,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.tweetBodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 15)
         self.tweetBodyLabel.text = WhalebirdAPIClient.escapeString(self.messageModel.messageBody) as String
         self.tweetBodyLabel.delegate = self
-        self.tweetBodyLabel.dataDetectorTypes = UIDataDetectorTypes.Link | UIDataDetectorTypes.Address
+        self.tweetBodyLabel.dataDetectorTypes = [UIDataDetectorTypes.Link, UIDataDetectorTypes.Address]
         self.tweetBodyLabel.editable = false
         self.tweetBodyLabel.scrollEnabled = false
         self.tweetBodyLabel.layoutManager.delegate = self
@@ -126,7 +126,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
     }
 
     func tappedReplyMessage() {
-        var newMessage = NewDirectMessageViewController(aReplyToUser: self.messageModel.screenName)
+        let newMessage = NewDirectMessageViewController(aReplyToUser: self.messageModel.screenName)
         self.navigationController?.pushViewController(newMessage, animated: true)
     }
     

@@ -22,11 +22,11 @@ class ConversationTableViewController: UITableViewController {
     //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "会話"
     }
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        self.title = "会話"        
     }
     
     convenience init(aTweetID: String) {
@@ -104,8 +104,8 @@ class ConversationTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            var tweetModel = TweetModel(dict: cTweetData)
-            var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+            let tweetModel = TweetModel(dict: cTweetData)
+            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
             self.navigationController?.pushViewController(detailView, animated: true)
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
@@ -113,10 +113,10 @@ class ConversationTableViewController: UITableViewController {
     
     
     func updateConversation() {
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "id" : self.rootTweetID
         ]
-        var parameter: Dictionary<String, AnyObject> = [
+        let parameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)

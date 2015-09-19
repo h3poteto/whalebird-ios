@@ -36,13 +36,13 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     // localeの設定をしないと，実機で落ちる
     class func convertUTCTime(aSrctime: String) -> String {
         var dstDate = String()
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss ZZZ yyyy"
         dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         dateFormatter.locale = NSLocale(localeIdentifier: "UTC")
-        if var srcDate = dateFormatter.dateFromString(aSrctime as String) {
+        if let srcDate = dateFormatter.dateFromString(aSrctime as String) {
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
             dstDate = dateFormatter.stringFromDate(srcDate)
         }
@@ -50,7 +50,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     class func convertRetweet(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
-        var mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
+        let mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
         let cOriginalText = mutableDictionary.objectForKey("retweeted_status")?.objectForKey("text") as! String
         let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as! String)
         let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("name") as! String
@@ -63,7 +63,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         mutableDictionary.setValue(cOriginalText, forKey: "text")
         mutableDictionary.setValue(cOriginalCreatedAt, forKey: "created_at")
     
-        var userDictionay = NSMutableDictionary(dictionary: [
+        let userDictionay = NSMutableDictionary(dictionary: [
             "name" : cOriginalName,
             "screen_name" : cOriginalScreenName,
             "profile_image_url" : cOriginalProfileImageURL,
@@ -71,7 +71,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         ])
         mutableDictionary.setValue(userDictionay, forKey: "user")
         
-        var retweetedDictionary = NSMutableDictionary(dictionary: [
+        let retweetedDictionary = NSMutableDictionary(dictionary: [
             "name" : cPostName,
             "screen_name" : cPostScreenName,
             "profile_image_url" : cPostProfileImageURL
@@ -83,17 +83,17 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     class func convertMedia(aDictionary: NSMutableDictionary) -> NSMutableDictionary {
-        var mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
-        var cOriginalMedia = mutableDictionary.objectForKey("entities")?.objectForKey("media") as! NSArray
-        var mediaURLArray = NSMutableArray()
+        let mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
+        let cOriginalMedia = mutableDictionary.objectForKey("entities")?.objectForKey("media") as! NSArray
+        let mediaURLArray = NSMutableArray()
         for media in cOriginalMedia {
             mediaURLArray.addObject(media.objectForKey("media_url_https")!)
         }
         mutableDictionary.setValue(mediaURLArray, forKey: "media")
         
         // video
-        var videoURLArray = NSMutableArray()
-        var cOriginalVideo = mutableDictionary.objectForKey("extended_entities")?.objectForKey("media") as! NSArray
+        let videoURLArray = NSMutableArray()
+        let cOriginalVideo = mutableDictionary.objectForKey("extended_entities")?.objectForKey("media") as! NSArray
         for anime in cOriginalVideo {
             if anime.objectForKey("type") as! String == "animated_gif" {
                 var video: String! = ""
@@ -117,11 +117,11 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         if !self.confirmConnectedNetwork() {
             return
         }
-        var request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: aTargetStream, parameters: params)
-        if var twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
-            var twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
+        let request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: aTargetStream, parameters: params)
+        if let twitterAccountType: ACAccountType = self.accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
+            let twitterAccounts: NSArray = self.accountStore.accountsWithAccountType(twitterAccountType)
             if (twitterAccounts.count > 0) {
-                var userDefault = NSUserDefaults.standardUserDefaults()
+                let userDefault = NSUserDefaults.standardUserDefaults()
                 let cUsername = userDefault.stringForKey("username")
                 var selectedAccount: ACAccount?
                 for aclist in twitterAccounts {
@@ -130,7 +130,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                     }
                 }
                 if (selectedAccount == nil) {
-                    var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+                    let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
                     notice.alpha = 0.8
                     notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                     notice.show()
@@ -163,17 +163,18 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse) {
-        println(response)
+        print(response)
     }
     
     func connection(connection: NSURLConnection,didReceiveData data: NSData){
         var jsonError:NSError?
-        if var jsonObject: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError) {
+        do {
+            let jsonObject: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
             var object: NSMutableDictionary = jsonObject.mutableCopy() as! NSMutableDictionary
             if (object.objectForKey("text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.objectForKey("created_at") as! String), forKey: "created_at")
-                println(object.objectForKey("user")?.objectForKey("screen_name"))
+                print(object.objectForKey("user")?.objectForKey("screen_name"))
                 object.setValue(object.objectForKey("favorited") as! Int, forKey: "favorited?")
                 if (object.objectForKey("retweeted_status") == nil) {
                     object.setValue(nil, forKey: "retweeted")
@@ -187,11 +188,13 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 }
                 self.timeline.realtimeUpdate(object)
             }
+        } catch let error as NSError {
+            jsonError = error
         }
     }
     func confirmConnectedNetwork() ->Bool {
         if !IJReachability.isConnectedToNetwork() {
-            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
             notice.alpha = 0.8
             notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
             notice.show()

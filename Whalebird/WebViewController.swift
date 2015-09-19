@@ -27,7 +27,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -42,7 +42,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
         self.webView = UIWebView(frame: self.view.frame)
         self.webView.scalesPageToFit = true
-        self.webView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        self.webView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         self.webView.delegate = self
         if IJReachability.isConnectedToNetwork() {
             if let requestURL = NSURL(string: self.whalebirdURL + self.openURL) {
@@ -50,7 +50,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
             }
              self.view.addSubview(self.webView)
         } else {
-            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
             notice.alpha = 0.8
             notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
             notice.show()

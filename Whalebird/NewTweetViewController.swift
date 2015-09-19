@@ -52,11 +52,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //======================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "ツイート送信"
-        self.newTweetModel = NewTweetModel()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -68,6 +66,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if aTopCursor != nil {
             self.fTopCursor = aTopCursor!
         }
+        self.title = "ツイート送信"
+        self.newTweetModel = NewTweetModel()
     }
     
     override func loadView() {
@@ -99,7 +99,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.fTopCursor) {
             self.newTweetText.selectedTextRange = self.newTweetText.textRangeFromPosition(self.newTweetText.beginningOfDocument, toPosition: self.newTweetText.beginningOfDocument)
         }
-        self.currentCharacters = 140 - count(self.newTweetText.text)
+        self.currentCharacters = 140 - self.newTweetText.text.characters.count
         
         self.minuteTableView = MinuteTableViewController()
         self.minuteTableView?.delegate = self
@@ -119,7 +119,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        self.currentCharacters = 140 - (count(textView.text) - range.length + count(text))
+        self.currentCharacters = 140 - (textView.text.characters.count - range.length + text.characters.count)
         if (self.currentCharactersView != nil) {
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
@@ -149,21 +149,21 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func keyboardDidShow(notification: NSNotification) {
         
-        var windowSize = UIScreen.mainScreen().bounds.size
-        if var info = notification.userInfo as NSDictionary? {
+        let windowSize = UIScreen.mainScreen().bounds.size
+        if let info = notification.userInfo as NSDictionary? {
             self.optionItemBar?.removeFromSuperview()
-            if var keyboardSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue() as CGRect? {
+            if let keyboardSize = info.objectForKey(UIKeyboardFrameEndUserInfoKey)?.CGRectValue as CGRect? {
                 self.optionItemBar = UIToolbar(frame: CGRectMake(0, keyboardSize.origin.y - self.optionItemBarHeight, windowSize.width, self.optionItemBarHeight))
             }
             self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
             // 配置するボタン
-            var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+            let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
             self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
             self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
             self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.Plain, target: self, action: "openMinute")
             self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             
-            var itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
+            let itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
             self.optionItemBar?.setItems(itemArray, animated: true)
             
             self.view.addSubview(self.optionItemBar!)
@@ -181,7 +181,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.newTweetText.text.isEmpty) {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
-            var minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
             let closeAction = UIAlertAction(title: "破棄する", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 self.newTweetText.text = ""
                 self.navigationController?.popViewControllerAnimated(true)
@@ -206,20 +206,20 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     func openPhotostream() {
         if (!self.fUploadProgress) {
             if (self.newTweetMedias.count < 4) {
-                var ipc:UIImagePickerController = UIImagePickerController();
+                let ipc:UIImagePickerController = UIImagePickerController();
                 ipc.delegate = self
                 ipc.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 ipc.allowsEditing = false
                 self.presentViewController(ipc, animated:true, completion:nil)
             } else {
-                var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 })
                 overContentsAlert.addAction(okAction)
                 self.presentViewController(overContentsAlert, animated: true, completion: nil)
             }
         } else {
-            var overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
+            let overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
@@ -233,7 +233,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
                 {
                     //camera ok
-                    var ipc:UIImagePickerController = UIImagePickerController()
+                    let ipc:UIImagePickerController = UIImagePickerController()
                     ipc.delegate = self
                     ipc.sourceType = UIImagePickerControllerSourceType.Camera
                     ipc.allowsEditing = false
@@ -241,14 +241,14 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 }
             
             } else {
-                var overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
                 })
                 overContentsAlert.addAction(okAction)
                 self.presentViewController(overContentsAlert, animated: true, completion: nil)
             }
         } else {
-            var overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
+            let overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.Alert)
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
@@ -275,7 +275,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             height = CGFloat(50.0)
         }
         
-        var uploadImageView = UIImageView(frame: CGRectMake(
+        let uploadImageView = UIImageView(frame: CGRectMake(
             self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(self.newTweetMedias.count)),
             self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2,
             width,
@@ -285,7 +285,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.newTweetMediaViews.append(uploadImageView)
         
         
-        var progressView = DACircularProgressView(frame: CGRectMake(0, 0, width * 2.0 / 3.0, height * 2.0 / 3.0))
+        let progressView = DACircularProgressView(frame: CGRectMake(0, 0, width * 2.0 / 3.0, height * 2.0 / 3.0))
         progressView.center = CGPoint(x: width / 2.0, y: height / 2.0)
         progressView.roundedCorners = 0
         progressView.progressTintColor = self.progressColor
@@ -293,7 +293,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         progressView.setProgress(0.0, animated: true)
         uploadImageView.addSubview(progressView)
         
-        var closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
+        let closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
         closeImageView.setImage(UIImage(named: "Close-Filled"), forState: UIControlState.Normal)
         closeImageView.addTarget(self, action: "removeImage:", forControlEvents: UIControlEvents.TouchUpInside)
         closeImageView.tag = self.newTweetMedias.count
@@ -307,7 +307,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         WhalebirdAPIClient.sharedClient.postImage(rotationImage, progress: { (written) -> Void in
             progressView.setProgress(CGFloat(written), animated: true)
         }, complete: { (response) -> Void in
-            println(response)
+            print(response)
             self.newTweetMedias.append((response as NSDictionary).objectForKey("filename") as! String)
             progressView.removeFromSuperview()
             self.fUploadProgress = false
@@ -322,7 +322,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if (info[UIImagePickerControllerOriginalImage] != nil) {
             if let image:UIImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
                 // カメラで撮影するだけでは保存はされていない
@@ -330,7 +330,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                 }
                 // 編集画面を挟む
-                var imageEditView = EditImageViewController(aPickerImage: image, aPicker: picker)
+                let imageEditView = EditImageViewController(aPickerImage: image, aPicker: picker)
                 picker.presentViewController(imageEditView, animated: true, completion: nil)
                 imageEditView.delegate = self
             }
@@ -339,8 +339,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     func removeImage(id: AnyObject) {
         // upload中は移動を伴うキャンセルはロックする
-        if var closeButton = id as? UIButton {
-            var removeIndex = closeButton.tag
+        if let closeButton = id as? UIButton {
+            let removeIndex = closeButton.tag
             if (self.fUploadProgress) {
                 if (removeIndex == self.newTweetMedias.count) {
                     // 今まさにupload中のものだったとき
@@ -369,7 +369,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //-----------------------------------------
     func onSendTapped() -> Bool {
         if (self.fUploadProgress) {
-            var alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
+            let alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .Alert)
             let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             alertController.addAction(cOkAction)
@@ -377,11 +377,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             
             return false
         }
-        if (count(newTweetText.text as String) > 0 || self.newTweetMedias.count > 0) {
+        if ((newTweetText.text as String).characters.count > 0 || self.newTweetMedias.count > 0) {
             postTweet(newTweetText.text)
             return true
         } else {
-            var blankTweetAlert = UIAlertController(title: "ツイートできません", message: "本文を入力してください", preferredStyle: .Alert)
+            let blankTweetAlert = UIAlertController(title: "ツイートできません", message: "本文を入力してください", preferredStyle: .Alert)
             let cOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             })
             blankTweetAlert.addAction(cOkAction)
@@ -411,9 +411,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
-            var q_main = dispatch_get_main_queue()
+            let q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
-                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "投稿しました")
+                let notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "投稿しました")
                 SVProgressHUD.dismiss()
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
@@ -429,7 +429,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     func displaySuggestTable(suggest: Array<String>, position: CGRect) {
         self.suggestList = suggest
         // position計算
-        var tableTop = self.navigationController!.navigationBar.frame.size.height +  UIApplication.sharedApplication().statusBarFrame.height + position.origin.y + position.height
+        let tableTop = self.navigationController!.navigationBar.frame.size.height +  UIApplication.sharedApplication().statusBarFrame.height + position.origin.y + position.height
         
         var tableHeight = self.maxSize.height
         if let optionBar = self.optionItemBar {
@@ -460,7 +460,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                     textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
                 } else {
                     let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.screenNameRange!.length)
-                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end!)
                 }
                 self.newTweetText.replaceRange(textRange, withText: "@" + text + " ")
                 self.newTweetModel.clearRange()
@@ -472,7 +472,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                     textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
                 } else {
                     let end = self.newTweetText.positionFromPosition(start, offset: self.newTweetModel.tagRange!.length)
-                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end)
+                    textRange = self.newTweetText.textRangeFromPosition(start, toPosition: end!)
                 }
                 self.newTweetText.replaceRange(textRange, withText: "#" + text + " ")
                 self.newTweetModel.clearRange()
@@ -494,7 +494,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
         if self.suggestList != nil {
             cell.textLabel?.text = self.suggestList![indexPath.row] as String
         }

@@ -11,7 +11,7 @@ import ODRefreshControl
 import SVProgressHUD
 import NoticeView
 
-class DirectMessageTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
+class DirectMessageTableViewController: UITableViewController {
 
     //=============================================
     //  instance variables
@@ -25,17 +25,17 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     //============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "DM"
-        self.tabBarItem.image = UIImage(named: "Mail")
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("directMessageSinceId") as String?
-        var directMessage = userDefaults.arrayForKey("directMessage") as Array?
-        
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage)
     }
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        self.title = "DM"
+        self.tabBarItem.image = UIImage(named: "Mail")
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let sinceId = userDefaults.stringForKey("directMessageSinceId") as String?
+        let directMessage = userDefaults.arrayForKey("directMessage") as Array?
+        
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -113,8 +113,8 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
                 }
                 self.updateMessage(sinceID, aMoreIndex: indexPath.row)
             } else {
-                var messageModel = MessageModel(dict: cMessageData)
-                var detailView = MessageDetailViewController(aMessageModel: messageModel)
+                let messageModel = MessageModel(dict: cMessageData)
+                let detailView = MessageDetailViewController(aMessageModel: messageModel)
                 self.navigationController?.pushViewController(detailView, animated: true)
                 
             }
@@ -127,20 +127,20 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
         self.timelineModel.updateTimeline("users/apis/direct_messages.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                var userDefault = NSUserDefaults.standardUserDefaults()
+                let userDefault = NSUserDefaults.standardUserDefaults()
                 if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                    var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                    let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
                     self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
                 
             }, noUpdated: { () -> Void in
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
@@ -169,7 +169,7 @@ class DirectMessageTableViewController: UITableViewController, UITableViewDelega
     
     func clearData() {
         self.timelineModel.clearData()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(nil, forKey: "directMessageSinceID")
         userDefaults.setObject(nil, forKey: "directMessage")
         self.tableView.reloadData()

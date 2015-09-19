@@ -25,7 +25,7 @@ class BigInteger: NSObject {
     init(string: String) {
         super.init()
         var first = true
-        for c in string {
+        for c in string.characters {
             if first {
                 first = false
                 if c == "-" {
@@ -33,7 +33,7 @@ class BigInteger: NSObject {
                 }
             } else {
             }
-            let i = String(c).toInt()
+            let i = Int(String(c))
             if i != nil {
                 self.quads.append(i!)
             }
@@ -44,7 +44,7 @@ class BigInteger: NSObject {
         var decStr = ""
         var carry = 0
         var first = true
-        for num in self.quads.reverse() {
+        for num in Array(self.quads.reverse()) {
             var decnum = 0
             if first {
                 first = false

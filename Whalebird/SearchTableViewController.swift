@@ -10,7 +10,7 @@ import UIKit
 import SVProgressHUD
 import NoticeView
 
-class SearchTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
     //=============================================
     //  instance variables
@@ -50,7 +50,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let window = UIScreen.mainScreen().bounds
+        _ = UIScreen.mainScreen().bounds
         self.tweetSearchBar = UISearchBar()
         self.tweetSearchBar.placeholder = "検索"
         self.tweetSearchBar.keyboardType = UIKeyboardType.Default
@@ -103,7 +103,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
         self.resultCell.insert(cell!, atIndex: indexPath.row)
 
         cell!.cleanCell()
-        if var targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
+        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
             cell!.configureCell(targetResult)
         }
 
@@ -129,8 +129,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            var tweetModel = TweetModel(dict: cTweetData)
-            var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+            let tweetModel = TweetModel(dict: cTweetData)
+            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
             self.navigationController?.pushViewController(detailView, animated: true)
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
@@ -160,19 +160,19 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     }
     
     func executeSearch() {
-        var params: Dictionary<String, String> = [
+        let params: Dictionary<String, String> = [
             "count" : String(self.timelineModel.tweetCount)
         ]
-        let cParameter: Dictionary<String, AnyObject> = [
+        let cParameter: Dictionary<String, Any> = [
             "settings" : params,
             "q" : self.tweetSearchBar.text
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
+        self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter as! Dictionary<String, AnyObject>,
             completed: { (count, currentRowIndex) -> Void in
                 SVProgressHUD.dismiss()
                 self.tableView.reloadData()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
@@ -185,10 +185,10 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate, UIT
     }
     
     func saveResult() {
-        if (count(self.tweetSearchBar.text) > 0) {
+        if (self.tweetSearchBar.text!.characters.count > 0) {
             self.streamList?.addNewStream(
                 "",
-                name: self.tweetSearchBar.text,
+                name: self.tweetSearchBar.text!,
                 type: "search",
                 uri: "users/apis/search.json",
                 id: ""

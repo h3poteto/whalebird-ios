@@ -43,8 +43,8 @@ class TimelineModel: NSObject {
             for tweet in initTimeline! {
                 self.currentTimeline.insert(tweet, atIndex: 0)
             }
-            if var moreID = self.currentTimeline.last?.objectForKey("id_str") as? String {
-                var readMoreDictionary = NSMutableDictionary(dictionary: [
+            if let moreID = self.currentTimeline.last?.objectForKey("id_str") as? String {
+                let readMoreDictionary = NSMutableDictionary(dictionary: [
                     "moreID" : moreID,
                     "sinceID" : "sinceID"
                     ])
@@ -80,7 +80,7 @@ class TimelineModel: NSObject {
             params["since_id"] = aSinceID as String!
         }
         if (aMoreIndex != nil) {
-            if var strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as? String {
+            if let strMoreID = (self.currentTimeline[aMoreIndex!] as! NSDictionary).objectForKey("moreID") as? String {
                 // max_idは「以下」という判定になるので自身を含めない
                 // iPhone5以下は32bitなので，Intで扱える範囲を超える
                 params["max_id"] = BigInteger(string: strMoreID).decrement()
@@ -107,18 +107,18 @@ class TimelineModel: NSObject {
                 break
             }
             
-            var userDefault = NSUserDefaults.standardUserDefaults()
+            let userDefault = NSUserDefaults.standardUserDefaults()
             requestParameter["settings"] = params
             requestParameter["screen_name"] = userDefault.objectForKey("username") as! String
             requestParameter["q"] = streamElement!.name
         }
         WhalebirdAPIClient.sharedClient.getArrayAPI(apiURL, displayError: true, params: requestParameter,
             completed: {aNewTimeline in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     self.newTimeline = []
                     for timeline in aNewTimeline {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        if let mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
                             self.newTimeline.append(mutableTimeline)
                         }
                     }
@@ -128,10 +128,10 @@ class TimelineModel: NSObject {
                             // refreshによる更新
                             // index位置固定は保留
                             if (self.newTimeline.count >= self.tweetCount) {
-                                var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
+                                let moreID = self.newTimeline.first?.objectForKey("id_str") as! String
                                 var readMoreDictionary = NSMutableDictionary()
                                 if (self.currentTimeline.count > 0) {
-                                    var sinceID = self.currentTimeline.first?.objectForKey("id_str") as! String
+                                    let sinceID = self.currentTimeline.first?.objectForKey("id_str") as! String
                                     readMoreDictionary = NSMutableDictionary(dictionary: [
                                         "moreID" : moreID,
                                         "sinceID" : sinceID
@@ -156,20 +156,20 @@ class TimelineModel: NSObject {
                             // tableの途中なのかbottomなのかの判定
                             if (aMoreIndex == self.currentTimeline.count - 1) {
                                 // bottom
-                                var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
-                                var readMoreDictionary = NSMutableDictionary(dictionary: [
+                                let moreID = self.newTimeline.first?.objectForKey("id_str") as! String
+                                let readMoreDictionary = NSMutableDictionary(dictionary: [
                                     "moreID" : moreID,
                                     "sinceID" : "sinceID"
                                     ])
                                 self.newTimeline.insert(readMoreDictionary, atIndex: 0)
                                 self.currentTimeline.removeLast()
-                                self.currentTimeline += self.newTimeline.reverse()
+                                self.currentTimeline += Array(self.newTimeline.reverse())
                             } else {
                                 // 途中
                                 if (self.newTimeline.count >= self.tweetCount) {
-                                    var moreID = self.newTimeline.first?.objectForKey("id_str") as! String
-                                    var sinceID = (self.currentTimeline[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
-                                    var readMoreDictionary = NSMutableDictionary(dictionary: [
+                                    let moreID = self.newTimeline.first?.objectForKey("id_str") as! String
+                                    let sinceID = (self.currentTimeline[aMoreIndex! + 1] as! NSDictionary).objectForKey("id_str") as! String
+                                    let readMoreDictionary = NSMutableDictionary(dictionary: [
                                         "moreID" : moreID,
                                         "sinceID" : sinceID
                                         ])
@@ -196,11 +196,11 @@ class TimelineModel: NSObject {
     func updateTimelineWithoutMoreCell(APIPath: String, requestParameter: Dictionary<String, AnyObject>, moreIndex: Int?, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
         WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
             completed: { [unowned self] (aNewTimeline) -> Void in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     self.newTimeline = []
                     for timeline in aNewTimeline {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        if let mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
                             self.newTimeline.append(mutableTimeline)
                         }
                     }
@@ -209,7 +209,7 @@ class TimelineModel: NSObject {
                             self.currentTimeline.insert(newTweet, atIndex: 0)
                         }
                     } else {
-                        for newTweet in self.newTimeline.reverse() {
+                        for newTweet in Array(self.newTimeline.reverse()) {
                             self.currentTimeline.append(newTweet)
                         }
                     }
@@ -224,11 +224,11 @@ class TimelineModel: NSObject {
     func updateTimelineWitoutMoreAndSince(APIPath: String, requestParameter: Dictionary<String, AnyObject>, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
         WhalebirdAPIClient.sharedClient.getArrayAPI(APIPath, displayError: true, params: requestParameter,
             completed: { (aNewResult) -> Void in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, { () -> Void in
                     self.newTimeline = []
                     for timeline in aNewResult {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        if let mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
                             self.newTimeline.append(mutableTimeline)
                         }
                     }
@@ -249,10 +249,10 @@ class TimelineModel: NSObject {
     func updateTimelineOnlyNew(APIPath: String, requestParameter: Dictionary<String, AnyObject>, completed: (Int, Int?)-> Void, noUpdated: ()-> Void, failed: ()-> Void) {
         WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/conversations.json", displayError: true, params: requestParameter,
             completed: { (aNewTimeline) -> Void in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, { () -> Void in
                     for timeline in aNewTimeline {
-                        if var mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
+                        if let mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
                             self.newTimeline.insert(mutableTimeline, atIndex: 0)
                         }
                     }
@@ -275,17 +275,17 @@ class TimelineModel: NSObject {
     }
     
     func saveCurrentTimeline(timelineKey: String, sinceIdKey: String) {
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         var cleanTimelineArray: Array<NSMutableDictionary> = []
         let cTimelineMin = min(self.currentTimeline.count, self.tweetCount)
         if (cTimelineMin < 1) {
             return
         }
         for timeline in self.currentTimeline[0...(cTimelineMin - 1)] {
-            var dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as! NSDictionary)
+            let dic = WhalebirdAPIClient.sharedClient.cleanDictionary(timeline as! NSDictionary)
             cleanTimelineArray.append(dic)
         }
-        userDefaults.setObject(cleanTimelineArray.reverse(), forKey: timelineKey)
+        userDefaults.setObject(Array(cleanTimelineArray.reverse()), forKey: timelineKey)
         userDefaults.setObject(self.sinceId, forKey: sinceIdKey)
     }
     
@@ -307,7 +307,7 @@ class TimelineModel: NSObject {
     // userstream用
     //----------------------------------------------
     func prepareUserstream() {
-        var userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = NSUserDefaults.standardUserDefaults()
         if (userDefault.boolForKey("userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
             let cStreamURL = NSURL(string: "https://userstream.twitter.com/1.1/user.json")
             let cParams: Dictionary<String,String> = [

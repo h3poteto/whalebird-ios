@@ -11,7 +11,7 @@ import ODRefreshControl
 import SVProgressHUD
 import NoticeView
 
-class StreamTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class StreamTableViewController: UITableViewController {
 
     //=============================================
     //  instance variables
@@ -62,9 +62,9 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.edgesForExtendedLayout = UIRectEdge.None
         
         
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey(self.streamElement.name + "SinceId") as String?
-        var streamTimeline = userDefaults.arrayForKey(self.streamElement.name) as Array?
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let sinceId = userDefaults.stringForKey(self.streamElement.name + "SinceId") as String?
+        let streamTimeline = userDefaults.arrayForKey(self.streamElement.name) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: streamTimeline)
     }
@@ -144,8 +144,8 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
                 }
                 self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
             } else {
-                var tweetModel = TweetModel(dict: cTweetData)
-                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                let tweetModel = TweetModel(dict: cTweetData)
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
                 self.parentNavigation.pushViewController(detailView, animated: true)
             }
             
@@ -170,20 +170,20 @@ class StreamTableViewController: UITableViewController, UITableViewDataSource, U
         self.timelineModel.updateTimeline("users/apis/list_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: self.streamElement,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                var userDefault = NSUserDefaults.standardUserDefaults()
+                let userDefault = NSUserDefaults.standardUserDefaults()
                 if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                    var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                    let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
                     self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: String(count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
                 
             }, noUpdated: { () -> Void in
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.parentNavigation.view, title: "新着なし")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()

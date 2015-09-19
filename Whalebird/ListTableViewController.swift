@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ListTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource, StackListTableViewControllerDelegate {
+class ListTableViewController: UITableViewController, StackListTableViewControllerDelegate {
     
     //=============================================
     //  instance variables
@@ -23,9 +23,6 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "リスト"
-        self.tabBarItem.image = UIImage(named: "List-Boxes")
-         self.streamList = StreamList()
     }
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,6 +30,9 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        self.title = "リスト"
+        self.tabBarItem.image = UIImage(named: "List-Boxes")
+        self.streamList = StreamList()
     }
     
 
@@ -80,7 +80,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+        let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.text = self.streamList.getStreamAtIndex(indexPath.row).name
         cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         switch self.streamList.getStreamAtIndex(indexPath.row).type {
@@ -139,13 +139,13 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var swipeView = SwipeViewController(aStreamList: self.streamList, aStartIndex: indexPath.row)
+        let swipeView = SwipeViewController(aStreamList: self.streamList, aStartIndex: indexPath.row)
         self.navigationController?.pushViewController(swipeView, animated: true)
     }
     
 
     func addNewItem(sender: AnyObject) {
-        var stackListTableView = StackListTableViewController()
+        let stackListTableView = StackListTableViewController()
         stackListTableView.delegate = self
         self.navigationController?.pushViewController(stackListTableView, animated: true)
     }
@@ -155,7 +155,7 @@ class ListTableViewController: UITableViewController, UITableViewDelegate, UITab
     }
     
     func displaySearch() {
-        var searchView = SearchTableViewController(aStreamList: self.streamList)
+        let searchView = SearchTableViewController(aStreamList: self.streamList)
         self.navigationController?.pushViewController(searchView, animated: true)
     }
     

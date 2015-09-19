@@ -30,7 +30,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         self.title = "DM送信"
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -84,7 +84,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     func onSendTapped() {
-        if (count(self.newMessageText.text as String) > 0 && self.replyToUser != nil) {
+        if ((self.newMessageText.text as String).characters.count > 0 && self.replyToUser != nil) {
             self.postDirectMessage(self.newMessageText.text)
         }
     }
@@ -101,9 +101,9 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
-            var q_main = dispatch_get_main_queue()
+            let q_main = dispatch_get_main_queue()
             dispatch_async(q_main, { () -> Void in
-                var notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "送信しました")
+                let notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "送信しました")
                 SVProgressHUD.dismiss()
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition

@@ -12,7 +12,7 @@ import AVFoundation
 class AnimatedImageView: UIView {
     var videoPlayer: AVPlayer!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -23,7 +23,7 @@ class AnimatedImageView: UIView {
     
     convenience init(animatedImageURL: NSURL, windowSize: CGRect) {
         self.init(frame: windowSize)
-        var playerItem = AVPlayerItem(URL: animatedImageURL)
+        let playerItem = AVPlayerItem(URL: animatedImageURL)
         self.videoPlayer = AVPlayer(playerItem: playerItem)
         self.setPlayer(videoPlayer)
         self.setVideoFillMode(AVLayerVideoGravityResizeAspect)

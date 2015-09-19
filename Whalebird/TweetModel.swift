@@ -30,12 +30,12 @@ class TweetModel: NSObject {
             return true
         } else {
             // 半角全角判定
-            var str = String(aCharacter)
+            let str = String(aCharacter)
             if (str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
                 return false
             } else {
-                var charSet = NSCharacterSet.alphanumericCharacterSet()
-                if var aScanner = NSScanner.localizedScannerWithString(str) as? NSScanner {
+                let charSet = NSCharacterSet.alphanumericCharacterSet()
+                if let aScanner = NSScanner.localizedScannerWithString(str) as? NSScanner {
                     aScanner.charactersToBeSkipped = nil
                     aScanner.scanCharactersFromSet(charSet, intoString: nil)
                     return aScanner.atEnd
@@ -50,7 +50,7 @@ class TweetModel: NSObject {
         var targetStringList: Array<String> = []
         var tTargetString = ""
         var fFindString = false
-        for char in rawString {
+        for char in rawString.characters {
             if (fFindString) {
                 if (char == " " || char == "　" || (fScreenName && !TweetModel.checkScreenName(char))) {
                     targetStringList.append(tTargetString)
@@ -121,7 +121,7 @@ class TweetModel: NSObject {
     }
     
     func favoriteTweet(favorited: ()-> Void, unfavorited: ()-> Void) {
-        var params:Dictionary<String, String> = [
+        let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
@@ -129,7 +129,7 @@ class TweetModel: NSObject {
         ]
         if (self.fFavorited == true) {
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     self.fFavorited = false
                     unfavorited()
@@ -138,7 +138,7 @@ class TweetModel: NSObject {
             
         } else {
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: cParameter) { (operation) -> Void in
-                var q_main = dispatch_get_main_queue()
+                let q_main = dispatch_get_main_queue()
                 dispatch_async(q_main, {()->Void in
                     self.fFavorited = true
                     favorited()
@@ -148,14 +148,14 @@ class TweetModel: NSObject {
     }
     
     func deleteTweet(completed: ()-> Void) {
-        var params:Dictionary<String, String> = [
+        let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: cParameter, callback: { (operation) -> Void in
-            var q_main = dispatch_get_main_queue()
+            let q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 completed()
             })
@@ -163,14 +163,14 @@ class TweetModel: NSObject {
     }
     
     func retweetTweet(completed: ()-> Void) {
-        var params:Dictionary<String, String> = [
+        let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params
         ]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
-            var q_main = dispatch_get_main_queue()
+            let q_main = dispatch_get_main_queue()
             dispatch_async(q_main, {()->Void in
                 completed()
             })
@@ -179,17 +179,17 @@ class TweetModel: NSObject {
     
     
     func customAttributedString() -> NSMutableAttributedString {
-        var escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody)
-        var attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
+        let escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody)
+        let attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         
         for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true) {
-            var nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
+            let nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
             attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
         }
         for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#", fScreenName: false) {
-            var tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
-            var encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            let tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
+            let encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
             attributedString.addAttributes([NSLinkAttributeName: "tag:" + encodedTag!], range: tagRange)
         }
         return attributedString
@@ -197,8 +197,8 @@ class TweetModel: NSObject {
     
     func replyList(userScreenName: String) ->String {
         var list: Array<String> = []
-        var tScreenName = ""
-        var fReply = false
+        _ = ""
+        _ = false
         list.append("@" + self.screenName)
         list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true)
         var replyListStr = ""

@@ -13,7 +13,7 @@ import NoticeView
 
 class ExWebView: UIWebView {
     override func loadRequest(request: NSURLRequest) {
-        if var mRequest = request.mutableCopy() as? NSMutableURLRequest {
+        if let mRequest = request.mutableCopy() as? NSMutableURLRequest {
             mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
             super.loadRequest(mRequest)
         }
@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.title = "ログイン"
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -47,14 +47,14 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
 
         self.loginWebView = ExWebView(frame: self.view.frame)
         self.loginWebView.scalesPageToFit = true
-        self.loginWebView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        self.loginWebView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         self.loginWebView.delegate = self
-        var request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
+        let request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
         if IJReachability.isConnectedToNetwork() {
             self.loginWebView.loadRequest(request)
             self.view.addSubview(self.loginWebView)
         } else {
-            var notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
             notice.alpha = 0.8
             notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
             notice.show()

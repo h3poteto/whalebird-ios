@@ -12,7 +12,7 @@ import ODRefreshControl
 import SVProgressHUD
 import NoticeView
 
-class TimelineTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate, TimelineModelDelegate {
+class TimelineTableViewController: UITableViewController, TimelineModelDelegate {
 
     //=============================================
     //  instance variables
@@ -27,26 +27,26 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     //=========================================
     //  instance methods
     //=========================================
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "タイムライン"
-        self.tabBarItem.image = UIImage(named: "Home")
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
-        var homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
-        
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
-        self.timelineModel.delegate = self
     }
     
     
     override init(style: UITableViewStyle) {
         super.init(style: UITableViewStyle.Plain)
         self.view.backgroundColor = UIColor.whiteColor()
+        self.title = "タイムライン"
+        self.tabBarItem.image = UIImage(named: "Home")
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
+        let homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
+        
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
+        self.timelineModel.delegate = self
     }
     
     
@@ -150,8 +150,8 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
                 }
                 self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
             } else {
-                var tweetModel = TweetModel(dict: cTweetData)
-                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                let tweetModel = TweetModel(dict: cTweetData)
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -166,20 +166,20 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
         self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                var userDefault = NSUserDefaults.standardUserDefaults()
+                let userDefault = NSUserDefaults.standardUserDefaults()
                 if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
                 self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
             
             }, noUpdated: { () -> Void in
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
@@ -197,7 +197,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     }
     
     func tappedNewTweet() {
-        var newTweetView = NewTweetViewController()
+        let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
@@ -216,7 +216,7 @@ class TimelineTableViewController: UITableViewController, UITableViewDataSource,
     // これログアウトで使う
     func clearData() {
         self.timelineModel.clearData()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(nil, forKey: "homeTimelineSinceID")
         userDefaults.setObject(nil, forKey: "homeTimeline")
         self.tableView.reloadData()

@@ -16,7 +16,7 @@ pod 'RNCryptor', git: "https://github.com/h3poteto/RNCryptor.git", branch: "mast
 pod 'Fabric'
 pod 'Crashlytics'
 pod 'UrlShortener', git: "https://github.com/h3poteto/URL-Shortener.git"
-pod 'IJReachability', :git => 'https://github.com/Isuru-Nanayakkara/IJReachability.git'
+pod 'IJReachability', git: 'https://github.com/thejourneydude/IJReachability.git', branch: 'swift2-with-autodetect'
 
 post_install do | installer |
   require 'fileutils'

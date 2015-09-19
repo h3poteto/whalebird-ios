@@ -24,10 +24,10 @@ class NewTweetModel: NSObject {
         
         if self.tagRange != nil {
             self.tagRange!.length = range.location - self.tagRange!.location
-            var tag = ((viewText as NSString).substringWithRange(self.tagRange!) + text)
-            if count(tag) > 0 {
+            let tag = ((viewText as NSString).substringWithRange(self.tagRange!) + text)
+            if tag.characters.count > 0 {
                 // 頭の#を切り捨てる
-                var tag_name = (tag as NSString).substringFromIndex(1)
+                let tag_name = (tag as NSString).substringFromIndex(1)
                 // ここでリスト取得＆テーブル更新
                 TagsList.sharedClient.searchTags(tag_name, callback: { (tags) -> Void in
                     completeFindText(tags)
@@ -52,10 +52,10 @@ class NewTweetModel: NSObject {
         
         if self.screenNameRange != nil {
             self.screenNameRange!.length = range.location - self.screenNameRange!.location
-            var name = ((viewText as NSString).substringWithRange(self.screenNameRange!) + text)
-            if count(name) > 0 {
+            let name = ((viewText as NSString).substringWithRange(self.screenNameRange!) + text)
+            if name.characters.count > 0 {
                 // 頭の@を切り捨てる
-                var screen_name = (name as NSString).substringFromIndex(1)
+                let screen_name = (name as NSString).substringFromIndex(1)
                 // ここでリスト取得＆テーブル更新
                 FriendsList.sharedClient.searchFriends(screen_name, callback: { (friends) -> Void in
                     completeFindText(friends)

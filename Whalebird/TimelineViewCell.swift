@@ -70,7 +70,7 @@ class TimelineViewCell: UITableViewCell {
     //  instance method
     //====================================
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -147,7 +147,7 @@ class TimelineViewCell: UITableViewCell {
             if (aDictionary.objectForKey("retweeted") != nil ) {
                 self.retweeted = true
             }
-            var userDefault = NSUserDefaults.standardUserDefaults()
+            let userDefault = NSUserDefaults.standardUserDefaults()
             
             self.profileImage = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding, TimelineViewCell.ImagePadding, TimelineViewCell.ImageSize, TimelineViewCell.ImageSize))
             self.contentView.addSubview(self.profileImage)
@@ -195,15 +195,15 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  profileImageLabel
             //------------------------------------
-            var q_global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-            var q_main = dispatch_get_main_queue()
-            var imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
+            _ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+            _ = dispatch_get_main_queue()
+            let imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
             self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage"))
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
-                var imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as! String)
+                let imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as! String)
                 self.retweetedProfileImageLabel?.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning"))
             }
             

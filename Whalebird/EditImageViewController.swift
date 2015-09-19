@@ -35,7 +35,7 @@ class EditImageViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -59,7 +59,7 @@ class EditImageViewController: UIViewController {
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "戻る", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedCancel")
         let rotationButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "tappedRotation")
-        var rotationToolBar = UIToolbar(frame: CGRectMake(0, 0, 50, 50))
+        let rotationToolBar = UIToolbar(frame: CGRectMake(0, 0, 50, 50))
         rotationToolBar.setItems([rotationButton], animated: true)
         rotationToolBar.barStyle = UIBarStyle.Black
         rotationToolBar.transform = CGAffineTransformMakeScale(-1.0, 1.0)
@@ -111,7 +111,7 @@ class EditImageViewController: UIViewController {
     //  デリゲートの処理呼び出し
     //----------------------------------------
     func tappedComplete() {
-        var rotationImage = self.rotationAndResizeImage(self.pickerImage, angle: self.rotationAngle)
+        let rotationImage = self.rotationAndResizeImage(self.pickerImage, angle: self.rotationAngle)
         self.dismissViewControllerAnimated(true, completion: nil)
         self.picker.dismissViewControllerAnimated(true, completion: nil)
         self.delegate.editImageViewController(self, rotationImage: rotationImage)
@@ -128,11 +128,11 @@ class EditImageViewController: UIViewController {
     func resizeImageView() {
         let cWindowSize = self.view.bounds
         if (self.imageView.frame.size.width > cWindowSize.size.width) {
-            var scale = cWindowSize.size.width / self.imageView.frame.size.width
+            let scale = cWindowSize.size.width / self.imageView.frame.size.width
             self.imageView.frame.size = CGSizeMake(cWindowSize.size.width, self.imageView.frame.size.height * scale)
         }
         if (self.imageView.frame.size.height > cWindowSize.size.height - self.toolBoxHeight) {
-            var scale = (cWindowSize.size.height - self.toolBoxHeight) / self.imageView.frame.size.height
+            let scale = (cWindowSize.size.height - self.toolBoxHeight) / self.imageView.frame.size.height
             self.imageView.frame.size = CGSizeMake(self.imageView.frame.size.width * scale, cWindowSize.size.height - self.toolBoxHeight)
         }
         self.imageView.center = CGPoint(x: cWindowSize.size.width / 2.0, y: (cWindowSize.size.height - self.toolBoxHeight) / 2.0)
@@ -170,9 +170,9 @@ class EditImageViewController: UIViewController {
         }
         
         
-        let imageRef = srcImage.CGImage as CGImageRef
+        let imageRef = srcImage.CGImage! as CGImageRef
         let bitmapInfo = CGImageGetBitmapInfo(imageRef) as CGBitmapInfo
-        let colorSpaceInfo = CGImageGetColorSpace(imageRef) as CGColorSpaceRef
+        let colorSpaceInfo = CGImageGetColorSpace(imageRef)! as CGColorSpaceRef
         
         
         var bitmap: CGContextRef!
@@ -181,7 +181,7 @@ class EditImageViewController: UIViewController {
         if (longLength < targetHeight) {
             longLength = targetHeight
         }
-        bitmap = CGBitmapContextCreate(nil, Int(targetWidth), Int(targetHeight), CGImageGetBitsPerComponent(imageRef), Int(longLength * 4), colorSpaceInfo, bitmapInfo)
+        bitmap = CGBitmapContextCreate(nil, Int(targetWidth), Int(targetHeight), CGImageGetBitsPerComponent(imageRef), Int(longLength * 4), colorSpaceInfo, bitmapInfo.rawValue)
 
 
         // 回転時の原点に合わせて予め移動させる
@@ -217,8 +217,8 @@ class EditImageViewController: UIViewController {
         }
 
         CGContextDrawImage(bitmap, CGRectMake(0, 0, sendWidth, sendHeight), imageRef)
-        var ref = CGBitmapContextCreateImage(bitmap)
-        if let newImage = UIImage(CGImage: ref) as UIImage? {
+        let ref = CGBitmapContextCreateImage(bitmap)
+        if let newImage = UIImage(CGImage: ref!) as UIImage? {
             return newImage
         } else {
             return srcImage

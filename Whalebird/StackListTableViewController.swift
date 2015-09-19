@@ -28,9 +28,6 @@ class StackListTableViewController: UITableViewController {
     //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "リストを選択"
-        var userDefault = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = userDefault.objectForKey("username") as? String
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -39,6 +36,9 @@ class StackListTableViewController: UITableViewController {
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        self.title = "リストを選択"
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        self.twitterScreenName = userDefault.objectForKey("username") as? String
     }
     
     init() {
@@ -56,14 +56,14 @@ class StackListTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        var selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: "decideSelected:")
+        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: "decideSelected:")
         self.navigationItem.rightBarButtonItem = selectButton
         
         self.tableView.allowsMultipleSelection = true
         
         
         if (self.twitterScreenName != nil) {
-            var params: Dictionary<String, String> = [
+            let params: Dictionary<String, String> = [
                 "screen_name" : self.twitterScreenName!
             ]
             let cParameter: Dictionary<String, AnyObject> = [
@@ -72,8 +72,8 @@ class StackListTableViewController: UITableViewController {
             SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", displayError: true, params: cParameter,
                 completed: { (aStackList) -> Void in
-                    var q_main = dispatch_get_main_queue()
-                    println(aStackList)
+                    let q_main = dispatch_get_main_queue()
+                    print(aStackList)
                     dispatch_async(q_main, {()->Void in
                         for list in aStackList {
                             self.stackStreamList.addNewStream(
@@ -115,7 +115,7 @@ class StackListTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+        let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.text = self.stackStreamList.getStreamAtIndex(indexPath.row).name
         cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
@@ -123,12 +123,12 @@ class StackListTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         cell.accessoryType = UITableViewCellAccessoryType.Checkmark
     }
 
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        var cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
+        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
         cell.accessoryType = UITableViewCellAccessoryType.None
     }
     
@@ -139,9 +139,9 @@ class StackListTableViewController: UITableViewController {
 
     func decideSelected(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
-        if let selectedArray = self.tableView.indexPathsForSelectedRows() as Array? {
+        if let selectedArray = self.tableView.indexPathsForSelectedRows as Array? {
             if (selectedArray.count > 0) {
-                var selectedStreamList = StreamList()
+                let selectedStreamList = StreamList()
                 selectedStreamList.initWithEmpty()
                 for index in selectedArray {
                     selectedStreamList.add(self.stackStreamList.getStreamAtIndex(index.row))

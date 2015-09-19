@@ -30,7 +30,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -78,11 +78,11 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaScrollView.showsVerticalScrollIndicator = true
         self.view.addSubview(self.mediaScrollView)
         
-        var doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTap:")
+        let doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTap:")
         doubleTapGesture.numberOfTapsRequired = 2
         self.mediaScrollView.addGestureRecognizer(doubleTapGesture)
 
-        var closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "closeView")
+        let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "closeView")
         self.navigationItem.leftBarButtonItem = closeButton
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.barTintColor = UIColor.blackColor()

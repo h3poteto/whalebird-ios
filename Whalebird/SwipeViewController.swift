@@ -47,7 +47,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -72,7 +72,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.navigationItem.title = self.streamList.getStreamAtIndex(self.startIndex).name
         self.view.addSubview(self.swipeView)
         
-        var newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
+        let newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
         self.navigationItem.rightBarButtonItem = newTweetButton
         
         let cWindowSize = UIScreen.mainScreen().bounds
@@ -152,7 +152,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         for (var i = 0; i < self.streamList.count(); i++) {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }
-        var newTweetView = NewTweetViewController()
+        let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     

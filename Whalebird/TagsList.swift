@@ -34,8 +34,8 @@ class TagsList: NSObject {
     
     func findAndAddtag(rawString: String) {
         for tag in TweetModel.listUpSentence(rawString, startCharacter: "#", fScreenName: false) {
-            let tagString = tag.stringByReplacingOccurrencesOfString("#", withString: "", options: nil, range: nil)
-            if count(tagString) > 0 {
+            let tagString = tag.stringByReplacingOccurrencesOfString("#", withString: "", options: [], range: nil)
+            if tagString.characters.count > 0 {
                 self.addTag(tagString)
             }
         }
@@ -53,7 +53,7 @@ class TagsList: NSObject {
         // unique制約
         if self.tagsList != nil {
             let set = NSOrderedSet(array: self.tagsList!)
-            if let uniqueSet = set.array as? Array<String> {
+            if let _ = set.array as? Array<String> {
                 self.userDefaults.setObject(self.tagsList, forKey: "user_tags")
             }
         }
@@ -68,7 +68,7 @@ class TagsList: NSObject {
     }
     
     func searchTags(tag: String, callback: (Array<String>)-> Void) {
-        if count(tag) > 0 {
+        if tag.characters.count > 0 {
             if let list = self.getTagsList() {
                 var matchTags:Array<String> = []
                 for name in list {

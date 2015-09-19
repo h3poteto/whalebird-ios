@@ -11,7 +11,7 @@ import ODRefreshControl
 import SVProgressHUD
 import NoticeView
 
-class ReplyTableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class ReplyTableViewController: UITableViewController {
     
     //=============================================
     //  instance variables
@@ -26,19 +26,19 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    override init(style: UITableViewStyle) {
+        super.init(style: style)        
         self.title = "リプライ"
         self.tabBarItem.image = UIImage(named: "Speaking-Line")
-        var userDefaults = NSUserDefaults.standardUserDefaults()
-        var sinceId = userDefaults.stringForKey("replyTimelineSinceId") as String?
-        var replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let sinceId = userDefaults.stringForKey("replyTimelineSinceId") as String?
+        let replyTimeline = userDefaults.arrayForKey("replyTimeline") as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: replyTimeline)
     }
-    override init(style: UITableViewStyle) {
-        super.init(style: style)
-    }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -114,8 +114,8 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
                 }
                 self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
             } else {
-                var tweetModel = TweetModel(dict: cTweetData)
-                var detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                let tweetModel = TweetModel(dict: cTweetData)
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -129,20 +129,20 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
         self.timelineModel.updateTimeline("users/apis/mentions.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                var userDefault = NSUserDefaults.standardUserDefaults()
+                let userDefault = NSUserDefaults.standardUserDefaults()
                 if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                    var indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
+                    let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
                     self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
                 
             }, noUpdated: { () -> Void in
                 SVProgressHUD.dismiss()
-                var notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                 notice.alpha = 0.8
                 notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
                 notice.show()
@@ -159,7 +159,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     }
     
     func tappedNewTweet(sender: AnyObject) {
-        var newTweetView = NewTweetViewController()
+        let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
@@ -174,7 +174,7 @@ class ReplyTableViewController: UITableViewController, UITableViewDataSource, UI
     
     func clearData() {
         self.timelineModel.clearData()
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(nil, forKey: "replyTimelineSinceID")
         userDefaults.setObject(nil, forKey: "replyTimeline")
         self.tableView.reloadData()
