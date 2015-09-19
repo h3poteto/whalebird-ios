@@ -7,6 +7,7 @@
 //
 import UIKit
 import XCTest
+@testable import Whalebird
 
 class BigIntegerTests: XCTestCase {
     func testDecrement() {

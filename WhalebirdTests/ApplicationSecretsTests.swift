@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 import RNCryptor
+@testable import Whalebird
 
 class ApplicationSecretsTests: XCTestCase {
     func testEncryptData() {

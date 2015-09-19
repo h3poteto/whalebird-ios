@@ -9,76 +9,40 @@
 /* Begin PBXBuildFile section */
 		37F71FC1838C1F14299F01B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DD5D281C674F48C2498983 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E9073A9E1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */; };
-		E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */; };
 		E9124399199524E000795EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9124398199524E000795EF0 /* AppDelegate.swift */; };
 		E91243A0199524E000795EF0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E912439F199524E000795EF0 /* Images.xcassets */; };
 		E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243AB199524E000795EF0 /* WhalebirdTests.swift */; };
 		E91243B6199525C200795EF0 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
 		E916DF581B386BD00028CCC3 /* FriendsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E916DF571B386BD00028CCC3 /* FriendsList.swift */; };
-		E916DF591B386BD00028CCC3 /* FriendsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E916DF571B386BD00028CCC3 /* FriendsList.swift */; };
 		E91B20361A11094B008BF1ED /* DirectMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */; };
 		E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */; };
 		E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */; };
 		E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
 		E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
-		E92C49C41A9C69D2006BD492 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
-		E92C49D81A9C6A3F006BD492 /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
 		E92C49E31A9C6BBB006BD492 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E92C49E41A9C6BC3006BD492 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
-		E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9124398199524E000795EF0 /* AppDelegate.swift */; };
-		E92C49E61A9C6C8B006BD492 /* ApplicationSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */; };
-		E92C49E71A9C6CA8006BD492 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
-		E92C49E81A9C6CAB006BD492 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */; };
-		E92C49E91A9C6CAE006BD492 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206A1A8CE4E5002F24D0 /* MediaViewController.swift */; };
-		E92C49EA1A9C6CB0006BD492 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
-		E92C49EB1A9C6CB3006BD492 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
-		E92C49EC1A9C6CB6006BD492 /* DirectMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B20351A11094B008BF1ED /* DirectMessageTableViewController.swift */; };
-		E92C49ED1A9C6CB8006BD492 /* NewDirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203D1A13AABA008BF1ED /* NewDirectMessageViewController.swift */; };
-		E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B203B1A126A06008BF1ED /* MessageDetailViewController.swift */; };
-		E92C49EF1A9C6CBD006BD492 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
-		E92C49F01A9C6CC0006BD492 /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E92C49F11A9C6D03006BD492 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
-		E92C49F21A9C6D14006BD492 /* MinuteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */; };
-		E92C49F31A9C6D17006BD492 /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
-		E92C49F41A9C6D19006BD492 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
-		E92C49F51A9C6D1B006BD492 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */; };
-		E92C49F61A9C6D1E006BD492 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */; };
-		E92C49F71A9C6D25006BD492 /* SwipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */; };
-		E92C49F81A9C6D27006BD492 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
-		E92C49F91A9C6D29006BD492 /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
-		E92C49FA1A9C6D2B006BD492 /* TimelineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91243B5199525C200795EF0 /* TimelineTableViewController.swift */; };
-		E92C49FB1A9C6D31006BD492 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
-		E92C49FC1A9C6D34006BD492 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD81E11A32FA9E00763660 /* WebViewController.swift */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
-		E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
-		E95D32121B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
 		E95D32141B8850C600F969F9 /* NewTweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32131B8850C600F969F9 /* NewTweetModel.swift */; };
-		E95D32151B8850C600F969F9 /* NewTweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32131B8850C600F969F9 /* NewTweetModel.swift */; };
 		E96F678D199645E4004038DF /* NewTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96F678C199645E4004038DF /* NewTweetViewController.swift */; };
 		E975227F1B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
-		E97522801B65292E00AEB430 /* StreamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975227E1B65292E00AEB430 /* StreamList.swift */; };
 		E97522831B667EC600AEB430 /* MinuteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97522821B667EC600AEB430 /* MinuteModel.swift */; };
-		E97522841B667EC600AEB430 /* MinuteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97522821B667EC600AEB430 /* MinuteModel.swift */; };
 		E9770D5B1A31CBB300E7153C /* SwipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9770D5A1A31CBB300E7153C /* SwipeViewController.swift */; };
 		E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E977A7F919B4C8C500892005 /* TweetDetailViewController.swift */; };
 		E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
 		E9797B1C199526F6000FC13C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E9797B201995325E000FC13C /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9797B1F1995325E000FC13C /* TimelineViewCell.swift */; };
 		E97EA3181AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
-		E97EA3191AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E988D0191B72283B003BAD31 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988D0181B72283B003BAD31 /* TweetModel.swift */; };
-		E988D01A1B72283B003BAD31 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988D0181B72283B003BAD31 /* TweetModel.swift */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
-		E9A742C71B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
-		E9AB53B31B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
 		E9BB8C3C1A1786A300C10F32 /* ConversationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */; };
 		E9BC3E631A408E5700D2D6BD /* ApplicationSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */; };
 		E9BC3E651A40905E00D2D6BD /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9BC3E641A40905E00D2D6BD /* Security.framework */; };
@@ -95,7 +59,6 @@
 		E9E9206D1A8E011E002F24D0 /* MinuteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */; };
 		E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */; };
 		E9FD9AF21B8E1CFB0026890A /* MediaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */; };
-		E9FD9AF31B8E1CFB0026890A /* MediaImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -582,48 +545,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9AB53B31B63B79400C53942 /* TimelineModel.swift in Sources */,
-				E97EA3191AACB09800C0E0E3 /* EditImageViewController.swift in Sources */,
-				E92C49FB1A9C6D31006BD492 /* LoginViewController.swift in Sources */,
-				E92C49E51A9C6C85006BD492 /* AppDelegate.swift in Sources */,
-				E92C49F61A9C6D1E006BD492 /* StreamTableViewController.swift in Sources */,
-				E95D32121B87818000F969F9 /* TagsList.swift in Sources */,
-				E92C49F21A9C6D14006BD492 /* MinuteTableViewController.swift in Sources */,
-				E916DF591B386BD00028CCC3 /* FriendsList.swift in Sources */,
-				E92C49F81A9C6D27006BD492 /* ListTableViewController.swift in Sources */,
-				E92C49E91A9C6CAE006BD492 /* MediaViewController.swift in Sources */,
-				E92C49EE1A9C6CBB006BD492 /* MessageDetailViewController.swift in Sources */,
-				E9073A9F1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */,
-				E97522841B667EC600AEB430 /* MinuteModel.swift in Sources */,
-				E9A742C71B915EAD00D6F373 /* AnimatedImageView.swift in Sources */,
-				E97522801B65292E00AEB430 /* StreamList.swift in Sources */,
-				E92C49F41A9C6D19006BD492 /* UserstreamAPIClient.swift in Sources */,
 				E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */,
-				E92C49F01A9C6CC0006BD492 /* NewTweetViewController.swift in Sources */,
-				E92C49E81A9C6CAB006BD492 /* TweetDetailViewController.swift in Sources */,
-				E988D01A1B72283B003BAD31 /* TweetModel.swift in Sources */,
-				E9FD9AF31B8E1CFB0026890A /* MediaImageView.swift in Sources */,
-				E92C49FC1A9C6D34006BD492 /* WebViewController.swift in Sources */,
-				E92C49EC1A9C6CB6006BD492 /* DirectMessageTableViewController.swift in Sources */,
-				E92C49EF1A9C6CBD006BD492 /* ProfileViewController.swift in Sources */,
-				E92C49FA1A9C6D2B006BD492 /* TimelineTableViewController.swift in Sources */,
-				E92C49F51A9C6D1B006BD492 /* SearchTableViewController.swift in Sources */,
-				E92C49EB1A9C6CB3006BD492 /* ReplyTableViewController.swift in Sources */,
 				E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */,
-				E92C49EA1A9C6CB0006BD492 /* ConversationTableViewController.swift in Sources */,
 				E9DD20711A9C723A002C3FF1 /* ApplicationSecretsTests.swift in Sources */,
 				E9DD20751A9C7782002C3FF1 /* WhalebirdAPIClientTests.swift in Sources */,
-				E92C49C41A9C69D2006BD492 /* BigInteger.swift in Sources */,
 				E9DD20771A9C7FFA002C3FF1 /* UserstreamAPIClientTests.swift in Sources */,
-				E92C49E71A9C6CA8006BD492 /* SettingsTableViewController.swift in Sources */,
-				E94ABBF81B74F1AF00EEB5DF /* MessageModel.swift in Sources */,
-				E92C49F91A9C6D29006BD492 /* StackListTableViewController.swift in Sources */,
-				E95D32151B8850C600F969F9 /* NewTweetModel.swift in Sources */,
-				E92C49F71A9C6D25006BD492 /* SwipeViewController.swift in Sources */,
-				E92C49ED1A9C6CB8006BD492 /* NewDirectMessageViewController.swift in Sources */,
-				E92C49D81A9C6A3F006BD492 /* WhalebirdAPIClient.swift in Sources */,
-				E92C49E61A9C6C8B006BD492 /* ApplicationSecrets.swift in Sources */,
-				E92C49F31A9C6D17006BD492 /* TimelineViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -55,10 +55,10 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime(mutableDictionary.objectForKey("retweeted_status")?.objectForKey("created_at") as! String)
         let cOriginalName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("name") as! String
         let cOriginalScreenName = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("screen_name") as! String
-        let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("profile_image_url") as! String
+        let cOriginalProfileImageURL = (mutableDictionary.objectForKey("retweeted_status")?.objectForKey("user") as! NSDictionary).objectForKey("profile_image_url_https") as! String
         let cPostName = mutableDictionary.objectForKey("user")?.objectForKey("name") as! String
         let cPostScreenName = mutableDictionary.objectForKey("user")?.objectForKey("screen_name") as! String
-        let cPostProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String
+        let cPostProfileImageURL = mutableDictionary.objectForKey("user")?.objectForKey("profile_image_url_https") as! String
         
         mutableDictionary.setValue(cOriginalText, forKey: "text")
         mutableDictionary.setValue(cOriginalCreatedAt, forKey: "created_at")
