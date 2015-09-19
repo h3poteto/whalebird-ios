@@ -729,17 +729,19 @@ class SettingsTableViewController: UITableViewController{
             if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
                 if let controllers = appDelegate.rootController.viewControllers {
                     for navController in controllers {
-                        if navController.isKindOfClass(TimelineTableViewController) {
-                            (navController as! TimelineTableViewController).clearData()
-                        }
-                        if navController.isKindOfClass(ReplyTableViewController) {
-                            (navController as! ReplyTableViewController).clearData()
-                        }
-                        if navController.isKindOfClass(DirectMessageTableViewController) {
-                            (navController as! DirectMessageTableViewController).clearData()
-                        }
-                        if navController.isKindOfClass(ListTableViewController) {
-                            (navController as! ListTableViewController).clearData()
+                        if let targetController = (navController as? UINavigationController)!.topViewController {
+                            if targetController.isKindOfClass(TimelineTableViewController) {
+                                (targetController as! TimelineTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(ReplyTableViewController) {
+                                (targetController as! ReplyTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(DirectMessageTableViewController) {
+                                (targetController as! DirectMessageTableViewController).clearData()
+                            }
+                            if targetController.isKindOfClass(ListTableViewController) {
+                                (targetController as! ListTableViewController).clearData()
+                            }
                         }
                     }
                 }
