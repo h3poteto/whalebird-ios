@@ -343,7 +343,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return timelineCell!
         case 1:
-            let profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
+            let profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url_https") as! String)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             cell?.textLabel?.text = (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
@@ -354,7 +354,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
             break
         case 2:
-            let profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url") as! String)
+            let profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url_https") as! String)
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
             cell?.textLabel?.text = (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
