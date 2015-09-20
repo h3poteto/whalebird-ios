@@ -10,6 +10,8 @@ import XCTest
 @testable import Whalebird
 
 class NewTweetModelTests: XCTestCase {
+    var userDefaults = NSUserDefaults.standardUserDefaults()
+    
     override func setUp() {
         super.setUp()
         TagsList.sharedClient.loadTagsListFromCache()
@@ -21,7 +23,14 @@ class NewTweetModelTests: XCTestCase {
             "あきら",
             "阿澄病"
         ]
-        
+        self.userDefaults.removeObjectForKey("failed_date")
+        self.userDefaults.removeObjectForKey("success_date")
+        FriendsList.sharedClient.friendsList = []
+        FriendsList.sharedClient.saveFriendsInCache()
+        FriendsList.sharedClient.friendsList = [
+            "h3_poteto",
+            "poteto_szbh"
+        ]
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -134,6 +143,32 @@ class NewTweetModelTests: XCTestCase {
                 XCTFail("'@' should not call finish")
             }) { (screenNames) -> Void in
                 XCTFail("'@' should not find screen names")
+        }
+        newTweetModel.findScreenNameRange(
+            "@",
+            text: "h",
+            range: NSRange(location: 1, length: 0),
+            finishSelect: { () -> Void in
+                XCTFail("'h' should not call finish")
+            }) { (friends) -> Void in
+                XCTAssertEqual(friends, ["h3_poteto"], "should find h3_poteto")
+        }
+        newTweetModel.findScreenNameRange(
+            "@",
+            text: "h3_", range: NSRange(location: 1, length: 2),
+            finishSelect: { () -> Void in
+                XCTFail("should not call finish")
+            }) { (friends) -> Void in
+                XCTAssertEqual(friends, ["h3_poteto"], "should find h3_poteto")
+        }
+        newTweetModel.findScreenNameRange(
+            "@po",
+            text: "t",
+            range: NSRange(location: 3, length: 0),
+            finishSelect: { () -> Void in
+                XCTFail("should not call finish")
+            }) { (friends) -> Void in
+                XCTAssertEqual(friends, ["poteto_szbh"], "should find poteto_szbh")
         }
     }
     
