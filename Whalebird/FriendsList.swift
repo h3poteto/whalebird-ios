@@ -34,6 +34,15 @@ class FriendsList: NSObject {
         self.utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         self.utcDateFormatter.dateFormat = "yyyyMMdd"
         self.utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        self.friendsList = self.loadFriendsFromCache()
+    }
+    
+    func loadFriendsFromCache() -> Array<String> {
+        if let friends = self.userDefaults.arrayForKey("friend_screen_names") as? Array<String> {
+            return friends
+        } else {
+            return []
+        }
     }
     
     // requestする必要があればtrueを返す
@@ -72,7 +81,7 @@ class FriendsList: NSObject {
         self.userDefaults.removeObjectForKey("failed_date")
     }
     
-    func saveFirendsInCache() {
+    func requestFriends() {
         // check cache
         if !self.checkRequestResult() {
             return
@@ -91,7 +100,7 @@ class FriendsList: NSObject {
                 for name in screen_names {
                     self.friendsList?.append((name.objectForKey("screen_name") as! String))
                 }
-                self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
+                self.saveFriendsInCache()
                 self.setSuccessRequestCache()
             }, failed: { () -> Void in
                 self.setFailedRequestCache()
@@ -99,20 +108,13 @@ class FriendsList: NSObject {
         }
     }
     
-    func getFriendsFromCache() -> Array<String>? {
-        if let friends = self.friendsList {
-            return friends
-        } else {
-            if let friends = self.userDefaults.arrayForKey("friend_screen_names") as? Array<String> {
-                return friends
-            }
-            return nil
-        }
+    func saveFriendsInCache() {
+        self.userDefaults.setObject(self.friendsList, forKey: "friend_screen_names")
     }
     
     func searchFriends(screen_name: String, callback:(Array<String>) -> Void) {
         if screen_name.characters.count > 0 {
-            if let list = self.getFriendsFromCache() {
+            if let list = self.friendsList {
                 var matchFriends:Array<String> = []
                 for name in list {
                     if name.hasPrefix(screen_name) {
