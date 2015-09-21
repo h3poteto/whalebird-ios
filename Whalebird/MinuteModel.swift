@@ -9,12 +9,12 @@
 import UIKit
 
 class MinuteModel: NSObject {
-    var minutesArray: Array<AnyObject> = []
+    var minutesArray: Array<NSDictionary> = []
     
     override init() {
         super.init()
         let userDefault = NSUserDefaults.standardUserDefaults()
-        if let readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<AnyObject> {
+        if let readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<NSDictionary> {
             self.minutesArray = readMinutesArray
         }
     }
@@ -24,10 +24,10 @@ class MinuteModel: NSObject {
     }
     
     func getMinuteAtIndex(index: Int)-> NSDictionary? {
-        return self.minutesArray[index] as? NSDictionary
+        return self.minutesArray[index]
     }
     
-    func saveMinuteAtIndex(index: Int) {
+    func removeAtIndexAndSaveList(index: Int) {
         let userDefault = NSUserDefaults.standardUserDefaults()
         self.minutesArray.removeAtIndex(index)
         userDefault.setObject(self.minutesArray, forKey: "minutesArray")
