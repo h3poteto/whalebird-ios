@@ -54,7 +54,7 @@ class TweetModelTests: XCTestCase {
             "created_at" : "2015-02-24 18:11"
         ]
         let tweetModel = TweetModel(notificationDict: notificationDict)
-        XCTAssertEqual(tweetModel.replyList("h3_poteto"), "@asumi_syndrome @h3_poteto @poteto_szbh ", "should generate reply screen name list string")
+        XCTAssertEqual(tweetModel.replyList("h3_poteto"), "@asumi_syndrome @poteto_szbh ", "should generate reply screen name list string")
         
     }
     

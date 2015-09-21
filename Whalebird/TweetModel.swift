@@ -198,11 +198,12 @@ class TweetModel: NSObject {
     func replyList(userScreenName: String) ->String {
         var list: Array<String> = []
         list.append("@" + self.screenName)
-        // TODO: ここ自分の名前抜かなきゃじゃね？
         list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true)
         var replyListStr = ""
         for name in list {
-            replyListStr += name + " "
+            if name != "@" + userScreenName {
+                replyListStr += name + " "                
+            }
         }
         return replyListStr
     }
