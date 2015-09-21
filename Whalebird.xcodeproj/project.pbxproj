@@ -44,6 +44,7 @@
 		E97EA3181AACB09800C0E0E3 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */; };
 		E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E988D0191B72283B003BAD31 /* TweetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E988D0181B72283B003BAD31 /* TweetModel.swift */; };
+		E98A579A1BAFAFFC00447960 /* StreamListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A57991BAFAFFC00447960 /* StreamListTests.swift */; settings = {ASSET_TAGS = (); }; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
@@ -123,6 +124,7 @@
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.adhoc.xcconfig; sourceTree = "<group>"; };
 		E988D0181B72283B003BAD31 /* TweetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetModel.swift; sourceTree = "<group>"; };
+		E98A57991BAFAFFC00447960 /* StreamListTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamListTests.swift; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				E9DD20701A9C723A002C3FF1 /* ApplicationSecretsTests.swift */,
 				E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */,
 				E967C8811BAF07E400DEC52F /* MinuteModelTests.swift */,
+				E98A57991BAFAFFC00447960 /* StreamListTests.swift */,
 				E91243A9199524E000795EF0 /* Supporting Files */,
 			);
 			path = WhalebirdTests;
@@ -558,6 +561,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E967C8501BAD9F5500DEC52F /* NewTweetModelTests.swift in Sources */,
+				E98A579A1BAFAFFC00447960 /* StreamListTests.swift in Sources */,
 				E91243AC199524E000795EF0 /* WhalebirdTests.swift in Sources */,
 				E967C8521BADA53200DEC52F /* TagsListTests.swift in Sources */,
 				E967C8541BADBCE900DEC52F /* FriendsListTests.swift in Sources */,
