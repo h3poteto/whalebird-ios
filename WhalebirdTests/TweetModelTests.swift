@@ -40,6 +40,8 @@ class TweetModelTests: XCTestCase {
     }
     
     func testMediaIsGif() {
+        XCTAssertTrue(TweetModel.mediaIsGif("asumiss.webm"))
+        XCTAssertTrue(TweetModel.mediaIsGif("asumiss.m3u8"))
         XCTAssertTrue(TweetModel.mediaIsGif("asumiss.mp4"))
         XCTAssertFalse(TweetModel.mediaIsGif("asumiss.png"))
     }

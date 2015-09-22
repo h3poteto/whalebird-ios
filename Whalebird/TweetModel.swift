@@ -73,9 +73,9 @@ class TweetModel: NSObject {
         return targetStringList
     }
     
+    // http://qiita.com/riocampos/items/c804dc7b14a1041383da
     class func mediaIsGif(media: String) -> Bool {
-        let gifSuffix = ".mp4"
-        if media.hasSuffix(gifSuffix) {
+        if media.hasSuffix(".mp4") || media.hasSuffix(".webm") || media.hasSuffix(".m3u8") {
             return true
         }
         return false
