@@ -159,15 +159,18 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func executeSearch() {
+        guard self.tweetSearchBar.text != nil else {
+            return
+        }
         let params: Dictionary<String, String> = [
             "count" : String(self.timelineModel.tweetCount)
         ]
-        let cParameter: Dictionary<String, Any> = [
+        let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params,
-            "q" : self.tweetSearchBar.text
+            "q" : self.tweetSearchBar.text!
         ]
         SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
-        self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter as! Dictionary<String, AnyObject>,
+        self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
             completed: { (count, currentRowIndex) -> Void in
                 SVProgressHUD.dismiss()
                 self.tableView.reloadData()
