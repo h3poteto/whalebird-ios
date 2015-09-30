@@ -745,7 +745,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0545b9b6-a823-4183-8f17-7f2af05c48ed";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
-				WebURL = "http://whalebird.org/";
+				WebURL = "https://whalebird.org/";
 			};
 			name = Release;
 		};
@@ -875,7 +875,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ad30f739-3e98-4f55-97cc-5fd50a6ab091";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
-				WebURL = "http://whalebird.org/";
+				WebURL = "https://whalebird.org/";
 			};
 			name = AdHoc;
 		};
