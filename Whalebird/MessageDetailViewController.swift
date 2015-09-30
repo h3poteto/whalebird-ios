@@ -129,5 +129,9 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.navigationController?.pushViewController(newMessage, animated: true)
     }
     
+    func tappedUserProfile() {
+        let userProfileView = ProfileViewController(aScreenName: self.messageModel.screenName)
+        self.navigationController?.pushViewController(userProfileView, animated: true)
+    }
 
 }
