@@ -44,6 +44,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>pbs.twimg.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>whalebird.localdomain</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
