@@ -104,6 +104,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView.delegate = self
         self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.windowSize.size.height + 100)
 
+
         self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
             self.userTableRefresh()
         }, position: SVPullToRefreshPosition.Bottom)
