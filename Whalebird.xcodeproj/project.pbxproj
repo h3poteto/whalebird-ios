@@ -743,7 +743,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0545b9b6-a823-4183-8f17-7f2af05c48ed";
+				PROVISIONING_PROFILE = "b354a2bf-d7d1-410a-a8ec-aec7b7c4bb97";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				WebURL = "https://whalebird.org/";
 			};
@@ -873,7 +873,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ad30f739-3e98-4f55-97cc-5fd50a6ab091";
+				PROVISIONING_PROFILE = "7fcfaf78-1656-4696-8dc0-0bcad749b51b";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				WebURL = "https://whalebird.org/";
 			};
