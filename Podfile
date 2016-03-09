@@ -4,7 +4,7 @@ platform :ios, "8.1"
 pod 'TSMessages'
 pod 'NoticeView'
 pod 'OHAttributedLabel'
-pod 'SVPullToRefresh', :head
+pod 'SVPullToRefresh'
 pod 'AFNetworking','~> 2.0'
 pod 'SVProgressHUD'
 pod 'TTTAttributedLabel'
