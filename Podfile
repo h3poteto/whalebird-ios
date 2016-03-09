@@ -4,7 +4,7 @@ platform :ios, "8.1"
 pod 'TSMessages'
 pod 'NoticeView'
 pod 'OHAttributedLabel'
-pod 'SVPullToRefresh'
+pod 'SVPullToRefresh', git: "https://github.com/samvermette/SVPullToRefresh.git"
 pod 'AFNetworking','~> 2.0'
 pod 'SVProgressHUD'
 pod 'TTTAttributedLabel'

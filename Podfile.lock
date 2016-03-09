@@ -54,7 +54,7 @@ DEPENDENCIES:
   - RNCryptor (from `https://github.com/h3poteto/RNCryptor.git`, branch `master`)
   - SDWebImage
   - SVProgressHUD
-  - SVPullToRefresh
+  - SVPullToRefresh (from `https://github.com/samvermette/SVPullToRefresh.git`)
   - SwipeView
   - TSMessages
   - TTTAttributedLabel
@@ -67,6 +67,8 @@ EXTERNAL SOURCES:
   RNCryptor:
     :branch: master
     :git: https://github.com/h3poteto/RNCryptor.git
+  SVPullToRefresh:
+    :git: https://github.com/samvermette/SVPullToRefresh.git
   UrlShortener:
     :git: https://github.com/h3poteto/URL-Shortener.git
 
@@ -77,6 +79,9 @@ CHECKOUT OPTIONS:
   RNCryptor:
     :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
     :git: https://github.com/h3poteto/RNCryptor.git
+  SVPullToRefresh:
+    :commit: a5f9dfee86a27c4e994d7edf93d0768c881d58bb
+    :git: https://github.com/samvermette/SVPullToRefresh.git
   UrlShortener:
     :commit: f2b7b2847a16eda12b6b7458ff8985dc930efc03
     :git: https://github.com/h3poteto/URL-Shortener.git
