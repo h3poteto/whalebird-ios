@@ -50,6 +50,8 @@
 				<true/>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				<key>NSTemporaryExceptionRequiresForwardSecrec</key>
+				<false/>
 			</dict>
 			<key>whalebird.localdomain</key>
 			<dict>
@@ -57,6 +59,8 @@
 				<true/>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				<key>NSTemporaryExceptionRequiresForwardSecrec</key>
+				<false/>
 			</dict>
 		</dict>
 	</dict>
