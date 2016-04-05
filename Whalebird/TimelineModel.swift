@@ -122,15 +122,15 @@ class TimelineModel: NSObject {
                             self.newTimeline.append(mutableTimeline)
                         }
                     }
-                    if (aMoreIndex == nil) {
+                    if aMoreIndex == nil {
                         // 未読フラグの削除
                         for i in 0 ..< self.currentTimeline.count {
-                            if (((self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool) != nil) {
+                            if (self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool != nil {
                                 (self.currentTimeline[i] as! NSMutableDictionary).removeObjectForKey("unread")
                             }
                         }
                     }
-                    
+
                     var currentRowIndex: Int?
                     if (self.newTimeline.count > 0) {
                         if (aMoreIndex == nil) {

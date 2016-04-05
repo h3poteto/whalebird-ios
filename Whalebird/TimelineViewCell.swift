@@ -195,12 +195,17 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  background color
             //------------------------------------
-            if (aDictionary.objectForKey("unread") as? Bool == true) {
-                self.contentView.backgroundColor = UIColor(red: 0.941, green: 0.973, blue: 1.000, alpha: 1.0)
+            if aDictionary.objectForKey("unread") as? Bool == true {
+                self.contentView.backgroundColor = UIColor(
+                    red: 0.941,
+                    green: 0.973,
+                    blue: 1.000,
+                    alpha: 1.0
+                )
             } else {
                 self.contentView.backgroundColor = UIColor.whiteColor()
             }
-            
+
             //------------------------------------
             //  profileImageLabel
             //------------------------------------
