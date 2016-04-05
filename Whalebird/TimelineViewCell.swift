@@ -193,6 +193,20 @@ class TimelineViewCell: UITableViewCell {
             self.contentView.addSubview(self.retweetedLabel!)
             
             //------------------------------------
+            //  background color
+            //------------------------------------
+            if aDictionary.objectForKey("unread") as? Bool == true {
+                self.contentView.backgroundColor = UIColor(
+                    red: 0.941,
+                    green: 0.973,
+                    blue: 1.000,
+                    alpha: 1.0
+                )
+            } else {
+                self.contentView.backgroundColor = UIColor.whiteColor()
+            }
+
+            //------------------------------------
             //  profileImageLabel
             //------------------------------------
             let imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
