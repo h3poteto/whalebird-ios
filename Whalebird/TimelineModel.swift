@@ -17,7 +17,7 @@ class TimelineModel: NSObject {
     //  instance variables
     //=============================================
     let tweetCount = Int(50)
-    var newTimeline: Array<AnyObject> = []
+    private var newTimeline: Array<AnyObject> = []
     var currentTimeline: Array<AnyObject> = []
     
     var sinceId: String?
@@ -146,10 +146,21 @@ class TimelineModel: NSObject {
                             }
                             if (self.currentTimeline.count > 0) {
                                 currentRowIndex = self.newTimeline.count
+                                
+                                // 未読フラグの削除
+                                for i in 0 ..< self.currentTimeline.count {
+                                    if (((self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool) != nil) {
+                                        (self.currentTimeline[i]).removeObjectForKey("unread")
+                                    }
+                                }
                             }
                             for newTweet in self.newTimeline {
-                                self.currentTimeline.insert(newTweet, atIndex: 0)
-                                self.sinceId = (newTweet as! NSDictionary).objectForKey("id_str") as? String
+                                if let tweetObject = newTweet as? NSMutableDictionary {
+                                    // 未読フラグの追加
+                                    tweetObject.setObject(true, forKey: "unread")
+                                    self.currentTimeline.insert(tweetObject, atIndex: 0)
+                                    self.sinceId = tweetObject.objectForKey("id_str") as? String
+                                }
                             }
                         } else {
                             // readMoreを押した場合
