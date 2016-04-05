@@ -178,6 +178,8 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
                 notice.show()
             
             }, noUpdated: { () -> Void in
+                // アップデートがなくても未読の変更が発生しているのでテーブル更新は必須
+                self.tableView.reloadData()
                 SVProgressHUD.dismiss()
                 let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                 notice.alpha = 0.8

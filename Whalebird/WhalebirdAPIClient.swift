@@ -114,6 +114,10 @@ class WhalebirdAPIClient: NSObject {
                 }
             }
         }
+        // 未読フラグは保存時には削除する
+        if mutableDict.objectForKey("unread") as? Bool != nil {
+            mutableDict.removeObjectForKey("unread")
+        }
         return mutableDict
     }
     

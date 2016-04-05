@@ -139,6 +139,7 @@ class DirectMessageTableViewController: UITableViewController {
                 notice.show()
                 
             }, noUpdated: { () -> Void in
+                self.tableView.reloadData()
                 SVProgressHUD.dismiss()
                 let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
                 notice.alpha = 0.8

@@ -122,6 +122,15 @@ class TimelineModel: NSObject {
                             self.newTimeline.append(mutableTimeline)
                         }
                     }
+                    if (aMoreIndex == nil) {
+                        // 未読フラグの削除
+                        for i in 0 ..< self.currentTimeline.count {
+                            if (((self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool) != nil) {
+                                (self.currentTimeline[i] as! NSMutableDictionary).removeObjectForKey("unread")
+                            }
+                        }
+                    }
+                    
                     var currentRowIndex: Int?
                     if (self.newTimeline.count > 0) {
                         if (aMoreIndex == nil) {
@@ -146,13 +155,6 @@ class TimelineModel: NSObject {
                             }
                             if (self.currentTimeline.count > 0) {
                                 currentRowIndex = self.newTimeline.count
-                                
-                                // 未読フラグの削除
-                                for i in 0 ..< self.currentTimeline.count {
-                                    if (((self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool) != nil) {
-                                        (self.currentTimeline[i]).removeObjectForKey("unread")
-                                    }
-                                }
                             }
                             for newTweet in self.newTimeline {
                                 if let tweetObject = newTweet as? NSMutableDictionary {
