@@ -56,7 +56,7 @@ class StackListTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: "decideSelected:")
+        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: #selector(StackListTableViewController.decideSelected(_:)))
         self.navigationItem.rightBarButtonItem = selectButton
         
         self.tableView.allowsMultipleSelection = true
