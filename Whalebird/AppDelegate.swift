@@ -312,7 +312,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         var shortedVersion = version
         while shortedVersion.hasSuffix(suffix) {
             let endIndex = shortedVersion.characters.count - suffix.characters.count
-            let range = Range(start:shortedVersion.startIndex.advancedBy(0), end: shortedVersion.startIndex.advancedBy(endIndex))
+            let range = shortedVersion.startIndex.advancedBy(0) ..< shortedVersion.startIndex.advancedBy(endIndex)
             shortedVersion = shortedVersion.substringWithRange(range)
         }
         return shortedVersion;
