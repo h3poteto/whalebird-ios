@@ -49,7 +49,7 @@ class DirectMessageTableViewController: UITableViewController {
         self.tableView.dataSource = self
         
         self.refreshMessage = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshMessage.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshMessage.addTarget(self, action: #selector(DirectMessageTableViewController.onRefresh), forControlEvents: UIControlEvents.ValueChanged)
         self.edgesForExtendedLayout = UIRectEdge.None
         
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")

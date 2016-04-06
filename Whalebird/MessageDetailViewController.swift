@@ -78,7 +78,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
         self.userNameLabel.sizeToFit()
-        self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
+        self.userNameLabel.addTarget(self, action: #selector(MessageDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
         self.view.addSubview(self.userNameLabel)
         
         self.screenNameLabel = UIButton(frame: CGRectMake(cWindowSize.size.width * 0.05 + 60, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height - 10, cWindowSize.size.width * 0.9, 15))
@@ -91,7 +91,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
-        self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
+        self.screenNameLabel.addTarget(self, action: #selector(MessageDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
         self.view.addSubview(self.screenNameLabel)
         
         
@@ -111,7 +111,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         self.postDetailLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
         self.view.addSubview(self.postDetailLabel)
         
-        self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: "tappedReplyMessage")
+        self.replyMessageButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Reply, target: self, action: #selector(MessageDetailViewController.tappedReplyMessage))
         self.navigationItem.rightBarButtonItem = self.replyMessageButton
     }
 

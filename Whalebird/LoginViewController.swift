@@ -60,7 +60,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             notice.show()
         }
         // SVProgressHUDの表示スタイル設定
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.hudTapped), name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {

@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         
         // SVProgressHUDの表示スタイル設定
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped:", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.hudTapped(_:)), name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
         SVProgressHUD.setBackgroundColor(UIColor.blackColor())
         SVProgressHUD.setForegroundColor(UIColor.whiteColor())
         
@@ -297,7 +297,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func greaterThanOrEqual(majorVersion: Int, minorVersion: Int, patchVersion: Int) -> Bool {
         // NSProcessInfo#isOperatingSystemAtLeastVersion による判別
-        if NSProcessInfo().respondsToSelector("isOperatingSystemAtLeastVersion:") {
+        if NSProcessInfo().respondsToSelector(#selector(NSProcessInfo.isOperatingSystemAtLeastVersion(_:))) {
             let version = NSOperatingSystemVersion(majorVersion: majorVersion, minorVersion: minorVersion, patchVersion: patchVersion)
             return NSProcessInfo().isOperatingSystemAtLeastVersion(version)
         }
@@ -312,7 +312,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         var shortedVersion = version
         while shortedVersion.hasSuffix(suffix) {
             let endIndex = shortedVersion.characters.count - suffix.characters.count
-            let range = Range(start:shortedVersion.startIndex.advancedBy(0), end: shortedVersion.startIndex.advancedBy(endIndex))
+            let range = shortedVersion.startIndex.advancedBy(0) ..< shortedVersion.startIndex.advancedBy(endIndex)
             shortedVersion = shortedVersion.substringWithRange(range)
         }
         return shortedVersion;

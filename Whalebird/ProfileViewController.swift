@@ -91,8 +91,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.windowSize = UIScreen.mainScreen().bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
         
-        self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedFollow")
-        self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.Plain, target: self, action: "tappedUnfollow")
+        self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ProfileViewController.tappedFollow))
+        self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ProfileViewController.tappedUnfollow))
         
         self.tableView = UITableView(frame: CGRectMake(0, self.headerImageHeight + ProfileViewController.StatusHeight, self.windowSize.size.width, 100))
         self.tableView.delegate = self
@@ -112,7 +112,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         // SVProgressHUDの表示スタイル設定
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hudTapped", name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewController.hudTapped), name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
         
         let params:Dictionary<String, String> = [
             "screen_name" : self.twitterScreenName
@@ -253,7 +253,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                     self.tweetNumLabel.layer.borderWidth = 0.5
                     self.tweetNumLabel.backgroundColor = self.selectedButtonColor
-                    self.tweetNumLabel.addTarget(self, action: "tappedTweetNum", forControlEvents: UIControlEvents.TouchDown)
+                    self.tweetNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedTweetNum), forControlEvents: UIControlEvents.TouchDown)
                     self.scrollView.addSubview(self.tweetNumLabel)
                     
                     
@@ -268,7 +268,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                     self.followNumLabel.layer.borderWidth = 0.5
                     self.followNumLabel.backgroundColor = self.unselectedButtonColor
-                    self.followNumLabel.addTarget(self, action: "tappedFollowNum", forControlEvents: UIControlEvents.TouchDown)
+                    self.followNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowNum), forControlEvents: UIControlEvents.TouchDown)
                     self.scrollView.addSubview(self.followNumLabel)
                     self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                     
@@ -283,7 +283,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
                     self.followerNumLabel.layer.borderWidth = 0.5
                     self.followerNumLabel.backgroundColor = self.unselectedButtonColor
-                    self.followerNumLabel.addTarget(self, action: "tappedFollowerNum", forControlEvents: UIControlEvents.TouchDown)
+                    self.followerNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowerNum), forControlEvents: UIControlEvents.TouchDown)
                     self.scrollView.addSubview(self.followerNumLabel)
                     
                 })

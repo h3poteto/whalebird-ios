@@ -46,7 +46,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
         
         self.editButtonItem().title = "編集"
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: "displaySearch")
+        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ListTableViewController.displaySearch))
         self.navigationItem.leftBarButtonItem = self.searchItemButton
 
         
@@ -110,7 +110,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
         super.setEditing(editing, animated: animated)
         if(self.editing){
             self.editButtonItem().title = "完了"
-            self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "addNewItem:")
+            self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: #selector(ListTableViewController.addNewItem(_:)))
             self.navigationItem.leftBarButtonItem = self.addItemButton
         }else{
             self.editButtonItem().title = "編集"
