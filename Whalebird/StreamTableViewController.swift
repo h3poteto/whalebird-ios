@@ -58,7 +58,7 @@ class StreamTableViewController: UITableViewController {
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: .ValueChanged)
+        self.refreshTimeline.addTarget(self, action: #selector(StreamTableViewController.onRefresh(_:)), forControlEvents: .ValueChanged)
         self.edgesForExtendedLayout = UIRectEdge.None
         
         
