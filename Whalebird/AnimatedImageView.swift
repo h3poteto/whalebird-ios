@@ -27,7 +27,7 @@ class AnimatedImageView: UIView {
         self.videoPlayer = AVPlayer(playerItem: playerItem)
         self.setPlayer(videoPlayer)
         self.setVideoFillMode(AVLayerVideoGravityResizeAspect)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "playerItemDidReachEnd:", name: AVPlayerItemDidPlayToEndTimeNotification, object: playerItem)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AnimatedImageView.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object: playerItem)
         self.videoPlayer.play()
     }
     
