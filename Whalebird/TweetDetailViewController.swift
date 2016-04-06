@@ -77,7 +77,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(TweetDetailViewController.tappedNewTweet(_:)))
         self.navigationItem.rightBarButtonItem = self.newTweetButton
         
         self.cWindowSize = UIScreen.mainScreen().bounds
@@ -86,7 +86,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.profileImageLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.05, self.cWindowSize.size.width * 0.9, 40))
         let imageURL = NSURL(string: self.tweetModel.profileImage)
         self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "noimage"))
-        self.profileImageLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
+        self.profileImageLabel.addTarget(self, action: #selector(TweetDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
         self.profileImageLabel.sizeToFit()
         
         self.blankView.addSubview(self.profileImageLabel)
@@ -110,7 +110,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.userNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.userNameLabel.sizeToFit()
         self.userNameLabel.titleEdgeInsets = UIEdgeInsetsZero
-        self.userNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
+        self.userNameLabel.addTarget(self, action: #selector(TweetDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.userNameLabel)
         
         self.screenNameLabel = UIButton(frame: CGRectMake(self.cWindowSize.size.width * 0.05 + 70, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height - 10, self.cWindowSize.size.width * 0.9, 15))
@@ -124,7 +124,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.screenNameLabel.titleLabel?.textAlignment = NSTextAlignment.Left
         self.screenNameLabel.contentEdgeInsets = UIEdgeInsetsZero
         self.screenNameLabel.sizeToFit()
-        self.screenNameLabel.addTarget(self, action: "tappedUserProfile", forControlEvents: UIControlEvents.TouchDown)
+        self.screenNameLabel.addTarget(self, action: #selector(TweetDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
         self.blankView.addSubview(self.screenNameLabel)
         
         
@@ -154,7 +154,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.retweetedNameLabel?.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
             self.retweetedNameLabel?.titleLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
             self.retweetedNameLabel?.contentEdgeInsets = UIEdgeInsetsZero
-            self.retweetedNameLabel?.addTarget(self, action: "tappedRetweetedProfile", forControlEvents: UIControlEvents.TouchDown)
+            self.retweetedNameLabel?.addTarget(self, action: #selector(TweetDetailViewController.tappedRetweetedProfile), forControlEvents: UIControlEvents.TouchDown)
             self.blankView.addSubview(self.retweetedNameLabel!)
         }
         
@@ -165,7 +165,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.replyButton = UIButton(frame: CGRectMake(0, 100, aImportImage.size.width, aImportImage.size.height))
                 self.replyButton.setBackgroundImage(aImportImage, forState: .Normal)
                 self.replyButton.center = CGPoint(x: self.cWindowSize.size.width / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                self.replyButton.addTarget(self, action: "tappedReply", forControlEvents: UIControlEvents.TouchDown)
+                self.replyButton.addTarget(self, action: #selector(TweetDetailViewController.tappedReply), forControlEvents: UIControlEvents.TouchDown)
                 self.blankView.addSubview(self.replyButton)
             }
         }
@@ -175,7 +175,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.conversationButton = UIButton(frame: CGRectMake(0, 100, aConversationImage.size.width, aConversationImage.size.height))
                 self.conversationButton.setBackgroundImage(aConversationImage, forState: .Normal)
                 self.conversationButton.center = CGPoint(x: self.cWindowSize.size.width * 3.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                self.conversationButton.addTarget(self, action: "tappedConversation", forControlEvents: .TouchDown)
+                self.conversationButton.addTarget(self, action: #selector(TweetDetailViewController.tappedConversation), forControlEvents: .TouchDown)
                 self.blankView.addSubview(self.conversationButton)
             }
         }
@@ -190,7 +190,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
                 self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
                 self.favButton.center = CGPoint(x: self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                self.favButton.addTarget(self, action: #selector(TweetDetailViewController.tappedFavorite), forControlEvents: .TouchDown)
                 self.blankView.addSubview(self.favButton)
             }
         }
@@ -203,7 +203,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     self.deleteButton = UIButton(frame: CGRectMake(0, 100, aTrashImage.size.width, aTrashImage.size.height))
                     self.deleteButton.setBackgroundImage(aTrashImage, forState: .Normal)
                     self.deleteButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                    self.deleteButton.addTarget(self, action: "tappedDelete", forControlEvents: .TouchDown)
+                    self.deleteButton.addTarget(self, action: #selector(TweetDetailViewController.tappedDelete), forControlEvents: .TouchDown)
                     self.blankView.addSubview(self.deleteButton)
                 })
             }
@@ -213,7 +213,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     self.moreButton = UIButton(frame: CGRectMake(0, 100, aMoreImage.size.width, aMoreImage.size.height))
                     self.moreButton.setBackgroundImage(aMoreImage, forState: .Normal)
                     self.moreButton.center = CGPoint(x: self.cWindowSize.size.width * 7.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                    self.moreButton.addTarget(self, action: "tappedMore", forControlEvents: .TouchDown)
+                    self.moreButton.addTarget(self, action: #selector(TweetDetailViewController.tappedMore), forControlEvents: .TouchDown)
                     self.blankView.addSubview(self.moreButton)
                 })
             }
@@ -251,7 +251,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     }
                     
                 })
-                eachMediaButton.addTarget(self, action: "tappedMedia:", forControlEvents: UIControlEvents.TouchUpInside)
+                eachMediaButton.addTarget(self, action: #selector(TweetDetailViewController.tappedMedia(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 startPosY += eachMediaButton.frame.size.height
                 self.blankView.addSubview(eachMediaButton)
             }
@@ -319,7 +319,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
                     self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
                     self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                    self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                    self.favButton.addTarget(self, action: #selector(TweetDetailViewController.tappedFavorite), forControlEvents: .TouchDown)
                     self.blankView.addSubview(self.favButton)
                 }
             }
@@ -340,7 +340,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     self.favButton = UIButton(frame: CGRectMake(0, 100, aStarImage.size.width, aStarImage.size.height))
                     self.favButton.setBackgroundImage(aStarImage, forState: .Normal)
                     self.favButton.center = CGPoint(x: self.self.cWindowSize.size.width * 5.0 / 8.0, y: self.postDetailLabel.frame.origin.y + self.postDetailLabel.frame.size.height + 60)
-                    self.favButton.addTarget(self, action: "tappedFavorite", forControlEvents: .TouchDown)
+                    self.favButton.addTarget(self, action: #selector(TweetDetailViewController.tappedFavorite), forControlEvents: .TouchDown)
                     self.blankView.addSubview(self.favButton)
                 }
             }
