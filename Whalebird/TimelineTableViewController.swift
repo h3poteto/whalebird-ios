@@ -57,17 +57,17 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.tableView.dataSource = self
         
         self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshTimeline.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshTimeline.addTarget(self, action: #selector(TimelineTableViewController.onRefresh), forControlEvents: UIControlEvents.ValueChanged)
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: "tappedNewTweet")
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: #selector(TimelineTableViewController.tappedNewTweet))
         self.navigationItem.rightBarButtonItem = self.newTweetButton
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         // userstream発火のために必要
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appWillResignActive:", name: UIApplicationWillResignActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineTableViewController.appDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineTableViewController.appWillResignActive(_:)), name: UIApplicationWillResignActiveNotification, object: nil)
 
     }
     
