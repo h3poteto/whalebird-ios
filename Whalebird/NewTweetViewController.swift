@@ -82,10 +82,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
         self.maxSize = cWindowSize.size
         
-        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: "onCancelTapped")
+        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewTweetViewController.onCancelTapped))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: "onSendTapped")
+        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: #selector(NewTweetViewController.onSendTapped))
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.newTweetText = UITextView(frame: CGRectMake(0, 0, self.maxSize.width, self.maxSize.height / 2.0))
@@ -105,8 +105,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         self.minuteTableView = MinuteTableViewController()
         self.minuteTableView?.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewTweetViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NewTweetViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
     }
 
@@ -159,9 +159,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.optionItemBar?.backgroundColor = UIColor.lightGrayColor()
             // 配置するボタン
             let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-            self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image"), style: UIBarButtonItemStyle.Plain, target: self, action: "openPhotostream")
-            self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: "openCamera")
-            self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.Plain, target: self, action: "openMinute")
+            self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewTweetViewController.openPhotostream))
+            self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewTweetViewController.openCamera))
+            self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewTweetViewController.openMinute))
             self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
             
             let itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
@@ -296,7 +296,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         
         let closeImageView = UIButton(frame: CGRectMake(uploadImageView.frame.origin.x - 15.0, uploadImageView.frame.origin.y - 20, 20.0, 20.0))
         closeImageView.setImage(UIImage(named: "Close-Filled"), forState: UIControlState.Normal)
-        closeImageView.addTarget(self, action: "removeImage:", forControlEvents: UIControlEvents.TouchUpInside)
+        closeImageView.addTarget(self, action: #selector(NewTweetViewController.removeImage(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         closeImageView.tag = self.newTweetMedias.count
         self.view.addSubview(closeImageView)
         self.newTweetMediaCloseButton.append(closeImageView)
@@ -355,7 +355,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 self.newTweetMediaViews.removeAtIndex(removeIndex)
                 self.newTweetMediaCloseButton[removeIndex].removeFromSuperview()
                 self.newTweetMediaCloseButton.removeAtIndex(removeIndex)
-                for (var index = 0; index < self.newTweetMediaViews.count; index++) {
+                for index in 0 ..< self.newTweetMediaViews.count {
                     self.newTweetMediaViews[index].frame.origin = CGPoint(x: self.imageViewSpan + (self.imageViewSpan * 3 * CGFloat(index)),
                         y: self.optionItemBar!.frame.origin.y - self.optionItemBarHeight * 2)
                     self.newTweetMediaCloseButton[index].frame.origin = CGPoint(x: self.newTweetMediaViews[index].frame.origin.x - 15.0, y: self.newTweetMediaViews[index].frame.origin.y - 20)
