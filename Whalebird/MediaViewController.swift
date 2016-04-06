@@ -78,11 +78,11 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaScrollView.showsVerticalScrollIndicator = true
         self.view.addSubview(self.mediaScrollView)
         
-        let doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTap:")
+        let doubleTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MediaViewController.doubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
         self.mediaScrollView.addGestureRecognizer(doubleTapGesture)
 
-        let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: "closeView")
+        let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: #selector(MediaViewController.closeView))
         self.navigationItem.leftBarButtonItem = closeButton
         self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController!.navigationBar.barTintColor = UIColor.blackColor()
