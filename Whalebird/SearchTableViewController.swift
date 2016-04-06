@@ -58,7 +58,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         self.navigationItem.titleView = self.tweetSearchBar
         self.tweetSearchBar.becomeFirstResponder()
         
-        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: "saveResult")
+        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SearchTableViewController.saveResult))
         
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
         
