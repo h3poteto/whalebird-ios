@@ -49,10 +49,10 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         let cMaxSize = UIScreen.mainScreen().bounds.size
 
-        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: "onCancelTapped")
+        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewDirectMessageViewController.onCancelTapped))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: "onSendTapped")
+        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: #selector(NewDirectMessageViewController.onSendTapped))
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.sendToUserLabel = UILabel(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.height, cMaxSize.width, 35))
