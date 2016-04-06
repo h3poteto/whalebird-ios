@@ -42,7 +42,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         if (aStartIndex != nil) {
             self.startIndex = aStartIndex!
         }
-        for var i = 0; i < self.streamList.count(); i++ {
+        for _ in 0 ..< self.streamList.count() {
             self.currentScroll.append(CGPoint(x: 0, y: 0))
         }
     }
@@ -72,7 +72,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.navigationItem.title = self.streamList.getStreamAtIndex(self.startIndex).name
         self.view.addSubview(self.swipeView)
         
-        let newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet")
+        let newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(SwipeViewController.tappedNewTweet))
         self.navigationItem.rightBarButtonItem = newTweetButton
         
         let cWindowSize = UIScreen.mainScreen().bounds
@@ -122,17 +122,17 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
             self.pageControl.currentPage = swipeView.currentItemIndex
         }
     }
-    
+
     func swipeViewWillBeginDragging(swipeView: SwipeView!) {
         //self.currentScroll = self.viewItems[self.swipeView.currentItemIndex].tableView.contentOffset
-        for (var i = 0; i < self.streamList.count(); i++) {
+        for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }
         //self.viewItems[self.swipeView.currentItemIndex].tableView.scrollEnabled = false
     }
     
     func swipeViewDidScroll(swipeView: SwipeView!) {
-        for (var i = 0; i < self.streamList.count(); i++) {
+        for i in 0 ..< self.streamList.count() {
             if (!self.viewItems[i].fCellSelect) {
                 self.viewItems[i].setCurrentOffset(self.currentScroll[i])
             }
@@ -142,14 +142,14 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     // Cell選択周りではsetCurrentOffsetを実行したくないので，Navigationの戻るイベントを検出してフラグの書き換え
     func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
         if (viewController.dynamicType === SwipeViewController.self) {
-            for (var i = 0; i < self.streamList.count(); i++) {
+            for i in 0 ..< self.streamList.count() {
                 self.viewItems[i].fCellSelect = false
             }
         }
     }
 
     func tappedNewTweet() {
-        for (var i = 0; i < self.streamList.count(); i++) {
+        for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }
         let newTweetView = NewTweetViewController()
@@ -157,7 +157,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        for (var i = 0; i < self.streamList.count(); i++) {
+        for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }
         return true
