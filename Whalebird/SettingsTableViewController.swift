@@ -205,7 +205,7 @@ class SettingsTableViewController: UITableViewController{
                     self.notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
                 }
                 notificationBackgroundSwitch.on = self.notificationBackgroundFlag
-                notificationBackgroundSwitch.addTarget(self, action: "tappedNotificationBackgroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                notificationBackgroundSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationBackgroundSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationBackgroundSwitch
                 break
             case 1:
@@ -218,7 +218,7 @@ class SettingsTableViewController: UITableViewController{
                 self.notificationForegroundSwitch?.on = self.notificationForegroundFlag
                 // そもそもの通知がオフの時は使えなくする必要がある
                 self.notificationForegroundSwitch?.enabled = self.notificationBackgroundFlag
-                self.notificationForegroundSwitch?.addTarget(self, action: "tappedNotificationForegroundSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                self.notificationForegroundSwitch?.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationForegroundSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = self.notificationForegroundSwitch
                 break
             default:
@@ -251,7 +251,7 @@ class SettingsTableViewController: UITableViewController{
                     self.notificationReplyFlag = userDefault.boolForKey("notificationReplyFlag")
                 }
                 notificationReplySwitch.on = self.notificationReplyFlag
-                notificationReplySwitch.addTarget(self, action: "tappedNotificationReplySwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                notificationReplySwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationReplySwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationReplySwitch
                 break
             case 2:
@@ -262,7 +262,7 @@ class SettingsTableViewController: UITableViewController{
                     self.notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
                 }
                 notificationFavSwitch.on = self.notificationFavFlag
-                notificationFavSwitch.addTarget(self, action: "tappedNotificationFavSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                notificationFavSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationFavSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationFavSwitch
                 break
             case 3:
@@ -273,7 +273,7 @@ class SettingsTableViewController: UITableViewController{
                     self.notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
                 }
                 notificationRTSwitch.on = self.notificationRTFlag
-                notificationRTSwitch.addTarget(self, action: "tappedNotificationRTSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                notificationRTSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationRTSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationRTSwitch
                 break
             case 4:
@@ -284,7 +284,7 @@ class SettingsTableViewController: UITableViewController{
                     self.notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
                 }
                 notificationDMSwitch.on = self.notificationDMFlag
-                notificationDMSwitch.addTarget(self, action: "tappedNotificationDMSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                notificationDMSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationDMSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = notificationDMSwitch
                 break
             default:
@@ -342,7 +342,7 @@ class SettingsTableViewController: UITableViewController{
                     self.userstreamFlag = userDefault.boolForKey("userstreamFlag")
                 }
                 userstreamSwitch.on = self.userstreamFlag
-                userstreamSwitch.addTarget(self, action: "tappedUserstreamSwitch", forControlEvents: UIControlEvents.TouchUpInside)
+                userstreamSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedUserstreamSwitch), forControlEvents: UIControlEvents.TouchUpInside)
                 cell.accessoryView = userstreamSwitch
                 break
             default:
