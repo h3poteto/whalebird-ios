@@ -48,12 +48,12 @@ class ReplyTableViewController: UITableViewController {
         self.tableView.dataSource = self
 
         self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshTimeline.addTarget(self, action: "onRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshTimeline.addTarget(self, action: #selector(ReplyTableViewController.onRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.edgesForExtendedLayout = UIRectEdge.None
 
         self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: "tappedNewTweet:")
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(ReplyTableViewController.tappedNewTweet(_:)))
         self.navigationItem.rightBarButtonItem = self.newTweetButton
     }
 
