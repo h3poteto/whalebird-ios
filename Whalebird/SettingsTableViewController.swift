@@ -423,6 +423,7 @@ class SettingsTableViewController: UITableViewController{
                 let userDefault = NSUserDefaults.standardUserDefaults()
                 if let username = userDefault.stringForKey("username") {
                     let profileViewController = ProfileViewController(aScreenName: username)
+                    profileViewController.myself = true
                     self.navigationController?.pushViewController(profileViewController, animated: true)
                 }
                 break
