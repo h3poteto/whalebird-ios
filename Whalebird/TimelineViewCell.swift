@@ -197,9 +197,9 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             if aDictionary.objectForKey("unread") as? Bool == true {
                 self.contentView.backgroundColor = UIColor(
-                    red: 0.941,
-                    green: 0.973,
-                    blue: 1.000,
+                    red: 0.878,
+                    green: 0.949,
+                    blue: 0.969,
                     alpha: 1.0
                 )
             } else {
