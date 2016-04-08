@@ -152,7 +152,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         if self.myself {
                             self.navigationItem.rightBarButtonItem = nil
                         } else {
-                            if (aUserData.objectForKey("following?") as! Bool) {
+                            if aUserData.objectForKey("following?") as! Bool {
                                 self.navigationItem.rightBarButtonItem = self.unfollowButton
                             } else {
                                 self.navigationItem.rightBarButtonItem = self.followButton
@@ -196,7 +196,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     
                     self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
                     if !self.myself {
-                        if (aUserData.objectForKey("follower?") as! Bool) {
+                        if aUserData.objectForKey("follower?") as! Bool {
                             self.followStatusLabel.text = "フォローされています"
                         } else {
                             self.followStatusLabel.text = "フォローされていません"
