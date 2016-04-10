@@ -18,50 +18,51 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     //=============================================
     //  class variables
     //=============================================
-    static let StatusHeight = CGFloat(40)
-    static let TextMargin = CGFloat(5)
+    private static let StatusHeight = CGFloat(40)
+    private static let TextMargin = CGFloat(5)
     
     //===================================
     //  instance variables
     //===================================
-    var headerImageHeight = CGFloat(160)
-    var privateAccount = false
+    private var headerImageHeight = CGFloat(160)
+    private var privateAccount = false
+    var myself = false
     
-    var twitterScreenName: String!
-    var windowSize: CGRect!
-    var headerHeight: CGFloat!
-    var profileHeaderImageSrc: NSURL?
+    private var twitterScreenName: String!
+    private var windowSize: CGRect!
+    private var headerHeight: CGFloat!
+    private var profileHeaderImageSrc: NSURL?
     
-    var profileImage: UIImageView!
-    var profileHeaderImage: UIImageView!
-    var userNameLabel: UILabel!
-    var followStatusLabel: UILabel!
-    var descriptionLabel: UILabel!
+    private var profileImage: UIImageView!
+    private var profileHeaderImage: UIImageView!
+    private var userNameLabel: UILabel!
+    private var followStatusLabel: UILabel!
+    private var descriptionLabel: UILabel!
     
-    var tweetNumLabel: UIButton!
-    var followNumLabel: UIButton!
-    var followerNumLabel: UIButton!
+    private var tweetNumLabel: UIButton!
+    private var followNumLabel: UIButton!
+    private var followerNumLabel: UIButton!
     
-    var tableView: UITableView!
-    var scrollView: UIScrollView!
+    private var tableView: UITableView!
+    private var scrollView: UIScrollView!
     
-    var followButton: UIBarButtonItem!
-    var unfollowButton: UIBarButtonItem!
+    private var followButton: UIBarButtonItem!
+    private var unfollowButton: UIBarButtonItem!
     
-    var followUsers: Array<AnyObject> = []
-    var followUsersNextCursor: String?
-    var followerUsers: Array<AnyObject> = []
-    var followerUsersNextCursor: String?
-    var privateAccountAnnounce: Array<AnyObject> = []
+    private var followUsers: Array<AnyObject> = []
+    private var followUsersNextCursor: String?
+    private var followerUsers: Array<AnyObject> = []
+    private var followerUsersNextCursor: String?
+    private var privateAccountAnnounce: Array<AnyObject> = []
     
-    var selectedButtonColor = UIColor.whiteColor()
-    var unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
-    var selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
-    var unselectedTextColor = UIColor.grayColor()
+    private var selectedButtonColor = UIColor.whiteColor()
+    private let unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
+    private let selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
+    private let unselectedTextColor = UIColor.grayColor()
     
     
-    var tableType: Int = Int(0)
-    var timelineModel: TimelineModel!
+    private var tableType: Int = Int(0)
+    private var timelineModel: TimelineModel!
     
     //==========================================
     //  instance methods
@@ -148,16 +149,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     // フォローイベント
                     if (aUserData.objectForKey("follow_request_sent?") as! Bool) {
                     } else {
-                        if (aUserData.objectForKey("following?") as! Bool) {
-                            self.navigationItem.rightBarButtonItem = self.unfollowButton
+                        if self.myself {
+                            self.navigationItem.rightBarButtonItem = nil
                         } else {
-                            self.navigationItem.rightBarButtonItem = self.followButton
+                            if aUserData.objectForKey("following?") as! Bool {
+                                self.navigationItem.rightBarButtonItem = self.unfollowButton
+                            } else {
+                                self.navigationItem.rightBarButtonItem = self.followButton
+                            }
                         }
                     }
                     //-----------------------------
                     //  body
                     //-----------------------------
-                    if (self.privateAccount) {
+                    if self.privateAccount && !self.myself {
                         self.tableType = 3
                         self.privateAccountAnnounce = ["private"]
                         self.tableView.reloadData()
@@ -190,10 +195,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.userNameLabel)
                     
                     self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
-                    if (aUserData.objectForKey("follower?") as! Bool) {
-                        self.followStatusLabel.text = "フォローされています"
-                    } else {
-                        self.followStatusLabel.text = "フォローされていません"
+                    if !self.myself {
+                        if aUserData.objectForKey("follower?") as! Bool {
+                            self.followStatusLabel.text = "フォローされています"
+                        } else {
+                            self.followStatusLabel.text = "フォローされていません"
+                        }
                     }
                     self.followStatusLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 10)
                     self.followStatusLabel.textColor = self.unselectedTextColor
