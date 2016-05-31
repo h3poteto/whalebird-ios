@@ -125,8 +125,8 @@ class TimelineModel: NSObject {
                     if aMoreIndex == nil {
                         // 未読フラグの削除
                         for i in 0 ..< self.currentTimeline.count {
-                            if (self.currentTimeline[i] as! NSDictionary)["unread"] as? Bool != nil {
-                                (self.currentTimeline[i] as! NSMutableDictionary).removeObjectForKey("unread")
+                            if (self.currentTimeline[i] as? NSDictionary)?.objectForKey("unread") as? Bool != nil {
+                                (self.currentTimeline[i] as? NSMutableDictionary)?.removeObjectForKey("unread")
                             }
                         }
                     }
