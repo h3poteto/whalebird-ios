@@ -150,9 +150,17 @@ class TimelineViewCell: UITableViewCell {
             let userDefault = NSUserDefaults.standardUserDefaults()
             
             self.profileImage = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding, TimelineViewCell.ImagePadding, TimelineViewCell.ImageSize, TimelineViewCell.ImageSize))
+            // 角丸にする
+            self.profileImage.layer.cornerRadius = 6.0
+            self.profileImage.layer.masksToBounds = true
+            self.profileImage.layer.borderWidth = 0.0
             self.contentView.addSubview(self.profileImage)
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImageSize * 1.0 / 2.0, TimelineViewCell.ImageSize * 1.0 / 2.0))
             if (self.retweeted) {
+                // 角丸にする
+                self.retweetedProfileImageLabel?.layer.cornerRadius = 6.0
+                self.retweetedProfileImageLabel?.layer.masksToBounds = true
+                self.retweetedProfileImageLabel?.layer.borderWidth = 0.0
                 self.contentView.addSubview(self.retweetedProfileImageLabel!)
             }
             
