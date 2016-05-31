@@ -1,0 +1,21 @@
+disabled_rules: # rule identifiers to exclude from running
+  - colon
+  - comma
+  - control_statement
+  - variable_name
+included: # Lint対象のファイルのあるパスを記述、通常はプロジェクト名になると思います
+  - fascia-ios
+excluded: # Lint対象から外すファイルのあるパスを記述、CocoaPodsやCarthage
+  - Pods
+# パラメータ（ここではline_lengthの値）をカスタマイズする、warningを出す値でerrorは出なくなる
+line_length: 360
+
+force_cast: warning
+
+function_body_length:
+  warning: 100
+  error: 150
+
+cyclomatic_complexity:
+  warning: 20
+  error: 30
