@@ -176,6 +176,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
                     self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
                     self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+                    // 角丸にする
+                    self.profileImage.layer.cornerRadius = 6.0
+                    self.profileImage.layer.masksToBounds = true
+                    self.profileImage.layer.borderWidth = 0.0
                     self.scrollView.addSubview(self.profileImage)
                     
                     self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
@@ -358,6 +362,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String!)
             
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+            // 角丸にする
+            cell?.imageView?.layer.cornerRadius = 6.0
+            cell?.imageView?.layer.masksToBounds = true
+            cell?.imageView?.layer.borderWidth = 0.0
             break
         case 2:
             let profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url_https") as! String)
@@ -369,6 +377,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String
             )
             cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+            // 角丸にする
+            cell?.imageView?.layer.cornerRadius = 6.0
+            cell?.imageView?.layer.masksToBounds = true
+            cell?.imageView?.layer.borderWidth = 0.0
             break
         case 3:
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
