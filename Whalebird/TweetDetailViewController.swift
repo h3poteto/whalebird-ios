@@ -87,6 +87,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         let imageURL = NSURL(string: self.tweetModel.profileImage)
         self.profileImageLabel.sd_setBackgroundImageWithURL(imageURL, forState: UIControlState.Normal, placeholderImage: UIImage(named: "noimage"))
         self.profileImageLabel.addTarget(self, action: #selector(TweetDetailViewController.tappedUserProfile), forControlEvents: UIControlEvents.TouchDown)
+        // 角丸にする
+        self.profileImageLabel.layer.cornerRadius = 6.0
+        self.profileImageLabel.layer.masksToBounds = true
+        self.profileImageLabel.layer.borderWidth = 0.0
         self.profileImageLabel.sizeToFit()
         
         self.blankView.addSubview(self.profileImageLabel)
@@ -94,7 +98,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         if (self.tweetModel.retweetedProfileImage != nil) {
             self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(self.profileImageLabel.frame.origin.x + self.profileImageLabel.frame.size.width * 2.0 / 3.0, self.profileImageLabel.frame.origin.y + self.profileImageLabel.frame.size.height * 2.0 / 3.0, self.profileImageLabel.frame.size.width * 2.0 / 4.0, self.profileImageLabel.frame.size.height * 2.0 / 4.0))
             let imageURL = NSURL(string: self.tweetModel.retweetedProfileImage!)
-            self.retweetedProfileImageLabel!.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning"))
+            self.retweetedProfileImageLabel?.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning"))
+            // 角丸にする
+            self.retweetedProfileImageLabel?.layer.cornerRadius = 6.0
+            self.retweetedProfileImageLabel?.layer.masksToBounds = true
+            self.retweetedProfileImageLabel?.layer.borderWidth = 0.0
             self.blankView.addSubview(self.retweetedProfileImageLabel!)
         }
 
