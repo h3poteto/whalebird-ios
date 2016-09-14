@@ -117,7 +117,7 @@ class TimelineModel: NSObject {
                 let q_main = DispatchQueue.main
                 q_main.async(execute: {()->Void in
                     self.newTimeline = []
-                    for timeline in aNewTimeline {
+                    for timeline in aNewTimeline{
                         if let mutableTimeline = timeline.mutableCopy() as? NSMutableDictionary {
                             self.newTimeline.append(mutableTimeline)
                         }
@@ -159,7 +159,7 @@ class TimelineModel: NSObject {
                             for newTweet in self.newTimeline {
                                 if let tweetObject = newTweet as? NSMutableDictionary {
                                     // 未読フラグの追加
-                                    tweetObject.setObject(true, forKey: "unread")
+                                    tweetObject.setObject(true, forKey: "unread" as NSCopying)
                                     self.currentTimeline.insert(tweetObject, at: 0)
                                     self.sinceId = tweetObject.object(forKey: "id_str") as? String
                                 }

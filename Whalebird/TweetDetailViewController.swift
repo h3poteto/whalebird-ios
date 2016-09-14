@@ -316,9 +316,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.tweetModel.favoriteTweet({ () -> Void in
             SVProgressHUD.dismiss()
             let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "お気に入り追加")
-            notice.alpha = 0.8
-            notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-            notice.show()
+            notice?.alpha = 0.8
+            notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+            notice?.show()
             // アイコンの挿げ替え
             self.tweetModel.fFavorited = true
             if let cStarImage = UIImage(named: "Star-Filled") {
@@ -338,9 +338,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }, unfavorited: { () -> Void in
             SVProgressHUD.dismiss()
             let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "お気に入り削除")
-            notice.alpha = 0.8
-            notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-            notice.show()
+            notice?.alpha = 0.8
+            notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+            notice?.show()
             // アイコンの挿げ替え
             if let cStarImage = UIImage(named: "Star-Line") {
                 self.ts_imageWithSize(cStarImage, width: TweetDetailViewController.ActionButtonWidth, height: TweetDetailViewController.ActionButtonHeight) { (aStarImage) -> Void in
@@ -365,9 +365,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.tweetModel.deleteTweet({ () -> Void in
                 SVProgressHUD.dismiss()
                 let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "削除完了")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                notice.show()
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
                 self.navigationController?.popViewController(animated: true)
             })
         })
@@ -398,9 +398,9 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                     self.tweetModel.retweetTweet({ () -> Void in
                         SVProgressHUD.dismiss()
                         let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "RTしました")
-                        notice.alpha = 0.8
-                        notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                        notice.show()
+                        notice?.alpha = 0.8
+                        notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                        notice?.show()
                     })
                 })
                 let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: {action in
@@ -454,7 +454,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.navigationController?.pushViewController(userView, animated: true)
             return false
         } else if (URL.scheme!.hasPrefix("tag") == true) {
-            let decodedURLString = URL.absoluteString.stringByRemovingPercentEncoding
+            let decodedURLString = URL.absoluteString.removingPercentEncoding
             let searchView = SearchTableViewController(aStreamList: StreamList(), keyword: decodedURLString!.replacingOccurrences(of: "tag:#", with: "#", options: [], range: nil))
             self.navigationController?.pushViewController(searchView, animated: true)
             return false

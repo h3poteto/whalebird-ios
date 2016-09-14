@@ -416,9 +416,9 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             q_main.async(execute: {()->Void in
                 let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: "投稿しました")
                 SVProgressHUD.dismiss()
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                notice.show()
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
                 if self.selectedMinute != nil {
                     self.minuteTableView?.deleteMinute(self.selectedMinute!)
                 }

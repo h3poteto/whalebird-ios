@@ -132,8 +132,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
-                if (aHeaderData.object(forKey: "sizes")?.object(forKey: "mobile_retina")?.object(forKey: "url") != nil){
-                    let headerImageURL = URL(string: aHeaderData.object(forKey: "sizes")?.object(forKey: "mobile_retina")?.object(forKey: "url") as! String)
+                if (((aHeaderData.object(forKey: "sizes") as? NSDictionary)?.object(forKey: "mobile_retina") as? NSDictionary)?.object(forKey: "url") != nil){
+                    let headerImageURL = URL(string: ((aHeaderData.object(forKey: "sizes") as? NSDictionary)?.object(forKey: "mobile_retina") as? NSDictionary)?.object(forKey: "url") as! String)
                     self.profileHeaderImage.removeFromSuperview()
                     self.profileHeaderImage.sd_setImage(with: headerImageURL, placeholderImage: UIImage(named: "profile_back"))
                     self.scrollView.addSubview(self.profileHeaderImage)
@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //-----------------------------
                     if self.privateAccount && !self.myself {
                         self.tableType = 3
-                        self.privateAccountAnnounce = ["private"]
+                        self.privateAccountAnnounce = ["private" as AnyObject]
                         self.tableView.reloadData()
                         SVProgressHUD.dismiss()
                     } else {
@@ -349,7 +349,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             timelineCell!.cleanCell()
             if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
-                timelineCell!.configureCell(targetTimeline)
+                timelineCell!.configureCell(targetTimeline as NSDictionary)
             }
             return timelineCell!
         case 1:
@@ -400,7 +400,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         switch(self.tableType) {
         case 0:
             if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
-                height = TimelineViewCell.estimateCellHeight(targetTimeline)
+                height = TimelineViewCell.estimateCellHeight(targetTimeline as NSDictionary)
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             self.tableView.frame.size.height = self.tableView.contentSize.height
@@ -627,9 +627,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
                     let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォローしました")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                    notice.show()
+                    notice?.alpha = 0.8
+                    notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                    notice?.show()
                     if (self.privateAccount) {
                     } else{
                         self.navigationItem.rightBarButtonItem = self.unfollowButton
@@ -659,9 +659,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
                     let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォロー解除しました")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                    notice.show()
+                    notice?.alpha = 0.8
+                    notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                    notice?.show()
                     self.navigationItem.rightBarButtonItem = self.followButton
                 })
             }

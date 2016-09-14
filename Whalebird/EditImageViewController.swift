@@ -178,7 +178,7 @@ class EditImageViewController: UIViewController {
         var bitmap: CGContext!
         // bytesPerRowはwidthの4倍以上ないとメモリが足らない
         var longLength = targetWidth
-        if (longLength < targetHeight) {
+        if longLength! < targetHeight {
             longLength = targetHeight
         }
         bitmap = CGContext(data: nil, width: Int(targetWidth), height: Int(targetHeight), bitsPerComponent: imageRef.bitsPerComponent, bytesPerRow: Int(longLength! * 4), space: colorSpaceInfo, bitmapInfo: bitmapInfo.rawValue)

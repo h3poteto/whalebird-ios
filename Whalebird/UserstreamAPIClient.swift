@@ -119,7 +119,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         }
         let request: SLRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, url: aTargetStream, parameters: params)
         if let twitterAccountType: ACAccountType = self.accountStore.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter) {
-            let twitterAccounts: NSArray = self.accountStore.accounts(with: twitterAccountType)
+            let twitterAccounts = self.accountStore.accounts(with: twitterAccountType)!
             if (twitterAccounts.count > 0) {
                 let userDefault = UserDefaults.standard
                 let cUsername = userDefault.string(forKey: "username")
@@ -169,8 +169,8 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     func connection(_ connection: NSURLConnection,didReceive data: Data){
         var jsonError:NSError?
         do {
-            let jsonObject: AnyObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
-            var object: NSMutableDictionary = jsonObject.mutableCopy() as! NSMutableDictionary
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
+            var object: NSMutableDictionary = jsonObject?.mutableCopy() as! NSMutableDictionary
             if (object.object(forKey: "text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.object(forKey: "created_at") as! String), forKey: "created_at")

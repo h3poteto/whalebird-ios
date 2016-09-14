@@ -103,12 +103,13 @@ class WhalebirdAPIClient: NSObject {
     
     func cleanDictionary(_ dict: NSDictionary)->NSMutableDictionary {
         let mutableDict: NSMutableDictionary = NSMutableDictionary(dictionary: dict)
-        mutableDict.enumerateKeysAndObjects { (key, obj, stop) -> Void in
-            if (obj.isKind(of: NSNull.classForCoder())) {
+        mutableDict.enumerateKeysAndObjects(
+            options: NSEnumerationOptions.concurrent) { (key, obj, stop) in
+            if ((obj as AnyObject).isKind(of: NSNull.classForCoder())) {
                 if let safeKey = key as? NSString {
                     mutableDict.setObject("", forKey: safeKey)
                 }
-            } else if (obj.isKind(of: NSDictionary.classForCoder())) {
+            } else if ((obj as AnyObject).isKind(of: NSDictionary.classForCoder())) {
                 if let safeObject = obj as? NSDictionary, let safeKey = key as? NSString {
                     mutableDict.setObject(self.cleanDictionary(safeObject), forKey: (safeKey))
                 }
@@ -133,7 +134,7 @@ class WhalebirdAPIClient: NSObject {
             print(responseObject)
             self.saveCookie()
             let userDefault = UserDefaults.standard
-            userDefault.set(responseObject["screen_name"], forKey: "username")
+            userDefault.set((responseObject as! [String: Any])["screen_name"], forKey: "username")
             success()
         }) { (operation, error) -> Void in
             print(error)
@@ -144,7 +145,7 @@ class WhalebirdAPIClient: NSObject {
         
     }
     
-    func getArrayAPI(_ path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: @escaping (NSArray) ->Void, failed: @escaping () -> Void) {
+    func getArrayAPI(_ path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: @escaping ([NSDictionary]) ->Void, failed: @escaping () -> Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -154,7 +155,7 @@ class WhalebirdAPIClient: NSObject {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.get(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if let object = responseObject as? NSArray {
-                    completed(object.reverseObjectEnumerator().allObjects as NSArray)
+                    completed(object.reverseObjectEnumerator().allObjects as! [NSDictionary])
                 } else {
                     print("blank response")
                 }
@@ -235,8 +236,8 @@ class WhalebirdAPIClient: NSObject {
                 let request = try self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
                     urlString: self.whalebirdAPIURL + "users/apis/upload.json",
                     parameters: [:],
-                    constructingBodyWith: { (formData: AFMultipartFormData!) -> Void in
-                        formData.appendPart(
+                    constructingBodyWith: { (formData: AFMultipartFormData?) -> Void in
+                        formData?.appendPart(
                             withFileData: NSData(data: UIImagePNGRepresentation(image)!) as Data,
                             name: "media",
                             fileName: "test.png",
@@ -244,7 +245,7 @@ class WhalebirdAPIClient: NSObject {
                     
                     }, error:())
                 
-                let operation = self.sessionManager.httpRequestOperation(with: request, success: { (operation, responseObject) -> Void in
+                let operation = self.sessionManager.httpRequestOperation(with: request as URLRequest!, success: { (operation, responseObject) -> Void in
                     if (responseObject != nil) {
                         print(responseObject)
                         if let object = responseObject as? Data {
@@ -258,16 +259,16 @@ class WhalebirdAPIClient: NSObject {
                     }
                     }) { (operation, error) -> Void in
                         print(error)
-                        self.displayErrorMessage(operation, error: error)
-                        failed(error)
+                        self.displayErrorMessage(operation!, error: error as! NSError)
+                        failed(error as NSError?)
                 }
                 
-                operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
+                operation?.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
                     let written = Float(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
                     progress(written)
                 }
                 
-                self.sessionManager.operationQueue.addOperation(operation)
+                self.sessionManager.operationQueue.addOperation(operation!)
             } catch {
                 failed(nil)
             }

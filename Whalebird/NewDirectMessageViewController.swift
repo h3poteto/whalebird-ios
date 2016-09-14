@@ -106,9 +106,9 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
             q_main.async(execute: { () -> Void in
                 let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: "送信しました")
                 SVProgressHUD.dismiss()
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
-                notice.show()
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
                 self.navigationController?.popViewController(animated: true)
             })
         }
