@@ -25,7 +25,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -52,20 +52,20 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         self.tweetSearchBar = UISearchBar()
         self.tweetSearchBar.placeholder = "検索"
-        self.tweetSearchBar.keyboardType = UIKeyboardType.Default
+        self.tweetSearchBar.keyboardType = UIKeyboardType.default
         self.tweetSearchBar.delegate = self
         
         self.navigationItem.titleView = self.tweetSearchBar
         self.tweetSearchBar.becomeFirstResponder()
         
-        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SearchTableViewController.saveResult))
+        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchTableViewController.saveResult))
         
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         if self.searchKeyword != nil {
             self.tweetSearchBar.text = self.searchKeyword!
@@ -80,81 +80,81 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.timelineModel.count()
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as? TimelineViewCell
         if (cell == nil) {
-            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            cell = TimelineViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.resultCell.insert(cell!, atIndex: indexPath.row)
+        self.resultCell.insert(cell!, at: (indexPath as NSIndexPath).row)
 
         cell!.cleanCell()
-        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            cell!.configureCell(targetResult)
+        if let targetResult = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            cell!.configureCell(targetResult as NSDictionary)
         }
 
         return cell!
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetResult)
+        if let targetResult = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetResult as NSDictionary)
         }
         return height
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetResult = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetResult)
+        if let targetResult = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetResult as NSDictionary)
         }
         return height
     }
     
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
             let tweetModel = TweetModel(dict: cTweetData)
-            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: (indexPath as NSIndexPath).row)
             self.navigationController?.pushViewController(detailView, animated: true)
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
    
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         
         self.tweetSearchBar.showsCancelButton = true
-        self.tweetSearchBar.autocorrectionType = UITextAutocorrectionType.No
+        self.tweetSearchBar.autocorrectionType = UITextAutocorrectionType.no
         self.navigationItem.rightBarButtonItem = nil
         return true
     }
     
-    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         self.navigationItem.rightBarButtonItem = self.saveButton
         self.tweetSearchBar.showsCancelButton = false
         return true
     }
 
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.executeSearch()
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.tweetSearchBar.resignFirstResponder()
     }
     
@@ -166,18 +166,18 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
             "count" : String(self.timelineModel.tweetCount)
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params,
-            "q" : self.tweetSearchBar.text!
+            "settings" : params as AnyObject,
+            "q" : self.tweetSearchBar.text! as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
             completed: { (count, currentRowIndex) -> Void in
                 SVProgressHUD.dismiss()
                 self.tableView.reloadData()
-                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件")
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
                 self.tweetSearchBar.resignFirstResponder()
             }, noUpdated: { () -> Void in
                 
@@ -195,7 +195,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
                 uri: "users/apis/search.json",
                 id: ""
             )
-            self.navigationController!.popViewControllerAnimated(true)
+            self.navigationController!.popViewController(animated: true)
         }
     }
 

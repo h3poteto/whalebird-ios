@@ -20,7 +20,7 @@ class ConversationTableViewController: UITableViewController {
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -45,7 +45,7 @@ class ConversationTableViewController: UITableViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
-        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         self.updateConversation()
     }
@@ -57,70 +57,70 @@ class ConversationTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.timelineModel.count()
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as? TimelineViewCell
         if (cell == nil) {
-            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            cell = TimelineViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "TimelineViewCell")
         }
         
-        self.conversationCell.insert(cell!, atIndex: indexPath.row)
+        self.conversationCell.insert(cell!, at: (indexPath as NSIndexPath).row)
         cell!.cleanCell()
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            cell!.configureCell(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            cell!.configureCell(targetMessage as NSDictionary)
         }
 
         return cell!
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetMessage as NSDictionary)
         }
         return height
     }
 
 
 
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetMessage as NSDictionary)
         }
         return height
     }
     
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
             let tweetModel = TweetModel(dict: cTweetData)
-            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: (indexPath as NSIndexPath).row)
             self.navigationController?.pushViewController(detailView, animated: true)
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
     
     func updateConversation() {
         let params: Dictionary<String, AnyObject> = [
-            "id" : self.rootTweetID
+            "id" : self.rootTweetID as AnyObject
         ]
         let parameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineOnlyNew("users/apis/conversations.json", requestParameter: parameter,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()

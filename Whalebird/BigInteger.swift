@@ -44,7 +44,7 @@ class BigInteger: NSObject {
         var decStr = ""
         var carry = 0
         var first = true
-        for num in Array(self.quads.reverse()) {
+        for num in Array(self.quads.reversed()) {
             var decnum = 0
             if first {
                 first = false

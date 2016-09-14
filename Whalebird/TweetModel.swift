@@ -25,20 +25,20 @@ class TweetModel: NSObject {
     
     // twitter独自のscreen name判定
     // _ はscreen nameと判定．他の文字は半角英数字のみ許可
-    class func checkScreenName(aCharacter: Character) -> Bool {
+    class func checkScreenName(_ aCharacter: Character) -> Bool {
         if (aCharacter == "_") {
             return true
         } else {
             // 半角全角判定
             let str = String(aCharacter)
-            if (str.dataUsingEncoding(NSASCIIStringEncoding, allowLossyConversion: false) == nil) {
+            if (str.data(using: String.Encoding.ascii, allowLossyConversion: false) == nil) {
                 return false
             } else {
-                let charSet = NSCharacterSet.alphanumericCharacterSet()
-                if let aScanner = NSScanner.localizedScannerWithString(str) as? NSScanner {
+                let charSet = CharacterSet.alphanumerics
+                if let aScanner = Scanner.localizedScanner(with: str) as? Scanner {
                     aScanner.charactersToBeSkipped = nil
-                    aScanner.scanCharactersFromSet(charSet, intoString: nil)
-                    return aScanner.atEnd
+                    aScanner.scanCharacters(from: charSet, into: nil)
+                    return aScanner.isAtEnd
                 } else {
                     return false
                 }
@@ -46,7 +46,7 @@ class TweetModel: NSObject {
         }
     }
     
-    class func listUpSentence(rawString: String, startCharacter: Character, fScreenName: Bool) -> Array<String> {
+    class func listUpSentence(_ rawString: String, startCharacter: Character, fScreenName: Bool) -> Array<String> {
         var targetStringList: Array<String> = []
         var tTargetString = ""
         var fFindString = false
@@ -74,7 +74,7 @@ class TweetModel: NSObject {
     }
     
     // http://qiita.com/riocampos/items/c804dc7b14a1041383da
-    class func mediaIsGif(media: String) -> Bool {
+    class func mediaIsGif(_ media: String) -> Bool {
         if media.hasSuffix(".mp4") || media.hasSuffix(".webm") || media.hasSuffix(".m3u8") {
             return true
         }
@@ -82,23 +82,23 @@ class TweetModel: NSObject {
     }
     
     
-    init(dict: [NSObject : AnyObject]) {
+    init(dict: [AnyHashable: Any]) {
         super.init()
         self.tweetID = dict["id_str"] as! String
         self.tweetBody = dict["text"] as! String
-        self.screenName = (dict["user"] as! [NSObject : AnyObject])["screen_name"] as! String
-        self.userName = (dict["user"] as! [NSObject : AnyObject])["name"] as! String
-        self.profileImage = (dict["user"] as! [NSObject : AnyObject])["profile_image_url"] as! String
+        self.screenName = (dict["user"] as! [AnyHashable: Any])["screen_name"] as! String
+        self.userName = (dict["user"] as! [AnyHashable: Any])["name"] as! String
+        self.profileImage = (dict["user"] as! [AnyHashable: Any])["profile_image_url"] as! String
         self.postDetail = WhalebirdAPIClient.convertLocalTime(dict["created_at"] as! String)
-        self.retweetedName = (dict["retweeted"] as? [NSObject : AnyObject])?["screen_name"] as? String
-        self.retweetedProfileImage = (dict["retweeted"] as? [NSObject : AnyObject])?["profile_image_url"] as? String
+        self.retweetedName = (dict["retweeted"] as? [AnyHashable: Any])?["screen_name"] as? String
+        self.retweetedProfileImage = (dict["retweeted"] as? [AnyHashable: Any])?["profile_image_url"] as? String
         self.fFavorited = optionalToBool(dict["favorited?"] as? Bool)
         self.media = dict["media"] as? Array<String>
         self.video = dict["video"] as? Array<String>
-        self.fProtected = optionalToBool((dict["user"] as? [NSObject : AnyObject])?["protected?"] as? Bool)
+        self.fProtected = optionalToBool((dict["user"] as? [AnyHashable: Any])?["protected?"] as? Bool)
     }
     
-    init (notificationDict: [NSObject : AnyObject]) {
+    init (notificationDict: [AnyHashable: Any]) {
         super.init()
         self.tweetID = notificationDict["id"] as! String
         self.tweetBody = notificationDict["text"] as! String
@@ -112,7 +112,7 @@ class TweetModel: NSObject {
         self.fProtected = optionalToBool(notificationDict["protected"] as? Bool)
     }
     
-    func optionalToBool(flag: Bool?) -> Bool {
+    func optionalToBool(_ flag: Bool?) -> Bool {
         if flag != nil {
             return flag!
         } else {
@@ -120,17 +120,17 @@ class TweetModel: NSObject {
         }
     }
     
-    func favoriteTweet(favorited: ()-> Void, unfavorited: ()-> Void) {
+    func favoriteTweet(_ favorited: @escaping ()-> Void, unfavorited: @escaping ()-> Void) {
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
         if (self.fFavorited == true) {
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/unfavorite.json", params: cParameter) { (operation) -> Void in
-                let q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
+                let q_main = DispatchQueue.main
+                q_main.async(execute: {()->Void in
                     self.fFavorited = false
                     unfavorited()
                 })
@@ -138,8 +138,8 @@ class TweetModel: NSObject {
             
         } else {
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/favorite.json", params: cParameter) { (operation) -> Void in
-                let q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
+                let q_main = DispatchQueue.main
+                q_main.async(execute: {()->Void in
                     self.fFavorited = true
                     favorited()
                 })
@@ -147,31 +147,31 @@ class TweetModel: NSObject {
         }
     }
     
-    func deleteTweet(completed: ()-> Void) {
+    func deleteTweet(_ completed: @escaping ()-> Void) {
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/delete.json", params: cParameter, callback: { (operation) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
                 completed()
             })
         })
     }
     
-    func retweetTweet(completed: ()-> Void) {
+    func retweetTweet(_ completed: @escaping ()-> Void) {
         let params:Dictionary<String, String> = [
             "id" : self.tweetID
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/retweet.json", params: cParameter, callback: { (operation) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
                 completed()
             })
         })
@@ -180,22 +180,22 @@ class TweetModel: NSObject {
     
     func customAttributedString() -> NSMutableAttributedString {
         let escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody)
-        let attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.blackColor()])
+        let attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.black])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         
         for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true) {
-            let nameRange: NSRange = (escapedTweetBody as NSString).rangeOfString(screenName)
+            let nameRange: NSRange = (escapedTweetBody as NSString).range(of: screenName)
             attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
         }
         for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#", fScreenName: false) {
-            let tagRange: NSRange = (escapedTweetBody as NSString).rangeOfString(tag)
-            let encodedTag = tag.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            let tagRange: NSRange = (escapedTweetBody as NSString).range(of: tag)
+            let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
             attributedString.addAttributes([NSLinkAttributeName: "tag:" + encodedTag!], range: tagRange)
         }
         return attributedString
     }
     
-    func replyList(userScreenName: String) ->String {
+    func replyList(_ userScreenName: String) ->String {
         var list: Array<String> = []
         list.append("@" + self.screenName)
         list += TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true)

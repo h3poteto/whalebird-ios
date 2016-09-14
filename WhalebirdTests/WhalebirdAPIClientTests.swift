@@ -45,11 +45,11 @@ class WhalebirdAPIClientTests: XCTestCase {
     
     func testEncodeClipboardURL() {
         let urlString = "http://ja.wikipedia.org/wiki/阿澄佳奈"
-        let pasteboard = UIPasteboard.generalPasteboard()
+        let pasteboard = UIPasteboard.general
         pasteboard.setValue(urlString, forPasteboardType: "public.text")
         WhalebirdAPIClient.encodeClipboardURL()
-        XCTAssertNotNil(pasteboard.valueForPasteboardType("public.text"), "pasteboard shoud not empty")
-        if let encodedURL = pasteboard.valueForPasteboardType("public.text") as? String {
+        XCTAssertNotNil(pasteboard.value(forPasteboardType: "public.text"), "pasteboard shoud not empty")
+        if let encodedURL = pasteboard.value(forPasteboardType: "public.text") as? String {
             XCTAssertEqual(encodedURL, "http://ja.wikipedia.org/wiki/%E9%98%BF%E6%BE%84%E4%BD%B3%E5%A5%88", "japanese url should encode and store pasteboard")
         }
         

@@ -57,9 +57,9 @@ class TimelineModelTests: XCTestCase {
     }
     
     func testSaveCurrentTimeline() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.removeObjectForKey("timeline")
-        userDefaults.removeObjectForKey("sinceID")
+        let userDefaults = UserDefaults.standard
+        userDefaults.removeObject(forKey: "timeline")
+        userDefaults.removeObject(forKey: "sinceID")
         let firstTweetDictionary = NSMutableDictionary(dictionary: ["id_str" : "234545", "text" : "あすみんぺろぺろ"])
         let secondTweetDictionary = NSMutableDictionary(dictionary: ["id_str" : "234567", "text" : "いぇす！あすみす！ #阿澄病"])
         let array = [
@@ -70,9 +70,9 @@ class TimelineModelTests: XCTestCase {
         timelineModel.currentTimeline = array
         timelineModel.sinceId = "234567"
         timelineModel.saveCurrentTimeline("timeline", sinceIdKey: "sinceID")
-        let timeline = userDefaults.objectForKey("timeline") as? Array<NSMutableDictionary>
-        XCTAssertEqual(userDefaults.stringForKey("sinceID"), "234567", "should save sinceID")
-        XCTAssertEqual(timeline!, array.reverse(), "should save timeline")
+        let timeline = userDefaults.object(forKey: "timeline") as? Array<NSMutableDictionary>
+        XCTAssertEqual(userDefaults.string(forKey: "sinceID"), "234567", "should save sinceID")
+        XCTAssertEqual(timeline!, array.reversed(), "should save timeline")
     }
     
     func testFavorite() {

@@ -10,7 +10,7 @@ import UIKit
 
 class TagsList: NSObject {
     var tagsList: Array<String>?
-    var userDefaults = NSUserDefaults.standardUserDefaults()
+    var userDefaults = UserDefaults.standard
     
     class var sharedClient: TagsList {
         struct sharedStruct {
@@ -25,23 +25,23 @@ class TagsList: NSObject {
     }
     
     func loadTagsListFromCache() -> Array<String> {
-        if let tags = self.userDefaults.objectForKey("user_tags") as? Array<String> {
+        if let tags = self.userDefaults.object(forKey: "user_tags") as? Array<String> {
             return tags
         } else {
             return []
         }
     }
     
-    func findAndAddtag(rawString: String) {
+    func findAndAddtag(_ rawString: String) {
         for tag in TweetModel.listUpSentence(rawString, startCharacter: "#", fScreenName: false) {
-            let tagString = tag.stringByReplacingOccurrencesOfString("#", withString: "", options: [], range: nil)
+            let tagString = tag.replacingOccurrences(of: "#", with: "", options: [], range: nil)
             if tagString.characters.count > 0 {
                 self.addTag(tagString)
             }
         }
     }
     
-    func addTag(tag: String) {
+    func addTag(_ tag: String) {
         self.tagsList?.append(tag)
         if self.tagsList != nil {
             let set = NSOrderedSet(array: self.tagsList!)
@@ -54,7 +54,7 @@ class TagsList: NSObject {
         if self.tagsList != nil {
             let set = NSOrderedSet(array: self.tagsList!)
             if let uniqueSet = set.array as? Array<String> {
-                self.userDefaults.setObject(uniqueSet, forKey: "user_tags")
+                self.userDefaults.set(uniqueSet, forKey: "user_tags")
             }
         }
     }
@@ -63,11 +63,11 @@ class TagsList: NSObject {
         return self.tagsList
     }
     
-    func getTagAtIndex(index: Int) -> String? {
+    func getTagAtIndex(_ index: Int) -> String? {
         return self.tagsList?[index]
     }
     
-    func searchTags(tag: String, callback: (Array<String>)-> Void) {
+    func searchTags(_ tag: String, callback: (Array<String>)-> Void) {
         if tag.characters.count > 0 {
             if let list = self.getTagsList() {
                 var matchTags:Array<String> = []

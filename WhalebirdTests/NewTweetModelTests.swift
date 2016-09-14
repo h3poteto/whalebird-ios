@@ -10,7 +10,7 @@ import XCTest
 @testable import Whalebird
 
 class NewTweetModelTests: XCTestCase {
-    var userDefaults = NSUserDefaults.standardUserDefaults()
+    var userDefaults = UserDefaults.standard
     
     override func setUp() {
         super.setUp()
@@ -23,8 +23,8 @@ class NewTweetModelTests: XCTestCase {
             "あきら",
             "阿澄病"
         ]
-        self.userDefaults.removeObjectForKey("failed_date")
-        self.userDefaults.removeObjectForKey("success_date")
+        self.userDefaults.removeObject(forKey: "failed_date")
+        self.userDefaults.removeObject(forKey: "success_date")
         FriendsList.sharedClient.friendsList = []
         FriendsList.sharedClient.saveFriendsInCache()
         FriendsList.sharedClient.friendsList = [

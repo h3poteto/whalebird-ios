@@ -13,12 +13,12 @@ import RNCryptor
 class ApplicationSecretsTests: XCTestCase {
     func testEncryptData() {
         let ApplicationPlain = ApplicationSecrets.ApplicationPlain
-        let plainData = ApplicationPlain.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        var encodeBase: NSData?
+        let plainData = ApplicationPlain.dataUsingEncoding(String.Encoding.utf8, allowLossyConversion: false)
+        var encodeBase: Data?
 
         do {
             let encryptData = try RNEncryptor.encryptData(plainData, password: "whalebird")
-            encodeBase = encryptData.base64EncodedDataWithOptions(NSDataBase64EncodingOptions())
+            encodeBase = encryptData.base64EncodedDataWithOptions(NSData.Base64EncodingOptions())
             XCTAssertNotNil(encodeBase, "encodeBase should not nil")
         } catch {
             XCTFail("encryptData should not nil")

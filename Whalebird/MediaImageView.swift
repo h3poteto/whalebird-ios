@@ -22,13 +22,13 @@ class MediaImageView: UIImageView {
         // 初期状態では画面に収まるようにリサイズしておく
         if (self.frame.size.width > windowSize.size.width) {
             let scale = windowSize.size.width / self.frame.size.width
-            self.frame.size = CGSizeMake(windowSize.size.width, self.frame.size.height * scale)
+            self.frame.size = CGSize(width: windowSize.size.width, height: self.frame.size.height * scale)
         }
         if (self.frame.size.height > windowSize.size.height) {
             let scale = windowSize.size.height / self.frame.size.height
-            self.frame.size = CGSizeMake(self.frame.size.width * scale, windowSize.size.height)
+            self.frame.size = CGSize(width: self.frame.size.width * scale, height: windowSize.size.height)
         }
-        self.center = CGPointMake(windowSize.size.width / 2.0, windowSize.size.height / 2.0)
-        self.userInteractionEnabled = true
+        self.center = CGPoint(x: windowSize.size.width / 2.0, y: windowSize.size.height / 2.0)
+        self.isUserInteractionEnabled = true
     }
 }

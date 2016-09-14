@@ -21,17 +21,17 @@ class AnimatedImageView: UIView {
         super.init(frame: frame)
     }
     
-    convenience init(animatedImageURL: NSURL, windowSize: CGRect) {
+    convenience init(animatedImageURL: URL, windowSize: CGRect) {
         self.init(frame: windowSize)
-        let playerItem = AVPlayerItem(URL: animatedImageURL)
+        let playerItem = AVPlayerItem(url: animatedImageURL)
         self.videoPlayer = AVPlayer(playerItem: playerItem)
         self.setPlayer(videoPlayer)
-        self.setVideoFillMode(AVLayerVideoGravityResizeAspect)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AnimatedImageView.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object: playerItem)
+        self.setVideoFillMode(AVLayerVideoGravityResizeAspect as NSString)
+        NotificationCenter.default.addObserver(self, selector: #selector(AnimatedImageView.playerItemDidReachEnd(_:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         self.videoPlayer.play()
     }
     
-    override class func layerClass() -> AnyClass{
+    override class var layerClass : AnyClass{
         return AVPlayerLayer.self
     }
     func player() -> AVPlayer {
@@ -39,23 +39,23 @@ class AnimatedImageView: UIView {
         return layer.player!
     }
     
-    func setPlayer(player: AVPlayer) {
+    func setPlayer(_ player: AVPlayer) {
         let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
         layer.player = player
     }
     
-    func setVideoFillMode(fillMode: NSString) {
+    func setVideoFillMode(_ fillMode: NSString) {
         let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
         layer.videoGravity = fillMode as String
     }
     
     func videoFillMode() -> NSString {
         let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
-        return layer.videoGravity
+        return layer.videoGravity as NSString
     }
     
-    func playerItemDidReachEnd(sender: AnyObject) {
-        self.videoPlayer.seekToTime(kCMTimeZero)
+    func playerItemDidReachEnd(_ sender: AnyObject) {
+        self.videoPlayer.seek(to: kCMTimeZero)
         self.videoPlayer.play()
     }
 

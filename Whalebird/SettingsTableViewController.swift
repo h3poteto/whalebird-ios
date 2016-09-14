@@ -23,7 +23,7 @@ class SettingsTableViewController: UITableViewController{
     var notificationFavFlag: Bool = true
     var notificationRTFlag: Bool = true
     var notificationDMFlag: Bool = true
-    var deviceToken = String?()
+    var deviceToken = String?("")
     var notificationForegroundSwitch: UISwitch?
     
     var account: ACAccount?
@@ -33,7 +33,7 @@ class SettingsTableViewController: UITableViewController{
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -52,9 +52,9 @@ class SettingsTableViewController: UITableViewController{
         
     }
     // 表示時にインジケータを消そう
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         SVProgressHUD.dismiss()
         // ログインからの復帰時に更新する必要がある
         tableView.reloadData()
@@ -67,13 +67,13 @@ class SettingsTableViewController: UITableViewController{
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 7
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cellCount = Int(0)
         switch(section) {
         case 0:
@@ -102,8 +102,8 @@ class SettingsTableViewController: UITableViewController{
         }
         return cellCount
     }
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var sectionTitle = String?()
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitle = String?("")
         switch(section) {
         case 0:
             sectionTitle = "アカウント設定"
@@ -133,15 +133,15 @@ class SettingsTableViewController: UITableViewController{
         return sectionTitle
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let header:UITableViewHeaderFooterView = view as? UITableViewHeaderFooterView {
             header.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
         }
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        var sectionTitle = String?()
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        var sectionTitle = String?("")
         switch(section) {
         case 0:
             break
@@ -166,59 +166,59 @@ class SettingsTableViewController: UITableViewController{
         return sectionTitle
     }
 
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         let footer: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         footer.textLabel!.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-        var cellTitle = String?()
-        var cellDetailTitle = String?()
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
+        var cellTitle = String?("")
+        var cellDetailTitle = String?("")
         
-        switch(indexPath.section) {
+        switch((indexPath as NSIndexPath).section) {
         case 0:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "アカウント"
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                cellDetailTitle = userDefault.stringForKey("username")
+                let userDefault = UserDefaults.standard
+                cellDetailTitle = userDefault.string(forKey: "username")
                 break
             case 1:
                 cellTitle = "アカウント連携を削除"
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             case 2:
                 cellTitle = "プロフィール"
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             default:
                 break
             }
             break
         case 1:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "バックグラウンド時の通知"
                 let notificationBackgroundSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationBackgroundFlag") != nil) {
-                    self.notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationBackgroundFlag") != nil) {
+                    self.notificationBackgroundFlag = userDefault.bool(forKey: "notificationBackgroundFlag")
                 }
-                notificationBackgroundSwitch.on = self.notificationBackgroundFlag
-                notificationBackgroundSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationBackgroundSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                notificationBackgroundSwitch.isOn = self.notificationBackgroundFlag
+                notificationBackgroundSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationBackgroundSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationBackgroundSwitch
                 break
             case 1:
                 cellTitle = "起動中の通知"
                 self.notificationForegroundSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationForegroundFlag") != nil) {
-                    self.notificationForegroundFlag = userDefault.boolForKey("notificationForegroundFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationForegroundFlag") != nil) {
+                    self.notificationForegroundFlag = userDefault.bool(forKey: "notificationForegroundFlag")
                 }
-                self.notificationForegroundSwitch?.on = self.notificationForegroundFlag
+                self.notificationForegroundSwitch?.isOn = self.notificationForegroundFlag
                 // そもそもの通知がオフの時は使えなくする必要がある
-                self.notificationForegroundSwitch?.enabled = self.notificationBackgroundFlag
-                self.notificationForegroundSwitch?.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationForegroundSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                self.notificationForegroundSwitch?.isEnabled = self.notificationBackgroundFlag
+                self.notificationForegroundSwitch?.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationForegroundSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = self.notificationForegroundSwitch
                 break
             default:
@@ -226,11 +226,11 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 2:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "起動中の通知方法"
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                let notificationType = userDefault.integerForKey("notificationType") as Int
+                let userDefault = UserDefaults.standard
+                let notificationType = userDefault.integer(forKey: "notificationType") as Int
                 switch(notificationType) {
                 case 1:
                     cellDetailTitle = "アラート表示"
@@ -246,45 +246,45 @@ class SettingsTableViewController: UITableViewController{
             case 1:
                 cellTitle = "リプライ通知"
                 let notificationReplySwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationReplyFlag") != nil) {
-                    self.notificationReplyFlag = userDefault.boolForKey("notificationReplyFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationReplyFlag") != nil) {
+                    self.notificationReplyFlag = userDefault.bool(forKey: "notificationReplyFlag")
                 }
-                notificationReplySwitch.on = self.notificationReplyFlag
-                notificationReplySwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationReplySwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                notificationReplySwitch.isOn = self.notificationReplyFlag
+                notificationReplySwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationReplySwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationReplySwitch
                 break
             case 2:
                 cellTitle = "Fav通知"
                 let notificationFavSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationFavFlag") != nil) {
-                    self.notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationFavFlag") != nil) {
+                    self.notificationFavFlag = userDefault.bool(forKey: "notificationFavFlag")
                 }
-                notificationFavSwitch.on = self.notificationFavFlag
-                notificationFavSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationFavSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                notificationFavSwitch.isOn = self.notificationFavFlag
+                notificationFavSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationFavSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationFavSwitch
                 break
             case 3:
                 cellTitle = "RT通知"
                 let notificationRTSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationRTFlag") != nil) {
-                    self.notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationRTFlag") != nil) {
+                    self.notificationRTFlag = userDefault.bool(forKey: "notificationRTFlag")
                 }
-                notificationRTSwitch.on = self.notificationRTFlag
-                notificationRTSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationRTSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                notificationRTSwitch.isOn = self.notificationRTFlag
+                notificationRTSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationRTSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationRTSwitch
                 break
             case 4:
                 cellTitle = "DM通知"
                 let notificationDMSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("notificationDMFlag") != nil) {
-                    self.notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "notificationDMFlag") != nil) {
+                    self.notificationDMFlag = userDefault.bool(forKey: "notificationDMFlag")
                 }
-                notificationDMSwitch.on = self.notificationDMFlag
-                notificationDMSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationDMSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                notificationDMSwitch.isOn = self.notificationDMFlag
+                notificationDMSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationDMSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationDMSwitch
                 break
             default:
@@ -292,11 +292,11 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 3:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "表示名"
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                let nameType = userDefault.integerForKey("displayNameType") as Int
+                let userDefault = UserDefaults.standard
+                let nameType = userDefault.integer(forKey: "displayNameType") as Int
                 switch(nameType) {
                 case 1:
                     cellDetailTitle = "名前+スクリーンネーム"
@@ -314,8 +314,8 @@ class SettingsTableViewController: UITableViewController{
                 break
             case 1:
                 cellTitle = "時刻"
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                let timeType = userDefault.integerForKey("displayTimeType") as Int
+                let userDefault = UserDefaults.standard
+                let timeType = userDefault.integer(forKey: "displayTimeType") as Int
                 switch(timeType) {
                 case 1:
                     cellDetailTitle = "絶対時刻"
@@ -333,16 +333,16 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 4:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "Userstream"
                 let userstreamSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (userDefault.objectForKey("userstreamFlag") != nil) {
-                    self.userstreamFlag = userDefault.boolForKey("userstreamFlag")
+                let userDefault = UserDefaults.standard
+                if (userDefault.object(forKey: "userstreamFlag") != nil) {
+                    self.userstreamFlag = userDefault.bool(forKey: "userstreamFlag")
                 }
-                userstreamSwitch.on = self.userstreamFlag
-                userstreamSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedUserstreamSwitch), forControlEvents: UIControlEvents.TouchUpInside)
+                userstreamSwitch.isOn = self.userstreamFlag
+                userstreamSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedUserstreamSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = userstreamSwitch
                 break
             default:
@@ -350,11 +350,11 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 5:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "新着更新後の位置"
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                let timeType = userDefault.integerForKey("afterUpdatePosition") as Int
+                let userDefault = UserDefaults.standard
+                let timeType = userDefault.integer(forKey: "afterUpdatePosition") as Int
                 switch(timeType) {
                 case 1:
                     cellDetailTitle = "トップ"
@@ -372,18 +372,18 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 6:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = "お問い合わせ"
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             case 1:
                 cellTitle = "ヘルプ"
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             case 2:
                 cellTitle = "@whalebirdorg"
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             default:
                 break
@@ -401,27 +401,27 @@ class SettingsTableViewController: UITableViewController{
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch(indexPath.section) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch((indexPath as NSIndexPath).section) {
         case 0:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 let loginViewController = LoginViewController()
                 self.navigationController?.pushViewController(loginViewController, animated: true)
                 break
             case 1:
-                let alertController = UIAlertController(title: "Remove Account Information", message: "アカウント情報を削除してよろしいですか？", preferredStyle: UIAlertControllerStyle.Alert)
-                let cOkAction = UIAlertAction(title: "削除する", style: UIAlertActionStyle.Default, handler: { (aAction) -> Void in
+                let alertController = UIAlertController(title: "Remove Account Information", message: "アカウント情報を削除してよろしいですか？", preferredStyle: UIAlertControllerStyle.alert)
+                let cOkAction = UIAlertAction(title: "削除する", style: UIAlertActionStyle.default, handler: { (aAction) -> Void in
                     self.removeAccountInfo()
                 })
-                let cCloseAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel, handler: nil)
+                let cCloseAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(cCloseAction)
                 alertController.addAction(cOkAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
                 break
             case 2:
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if let username = userDefault.stringForKey("username") {
+                let userDefault = UserDefaults.standard
+                if let username = userDefault.string(forKey: "username") {
                     let profileViewController = ProfileViewController(aScreenName: username)
                     profileViewController.myself = true
                     self.navigationController?.pushViewController(profileViewController, animated: true)
@@ -432,7 +432,7 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 1:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 break
             case 1:
@@ -442,7 +442,7 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 2:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 self.stackNotificationType()
                 break
@@ -451,7 +451,7 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 3:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 self.stackDisplayNameType()
                 break
@@ -465,7 +465,7 @@ class SettingsTableViewController: UITableViewController{
         case 4:
             break
         case 5:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 self.stackAfterUpdateType()
                 break
@@ -474,7 +474,7 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 6:
-            switch(indexPath.row) {
+            switch((indexPath as NSIndexPath).row) {
             case 0:
                 let inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: "お問い合わせ")
                 self.navigationController?.pushViewController(inquiryView, animated: true)
@@ -494,129 +494,129 @@ class SettingsTableViewController: UITableViewController{
         default:
             break
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
 
     
     func stackNotificationType() {
         
-        let notificationTypeSheet = UIAlertController(title: "通知方法選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let alertAction = UIAlertAction(title: "アラート表示", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(1, forKey: "notificationType")
+        let notificationTypeSheet = UIAlertController(title: "通知方法選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let alertAction = UIAlertAction(title: "アラート表示", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(1, forKey: "notificationType")
             self.tableView.reloadData()
         }
-        let headerAction = UIAlertAction(title: "ヘッダー表示", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(2, forKey: "notificationType")
+        let headerAction = UIAlertAction(title: "ヘッダー表示", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(2, forKey: "notificationType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         notificationTypeSheet.addAction(alertAction)
         notificationTypeSheet.addAction(headerAction)
         notificationTypeSheet.addAction(cancelAction)
-        self.presentViewController(notificationTypeSheet, animated: true, completion: nil)
+        self.present(notificationTypeSheet, animated: true, completion: nil)
     }
     
     func stackDisplayNameType() {
         
-        let nameTypeSheet = UIAlertController(title: "表示名選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let nameAndScreenAction = UIAlertAction(title: "名前+スクリーンネーム", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(1, forKey: "displayNameType")
+        let nameTypeSheet = UIAlertController(title: "表示名選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let nameAndScreenAction = UIAlertAction(title: "名前+スクリーンネーム", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(1, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let screenAction = UIAlertAction(title: "スクリーンネーム", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(2, forKey: "displayNameType")
+        let screenAction = UIAlertAction(title: "スクリーンネーム", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(2, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let nameAction = UIAlertAction(title: "名前", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(3, forKey: "displayNameType")
+        let nameAction = UIAlertAction(title: "名前", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(3, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         nameTypeSheet.addAction(nameAndScreenAction)
         nameTypeSheet.addAction(screenAction)
         nameTypeSheet.addAction(nameAction)
         nameTypeSheet.addAction(cancelAction)
-        self.presentViewController(nameTypeSheet, animated: true, completion: nil)
+        self.present(nameTypeSheet, animated: true, completion: nil)
     }
     
     func stackDisplayTimeType() {
         
-        let timeTypeSheet = UIAlertController(title: "時刻表示選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let absoluteTimeAction = UIAlertAction(title: "絶対時刻", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(1, forKey: "displayTimeType")
+        let timeTypeSheet = UIAlertController(title: "時刻表示選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let absoluteTimeAction = UIAlertAction(title: "絶対時刻", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(1, forKey: "displayTimeType")
             self.tableView.reloadData()
         }
-        let relativeTimeAction = UIAlertAction(title: "相対時刻", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(2, forKey: "displayTimeType")
+        let relativeTimeAction = UIAlertAction(title: "相対時刻", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(2, forKey: "displayTimeType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         timeTypeSheet.addAction(absoluteTimeAction)
         timeTypeSheet.addAction(relativeTimeAction)
         timeTypeSheet.addAction(cancelAction)
-        self.presentViewController(timeTypeSheet, animated: true, completion: nil)
+        self.present(timeTypeSheet, animated: true, completion: nil)
     }
     
     func stackAfterUpdateType() {
-        let updateTypeSheet = UIAlertController(title: "新着ツイート更新後位置選択", message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let topAction = UIAlertAction(title: "トップ", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(1, forKey: "afterUpdatePosition")
+        let updateTypeSheet = UIAlertController(title: "新着ツイート更新後位置選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let topAction = UIAlertAction(title: "トップ", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(1, forKey: "afterUpdatePosition")
             self.tableView.reloadData()
         }
-        let currentAction = UIAlertAction(title: "そのまま", style: UIAlertActionStyle.Default) { (action) -> Void in
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setInteger(2, forKey: "afterUpdatePosition")
+        let currentAction = UIAlertAction(title: "そのまま", style: UIAlertActionStyle.default) { (action) -> Void in
+            let userDefault = UserDefaults.standard
+            userDefault.set(2, forKey: "afterUpdatePosition")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         updateTypeSheet.addAction(topAction)
         updateTypeSheet.addAction(currentAction)
         updateTypeSheet.addAction(cancelAction)
-        self.presentViewController(updateTypeSheet, animated: true, completion: nil)
+        self.present(updateTypeSheet, animated: true, completion: nil)
     }
 
 
     func tappedUserstreamSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = UserDefaults.standard
         if (self.userstreamFlag) {
             // trueだった場合は問答無用で切る
-            userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+            userDefault.set(!self.userstreamFlag, forKey: "userstreamFlag")
             self.userstreamFlag = !self.userstreamFlag
             UserstreamAPIClient.sharedClient.stopStreaming({ () -> Void in
             })
         } else {
             // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
             self.accountStore = ACAccountStore()
-            if let twitterAccountType: ACAccountType = self.accountStore?.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) {
-                self.accountStore?.requestAccessToAccountsWithType(twitterAccountType, options: nil) { (granted, error) -> Void in
+            if let twitterAccountType: ACAccountType = self.accountStore?.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter) {
+                self.accountStore?.requestAccessToAccounts(with: twitterAccountType, options: nil) { (granted, error) -> Void in
                     if (error != nil) {
                         print(error)
                     }
                     if (!granted) {
-                        let alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.Alert)
-                        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel, handler: nil)
+                        let alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.alert)
+                        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.cancel, handler: nil)
                         alertController.addAction(closeAction)
-                        self.presentViewController(alertController, animated: true, completion: nil)
+                        self.present(alertController, animated: true, completion: nil)
                         return
                     }
-                    if let twitterAccounts: NSArray = self.accountStore?.accountsWithAccountType(twitterAccountType) {
+                    if let twitterAccounts: NSArray = self.accountStore?.accounts(with: twitterAccountType) as NSArray? {
                         if twitterAccounts.count > 0 {
-                            let cUsername = userDefault.stringForKey("username")
+                            let cUsername = userDefault.string(forKey: "username")
                             var selectedAccount: ACAccount?
                             for aclist in twitterAccounts {
-                                if (cUsername == aclist.username) {
+                                if (cUsername == (aclist as AnyObject).username) {
                                     selectedAccount = aclist as? ACAccount
                                 }
                             }
@@ -624,7 +624,7 @@ class SettingsTableViewController: UITableViewController{
                                 self.tableView.reloadData()
                                 self.accountAlert()
                             } else {
-                                userDefault.setBool(!self.userstreamFlag, forKey: "userstreamFlag")
+                                userDefault.set(!self.userstreamFlag, forKey: "userstreamFlag")
                                 self.userstreamFlag = !self.userstreamFlag
                             }
                         } else {
@@ -638,79 +638,79 @@ class SettingsTableViewController: UITableViewController{
     }
     
     func tappedNotificationForegroundSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationForegroundFlag, forKey: "notificationForegroundFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationForegroundFlag, forKey: "notificationForegroundFlag")
         self.notificationForegroundFlag = !self.notificationForegroundFlag
     }
     
     func tappedNotificationBackgroundSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
         
         // 通知がオフのときはforegroundの通知も不可能になる
-        userDefault.setBool(false, forKey: "notificationForegroundFlag")
+        userDefault.set(false, forKey: "notificationForegroundFlag")
         self.notificationBackgroundFlag = !self.notificationBackgroundFlag
         if (!self.notificationBackgroundFlag) {
-            self.notificationForegroundSwitch?.enabled = false
+            self.notificationForegroundSwitch?.isEnabled = false
         } else {
-            self.notificationForegroundSwitch?.enabled = true
+            self.notificationForegroundSwitch?.isEnabled = true
         }
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
     
     func tappedNotificationReplySwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
         self.notificationReplyFlag = !self.notificationReplyFlag
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
     
     func tappedNotificationFavSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationFavFlag, forKey: "notificationFavFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationFavFlag, forKey: "notificationFavFlag")
         self.notificationFavFlag = !self.notificationFavFlag
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
     
     func tappedNotificationRTSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationRTFlag, forKey: "notificationRTFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationRTFlag, forKey: "notificationRTFlag")
         self.notificationRTFlag = !self.notificationRTFlag
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
     
     func tappedNotificationDMSwitch() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setBool(!self.notificationDMFlag, forKey: "notificationDMFlag")
+        let userDefault = UserDefaults.standard
+        userDefault.set(!self.notificationDMFlag, forKey: "notificationDMFlag")
         self.notificationDMFlag = !self.notificationDMFlag
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
 
     func accountAlert() {
-        let alertController = UIAlertController(title: "Account not found", message: "iPhoneの設定からtwitterアカウントを登録してください", preferredStyle: UIAlertControllerStyle.Alert)
-        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let alertController = UIAlertController(title: "Account not found", message: "iPhoneの設定からtwitterアカウントを登録してください", preferredStyle: UIAlertControllerStyle.alert)
+        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         alertController.addAction(closeAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func removeAccountInfo() {
-        let userDefault = NSUserDefaults.standardUserDefaults()
+        let userDefault = UserDefaults.standard
         
         // whalebirdからのログアウト
         let params = Dictionary<String, AnyObject>()
@@ -724,23 +724,23 @@ class SettingsTableViewController: UITableViewController{
             }
             
             // timelineやlist情報もすべて削除する必要がある
-            userDefault.setObject(nil, forKey: "username")
+            userDefault.set(nil, forKey: "username")
             self.tableView.reloadData()
             
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 if let controllers = appDelegate.rootController.viewControllers {
                     for navController in controllers {
                         if let targetController = (navController as? UINavigationController)!.topViewController {
-                            if targetController.isKindOfClass(TimelineTableViewController) {
+                            if targetController.isKind(of: TimelineTableViewController.self) {
                                 (targetController as! TimelineTableViewController).clearData()
                             }
-                            if targetController.isKindOfClass(ReplyTableViewController) {
+                            if targetController.isKind(of: ReplyTableViewController.self) {
                                 (targetController as! ReplyTableViewController).clearData()
                             }
-                            if targetController.isKindOfClass(DirectMessageTableViewController) {
+                            if targetController.isKind(of: DirectMessageTableViewController.self) {
                                 (targetController as! DirectMessageTableViewController).clearData()
                             }
-                            if targetController.isKindOfClass(ListTableViewController) {
+                            if targetController.isKind(of: ListTableViewController.self) {
                                 (targetController as! ListTableViewController).clearData()
                             }
                         }

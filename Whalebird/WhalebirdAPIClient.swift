@@ -11,7 +11,7 @@ import AFNetworking
 import UrlShortener
 import SVProgressHUD
 import NoticeView
-import IJReachability
+import ReachabilitySwift
 
 class WhalebirdAPIClient: NSObject {
 
@@ -27,30 +27,30 @@ class WhalebirdAPIClient: NSObject {
     //  instance variables
     //=============================================
     var sessionManager: AFHTTPRequestOperationManager!
-    var whalebirdAPIURL: String = NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String
+    var whalebirdAPIURL: String = Bundle.main.object(forInfoDictionaryKey: "apiurl") as! String
 
     
     //===========================================
     //  class methods
     //===========================================
-    class func convertLocalTime(aUtctime: String) -> String {
-        let utcDateFormatter = NSDateFormatter()
-        utcDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-        utcDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+    class func convertLocalTime(_ aUtctime: String) -> String {
+        let utcDateFormatter = DateFormatter()
+        utcDateFormatter.dateStyle = DateFormatter.Style.long
+        utcDateFormatter.timeStyle = DateFormatter.Style.none
         utcDateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        utcDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        utcDateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
-        let jstDateFormatter =  NSDateFormatter()
-        jstDateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-        jstDateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        let jstDateFormatter =  DateFormatter()
+        jstDateFormatter.dateStyle = DateFormatter.Style.long
+        jstDateFormatter.timeStyle = DateFormatter.Style.none
         jstDateFormatter.dateFormat = "MM月dd日 HH:mm"
         var jstDate = String()
         
-        if let utcDate = utcDateFormatter.dateFromString(aUtctime) {
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            if (userDefault.objectForKey("displayTimeType") != nil && userDefault.integerForKey("displayTimeType") == 2) {
-                let current = NSDate(timeIntervalSinceNow: 0)
-                let timeInterval = current.timeIntervalSinceDate(utcDate)
+        if let utcDate = utcDateFormatter.date(from: aUtctime) {
+            let userDefault = UserDefaults.standard
+            if (userDefault.object(forKey: "displayTimeType") != nil && userDefault.integer(forKey: "displayTimeType") == 2) {
+                let current = Date(timeIntervalSinceNow: 0)
+                let timeInterval = current.timeIntervalSince(utcDate)
                 if (timeInterval < 60) {
                     jstDate = "1分以内"
                 } else if(timeInterval < 3600) {
@@ -61,32 +61,32 @@ class WhalebirdAPIClient: NSObject {
                     jstDate = String(Int(timeInterval / (3600.0 * 24.0))) + "日前"
                 }
             } else {
-                jstDate = jstDateFormatter.stringFromDate(utcDate)
+                jstDate = jstDateFormatter.string(from: utcDate)
             }
         }
         return jstDate
     }
     
-    class func escapeString(aString: String) -> String {
+    class func escapeString(_ aString: String) -> String {
         var escapeStr = String()
         
-        escapeStr = aString.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: [], range: nil)
-        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: [], range: nil)
-        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: [], range: nil)
-        escapeStr = escapeStr.stringByReplacingOccurrencesOfString("&quot;", withString: "\"", options: [], range: nil)
+        escapeStr = aString.replacingOccurrences(of: "&gt;", with: ">", options: [], range: nil)
+        escapeStr = escapeStr.replacingOccurrences(of: "&lt;", with: "<", options: [], range: nil)
+        escapeStr = escapeStr.replacingOccurrences(of: "&amp;", with: "&", options: [], range: nil)
+        escapeStr = escapeStr.replacingOccurrences(of: "&quot;", with: "\"", options: [], range: nil)
         
         return escapeStr
     }
     
     class func encodeClipboardURL() {
-        let pasteboard = UIPasteboard.generalPasteboard()
-        if let clipboardText = pasteboard.valueForPasteboardType("public.text") as? String {
+        let pasteboard = UIPasteboard.general
+        if let clipboardText = pasteboard.value(forPasteboardType: "public.text") as? String {
             if clipboardText.hasPrefix("http://") || clipboardText.hasPrefix("https://") {
-                if let encodedURL = clipboardText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
+                if let encodedURL = clipboardText.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
                     pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
                     let shortener = UrlShortener()
-                    shortener.shortenUrl(encodedURL, withService: UrlShortenerServiceIsgd, completion: { (shortUrl) -> Void in
-                        if shortUrl.hasPrefix("http://") || shortUrl.hasPrefix("https://") {
+                    shortener.shortenUrl(encodedURL, with: UrlShortenerServiceIsgd, completion: { (shortUrl) -> Void in
+                        if (shortUrl?.hasPrefix("http://"))! || (shortUrl?.hasPrefix("https://"))! {
                             pasteboard.setValue(shortUrl, forPasteboardType: "public.text")
                         }
                     }, error: { (error) -> Void in
@@ -101,27 +101,27 @@ class WhalebirdAPIClient: NSObject {
     //  instance methods
     //===========================================
     
-    func cleanDictionary(dict: NSDictionary)->NSMutableDictionary {
+    func cleanDictionary(_ dict: NSDictionary)->NSMutableDictionary {
         let mutableDict: NSMutableDictionary = NSMutableDictionary(dictionary: dict)
-        mutableDict.enumerateKeysAndObjectsUsingBlock { (key, obj, stop) -> Void in
-            if (obj.isKindOfClass(NSNull.classForCoder())) {
+        mutableDict.enumerateKeysAndObjects { (key, obj, stop) -> Void in
+            if (obj.isKind(of: NSNull.classForCoder())) {
                 if let safeKey = key as? NSString {
                     mutableDict.setObject("", forKey: safeKey)
                 }
-            } else if (obj.isKindOfClass(NSDictionary.classForCoder())) {
+            } else if (obj.isKind(of: NSDictionary.classForCoder())) {
                 if let safeObject = obj as? NSDictionary, let safeKey = key as? NSString {
                     mutableDict.setObject(self.cleanDictionary(safeObject), forKey: (safeKey))
                 }
             }
         }
         // 未読フラグは保存時には削除する
-        if mutableDict.objectForKey("unread") as? Bool != nil {
-            mutableDict.removeObjectForKey("unread")
+        if mutableDict.object(forKey: "unread") as? Bool != nil {
+            mutableDict.removeObject(forKey: "unread")
         }
         return mutableDict
     }
     
-    func initAPISession(success:() -> Void, failure:(NSError) -> Void) {
+    func initAPISession(_ success:@escaping () -> Void, failure:@escaping (NSError) -> Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -129,22 +129,22 @@ class WhalebirdAPIClient: NSObject {
         self.sessionManager = AFHTTPRequestOperationManager()
         self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         let requestURL = self.whalebirdAPIURL + "users/apis.json"
-        self.sessionManager.GET(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
+        self.sessionManager.get(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
             print(responseObject)
             self.saveCookie()
-            let userDefault = NSUserDefaults.standardUserDefaults()
-            userDefault.setObject(responseObject["screen_name"], forKey: "username")
+            let userDefault = UserDefaults.standard
+            userDefault.set(responseObject["screen_name"], forKey: "username")
             success()
         }) { (operation, error) -> Void in
             print(error)
-            self.displayErrorMessage(operation, error: error)
+            self.displayErrorMessage(operation!, error: error as! NSError)
             SVProgressHUD.dismiss()
-            failure(error)
+            failure(error as! NSError)
         }
         
     }
     
-    func getArrayAPI(path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: (NSArray) ->Void, failed: () -> Void) {
+    func getArrayAPI(_ path: String, displayError: Bool, params: Dictionary<String, AnyObject>, completed: @escaping (NSArray) ->Void, failed: @escaping () -> Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -152,16 +152,16 @@ class WhalebirdAPIClient: NSObject {
         self.loadCookie()
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
-            self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
+            self.sessionManager.get(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if let object = responseObject as? NSArray {
-                    completed(object.reverseObjectEnumerator().allObjects)
+                    completed(object.reverseObjectEnumerator().allObjects as NSArray)
                 } else {
                     print("blank response")
                 }
             }, failure: { (operation, error) -> Void in
                 print(error)
                 if displayError {
-                    self.displayErrorMessage(operation, error: error)
+                    self.displayErrorMessage(operation!, error: error as! NSError)
                 }
                 failed()
                 SVProgressHUD.dismiss()
@@ -171,7 +171,7 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
-    func getDictionaryAPI(path: String, params: Dictionary<String, AnyObject>, callback: (NSDictionary) ->Void) {
+    func getDictionaryAPI(_ path: String, params: Dictionary<String, AnyObject>, callback: @escaping (NSDictionary) ->Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -179,19 +179,19 @@ class WhalebirdAPIClient: NSObject {
         self.loadCookie()
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
-            self.sessionManager.GET(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
+            self.sessionManager.get(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if let object = responseObject as? NSDictionary {
                     callback(object)
                 } else {
                     print("blank response")
-                    let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Request Error", message: "情報がありません")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
+                    let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Request Error", message: "情報がありません")
+                    notice?.alpha = 0.8
+                    notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                    notice?.show()
                 }
             }, failure: { (operation, error) -> Void in
                 print(error)
-                self.displayErrorMessage(operation, error: error)
+                self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -199,7 +199,7 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
-    func postAnyObjectAPI(path: String, params: Dictionary<String, AnyObject>, callback: (AnyObject) ->Void) {
+    func postAnyObjectAPI(_ path: String, params: Dictionary<String, AnyObject>, callback: @escaping (AnyObject) ->Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -207,15 +207,15 @@ class WhalebirdAPIClient: NSObject {
         self.loadCookie()
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
-            self.sessionManager.POST(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
+            self.sessionManager.post(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback(operation)
+                    callback(operation!)
                 } else {
                     print("blank response")
                 }
             }, failure: { (operation, error) -> Void in
                 print(error)
-                self.displayErrorMessage(operation, error: error)
+                self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -223,7 +223,7 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
-    func postImage(image: UIImage, progress: (Float) -> Void, complete: (NSDictionary) -> Void, failed: (NSError?)-> Void) {
+    func postImage(_ image: UIImage, progress: @escaping (Float) -> Void, complete: @escaping (NSDictionary) -> Void, failed: @escaping (NSError?)-> Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -232,24 +232,24 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
             do {
-                let request = try self.sessionManager.requestSerializer.multipartFormRequestWithMethod("POST",
-                    URLString: self.whalebirdAPIURL + "users/apis/upload.json",
+                let request = try self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
+                    urlString: self.whalebirdAPIURL + "users/apis/upload.json",
                     parameters: [:],
-                    constructingBodyWithBlock: { (formData: AFMultipartFormData!) -> Void in
-                        formData.appendPartWithFileData(
-                            NSData(data: UIImagePNGRepresentation(image)!),
+                    constructingBodyWith: { (formData: AFMultipartFormData!) -> Void in
+                        formData.appendPart(
+                            withFileData: NSData(data: UIImagePNGRepresentation(image)!) as Data,
                             name: "media",
                             fileName: "test.png",
                             mimeType: "image/png")
                     
                     }, error:())
                 
-                let operation = self.sessionManager.HTTPRequestOperationWithRequest(request, success: { (operation, responseObject) -> Void in
+                let operation = self.sessionManager.httpRequestOperation(with: request, success: { (operation, responseObject) -> Void in
                     if (responseObject != nil) {
                         print(responseObject)
-                        if let object = responseObject as? NSData {
+                        if let object = responseObject as? Data {
                             do {
-                                let jsonData = try NSJSONSerialization.JSONObjectWithData(object, options: NSJSONReadingOptions.AllowFragments)
+                                let jsonData = try JSONSerialization.jsonObject(with: object, options: JSONSerialization.ReadingOptions.allowFragments)
                                 complete(jsonData as! NSDictionary)
                             } catch {
                                 failed(nil)
@@ -276,50 +276,50 @@ class WhalebirdAPIClient: NSObject {
         }
     }
     
-    func syncPushSettings(callback: (AnyObject) ->Void) {
-        let userDefault = NSUserDefaults.standardUserDefaults()
+    func syncPushSettings(_ callback: @escaping (AnyObject) ->Void) {
+        let userDefault = UserDefaults.standard
         var notificationBackgroundFlag = true
-        if userDefault.objectForKey("notificationBackgroundFlag") != nil {
-            notificationBackgroundFlag = userDefault.boolForKey("notificationBackgroundFlag")
+        if userDefault.object(forKey: "notificationBackgroundFlag") != nil {
+            notificationBackgroundFlag = userDefault.bool(forKey: "notificationBackgroundFlag")
         }
         var notificationReplyFlag = true
-        if userDefault.objectForKey("notificationReplyFlag") != nil {
-            notificationReplyFlag = userDefault.boolForKey("notificationReplyFlag")
+        if userDefault.object(forKey: "notificationReplyFlag") != nil {
+            notificationReplyFlag = userDefault.bool(forKey: "notificationReplyFlag")
         }
         var notificationRTFlag = true
-        if userDefault.objectForKey("notificationRTFlag") != nil {
-            notificationRTFlag = userDefault.boolForKey("notificationRTFlag")
+        if userDefault.object(forKey: "notificationRTFlag") != nil {
+            notificationRTFlag = userDefault.bool(forKey: "notificationRTFlag")
         }
         var notificationFavFlag = true
-        if userDefault.objectForKey("notificationFavFlag") != nil {
-            notificationFavFlag = userDefault.boolForKey("notificationFavFlag")
+        if userDefault.object(forKey: "notificationFavFlag") != nil {
+            notificationFavFlag = userDefault.bool(forKey: "notificationFavFlag")
         }
         var notificationDMFlag = true
-        if userDefault.objectForKey("notificationDMFlag") != nil {
-            notificationDMFlag = userDefault.boolForKey("notificationDMFlag")
+        if userDefault.object(forKey: "notificationDMFlag") != nil {
+            notificationDMFlag = userDefault.bool(forKey: "notificationDMFlag")
         }
         var params: Dictionary<String, AnyObject> = [
-            "notification" : notificationBackgroundFlag,
-            "reply" : notificationReplyFlag,
-            "retweet" : notificationRTFlag,
-            "favorite" : notificationFavFlag,
-            "direct_message" : notificationDMFlag
+            "notification" : notificationBackgroundFlag as AnyObject,
+            "reply" : notificationReplyFlag as AnyObject,
+            "retweet" : notificationRTFlag as AnyObject,
+            "favorite" : notificationFavFlag as AnyObject,
+            "direct_message" : notificationDMFlag as AnyObject
         ]
-        if let deviceToken = userDefault.stringForKey("deviceToken") {
-            params["device_token"] = deviceToken
+        if let deviceToken = userDefault.string(forKey: "deviceToken") {
+            params["device_token"] = deviceToken as AnyObject?
         }
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/update_settings.json", params: cParameter) { (operation) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
                 callback(operation)
             })
         }
     }
     
-    func deleteSsessionAPI(path: String, params: Dictionary<String, AnyObject>,callback: (AnyObject) -> Void) {
+    func deleteSsessionAPI(_ path: String, params: Dictionary<String, AnyObject>,callback: @escaping (AnyObject) -> Void) {
         if !self.confirmConnectedNetwork() {
             SVProgressHUD.dismiss()
             return
@@ -327,16 +327,16 @@ class WhalebirdAPIClient: NSObject {
         self.loadCookie()
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
-            self.sessionManager.DELETE(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
+            self.sessionManager.delete(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback(operation)
+                    callback(operation!)
                 } else {
                     print("blank response")
-                    callback(operation)
+                    callback(operation!)
                 }
             }, failure: { (operation, error) -> Void in
                 print(error)
-                self.displayErrorMessage(operation, error: error)
+                self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -351,18 +351,18 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func regenerateSession() {
-        let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
-        notice.alpha = 0.8
-        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-        notice.show()
+        let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+        notice?.alpha = 0.8
+        notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+        notice?.show()
         SVProgressHUD.dismiss()
     }
     
     func loadCookie() {
-        if let cookiesData = NSUserDefaults.standardUserDefaults().objectForKey("cookiesKey") as? NSData {
-            if let cookies = NSKeyedUnarchiver.unarchiveObjectWithData(cookiesData) as? NSArray {
+        if let cookiesData = UserDefaults.standard.object(forKey: "cookiesKey") as? Data {
+            if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? NSArray {
                 for cookie in cookies {
-                    NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie as! NSHTTPCookie)
+                    HTTPCookieStorage.shared.setCookie(cookie as! HTTPCookie)
                 }
                 self.sessionManager = AFHTTPRequestOperationManager()
                 self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
@@ -371,16 +371,16 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func saveCookie() {
-        let cookiesData = NSKeyedArchiver.archivedDataWithRootObject(NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies!)
-        NSUserDefaults.standardUserDefaults().setObject(cookiesData, forKey: "cookiesKey")
+        let cookiesData = NSKeyedArchiver.archivedData(withRootObject: HTTPCookieStorage.shared.cookies!)
+        UserDefaults.standard.set(cookiesData, forKey: "cookiesKey")
     }
     
     func removeSession() {
         self.sessionManager = nil
-        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "cookiesKey")
+        UserDefaults.standard.set(nil, forKey: "cookiesKey")
     }
     
-    func displayErrorMessage(operation: AFHTTPRequestOperation, error: NSError) {
+    func displayErrorMessage(_ operation: AFHTTPRequestOperation, error: NSError) {
         var errorMessage = String()
         if (operation.response == nil) {
             if (error.code != NSURLErrorCancelled) {
@@ -395,9 +395,9 @@ class WhalebirdAPIClient: NSObject {
         } else if (operation.response.statusCode == 499) {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
             do {
-                let jsonData = try NSJSONSerialization.JSONObjectWithData(operation.responseData, options: NSJSONReadingOptions.AllowFragments)
-                if jsonData.objectForKey("errors") as? String != nil {
-                    errorMessage = jsonData.objectForKey("errors") as! String
+                let jsonData = try JSONSerialization.jsonObject(with: operation.responseData, options: JSONSerialization.ReadingOptions.allowFragments)
+                if (jsonData as AnyObject).object(forKey: "errors") as? String != nil {
+                    errorMessage = (jsonData as AnyObject).object(forKey: "errors") as! String
                 }
             } catch {
             }
@@ -405,18 +405,18 @@ class WhalebirdAPIClient: NSObject {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
         }
 
-        let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Server Error", message: errorMessage)
-        notice.alpha = 0.8
-        notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-        notice.show()
+        let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Server Error", message: errorMessage)
+        notice?.alpha = 0.8
+        notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+        notice?.show()
     }
     
     func confirmConnectedNetwork() ->Bool {
-        if !IJReachability.isConnectedToNetwork() {
-            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
-            notice.alpha = 0.8
-            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-            notice.show()
+        if !(Reachability()?.isReachable)! {
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice?.alpha = 0.8
+            notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+            notice?.show()
             return false
         }
         return true

@@ -11,12 +11,12 @@ import XCTest
 
 // TODO: 時間関連のテストはTimeCamouflageができてから
 class FriendsListTests: XCTestCase {
-    var userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var userDefaults: UserDefaults = UserDefaults.standard
     
     override func setUp() {
         super.setUp()
-        self.userDefaults.removeObjectForKey("failed_date")
-        self.userDefaults.removeObjectForKey("success_date")
+        self.userDefaults.removeObject(forKey: "failed_date")
+        self.userDefaults.removeObject(forKey: "success_date")
         FriendsList.sharedClient.friendsList = []
         FriendsList.sharedClient.saveFriendsInCache()
         FriendsList.sharedClient.friendsList = [
