@@ -23,7 +23,7 @@ class DirectMessageTableViewController: UITableViewController {
     //============================================
     //  instance methods
     //============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -31,11 +31,11 @@ class DirectMessageTableViewController: UITableViewController {
         super.init(style: style)
         self.title = "DM"
         self.tabBarItem.image = UIImage(named: "Mail")
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let sinceId = userDefaults.stringForKey("directMessageSinceId") as String?
-        let directMessage = userDefaults.arrayForKey("directMessage") as Array?
+        let userDefaults = UserDefaults.standard
+        let sinceId = userDefaults.string(forKey: "directMessageSinceId") as String?
+        let directMessage = userDefaults.array(forKey: "directMessage") as Array?
         
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage)
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage as Array<AnyObject>?)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -48,11 +48,11 @@ class DirectMessageTableViewController: UITableViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.refreshMessage = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshMessage.addTarget(self, action: #selector(DirectMessageTableViewController.onRefresh), forControlEvents: UIControlEvents.ValueChanged)
-        self.edgesForExtendedLayout = UIRectEdge.None
+        self.refreshMessage = ODRefreshControl(in: self.tableView)
+        self.refreshMessage.addTarget(self, action: #selector(DirectMessageTableViewController.onRefresh), for: UIControlEvents.valueChanged)
+        self.edgesForExtendedLayout = UIRectEdge()
         
-        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
 
     }
 
@@ -62,89 +62,89 @@ class DirectMessageTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.timelineModel.count()
     }
 
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as? TimelineViewCell
         if (cell == nil) {
-            cell = TimelineViewCell(style: .Default, reuseIdentifier: "TimelineViewCell")
+            cell = TimelineViewCell(style: .default, reuseIdentifier: "TimelineViewCell")
         }
         cell!.cleanCell()
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            cell!.configureCell(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            cell!.configureCell(targetMessage as NSDictionary)
         }
 
 
         return cell!
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetMessage as NSDictionary)
         }
         return height
     }
 
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetMessage = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetMessage)
+        if let targetMessage = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetMessage as NSDictionary)
         }
         return height
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cMessageData = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            if TimelineModel.selectMoreIdCell(cMessageData) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cMessageData = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            if TimelineModel.selectMoreIdCell(cMessageData as NSDictionary) {
                 var sinceID = cMessageData["sinceID"] as? String
                 if (sinceID == "sinceID") {
                     sinceID = nil
                 }
-                self.updateMessage(sinceID, aMoreIndex: indexPath.row)
+                self.updateMessage(sinceID, aMoreIndex: (indexPath as NSIndexPath).row)
             } else {
                 let messageModel = MessageModel(dict: cMessageData)
                 let detailView = MessageDetailViewController(aMessageModel: messageModel)
                 self.navigationController?.pushViewController(detailView, animated: true)
                 
             }
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
-    func updateMessage(aSinceID: String?, aMoreIndex: Int?) {
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+    func updateMessage(_ aSinceID: String?, aMoreIndex: Int?) {
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/direct_messages.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                    let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
-                    self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                let userDefault = UserDefaults.standard
+                if (currentRowIndex != nil && userDefault.integer(forKey: "afterUpdatePosition") == 2) {
+                    let indexPath = IndexPath(row: currentRowIndex!, section: 0)
+                    self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件更新")
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
                 
             }, noUpdated: { () -> Void in
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "新着なし")
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
             }, failed: { () -> Void in
                 
         })
@@ -159,7 +159,7 @@ class DirectMessageTableViewController: UITableViewController {
     }
     
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.destroy()
     }
@@ -170,9 +170,9 @@ class DirectMessageTableViewController: UITableViewController {
     
     func clearData() {
         self.timelineModel.clearData()
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(nil, forKey: "directMessageSinceID")
-        userDefaults.setObject(nil, forKey: "directMessage")
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(nil, forKey: "directMessageSinceID")
+        userDefaults.set(nil, forKey: "directMessage")
         self.tableView.reloadData()
     }
 }

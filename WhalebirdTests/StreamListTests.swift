@@ -10,11 +10,11 @@ import XCTest
 @testable import Whalebird
 
 class StreamListTests: XCTestCase {
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = UserDefaults.standard
     
     override func setUp() {
         super.setUp()
-        self.userDefaults.removeObjectForKey("streamList")
+        self.userDefaults.removeObject(forKey: "streamList")
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     

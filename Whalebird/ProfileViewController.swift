@@ -18,51 +18,51 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     //=============================================
     //  class variables
     //=============================================
-    private static let StatusHeight = CGFloat(40)
-    private static let TextMargin = CGFloat(5)
+    fileprivate static let StatusHeight = CGFloat(40)
+    fileprivate static let TextMargin = CGFloat(5)
     
     //===================================
     //  instance variables
     //===================================
-    private var headerImageHeight = CGFloat(160)
-    private var privateAccount = false
+    fileprivate var headerImageHeight = CGFloat(160)
+    fileprivate var privateAccount = false
     var myself = false
     
-    private var twitterScreenName: String!
-    private var windowSize: CGRect!
-    private var headerHeight: CGFloat!
-    private var profileHeaderImageSrc: NSURL?
+    fileprivate var twitterScreenName: String!
+    fileprivate var windowSize: CGRect!
+    fileprivate var headerHeight: CGFloat!
+    fileprivate var profileHeaderImageSrc: URL?
     
-    private var profileImage: UIImageView!
-    private var profileHeaderImage: UIImageView!
-    private var userNameLabel: UILabel!
-    private var followStatusLabel: UILabel!
-    private var descriptionLabel: UILabel!
+    fileprivate var profileImage: UIImageView!
+    fileprivate var profileHeaderImage: UIImageView!
+    fileprivate var userNameLabel: UILabel!
+    fileprivate var followStatusLabel: UILabel!
+    fileprivate var descriptionLabel: UILabel!
     
-    private var tweetNumLabel: UIButton!
-    private var followNumLabel: UIButton!
-    private var followerNumLabel: UIButton!
+    fileprivate var tweetNumLabel: UIButton!
+    fileprivate var followNumLabel: UIButton!
+    fileprivate var followerNumLabel: UIButton!
     
-    private var tableView: UITableView!
-    private var scrollView: UIScrollView!
+    fileprivate var tableView: UITableView!
+    fileprivate var scrollView: UIScrollView!
     
-    private var followButton: UIBarButtonItem!
-    private var unfollowButton: UIBarButtonItem!
+    fileprivate var followButton: UIBarButtonItem!
+    fileprivate var unfollowButton: UIBarButtonItem!
     
-    private var followUsers: Array<AnyObject> = []
-    private var followUsersNextCursor: String?
-    private var followerUsers: Array<AnyObject> = []
-    private var followerUsersNextCursor: String?
-    private var privateAccountAnnounce: Array<AnyObject> = []
+    fileprivate var followUsers: Array<AnyObject> = []
+    fileprivate var followUsersNextCursor: String?
+    fileprivate var followerUsers: Array<AnyObject> = []
+    fileprivate var followerUsersNextCursor: String?
+    fileprivate var privateAccountAnnounce: Array<AnyObject> = []
     
-    private var selectedButtonColor = UIColor.whiteColor()
-    private let unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
-    private let selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
-    private let unselectedTextColor = UIColor.grayColor()
+    fileprivate var selectedButtonColor = UIColor.white
+    fileprivate let unselectedButtonColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
+    fileprivate let selectedTextColor = UIColor(red: 0.176, green: 0.584, blue: 0.957, alpha: 1.0)
+    fileprivate let unselectedTextColor = UIColor.gray
     
     
-    private var tableType: Int = Int(0)
-    private var timelineModel: TimelineModel!
+    fileprivate var tableType: Int = Int(0)
+    fileprivate var timelineModel: TimelineModel!
     
     //==========================================
     //  instance methods
@@ -72,7 +72,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -89,70 +89,70 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.scrollView = UIScrollView(frame: self.view.bounds)
         self.view.addSubview(self.scrollView)
         
-        self.windowSize = UIScreen.mainScreen().bounds
-        self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.size.height
+        self.windowSize = UIScreen.main.bounds
+        self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.size.height
         
-        self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ProfileViewController.tappedFollow))
-        self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ProfileViewController.tappedUnfollow))
+        self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedFollow))
+        self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedUnfollow))
         
-        self.tableView = UITableView(frame: CGRectMake(0, self.headerImageHeight + ProfileViewController.StatusHeight, self.windowSize.size.width, 100))
+        self.tableView = UITableView(frame: CGRect(x: 0, y: self.headerImageHeight + ProfileViewController.StatusHeight, width: self.windowSize.size.width, height: 100))
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.scrollEnabled = false
-        self.tableView.separatorInset = UIEdgeInsetsZero
+        self.tableView.isScrollEnabled = false
+        self.tableView.separatorInset = UIEdgeInsets.zero
         self.scrollView.addSubview(self.tableView)
-        self.scrollView.scrollEnabled = true
+        self.scrollView.isScrollEnabled = true
         self.scrollView.delegate = self
         self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.windowSize.size.height + 100)
 
 
-        self.scrollView.addPullToRefreshWithActionHandler({ () -> Void in
+        self.scrollView.addPullToRefresh(actionHandler: { () -> Void in
             self.userTableRefresh()
-        }, position: SVPullToRefreshPosition.Bottom)
+        }, position: SVPullToRefreshPosition.bottom)
 
-        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         // SVProgressHUDの表示スタイル設定
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ProfileViewController.hudTapped), name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.hudTapped), name: NSNotification.Name.SVProgressHUDDidReceiveTouchEvent, object: nil)
         
         let params:Dictionary<String, String> = [
             "screen_name" : self.twitterScreenName
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         //-------------------------
         //  header
         //-------------------------
-        self.profileHeaderImage = UIImageView(frame: CGRectMake(0, 0, self.windowSize.width, self.headerImageHeight))
+        self.profileHeaderImage = UIImageView(frame: CGRect(x: 0, y: 0, width: self.windowSize.width, height: self.headerImageHeight))
         self.profileHeaderImage.image = UIImage(named: "profile_back")
         self.scrollView.addSubview(self.profileHeaderImage)
             
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/profile_banner.json", params: cParameter, callback: { (aHeaderData) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
-                if (aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") != nil){
-                    let headerImageURL = NSURL(string: aHeaderData.objectForKey("sizes")?.objectForKey("mobile_retina")?.objectForKey("url") as! String)
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
+                if (((aHeaderData.object(forKey: "sizes") as? NSDictionary)?.object(forKey: "mobile_retina") as? NSDictionary)?.object(forKey: "url") != nil){
+                    let headerImageURL = URL(string: ((aHeaderData.object(forKey: "sizes") as? NSDictionary)?.object(forKey: "mobile_retina") as? NSDictionary)?.object(forKey: "url") as! String)
                     self.profileHeaderImage.removeFromSuperview()
-                    self.profileHeaderImage.sd_setImageWithURL(headerImageURL, placeholderImage: UIImage(named: "profile_back"))
+                    self.profileHeaderImage.sd_setImage(with: headerImageURL, placeholderImage: UIImage(named: "profile_back"))
                     self.scrollView.addSubview(self.profileHeaderImage)
                     self.profileHeaderImageSrc = headerImageURL
                 }
             })
             WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/user.json", params: cParameter, callback: { (aUserData) -> Void in
-                let q_sub = dispatch_get_main_queue()
-                dispatch_async(q_sub, {()->Void in
+                let q_sub = DispatchQueue.main
+                q_sub.async(execute: {()->Void in
                     
-                    self.privateAccount = aUserData.objectForKey("private_account?") as! Bool
+                    self.privateAccount = aUserData.object(forKey: "private_account?") as! Bool
                     
                     // フォローイベント
-                    if (aUserData.objectForKey("follow_request_sent?") as! Bool) {
+                    if (aUserData.object(forKey: "follow_request_sent?") as! Bool) {
                     } else {
                         if self.myself {
                             self.navigationItem.rightBarButtonItem = nil
                         } else {
-                            if aUserData.objectForKey("following?") as! Bool {
+                            if aUserData.object(forKey: "following?") as! Bool {
                                 self.navigationItem.rightBarButtonItem = self.unfollowButton
                             } else {
                                 self.navigationItem.rightBarButtonItem = self.followButton
@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //-----------------------------
                     if self.privateAccount && !self.myself {
                         self.tableType = 3
-                        self.privateAccountAnnounce = ["private"]
+                        self.privateAccountAnnounce = ["private" as AnyObject]
                         self.tableView.reloadData()
                         SVProgressHUD.dismiss()
                     } else {
@@ -172,35 +172,35 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                     
                     // プロフィール表示
-                    let profileImageURL = NSURL(string: aUserData.objectForKey("profile_image_url") as! String)
-                    self.profileImage = UIImageView(frame: CGRectMake(0, 0, 40, 40))
+                    let profileImageURL = URL(string: aUserData.object(forKey: "profile_image_url") as! String)
+                    self.profileImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
                     self.profileImage.center = CGPoint(x: self.windowSize.width / 2.0, y: 40)
-                    self.profileImage.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+                    self.profileImage.sd_setImage(with: profileImageURL, placeholderImage: UIImage(named: "noimage"))
                     // 角丸にする
                     self.profileImage.layer.cornerRadius = 6.0
                     self.profileImage.layer.masksToBounds = true
                     self.profileImage.layer.borderWidth = 0.0
                     self.scrollView.addSubview(self.profileImage)
                     
-                    self.userNameLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
-                    self.userNameLabel.text = aUserData.objectForKey("name") as? String
+                    self.userNameLabel = UILabel(frame: CGRect(x: self.windowSize.width * 0.1, y: self.profileImage.frame.origin.y + self.profileImage.frame.size.height + ProfileViewController.TextMargin, width: self.windowSize.width * 0.8, height: 15))
+                    self.userNameLabel.text = aUserData.object(forKey: "name") as? String
                     self.userNameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: 14)
-                    self.userNameLabel.textColor = UIColor.blackColor()
+                    self.userNameLabel.textColor = UIColor.black
                     self.userNameLabel.sizeToFit()
-                    self.userNameLabel.textAlignment = NSTextAlignment.Center
+                    self.userNameLabel.textAlignment = NSTextAlignment.center
                     var nameFrame:CGRect = self.userNameLabel.frame
                     nameFrame.size.width += 10
                     nameFrame.size.height += 5
                     self.userNameLabel.frame = nameFrame
                     self.userNameLabel.layer.cornerRadius = 5
                     self.userNameLabel.clipsToBounds = true
-                    self.userNameLabel.center = CGPointMake(self.windowSize.width / 2.0, 80)
+                    self.userNameLabel.center = CGPoint(x: self.windowSize.width / 2.0, y: 80)
                     self.userNameLabel.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.8)
                     self.scrollView.addSubview(self.userNameLabel)
                     
-                    self.followStatusLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
+                    self.followStatusLabel = UILabel(frame: CGRect(x: self.windowSize.width * 0.1, y: self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, width: self.windowSize.width * 0.8, height: 15))
                     if !self.myself {
-                        if aUserData.objectForKey("follower?") as! Bool {
+                        if aUserData.object(forKey: "follower?") as! Bool {
                             self.followStatusLabel.text = "フォローされています"
                         } else {
                             self.followStatusLabel.text = "フォローされていません"
@@ -210,7 +210,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followStatusLabel.textColor = self.unselectedTextColor
                     self.followStatusLabel.backgroundColor = self.unselectedButtonColor
                     self.followStatusLabel.sizeToFit()
-                    self.followStatusLabel.textAlignment = NSTextAlignment.Center
+                    self.followStatusLabel.textAlignment = NSTextAlignment.center
                     var followFrame:CGRect = self.followStatusLabel.frame
                     followFrame.size.width += 10
                     followFrame.size.height += 5
@@ -220,12 +220,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followStatusLabel.center.x = self.windowSize.width     / 2.0
                     self.scrollView.addSubview(self.followStatusLabel)
                     
-                    self.descriptionLabel = UILabel(frame: CGRectMake(self.windowSize.width * 0.1, self.followStatusLabel.frame.origin.y + self.followStatusLabel.frame.size.height + ProfileViewController.TextMargin, self.windowSize.width * 0.8, 15))
+                    self.descriptionLabel = UILabel(frame: CGRect(x: self.windowSize.width * 0.1, y: self.followStatusLabel.frame.origin.y + self.followStatusLabel.frame.size.height + ProfileViewController.TextMargin, width: self.windowSize.width * 0.8, height: 15))
                     self.descriptionLabel.numberOfLines = 5
-                    self.descriptionLabel.text = aUserData.objectForKey("description") as? String
+                    self.descriptionLabel.text = aUserData.object(forKey: "description") as? String
                     self.descriptionLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 11)
                     self.descriptionLabel.sizeToFit()
-                    self.descriptionLabel.textAlignment = NSTextAlignment.Center
+                    self.descriptionLabel.textAlignment = NSTextAlignment.center
                     var descriptionFrame: CGRect = self.descriptionLabel.frame
                     descriptionFrame.size.width += 10
                     descriptionFrame.size.height += 5
@@ -242,7 +242,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         self.tableView.frame.origin.y = self.headerImageHeight + ProfileViewController.StatusHeight
                         self.profileHeaderImage.frame.size.height = self.headerImageHeight
                         if (self.profileHeaderImageSrc != nil) {
-                            self.profileHeaderImage.sd_setImageWithURL(self.profileHeaderImageSrc!, placeholderImage: UIImage(named: "noimage"))
+                            self.profileHeaderImage.sd_setImage(with: self.profileHeaderImageSrc!, placeholderImage: UIImage(named: "noimage"))
                         } else {
                             self.profileHeaderImage.image = UIImage(named: "profile_back")
                         }
@@ -252,49 +252,49 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //  status
                     //-----------------------------
                     
-                    let tweetNumText = ("ツイート：" + String(aUserData.objectForKey("statuses_count") as! Int)) as NSString
-                    let tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFontOfSize(14)])
-                    let tweetNumRange: NSRange = tweetNumText.rangeOfString("ツイート：")
-                    tweetNumAttributedString.setFont(UIFont.systemFontOfSize(10), range: tweetNumRange)
+                    let tweetNumText = ("ツイート：" + String(aUserData.object(forKey: "statuses_count") as! Int)) as NSString
+                    let tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let tweetNumRange: NSRange = tweetNumText.range(of: "ツイート：")
+                    tweetNumAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: tweetNumRange)
                     
-                    self.tweetNumLabel = UIButton(frame: CGRectMake(0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
+                    self.tweetNumLabel = UIButton(frame: CGRect(x: 0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
                     
-                    self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, forState: UIControlState.Normal)
-                    self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
-                    self.tweetNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                    self.tweetNumLabel.setAttributedTitle(tweetNumAttributedString, for: UIControlState())
+                    self.tweetNumLabel.titleLabel?.textAlignment = NSTextAlignment.center
+                    self.tweetNumLabel.layer.borderColor = UIColor.gray.cgColor
                     self.tweetNumLabel.layer.borderWidth = 0.5
                     self.tweetNumLabel.backgroundColor = self.selectedButtonColor
-                    self.tweetNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedTweetNum), forControlEvents: UIControlEvents.TouchDown)
+                    self.tweetNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedTweetNum), for: UIControlEvents.touchDown)
                     self.scrollView.addSubview(self.tweetNumLabel)
                     
                     
-                    let followText = ("フォロー：" + String(aUserData.objectForKey("friends_count") as! Int)) as NSString
-                    let followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
-                    let followRange: NSRange = followText.rangeOfString("フォロー：")
-                    followAttributedString.setFont(UIFont.systemFontOfSize(10), range: followRange)
+                    let followText = ("フォロー：" + String(aUserData.object(forKey: "friends_count") as! Int)) as NSString
+                    let followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let followRange: NSRange = followText.range(of: "フォロー：")
+                    followAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followRange)
                     
-                    self.followNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width / 3.0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
-                    self.followNumLabel.setAttributedTitle(followAttributedString, forState: .Normal)
-                    self.followNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
-                    self.followNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                    self.followNumLabel = UIButton(frame: CGRect(x: self.windowSize.size.width / 3.0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
+                    self.followNumLabel.setAttributedTitle(followAttributedString, for: UIControlState())
+                    self.followNumLabel.titleLabel?.textAlignment = NSTextAlignment.center
+                    self.followNumLabel.layer.borderColor = UIColor.gray.cgColor
                     self.followNumLabel.layer.borderWidth = 0.5
                     self.followNumLabel.backgroundColor = self.unselectedButtonColor
-                    self.followNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowNum), forControlEvents: UIControlEvents.TouchDown)
+                    self.followNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowNum), for: UIControlEvents.touchDown)
                     self.scrollView.addSubview(self.followNumLabel)
                     self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                     
-                    let followerText = ("フォロワー：" + String(aUserData.objectForKey("followers_count") as! Int)) as NSString
-                    let followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFontOfSize(14)])
-                    let followerRange: NSRange = followerText.rangeOfString("フォロワー：")
-                    followerAttributedString.setFont(UIFont.systemFontOfSize(10), range: followerRange)
+                    let followerText = ("フォロワー：" + String(aUserData.object(forKey: "followers_count") as! Int)) as NSString
+                    let followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let followerRange: NSRange = followerText.range(of: "フォロワー：")
+                    followerAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followerRange)
                     
-                    self.followerNumLabel = UIButton(frame: CGRectMake(self.windowSize.size.width * 2.0 / 3.0, self.headerImageHeight, self.windowSize.size.width / 3.0, ProfileViewController.StatusHeight))
-                    self.followerNumLabel.setAttributedTitle(followerAttributedString, forState: .Normal)
-                    self.followerNumLabel.titleLabel?.textAlignment = NSTextAlignment.Center
-                    self.followerNumLabel.layer.borderColor = UIColor.grayColor().CGColor
+                    self.followerNumLabel = UIButton(frame: CGRect(x: self.windowSize.size.width * 2.0 / 3.0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
+                    self.followerNumLabel.setAttributedTitle(followerAttributedString, for: UIControlState())
+                    self.followerNumLabel.titleLabel?.textAlignment = NSTextAlignment.center
+                    self.followerNumLabel.layer.borderColor = UIColor.gray.cgColor
                     self.followerNumLabel.layer.borderWidth = 0.5
                     self.followerNumLabel.backgroundColor = self.unselectedButtonColor
-                    self.followerNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowerNum), forControlEvents: UIControlEvents.TouchDown)
+                    self.followerNumLabel.addTarget(self, action: #selector(ProfileViewController.tappedFollowerNum), for: UIControlEvents.touchDown)
                     self.scrollView.addSubview(self.followerNumLabel)
                     
                 })
@@ -307,13 +307,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         
@@ -338,69 +338,69 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         return row
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
         switch(self.tableType) {
         case 0:
-            var timelineCell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+            var timelineCell = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as? TimelineViewCell
             if (timelineCell == nil) {
-                timelineCell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+                timelineCell = TimelineViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "TimelineViewCell")
             }
             
             timelineCell!.cleanCell()
-            if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
-                timelineCell!.configureCell(targetTimeline)
+            if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+                timelineCell!.configureCell(targetTimeline as NSDictionary)
             }
             return timelineCell!
         case 1:
-            let profileImageURL = NSURL(string: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url_https") as! String)
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
+            let profileImageURL = URL(string: (self.followUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "profile_image_url_https") as! String)
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
+            cell?.textLabel?.text = (self.followUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
-            cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.textColor = UIColor.gray
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
-            cell?.detailTextLabel?.text = "@" + ((self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String!)
+            cell?.detailTextLabel?.text = "@" + ((self.followUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "screen_name") as! String!)
             
-            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+            cell?.imageView?.sd_setImage(with: profileImageURL, placeholderImage: UIImage(named: "noimage"))
             // 角丸にする
             cell?.imageView?.layer.cornerRadius = 6.0
             cell?.imageView?.layer.masksToBounds = true
             cell?.imageView?.layer.borderWidth = 0.0
             break
         case 2:
-            let profileImageURL = NSURL(string: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("profile_image_url_https") as! String)
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("name") as? String
+            let profileImageURL = URL(string: (self.followerUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "profile_image_url_https") as! String)
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
+            cell?.textLabel?.text = (self.followerUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "name") as? String
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
-            cell?.detailTextLabel?.textColor = UIColor.grayColor()
+            cell?.detailTextLabel?.textColor = UIColor.gray
             cell?.detailTextLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
-            cell?.detailTextLabel?.text = "@" + ((self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String
+            cell?.detailTextLabel?.text = "@" + ((self.followerUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "screen_name") as! String
             )
-            cell?.imageView?.sd_setImageWithURL(profileImageURL, placeholderImage: UIImage(named: "noimage"))
+            cell?.imageView?.sd_setImage(with: profileImageURL, placeholderImage: UIImage(named: "noimage"))
             // 角丸にする
             cell?.imageView?.layer.cornerRadius = 6.0
             cell?.imageView?.layer.masksToBounds = true
             cell?.imageView?.layer.borderWidth = 0.0
             break
         case 3:
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
             cell?.textLabel?.text = "非公開アカウントです"
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             break
         default:
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Cell")
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
             break
         }
         
         return cell!
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
         switch(self.tableType) {
         case 0:
-            if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
-                height = TimelineViewCell.estimateCellHeight(targetTimeline)
+            if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+                height = TimelineViewCell.estimateCellHeight(targetTimeline as NSDictionary)
             }
             self.scrollView.contentSize = CGSize(width: self.windowSize.size.width, height: self.tableView.contentSize.height + self.headerImageHeight + ProfileViewController.StatusHeight + self.tabBarController!.tabBar.frame.size.height)
             self.tableView.frame.size.height = self.tableView.contentSize.height
@@ -418,31 +418,31 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
    
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch(self.tableType){
         case 0:
-            if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
+            if let cTweetData = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
                 let tweetModel = TweetModel(dict: cTweetData)
-                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: (indexPath as NSIndexPath).row)
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
             break
         case 1:
-            let userProfileView = ProfileViewController(aScreenName: (self.followUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
+            let userProfileView = ProfileViewController(aScreenName: (self.followUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "screen_name") as! String)
             self.navigationController?.pushViewController(userProfileView, animated: true)
             break
         case 2:
-            let userProfileView = ProfileViewController(aScreenName: (self.followerUsers[indexPath.row] as! NSDictionary).objectForKey("screen_name") as! String)
+            let userProfileView = ProfileViewController(aScreenName: (self.followerUsers[(indexPath as NSIndexPath).row] as! NSDictionary).object(forKey: "screen_name") as! String)
             self.navigationController?.pushViewController(userProfileView, animated: true)
             break
         default:
             break
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // 途中読み込みがないので，変則的なメソッド追加でtimelineModelに寄せられそう
-    func updateTimeline(aMoreIndex: Int?) {
+    func updateTimeline(_ aMoreIndex: Int?) {
         var params: Dictionary<String, String> = [
             "contributor_details" : "false",
             "trim_user" : "0",
@@ -455,10 +455,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params,
-            "screen_name" : self.twitterScreenName
+            "settings" : params as AnyObject,
+            "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineWithoutMoreCell("users/apis/user_timeline.json",
             requestParameter: cParameter,
             moreIndex: aMoreIndex,
@@ -476,7 +476,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         })
     }
     
-    func updateFollowUser(aNextCursor: String?) {
+    func updateFollowUser(_ aNextCursor: String?) {
         var params: Dictionary<String, String> =  [
             "screen_name" : self.twitterScreenName
         ]
@@ -484,15 +484,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             params["cursor"] = aNextCursor!
         }
         let parameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
                 let user = aFollows as NSDictionary
-                self.followUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followUsers = self.followUsers + (user.objectForKey("users") as! Array<AnyObject>)
+                self.followUsersNextCursor = user.object(forKey: "next_cursor_str") as? String
+                self.followUsers = self.followUsers + (user.object(forKey: "users") as! Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
@@ -502,7 +502,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func updateFollowerUser(aNextCursor: String?) {
+    func updateFollowerUser(_ aNextCursor: String?) {
         var params: Dictionary<String, String> =  [
             "screen_name" : self.twitterScreenName
         ]
@@ -510,16 +510,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             params["cursor"] = aNextCursor!
         }
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params,
-            "screen_name" : self.twitterScreenName
+            "settings" : params as AnyObject,
+            "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, {()->Void in
+            let q_main = DispatchQueue.main
+            q_main.async(execute: {()->Void in
                 let user = aFollows as NSDictionary
-                self.followerUsersNextCursor = user.objectForKey("next_cursor_str") as? String
-                self.followerUsers = self.followerUsers + (user.objectForKey("users") as! Array<AnyObject>)
+                self.followerUsersNextCursor = user.object(forKey: "next_cursor_str") as? String
+                self.followerUsers = self.followerUsers + (user.object(forKey: "users") as! Array<AnyObject>)
                 self.tableView.frame.size.height = CGFloat(self.followerUsers.count) * 60.0 + self.headerHeight
                 self.tableView.reloadData()
                 self.scrollView.pullToRefreshView.stopAnimating()
@@ -555,7 +555,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let attributed = self.followNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             let range = NSRangeFromString((self.followNumLabel.titleLabel?.text)!)
             attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
-            self.followNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+            self.followNumLabel.setAttributedTitle(attributed, for: UIControlState())
             self.followNumLabel.titleLabel?.textColor = self.selectedTextColor
             self.followerNumLabel.backgroundColor = self.unselectedButtonColor
             self.followerNumLabel.titleLabel?.textColor = self.unselectedTextColor
@@ -579,7 +579,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let attributed = self.followerNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             let range = NSRangeFromString((self.followerNumLabel.titleLabel?.text)!)
             attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
-            self.followerNumLabel.setAttributedTitle(attributed, forState: UIControlState.Normal)
+            self.followerNumLabel.setAttributedTitle(attributed, for: UIControlState())
             self.followerNumLabel.titleLabel?.textColor = self.selectedTextColor
             if (self.followerUsers.count == 0) {
                 self.updateFollowerUser(nil)
@@ -613,23 +613,23 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tappedFollow() {
-        let followAlert = UIAlertController(title: "Follow", message: "フォローしますか？", preferredStyle: .Alert)
-        let cOkAction = UIAlertAction(title: "フォローする", style: .Default) { (action) -> Void in
+        let followAlert = UIAlertController(title: "Follow", message: "フォローしますか？", preferredStyle: .alert)
+        let cOkAction = UIAlertAction(title: "フォローする", style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [
-                "screen_name" : self.twitterScreenName
+                "screen_name" : self.twitterScreenName as AnyObject
             ]
             let params: Dictionary<String, AnyObject> = [
-                "settings" : parameter
+                "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/follow.json", params: params) { (response) -> Void in
-                let q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
+                let q_main = DispatchQueue.main
+                q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
-                    let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォローしました")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
+                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォローしました")
+                    notice?.alpha = 0.8
+                    notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                    notice?.show()
                     if (self.privateAccount) {
                     } else{
                         self.navigationItem.rightBarButtonItem = self.unfollowButton
@@ -637,40 +637,40 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 })
             }
         }
-        let cCancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.Cancel) { (action) -> Void in
+        let cCancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         followAlert.addAction(cCancelAction)
         followAlert.addAction(cOkAction)
-        self.presentViewController(followAlert, animated: true, completion: nil)
+        self.present(followAlert, animated: true, completion: nil)
     }
     
     func tappedUnfollow() {
-        let unfollowAlert = UIAlertController(title: "Unfollow", message: "フォロー解除しますか？", preferredStyle: .Alert)
-        let cOkAction = UIAlertAction(title: "フォロー解除", style: .Default) { (action) -> Void in
+        let unfollowAlert = UIAlertController(title: "Unfollow", message: "フォロー解除しますか？", preferredStyle: .alert)
+        let cOkAction = UIAlertAction(title: "フォロー解除", style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [
-                "screen_name" : self.twitterScreenName
+                "screen_name" : self.twitterScreenName as AnyObject
             ]
             let params: Dictionary<String, AnyObject> = [
-                "settings" : parameter
+                "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/unfollow.json", params: params) { (response) -> Void in
-                let q_main = dispatch_get_main_queue()
-                dispatch_async(q_main, {()->Void in
+                let q_main = DispatchQueue.main
+                q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
-                    let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "フォロー解除しました")
-                    notice.alpha = 0.8
-                    notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                    notice.show()
+                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォロー解除しました")
+                    notice?.alpha = 0.8
+                    notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                    notice?.show()
                     self.navigationItem.rightBarButtonItem = self.followButton
                 })
             }
         }
-        let cCancelAction = UIAlertAction(title: "キャンセル", style: .Cancel) { (action) -> Void in
+        let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel) { (action) -> Void in
         }
         unfollowAlert.addAction(cCancelAction)
         unfollowAlert.addAction(cOkAction)
-        self.presentViewController(unfollowAlert, animated: true, completion: nil)
+        self.present(unfollowAlert, animated: true, completion: nil)
         
     }
     

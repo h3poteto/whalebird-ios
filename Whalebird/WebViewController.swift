@@ -8,7 +8,7 @@
 
 import UIKit
 import SVProgressHUD
-import IJReachability
+import ReachabilitySwift
 import NoticeView
 
 class WebViewController: UIViewController, UIWebViewDelegate {
@@ -18,12 +18,12 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     //=============================================
     var webView: UIWebView!
     var openURL: String!
-    var whalebirdURL = NSBundle.mainBundle().objectForInfoDictionaryKey("weburl") as! String
+    var whalebirdURL = Bundle.main.object(forInfoDictionaryKey: "weburl") as! String
 
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -42,18 +42,18 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
         self.webView = UIWebView(frame: self.view.frame)
         self.webView.scalesPageToFit = true
-        self.webView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+        self.webView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.webView.delegate = self
-        if IJReachability.isConnectedToNetwork() {
-            if let requestURL = NSURL(string: self.whalebirdURL + self.openURL) {
-                self.webView.loadRequest(NSURLRequest(URL: requestURL))
+        if Reachability()!.isReachable {
+            if let requestURL = URL(string: self.whalebirdURL + self.openURL) {
+                self.webView.loadRequest(URLRequest(url: requestURL))
             }
              self.view.addSubview(self.webView)
         } else {
-            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
-            notice.alpha = 0.8
-            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-            notice.show()
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice?.alpha = 0.8
+            notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+            notice?.show()
         }
        
         // Do any additional setup after loading the view.
@@ -65,13 +65,13 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     }
     
 
-    func webViewDidStartLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         SVProgressHUD.dismiss()
     }
 }

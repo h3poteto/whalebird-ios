@@ -25,7 +25,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "DM送信"
     }
@@ -42,28 +42,28 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     
     override func loadView() {
         super.loadView()
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let cMaxSize = UIScreen.mainScreen().bounds.size
+        let cMaxSize = UIScreen.main.bounds.size
 
-        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(NewDirectMessageViewController.onCancelTapped))
+        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewDirectMessageViewController.onCancelTapped))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.Done, target: self, action: #selector(NewDirectMessageViewController.onSendTapped))
+        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.done, target: self, action: #selector(NewDirectMessageViewController.onSendTapped))
         self.navigationItem.rightBarButtonItem = self.sendButton
         
-        self.sendToUserLabel = UILabel(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.height + UIApplication.sharedApplication().statusBarFrame.height, cMaxSize.width, 35))
+        self.sendToUserLabel = UILabel(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height, width: cMaxSize.width, height: 35))
         self.sendToUserLabel.text = "to: " + self.replyToUser
-        self.sendToUserLabel.textAlignment = NSTextAlignment.Center
-        self.sendToUserLabel.backgroundColor = UIColor.lightGrayColor()
+        self.sendToUserLabel.textAlignment = NSTextAlignment.center
+        self.sendToUserLabel.backgroundColor = UIColor.lightGray
         self.sendToUserLabel.center.x = cMaxSize.width / 2.0
         self.view.addSubview(self.sendToUserLabel)
         
-        self.newMessageText = UITextView(frame: CGRectMake(0, 100, cMaxSize.width, cMaxSize.height / 3.0))
-        self.newMessageText.editable = true
+        self.newMessageText = UITextView(frame: CGRect(x: 0, y: 100, width: cMaxSize.width, height: cMaxSize.height / 3.0))
+        self.newMessageText.isEditable = true
         self.newMessageText.delegate = self
         self.newMessageText.font = UIFont(name: TimelineViewCell.NormalFont, size: 18)
         //self.newMessageText.addSubview(self.sendToUserLabel)
@@ -75,12 +75,12 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
     }
     
     func onCancelTapped() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     
     }
     
@@ -90,26 +90,26 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func postDirectMessage(messageBody: String!) {
+    func postDirectMessage(_ messageBody: String!) {
         var params: Dictionary<String, String>
         params = [
             "screen_name" : self.replyToUser,
             "text" : messageBody
         ]
         let cParameter: Dictionary<String, AnyObject> = [
-            "settings" : params
+            "settings" : params as AnyObject
         ]
         
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
-            let q_main = dispatch_get_main_queue()
-            dispatch_async(q_main, { () -> Void in
-                let notice = WBSuccessNoticeView.successNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "送信しました")
+            let q_main = DispatchQueue.main
+            q_main.async(execute: { () -> Void in
+                let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: "送信しました")
                 SVProgressHUD.dismiss()
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
-                self.navigationController?.popViewControllerAnimated(true)
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
+                self.navigationController?.popViewController(animated: true)
             })
         }
     }

@@ -25,10 +25,10 @@ PODS:
   - DACircularProgress (2.2.0)
   - Fabric (1.6.6)
   - HexColors (2.2.1)
-  - IJReachability (0.1.0)
   - NoticeView (3.0.7)
   - ODRefreshControl (1.1.0)
   - OHAttributedLabel (3.5.5)
+  - ReachabilitySwift (2.3.3)
   - RNCryptor (2.2)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
@@ -46,11 +46,10 @@ DEPENDENCIES:
   - Crashlytics
   - DACircularProgress
   - Fabric
-  - IJReachability (from `https://github.com/thejourneydude/IJReachability.git`, branch
-    `swift2-with-autodetect`)
   - NoticeView
   - ODRefreshControl
   - OHAttributedLabel
+  - ReachabilitySwift
   - RNCryptor (from `https://github.com/h3poteto/RNCryptor.git`, branch `master`)
   - SDWebImage
   - SVProgressHUD
@@ -61,9 +60,6 @@ DEPENDENCIES:
   - UrlShortener (from `https://github.com/h3poteto/URL-Shortener.git`)
 
 EXTERNAL SOURCES:
-  IJReachability:
-    :branch: swift2-with-autodetect
-    :git: https://github.com/thejourneydude/IJReachability.git
   RNCryptor:
     :branch: master
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -73,9 +69,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/h3poteto/URL-Shortener.git
 
 CHECKOUT OPTIONS:
-  IJReachability:
-    :commit: 16bfa1a633d641d39af9aa88ef3337380182f08f
-    :git: https://github.com/thejourneydude/IJReachability.git
   RNCryptor:
     :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
     :git: https://github.com/h3poteto/RNCryptor.git
@@ -92,10 +85,10 @@ SPEC CHECKSUMS:
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
   Fabric: 1abc1e59f11fa39ede6f690ef7309d8563e3ec59
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
-  IJReachability: 3eff33caca50869df09b257bcf712031a56a8575
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea
   OHAttributedLabel: 9b2eb99323dee6b3a81ef3bc8e98b084117bca2d
+  ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
   RNCryptor: e22d058d92b9a24a971fea324aea7efc7b25c6f7
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
@@ -105,4 +98,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 2ba85bee473885c2aada2bdfec584d39f1869338
   UrlShortener: fb6faa925f3abe3d7fdf7ee7cd825df9a4dd18d8
 
-COCOAPODS: 0.38.2
+PODFILE CHECKSUM: 63ddd7e59c0ea2ba33c30d6d07c875cb98bbc5bc
+
+COCOAPODS: 1.0.0.beta.8

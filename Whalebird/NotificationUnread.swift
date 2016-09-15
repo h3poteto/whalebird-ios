@@ -10,13 +10,13 @@ import UIKit
 
 class NotificationUnread: NSObject {
     class func decrementUnreadBadge() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber -= 1
+        UIApplication.shared.applicationIconBadgeNumber -= 1
         let params: Dictionary<String, AnyObject> = [:]
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/read.json", params: params) { (response) -> Void in
         }
     }
     
     class func clearUnreadBadge() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 }

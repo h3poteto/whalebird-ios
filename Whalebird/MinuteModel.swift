@@ -13,8 +13,8 @@ class MinuteModel: NSObject {
     
     override init() {
         super.init()
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        if let readMinutesArray = userDefault.objectForKey("minutesArray") as? Array<NSDictionary> {
+        let userDefault = UserDefaults.standard
+        if let readMinutesArray = userDefault.object(forKey: "minutesArray") as? Array<NSDictionary> {
             self.minutesArray = readMinutesArray
         }
     }
@@ -23,29 +23,29 @@ class MinuteModel: NSObject {
         return self.minutesArray.count
     }
     
-    func getMinuteAtIndex(index: Int)-> NSDictionary? {
+    func getMinuteAtIndex(_ index: Int)-> NSDictionary? {
         return self.minutesArray[index]
     }
     
-    func removeAtIndexAndSaveList(index: Int) {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        self.minutesArray.removeAtIndex(index)
-        userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+    func removeAtIndexAndSaveList(_ index: Int) {
+        let userDefault = UserDefaults.standard
+        self.minutesArray.remove(at: index)
+        userDefault.set(self.minutesArray, forKey: "minutesArray")
     }
     
-    func addMinuteAtFirst(body: String!, replyToID: String?) {
+    func addMinuteAtFirst(_ body: String!, replyToID: String?) {
         let minuteDictionary = NSMutableDictionary(dictionary: ["text" : body])
         if (replyToID != nil) {
             minuteDictionary.setValue(replyToID!, forKey: "replyToID")
         }
-        self.minutesArray.insert(minuteDictionary, atIndex: 0)
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+        self.minutesArray.insert(minuteDictionary, at: 0)
+        let userDefault = UserDefaults.standard
+        userDefault.set(self.minutesArray, forKey: "minutesArray")
     }
     
-    func deleteMinuteAtIndex(index: Int!) {
-        self.minutesArray.removeAtIndex(index)
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setObject(self.minutesArray, forKey: "minutesArray")
+    func deleteMinuteAtIndex(_ index: Int!) {
+        self.minutesArray.remove(at: index)
+        let userDefault = UserDefaults.standard
+        userDefault.set(self.minutesArray, forKey: "minutesArray")
     }
 }

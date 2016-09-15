@@ -5,4 +5,4 @@
 //  Created by akirafukushima on 2015/08/04.
 //  Copyright (c) 2015年 AkiraFukushima. All rights reserved.
 //
-#include "Pods/Target Support Files/Pods/Pods.adhoc.xcconfig"
+#include "Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird.adhoc.xcconfig"

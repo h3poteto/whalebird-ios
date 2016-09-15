@@ -31,21 +31,21 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     
     override init(style: UITableViewStyle) {
-        super.init(style: UITableViewStyle.Plain)
-        self.view.backgroundColor = UIColor.whiteColor()
+        super.init(style: UITableViewStyle.plain)
+        self.view.backgroundColor = UIColor.white
         self.title = "タイムライン"
         self.tabBarItem.image = UIImage(named: "Home")
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let sinceId = userDefaults.stringForKey("homeTimelineSinceId") as String?
-        let homeTimeline = userDefaults.arrayForKey("homeTimeline") as Array?
+        let userDefaults = UserDefaults.standard
+        let sinceId = userDefaults.string(forKey: "homeTimelineSinceId") as String?
+        let homeTimeline = userDefaults.array(forKey: "homeTimeline") as Array?
         
-        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline)
+        self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline as Array<AnyObject>?)
         self.timelineModel.delegate = self
     }
     
@@ -56,22 +56,22 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.refreshTimeline = ODRefreshControl(inScrollView: self.tableView)
-        self.refreshTimeline.addTarget(self, action: #selector(TimelineTableViewController.onRefresh), forControlEvents: UIControlEvents.ValueChanged)
-        self.edgesForExtendedLayout = UIRectEdge.None
+        self.refreshTimeline = ODRefreshControl(in: self.tableView)
+        self.refreshTimeline.addTarget(self, action: #selector(TimelineTableViewController.onRefresh), for: UIControlEvents.valueChanged)
+        self.edgesForExtendedLayout = UIRectEdge()
         
-        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Compose, target: self, action: #selector(TimelineTableViewController.tappedNewTweet))
+        self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(TimelineTableViewController.tappedNewTweet))
         self.navigationItem.rightBarButtonItem = self.newTweetButton
 
-        self.tableView.registerClass(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
+        self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
         // userstream発火のために必要
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineTableViewController.appDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimelineTableViewController.appWillResignActive(_:)), name: UIApplicationWillResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimelineTableViewController.appDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimelineTableViewController.appWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
 
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Home用のUserstream
@@ -82,11 +82,11 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.timelineModel.prepareUserstream()
     }
     
-    func appDidBecomeActive(notification: NSNotification) {
+    func appDidBecomeActive(_ notification: Notification) {
         self.timelineModel.prepareUserstream()
     }
     
-    func appWillResignActive(notification: NSNotification) {
+    func appWillResignActive(_ notification: Notification) {
         self.timelineModel.stopUserstream()
     }
 
@@ -97,94 +97,94 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.timelineModel.count()
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: TimelineViewCell? = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as? TimelineViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: TimelineViewCell? = tableView.dequeueReusableCell(withIdentifier: "TimelineViewCell", for: indexPath) as? TimelineViewCell
         if (cell == nil) {
-            cell = TimelineViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "TimelineViewCell")
+            cell = TimelineViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "TimelineViewCell")
         }
 
         cell!.cleanCell()
-        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            cell!.configureCell(targetTimeline)
+        if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            cell!.configureCell(targetTimeline as NSDictionary)
         }
 
         return cell!
     }
     
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetTimeline)
+        if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline as NSDictionary)
         }
         return height
     }
 
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(60)
-        if let targetTimeline = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            height = TimelineViewCell.estimateCellHeight(targetTimeline)
+        if let targetTimeline = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            height = TimelineViewCell.estimateCellHeight(targetTimeline as NSDictionary)
         }
         return height
     }
 
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cTweetData = self.timelineModel.getTweetAtIndex(indexPath.row) {
-            if TimelineModel.selectMoreIdCell(cTweetData) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cTweetData = self.timelineModel.getTweetAtIndex((indexPath as NSIndexPath).row) {
+            if TimelineModel.selectMoreIdCell(cTweetData as NSDictionary) {
                 var sinceID = cTweetData["sinceID"] as? String
                 if (sinceID == "sinceID") {
                     sinceID = nil
                 }
-                self.updateTimeline(sinceID, aMoreIndex: indexPath.row)
+                self.updateTimeline(sinceID, aMoreIndex: (indexPath as NSIndexPath).row)
             } else {
                 let tweetModel = TweetModel(dict: cTweetData)
-                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: indexPath.row)
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: self.timelineModel, aParentIndex: (indexPath as NSIndexPath).row)
                 self.navigationController?.pushViewController(detailView, animated: true)
             }
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 
 
     
-    func updateTimeline(aSinceID: String?, aMoreIndex: Int?) {
+    func updateTimeline(_ aSinceID: String?, aMoreIndex: Int?) {
         
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
-                let userDefault = NSUserDefaults.standardUserDefaults()
-                if (currentRowIndex != nil && userDefault.integerForKey("afterUpdatePosition") == 2) {
-                let indexPath = NSIndexPath(forRow: currentRowIndex!, inSection: 0)
-                self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+                let userDefault = UserDefaults.standard
+                if (currentRowIndex != nil && userDefault.integer(forKey: "afterUpdatePosition") == 2) {
+                let indexPath = IndexPath(row: currentRowIndex!, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: String(count) + "件更新")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件更新")
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
             
             }, noUpdated: { () -> Void in
                 // アップデートがなくても未読の変更が発生しているのでテーブル更新は必須
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNoticeInView(self.navigationController!.view, title: "新着なし")
-                notice.alpha = 0.8
-                notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-                notice.show()
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "新着なし")
+                notice?.alpha = 0.8
+                notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+                notice?.show()
             }, failed: { () -> Void in
             
         })
@@ -203,11 +203,11 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
-    func updateTimelineFromUserstream(timelineModel: TimelineModel) {
+    func updateTimelineFromUserstream(_ timelineModel: TimelineModel) {
         self.tableView.reloadData()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         destroy()
     }
@@ -218,9 +218,9 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     // これログアウトで使う
     func clearData() {
         self.timelineModel.clearData()
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(nil, forKey: "homeTimelineSinceID")
-        userDefaults.setObject(nil, forKey: "homeTimeline")
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(nil, forKey: "homeTimelineSinceID")
+        userDefaults.set(nil, forKey: "homeTimeline")
         self.tableView.reloadData()
     }
 }

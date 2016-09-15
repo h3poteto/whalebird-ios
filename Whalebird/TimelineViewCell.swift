@@ -40,24 +40,24 @@ class TimelineViewCell: UITableViewCell {
     //====================================
     //  class method
     //====================================
-    class func estimateCellHeight(aDictionary: NSDictionary) -> CGFloat {
+    class func estimateCellHeight(_ aDictionary: NSDictionary) -> CGFloat {
         var height = CGFloat(60.0)
-        if (aDictionary.objectForKey("moreID") == nil) {
-            let cWindowMaxSize = UIScreen.mainScreen().bounds.size
+        if (aDictionary.object(forKey: "moreID") == nil) {
+            let cWindowMaxSize = UIScreen.main.bounds.size
             // bodyLabelの開始位置
             height = TimelineViewCell.ImagePadding * 3 + TimelineViewCell.DefaultLineHeight * 2
             // dummyでbodyLabelを生成
-            DummyLabel.frame = CGRectMake(TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3, cWindowMaxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), TimelineViewCell.DefaultLineHeight)
-            DummyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+            DummyLabel.frame = CGRect(x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4, y: TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3, width: cWindowMaxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize), height: TimelineViewCell.DefaultLineHeight)
+            DummyLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             DummyLabel.numberOfLines = 0
-            DummyLabel.textAlignment = NSTextAlignment.Left
-            DummyLabel.text = aDictionary.objectForKey("text") as! NSString as String
+            DummyLabel.textAlignment = NSTextAlignment.left
+            DummyLabel.text = aDictionary.object(forKey: "text") as! NSString as String
             DummyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             DummyLabel.sizeToFit()
             height += DummyLabel.frame.size.height + TimelineViewCell.ImagePadding
             height += TimelineViewCell.DefaultLineHeight
             // retweeted分の行追加
-            if (aDictionary.objectForKey("retweeted") != nil) {
+            if (aDictionary.object(forKey: "retweeted") != nil) {
                 height += TimelineViewCell.DefaultLineHeight
             }
         } else {
@@ -78,7 +78,7 @@ class TimelineViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let cWindowSize = UIScreen.mainScreen().bounds
+        let cWindowSize = UIScreen.main.bounds
         self.maxSize = cWindowSize.size
         
     }
@@ -87,7 +87,7 @@ class TimelineViewCell: UITableViewCell {
         self.init(frame: frame)
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -132,30 +132,30 @@ class TimelineViewCell: UITableViewCell {
     // cell は再利用される
     // configureCellはcellForRowAtIndexで呼ばれるので，描画されるたびに要素を全て作り直す
     //--------------------------------------------
-    func configureCell(aDictionary: NSDictionary) {
-        if (aDictionary.objectForKey("moreID") != nil) {
-            self.bodyLabel = UILabel(frame: CGRectMake(0, 0, self.maxSize.width, 40))
+    func configureCell(_ aDictionary: NSDictionary) {
+        if (aDictionary.object(forKey: "moreID") != nil) {
+            self.bodyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.maxSize.width, height: 40))
             self.bodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
-            self.bodyLabel.textAlignment = NSTextAlignment.Center
-            self.bodyLabel.textColor = UIColor.grayColor()
+            self.bodyLabel.textAlignment = NSTextAlignment.center
+            self.bodyLabel.textColor = UIColor.gray
             self.bodyLabel.text = "もっと読む"
             self.bodyLabel.backgroundColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
             self.contentView.addSubview(self.bodyLabel)
             
         } else{
         
-            if (aDictionary.objectForKey("retweeted") != nil ) {
+            if (aDictionary.object(forKey: "retweeted") != nil ) {
                 self.retweeted = true
             }
-            let userDefault = NSUserDefaults.standardUserDefaults()
+            let userDefault = UserDefaults.standard
             
-            self.profileImage = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding, TimelineViewCell.ImagePadding, TimelineViewCell.ImageSize, TimelineViewCell.ImageSize))
+            self.profileImage = UIImageView(frame: CGRect(x: TimelineViewCell.ImagePadding, y: TimelineViewCell.ImagePadding, width: TimelineViewCell.ImageSize, height: TimelineViewCell.ImageSize))
             // 角丸にする
             self.profileImage.layer.cornerRadius = 6.0
             self.profileImage.layer.masksToBounds = true
             self.profileImage.layer.borderWidth = 0.0
             self.contentView.addSubview(self.profileImage)
-            self.retweetedProfileImageLabel = UIImageView(frame: CGRectMake(TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, TimelineViewCell.ImageSize * 1.0 / 2.0, TimelineViewCell.ImageSize * 1.0 / 2.0))
+            self.retweetedProfileImageLabel = UIImageView(frame: CGRect(x: TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, y: TimelineViewCell.ImagePadding + TimelineViewCell.ImageSize * 2.0 / 3.0, width: TimelineViewCell.ImageSize * 1.0 / 2.0, height: TimelineViewCell.ImageSize * 1.0 / 2.0))
             if (self.retweeted) {
                 // 角丸にする
                 self.retweetedProfileImageLabel?.layer.cornerRadius = 6.0
@@ -165,45 +165,45 @@ class TimelineViewCell: UITableViewCell {
             }
             
             
-            self.nameLabel = UILabel(frame: CGRectMake(
-                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
-                TimelineViewCell.ImagePadding,
-                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
-                TimelineViewCell.DefaultLineHeight))
+            self.nameLabel = UILabel(frame: CGRect(
+                x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                y: TimelineViewCell.ImagePadding,
+                width: self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                height: TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.nameLabel)
             
-            self.screenNameLabel = UILabel(frame: CGRectMake(
-                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
-                TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 2,
-                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
-                TimelineViewCell.DefaultLineHeight))
+            self.screenNameLabel = UILabel(frame: CGRect(
+                x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                y: TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 2,
+                width: self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                height: TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.screenNameLabel)
             
-            self.bodyLabel = UILabel(frame: CGRectMake(
-                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
-                TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3,
-                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
-                TimelineViewCell.DefaultLineHeight))
+            self.bodyLabel = UILabel(frame: CGRect(
+                x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                y: TimelineViewCell.DefaultLineHeight * 2 + TimelineViewCell.ImagePadding * 3,
+                width: self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                height: TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.bodyLabel)
             
-            self.postDetailLable = UILabel(frame: CGRectMake(
-                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
-                TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1,
-                self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
-                TimelineViewCell.DefaultLineHeight))
+            self.postDetailLable = UILabel(frame: CGRect(
+                x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 4,
+                y: TimelineViewCell.DefaultLineHeight + TimelineViewCell.ImagePadding * 1,
+                width: self.maxSize.width - (TimelineViewCell.ImagePadding * 5 + TimelineViewCell.ImageSize),
+                height: TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.postDetailLable)
             
-            self.retweetedLabel = UILabel(frame: CGRectMake(
-                TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 5,
-                40,
-                self.maxSize.width - (TimelineViewCell.ImagePadding * 6 + TimelineViewCell.ImageSize),
-                TimelineViewCell.DefaultLineHeight))
+            self.retweetedLabel = UILabel(frame: CGRect(
+                x: TimelineViewCell.ImageSize + TimelineViewCell.ImagePadding * 5,
+                y: 40,
+                width: self.maxSize.width - (TimelineViewCell.ImagePadding * 6 + TimelineViewCell.ImageSize),
+                height: TimelineViewCell.DefaultLineHeight))
             self.contentView.addSubview(self.retweetedLabel!)
             
             //------------------------------------
             //  background color
             //------------------------------------
-            if aDictionary.objectForKey("unread") as? Bool == true {
+            if aDictionary.object(forKey: "unread") as? Bool == true {
                 self.contentView.backgroundColor = UIColor(
                     red: 0.878,
                     green: 0.949,
@@ -211,55 +211,55 @@ class TimelineViewCell: UITableViewCell {
                     alpha: 1.0
                 )
             } else {
-                self.contentView.backgroundColor = UIColor.whiteColor()
+                self.contentView.backgroundColor = UIColor.white
             }
 
             //------------------------------------
             //  profileImageLabel
             //------------------------------------
-            let imageURL = NSURL(string: aDictionary.objectForKey("user")?.objectForKey("profile_image_url") as! String)
-            self.profileImage.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "noimage"))
+            let imageURL = URL(string: (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "profile_image_url") as! String)
+            self.profileImage.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "noimage"))
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
-                let imageURL = NSURL(string: aDictionary.objectForKey("retweeted")?.objectForKey("profile_image_url") as! String)
-                self.retweetedProfileImageLabel?.sd_setImageWithURL(imageURL, placeholderImage: UIImage(named: "Warning"))
+                let imageURL = URL(string: (aDictionary.object(forKey: "retweeted") as! NSDictionary).object(forKey: "profile_image_url") as! String)
+                self.retweetedProfileImageLabel?.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "Warning"))
             }
             
-            let cScreenName = aDictionary.objectForKey("user")?.objectForKey("screen_name") as! String
+            let cScreenName = (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "screen_name") as! String
             //------------------------------------
             //  nameLabel
             //------------------------------------
-            if (userDefault.objectForKey("displayNameType") != nil && userDefault.integerForKey("displayNameType") == 2) {
+            if (userDefault.object(forKey: "displayNameType") != nil && userDefault.integer(forKey: "displayNameType") == 2) {
                 self.nameLabel.text = "@" + cScreenName
             } else {
-                self.nameLabel.text = aDictionary.objectForKey("user")?.objectForKey("name") as? String
+                self.nameLabel.text = (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "name") as? String
             }
-            self.nameLabel.textAlignment = NSTextAlignment.Left
-            self.nameLabel.textColor = UIColor.blackColor()
+            self.nameLabel.textAlignment = NSTextAlignment.left
+            self.nameLabel.textColor = UIColor.black
             self.nameLabel.font = UIFont(name: TimelineViewCell.BoldFont, size: TimelineViewCell.DefaultFontSize)
             
             
             //------------------------------------
             //  screenNameLabel
             //------------------------------------
-            if (userDefault.objectForKey("displayNameType") != nil && ( userDefault.integerForKey("displayNameType") == 2 || userDefault.integerForKey("displayNameType") == 3 )) {
+            if (userDefault.object(forKey: "displayNameType") != nil && ( userDefault.integer(forKey: "displayNameType") == 2 || userDefault.integer(forKey: "displayNameType") == 3 )) {
             } else {
                 self.screenNameLabel.text = "@" + cScreenName
             }
-            self.screenNameLabel.textAlignment = NSTextAlignment.Left
-            self.screenNameLabel.textColor = UIColor.grayColor()
+            self.screenNameLabel.textAlignment = NSTextAlignment.left
+            self.screenNameLabel.textColor = UIColor.gray
             self.screenNameLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             //------------------------------------
             //  bodyLabel
             //------------------------------------
             
-            self.bodyLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
+            self.bodyLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             self.bodyLabel.numberOfLines = 0
-            self.bodyLabel.textAlignment = NSTextAlignment.Left
-            self.bodyLabel.textColor = UIColor.blackColor()
-            self.bodyLabel.text = WhalebirdAPIClient.escapeString(aDictionary.objectForKey("text") as! String)
+            self.bodyLabel.textAlignment = NSTextAlignment.left
+            self.bodyLabel.textColor = UIColor.black
+            self.bodyLabel.text = WhalebirdAPIClient.escapeString(aDictionary.object(forKey: "text") as! String)
             self.bodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: TimelineViewCell.DefaultFontSize)
             self.bodyLabel.sizeToFit()
             
@@ -267,9 +267,9 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  postDetail
             //------------------------------------
-            self.postDetailLable.textAlignment = NSTextAlignment.Right
-            self.postDetailLable.textColor = UIColor.grayColor()
-            self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.objectForKey("created_at") as! String)
+            self.postDetailLable.textAlignment = NSTextAlignment.right
+            self.postDetailLable.textColor = UIColor.gray
+            self.postDetailLable.text = WhalebirdAPIClient.convertLocalTime(aDictionary.object(forKey: "created_at") as! String)
             self.postDetailLable.frame.origin.y = self.bodyLabel.frame.origin.y + self.bodyLabel.frame.size.height
             self.postDetailLable.font = UIFont(name: TimelineViewCell.NormalFont, size: 12)
             
@@ -278,9 +278,9 @@ class TimelineViewCell: UITableViewCell {
             //-------------------------------------
             
             if (retweeted) {
-                self.retweetedLabel?.textAlignment = NSTextAlignment.Right
-                self.retweetedLabel?.textColor = UIColor.grayColor()
-                self.retweetedLabel?.text = "Retweeted by @" + (aDictionary.objectForKey("retweeted")?.objectForKey("screen_name") as! String)
+                self.retweetedLabel?.textAlignment = NSTextAlignment.right
+                self.retweetedLabel?.textColor = UIColor.gray
+                self.retweetedLabel?.text = "Retweeted by @" + ((aDictionary.object(forKey: "retweeted") as! NSDictionary).object(forKey: "screen_name") as! String)
                 self.retweetedLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
                 self.retweetedLabel?.sizeToFit()
                 self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height

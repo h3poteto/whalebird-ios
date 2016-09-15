@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EditImageViewControllerDelegate {
-    func editImageViewController(editImageViewcontroller: EditImageViewController, rotationImage: UIImage)
+    func editImageViewController(_ editImageViewcontroller: EditImageViewController, rotationImage: UIImage)
 }
 
 class EditImageViewController: UIViewController {
@@ -31,7 +31,7 @@ class EditImageViewController: UIViewController {
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -47,24 +47,24 @@ class EditImageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         let cWindowSize = self.view.bounds
         
         self.imageView = UIImageView(image: self.pickerImage)
         self.resizeImageView()
         self.view.addSubview(self.imageView)
         
-        self.toolBoxView = UIToolbar(frame: CGRectMake(0, cWindowSize.size.height - self.toolBoxHeight, cWindowSize.size.width, self.toolBoxHeight))
-        self.toolBoxView.barStyle = UIBarStyle.Black
-        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "戻る", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditImageViewController.tappedCancel))
-        let rotationButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: #selector(EditImageViewController.tappedRotation))
-        let rotationToolBar = UIToolbar(frame: CGRectMake(0, 0, 50, 50))
+        self.toolBoxView = UIToolbar(frame: CGRect(x: 0, y: cWindowSize.size.height - self.toolBoxHeight, width: cWindowSize.size.width, height: self.toolBoxHeight))
+        self.toolBoxView.barStyle = UIBarStyle.black
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "戻る", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedCancel))
+        let rotationButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.refresh, target: self, action: #selector(EditImageViewController.tappedRotation))
+        let rotationToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         rotationToolBar.setItems([rotationButton], animated: true)
-        rotationToolBar.barStyle = UIBarStyle.Black
-        rotationToolBar.transform = CGAffineTransformMakeScale(-1.0, 1.0)
+        rotationToolBar.barStyle = UIBarStyle.black
+        rotationToolBar.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         let wrappedRotationButton = UIBarButtonItem(customView: rotationToolBar)
-        let completeButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(EditImageViewController.tappedComplete))
+        let completeButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedComplete))
         let itemArray = [spacer, cancelButton, spacer, wrappedRotationButton, spacer, completeButton, spacer]
         self.toolBoxView.setItems(itemArray, animated: true)
         
@@ -78,9 +78,9 @@ class EditImageViewController: UIViewController {
     
     func tappedCancel() {
         // カメラのときは戻すだけだと操作不能になるのでpicker自体を消す
-        self.dismissViewControllerAnimated(true, completion: { () -> Void in
-            if self.picker.sourceType == UIImagePickerControllerSourceType.Camera {
-                self.picker.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: { () -> Void in
+            if self.picker.sourceType == UIImagePickerControllerSourceType.camera {
+                self.picker.dismiss(animated: true, completion: nil)
             }
         })
     }
@@ -91,20 +91,20 @@ class EditImageViewController: UIViewController {
     //-----------------------------------------
     func tappedRotation() {
         self.rotationAngle += 90
-        UIView.animateWithDuration(1.0, animations: { () -> Void in
+        UIView.animate(withDuration: 1.0, animations: { () -> Void in
             
             let cWindowSize = self.view.bounds
             var scale = CGFloat(1.0)
-            if (self.rotationAngle % 180 != 0) {
+            if (self.rotationAngle.truncatingRemainder(dividingBy: 180) != 0) {
                 scale = cWindowSize.size.width / self.imageView.frame.size.height
             }
             
             // CGContextの回転方向と逆向き
-            let rotationTransform = CGAffineTransformMakeRotation(self.radian(-self.rotationAngle))
-            self.imageView.transform = CGAffineTransformScale(rotationTransform, scale, scale)
-        }) { (finished) -> Void in
+            let rotationTransform = CGAffineTransform(rotationAngle: self.radian(-self.rotationAngle))
+            self.imageView.transform = rotationTransform.scaledBy(x: scale, y: scale)
+        }, completion: { (finished) -> Void in
             
-        }
+        }) 
     }
     
     //----------------------------------------
@@ -112,8 +112,8 @@ class EditImageViewController: UIViewController {
     //----------------------------------------
     func tappedComplete() {
         let rotationImage = self.rotationAndResizeImage(self.pickerImage, angle: self.rotationAngle)
-        self.dismissViewControllerAnimated(true, completion: nil)
-        self.picker.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
+        self.picker.dismiss(animated: true, completion: nil)
         self.delegate.editImageViewController(self, rotationImage: rotationImage)
         /* for debugging
         self.imageView.removeFromSuperview()
@@ -129,11 +129,11 @@ class EditImageViewController: UIViewController {
         let cWindowSize = self.view.bounds
         if (self.imageView.frame.size.width > cWindowSize.size.width) {
             let scale = cWindowSize.size.width / self.imageView.frame.size.width
-            self.imageView.frame.size = CGSizeMake(cWindowSize.size.width, self.imageView.frame.size.height * scale)
+            self.imageView.frame.size = CGSize(width: cWindowSize.size.width, height: self.imageView.frame.size.height * scale)
         }
         if (self.imageView.frame.size.height > cWindowSize.size.height - self.toolBoxHeight) {
             let scale = (cWindowSize.size.height - self.toolBoxHeight) / self.imageView.frame.size.height
-            self.imageView.frame.size = CGSizeMake(self.imageView.frame.size.width * scale, cWindowSize.size.height - self.toolBoxHeight)
+            self.imageView.frame.size = CGSize(width: self.imageView.frame.size.width * scale, height: cWindowSize.size.height - self.toolBoxHeight)
         }
         self.imageView.center = CGPoint(x: cWindowSize.size.width / 2.0, y: (cWindowSize.size.height - self.toolBoxHeight) / 2.0)
     }
@@ -143,10 +143,10 @@ class EditImageViewController: UIViewController {
     //  アップロード用に画像はリサイズして軽量化
     //  resizeには軽さを求めるのでCoreGraphicsを使う
     //-----------------------------------------------
-    func rotationAndResizeImage(srcImage: UIImage, angle: Float) -> UIImage {
+    func rotationAndResizeImage(_ srcImage: UIImage, angle: Float) -> UIImage {
         var targetWidth: CGFloat!
         var targetHeight: CGFloat!
-        let normalizeAngle = angle % 360
+        let normalizeAngle = angle.truncatingRemainder(dividingBy: 360)
         
         // アス比を固定したままリサイズ
         var sendWidth = CGFloat(srcImage.size.width)
@@ -161,7 +161,7 @@ class EditImageViewController: UIViewController {
             }
         }
         
-        if (normalizeAngle % 180 == 0) {
+        if (normalizeAngle.truncatingRemainder(dividingBy: 180) == 0) {
             targetWidth = sendWidth
             targetHeight = sendHeight
         } else {
@@ -170,18 +170,18 @@ class EditImageViewController: UIViewController {
         }
         
         
-        let imageRef = srcImage.CGImage! as CGImageRef
-        let bitmapInfo = CGImageGetBitmapInfo(imageRef) as CGBitmapInfo
-        let colorSpaceInfo = CGImageGetColorSpace(imageRef)! as CGColorSpaceRef
+        let imageRef = srcImage.cgImage! as CGImage
+        let bitmapInfo = imageRef.bitmapInfo as CGBitmapInfo
+        let colorSpaceInfo = imageRef.colorSpace! as CGColorSpace
         
         
-        var bitmap: CGContextRef!
+        var bitmap: CGContext!
         // bytesPerRowはwidthの4倍以上ないとメモリが足らない
         var longLength = targetWidth
-        if (longLength < targetHeight) {
+        if longLength! < targetHeight {
             longLength = targetHeight
         }
-        bitmap = CGBitmapContextCreate(nil, Int(targetWidth), Int(targetHeight), CGImageGetBitsPerComponent(imageRef), Int(longLength * 4), colorSpaceInfo, bitmapInfo.rawValue)
+        bitmap = CGContext(data: nil, width: Int(targetWidth), height: Int(targetHeight), bitsPerComponent: imageRef.bitsPerComponent, bytesPerRow: Int(longLength! * 4), space: colorSpaceInfo, bitmapInfo: bitmapInfo.rawValue)
 
 
         // 回転時の原点に合わせて予め移動させる
@@ -189,43 +189,43 @@ class EditImageViewController: UIViewController {
         case 0:
             break
         case 90:
-            CGContextTranslateCTM(bitmap, targetWidth, 0)
+            bitmap.translateBy(x: targetWidth, y: 0)
             break
         case 180:
-            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
+            bitmap.translateBy(x: targetWidth, y: targetHeight)
             break
         case 270:
-            CGContextTranslateCTM(bitmap, 0, targetHeight)
+            bitmap.translateBy(x: 0, y: targetHeight)
             break
         default:
             break
         }
-        CGContextRotateCTM(bitmap, self.radian(normalizeAngle))
+        bitmap.rotate(by: self.radian(normalizeAngle))
         
-        if (srcImage.imageOrientation == UIImageOrientation.Left) {
-            CGContextRotateCTM(bitmap, self.radian(90))
-            CGContextTranslateCTM(bitmap, 0, -sendWidth)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
-        } else if (srcImage.imageOrientation == UIImageOrientation.Right) {
-            CGContextRotateCTM(bitmap, self.radian(-90))
-            CGContextTranslateCTM(bitmap, -sendHeight, 0)
-            CGContextScaleCTM(bitmap, srcImage.size.height / srcImage.size.width, srcImage.size.width / srcImage.size.height)
-        } else if (srcImage.imageOrientation == UIImageOrientation.Up) {
-        } else if (srcImage.imageOrientation == UIImageOrientation.Down) {
-            CGContextTranslateCTM(bitmap, targetWidth, targetHeight)
-            CGContextRotateCTM(bitmap, self.radian(-180))
+        if (srcImage.imageOrientation == UIImageOrientation.left) {
+            bitmap.rotate(by: self.radian(90))
+            bitmap.translateBy(x: 0, y: -sendWidth)
+            bitmap.scaleBy(x: srcImage.size.height / srcImage.size.width, y: srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.right) {
+            bitmap.rotate(by: self.radian(-90))
+            bitmap.translateBy(x: -sendHeight, y: 0)
+            bitmap.scaleBy(x: srcImage.size.height / srcImage.size.width, y: srcImage.size.width / srcImage.size.height)
+        } else if (srcImage.imageOrientation == UIImageOrientation.up) {
+        } else if (srcImage.imageOrientation == UIImageOrientation.down) {
+            bitmap.translateBy(x: targetWidth, y: targetHeight)
+            bitmap.rotate(by: self.radian(-180))
         }
 
-        CGContextDrawImage(bitmap, CGRectMake(0, 0, sendWidth, sendHeight), imageRef)
-        let ref = CGBitmapContextCreateImage(bitmap)
-        if let newImage = UIImage(CGImage: ref!) as UIImage? {
+        bitmap.draw(imageRef, in: CGRect(x: 0, y: 0, width: sendWidth, height: sendHeight))
+        let ref = bitmap.makeImage()
+        if let newImage = UIImage(cgImage: ref!) as UIImage? {
             return newImage
         } else {
             return srcImage
         }
     }
     
-    func radian(degree: Float) -> CGFloat {
+    func radian(_ degree: Float) -> CGFloat {
         return CGFloat(degree * 3.14159265358979323846 / 180.0)
     }
 }

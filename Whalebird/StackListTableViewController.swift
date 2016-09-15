@@ -10,7 +10,7 @@ import UIKit
 import SVProgressHUD
 
 protocol StackListTableViewControllerDelegate {
-    func decidedStackStreamList(stackStreamList: StreamList)
+    func decidedStackStreamList(_ stackStreamList: StreamList)
 }
 
 class StackListTableViewController: UITableViewController {
@@ -26,7 +26,7 @@ class StackListTableViewController: UITableViewController {
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -37,12 +37,12 @@ class StackListTableViewController: UITableViewController {
     override init(style: UITableViewStyle) {
         super.init(style: style)
         self.title = "リストを選択"
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        self.twitterScreenName = userDefault.objectForKey("username") as? String
+        let userDefault = UserDefaults.standard
+        self.twitterScreenName = userDefault.object(forKey: "username") as? String
     }
     
     convenience init() {
-        self.init(style: UITableViewStyle.Plain)
+        self.init(style: UITableViewStyle.plain)
         self.stackStreamList = StreamList()
         self.stackStreamList.initStreamList()
     }
@@ -56,7 +56,7 @@ class StackListTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.Done, target: self, action: #selector(StackListTableViewController.decideSelected(_:)))
+        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.done, target: self, action: #selector(StackListTableViewController.decideSelected(_:)))
         self.navigationItem.rightBarButtonItem = selectButton
         
         self.tableView.allowsMultipleSelection = true
@@ -67,21 +67,21 @@ class StackListTableViewController: UITableViewController {
                 "screen_name" : self.twitterScreenName!
             ]
             let cParameter: Dictionary<String, AnyObject> = [
-                "settings" : params
+                "settings" : params as AnyObject
             ]
-            SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", displayError: true, params: cParameter,
                 completed: { (aStackList) -> Void in
-                    let q_main = dispatch_get_main_queue()
+                    let q_main = DispatchQueue.main
                     print(aStackList)
-                    dispatch_async(q_main, {()->Void in
+                    q_main.async(execute: {()->Void in
                         for list in aStackList {
                             self.stackStreamList.addNewStream(
                                 "",
-                                name: list.objectForKey("full_name") as! String,
+                                name: list.object(forKey: "full_name") as! String,
                                 type: "list",
-                                uri: list.objectForKey("uri") as! String,
-                                id: list.objectForKey("id_str") as! String
+                                uri: list.object(forKey: "uri") as! String,
+                                id: list.object(forKey: "id_str") as! String
                             )
                         }
                         self.tableView.reloadData()
@@ -101,50 +101,50 @@ class StackListTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.stackStreamList.count()
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-        cell.textLabel?.text = self.stackStreamList.getStreamAtIndex(indexPath.row).name
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+        cell.textLabel?.text = self.stackStreamList.getStreamAtIndex((indexPath as NSIndexPath).row).name
         cell.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        cell.accessoryType = UITableViewCellAccessoryType.checkmark
     }
 
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: UITableViewCell = tableView.cellForRowAtIndexPath(indexPath)!
-        cell.accessoryType = UITableViewCellAccessoryType.None
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        cell.accessoryType = UITableViewCellAccessoryType.none
     }
     
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 
-    func decideSelected(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func decideSelected(_ sender: AnyObject) {
+        self.navigationController?.popViewController(animated: true)
         if let selectedArray = self.tableView.indexPathsForSelectedRows as Array? {
             if (selectedArray.count > 0) {
                 let selectedStreamList = StreamList()
                 selectedStreamList.initWithEmpty()
                 for index in selectedArray {
-                    selectedStreamList.add(self.stackStreamList.getStreamAtIndex(index.row))
+                    selectedStreamList.add(self.stackStreamList.getStreamAtIndex((index as NSIndexPath).row))
                 }
                 self.delegate.decidedStackStreamList(selectedStreamList)
             }

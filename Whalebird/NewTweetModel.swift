@@ -12,7 +12,7 @@ class NewTweetModel: NSObject {
     var tagRange: NSRange?
     var screenNameRange: NSRange?
     
-    func findTagRange(viewText: String, text: String, range: NSRange, finishSelect: ()-> Void, completeFindText: (Array<String>)-> Void) {
+    func findTagRange(_ viewText: String, text: String, range: NSRange, finishSelect: ()-> Void, completeFindText: @escaping (Array<String>)-> Void) {
         if text == "#" {
             self.clearRange()
             self.tagRange = NSRange(location: range.location, length: 0)
@@ -24,10 +24,10 @@ class NewTweetModel: NSObject {
         
         if self.tagRange != nil {
             self.tagRange!.length = range.location - self.tagRange!.location
-            let tag = ((viewText as NSString).substringWithRange(self.tagRange!) + text)
+            let tag = ((viewText as NSString).substring(with: self.tagRange!) + text)
             if tag.characters.count > 0 {
                 // 頭の#を切り捨てる
-                let tag_name = (tag as NSString).substringFromIndex(1)
+                let tag_name = (tag as NSString).substring(from: 1)
                 // ここでリスト取得＆テーブル更新
                 TagsList.sharedClient.searchTags(tag_name, callback: { (tags) -> Void in
                     completeFindText(tags)
@@ -40,7 +40,7 @@ class NewTweetModel: NSObject {
         }
     }
 
-    func findScreenNameRange(viewText: String, text: String, range: NSRange, finishSelect: ()-> Void, completeFindText: (Array<String>)-> Void) {
+    func findScreenNameRange(_ viewText: String, text: String, range: NSRange, finishSelect: ()-> Void, completeFindText: @escaping (Array<String>)-> Void) {
         if text == "@" {
             self.clearRange()
             self.screenNameRange = NSRange(location: range.location, length: 0)
@@ -52,10 +52,10 @@ class NewTweetModel: NSObject {
         
         if self.screenNameRange != nil {
             self.screenNameRange!.length = range.location - self.screenNameRange!.location
-            let name = ((viewText as NSString).substringWithRange(self.screenNameRange!) + text)
+            let name = ((viewText as NSString).substring(with: self.screenNameRange!) + text)
             if name.characters.count > 0 {
                 // 頭の@を切り捨てる
-                let screen_name = (name as NSString).substringFromIndex(1)
+                let screen_name = (name as NSString).substring(from: 1)
                 // ここでリスト取得＆テーブル更新
                 FriendsList.sharedClient.searchFriends(screen_name, callback: { (friends) -> Void in
                     completeFindText(friends)

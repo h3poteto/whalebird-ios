@@ -15,7 +15,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     //  instance variables
     //=============================================
     var mediaImage: UIImage?
-    var animatedImageURL: NSURL?
+    var animatedImageURL: URL?
     var blankView: UIView!
     var mediaImageView: MediaImageView?
     var animatedImageView: AnimatedImageView?
@@ -26,7 +26,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     //==============================================
     //  instance methods
     //==============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -40,23 +40,23 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaImage = aMediaImage
     }
     
-    convenience init(aGifImageURL: NSURL) {
+    convenience init(aGifImageURL: URL) {
         self.init()
         self.animatedImageURL = aGifImageURL
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let wholeWindowSize = UIScreen.mainScreen().bounds
-        self.cWindowSize = CGRectMake(
-            wholeWindowSize.origin.x,
-            wholeWindowSize.origin.y + UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height,
-            wholeWindowSize.size.width,
-            wholeWindowSize.size.height - (UIApplication.sharedApplication().statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height)
+        let wholeWindowSize = UIScreen.main.bounds
+        self.cWindowSize = CGRect(
+            x: wholeWindowSize.origin.x,
+            y: wholeWindowSize.origin.y + UIApplication.shared.statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height,
+            width: wholeWindowSize.size.width,
+            height: wholeWindowSize.size.height - (UIApplication.shared.statusBarFrame.size.height + self.navigationController!.navigationBar.frame.size.height)
         )
         
         self.mediaScrollView = UIScrollView(frame: self.view.bounds)
-        self.mediaScrollView.backgroundColor = UIColor.blackColor()
+        self.mediaScrollView.backgroundColor = UIColor.black
         // ピンチインで拡大縮小する対象としてblankViewを用意しておく
         self.blankView = UIView(frame: self.view.bounds)
         
@@ -73,7 +73,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         self.mediaScrollView.delegate = self
         self.mediaScrollView.minimumZoomScale = 1
         self.mediaScrollView.maximumZoomScale = 8
-        self.mediaScrollView.scrollEnabled = true
+        self.mediaScrollView.isScrollEnabled = true
         self.mediaScrollView.showsHorizontalScrollIndicator = true
         self.mediaScrollView.showsVerticalScrollIndicator = true
         self.view.addSubview(self.mediaScrollView)
@@ -82,10 +82,10 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         doubleTapGesture.numberOfTapsRequired = 2
         self.mediaScrollView.addGestureRecognizer(doubleTapGesture)
 
-        let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Stop, target: self, action: #selector(MediaViewController.closeView))
+        let closeButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.stop, target: self, action: #selector(MediaViewController.closeView))
         self.navigationItem.leftBarButtonItem = closeButton
-        self.navigationController!.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController!.navigationBar.barTintColor = UIColor.blackColor()
+        self.navigationController!.navigationBar.tintColor = UIColor.white
+        self.navigationController!.navigationBar.barTintColor = UIColor.black
 
     }
 
@@ -94,16 +94,16 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.blankView
     }
     
     
-    func doubleTap(gesture: UITapGestureRecognizer) {
+    func doubleTap(_ gesture: UITapGestureRecognizer) {
         // ここ拡大縮小させたい
         if self.fZoom {
-            let zoomRect = self.zoomRectToScale(2.0, center: gesture.locationInView(gesture.view))
-            self.mediaScrollView.zoomToRect(zoomRect, animated: true)
+            let zoomRect = self.zoomRectToScale(2.0, center: gesture.location(in: gesture.view))
+            self.mediaScrollView.zoom(to: zoomRect, animated: true)
             self.fZoom = false
         } else {
             self.mediaScrollView.setZoomScale(1.0, animated: true)
@@ -111,7 +111,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func zoomRectToScale(scale: CGFloat, center: CGPoint) -> CGRect {
+    func zoomRectToScale(_ scale: CGFloat, center: CGPoint) -> CGRect {
         var zoomRect: CGRect = CGRect()
         zoomRect.size.height = self.mediaScrollView.frame.size.height / scale
         zoomRect.size.width = self.mediaScrollView.frame.size.width / scale
@@ -121,7 +121,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func closeView() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
 }

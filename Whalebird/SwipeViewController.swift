@@ -32,7 +32,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -57,30 +57,30 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         for item in self.streamList.lists {
             viewItems.append(StreamTableViewController(aStreamElement: item, aParentNavigation: self.navigationController!))
         }
-        self.swipeView = SwipeView(frame: CGRectMake(
-            0,
-            self.navigationController!.navigationBar.frame.size.height + UIApplication.sharedApplication().statusBarFrame.height,
-            self.view.frame.width,
-            self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.sharedApplication().statusBarFrame.height - SwipeViewController.PageControlViewHeight
+        self.swipeView = SwipeView(frame: CGRect(
+            x: 0,
+            y: self.navigationController!.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height,
+            width: self.view.frame.width,
+            height: self.view.frame.size.height - self.tabBarController!.tabBar.frame.size.height - self.navigationController!.navigationBar.frame.size.height - UIApplication.shared.statusBarFrame.height - SwipeViewController.PageControlViewHeight
             ))
         
         self.swipeView.delegate = self
         self.swipeView.dataSource = self
         
-        self.swipeView.pagingEnabled = true
+        self.swipeView.isPagingEnabled = true
         self.swipeView.currentPage = self.startIndex
         self.navigationItem.title = self.streamList.getStreamAtIndex(self.startIndex).name
         self.view.addSubview(self.swipeView)
         
-        let newTweetButton = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(SwipeViewController.tappedNewTweet))
+        let newTweetButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(SwipeViewController.tappedNewTweet))
         self.navigationItem.rightBarButtonItem = newTweetButton
         
-        let cWindowSize = UIScreen.mainScreen().bounds
-        self.pageControl = UIPageControl(frame: CGRectMake(
-            0,
-            cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - SwipeViewController.PageControlViewHeight,
-            cWindowSize.size.width,
-            SwipeViewController.PageControlViewHeight))
+        let cWindowSize = UIScreen.main.bounds
+        self.pageControl = UIPageControl(frame: CGRect(
+            x: 0,
+            y: cWindowSize.size.height - self.tabBarController!.tabBar.frame.height - SwipeViewController.PageControlViewHeight,
+            width: cWindowSize.size.width,
+            height: SwipeViewController.PageControlViewHeight))
         self.pageControl.backgroundColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         self.pageControl.pageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
         self.pageControl.currentPageIndicatorTintColor = UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.8)
@@ -94,36 +94,36 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.delegate = nil
         self.tabBarController?.delegate = nil
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.delegate = self
         self.tabBarController?.delegate = self
     }
 
-    func numberOfItemsInSwipeView(swipeView: SwipeView!) -> Int {
+    func numberOfItems(in swipeView: SwipeView!) -> Int {
         return self.streamList.count()
     }
 
-    func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
+    func swipeView(_ swipeView: SwipeView!, viewForItemAt index: Int, reusing view: UIView!) -> UIView! {
         return self.viewItems[index].tableView
     }
     
-    func swipeViewItemSize(swipeView: SwipeView!) -> CGSize {
+    func swipeViewItemSize(_ swipeView: SwipeView!) -> CGSize {
         return self.swipeView.bounds.size
     }
     
-    func swipeViewCurrentItemIndexDidChange(swipeView: SwipeView!) {
+    func swipeViewCurrentItemIndexDidChange(_ swipeView: SwipeView!) {
         self.navigationItem.title = self.streamList.getStreamAtIndex(swipeView.currentItemIndex).name
         if (self.pageControl != nil) {
             self.pageControl.currentPage = swipeView.currentItemIndex
         }
     }
 
-    func swipeViewWillBeginDragging(swipeView: SwipeView!) {
+    func swipeViewWillBeginDragging(_ swipeView: SwipeView!) {
         //self.currentScroll = self.viewItems[self.swipeView.currentItemIndex].tableView.contentOffset
         for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
@@ -131,7 +131,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         //self.viewItems[self.swipeView.currentItemIndex].tableView.scrollEnabled = false
     }
     
-    func swipeViewDidScroll(swipeView: SwipeView!) {
+    func swipeViewDidScroll(_ swipeView: SwipeView!) {
         for i in 0 ..< self.streamList.count() {
             if (!self.viewItems[i].fCellSelect) {
                 self.viewItems[i].setCurrentOffset(self.currentScroll[i])
@@ -140,8 +140,8 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
     }
 
     // Cell選択周りではsetCurrentOffsetを実行したくないので，Navigationの戻るイベントを検出してフラグの書き換え
-    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
-        if (viewController.dynamicType === SwipeViewController.self) {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        if (type(of: viewController) === SwipeViewController.self) {
             for i in 0 ..< self.streamList.count() {
                 self.viewItems[i].fCellSelect = false
             }
@@ -156,7 +156,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }

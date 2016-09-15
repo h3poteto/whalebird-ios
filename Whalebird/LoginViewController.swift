@@ -8,14 +8,14 @@
 
 import UIKit
 import SVProgressHUD
-import IJReachability
+import ReachabilitySwift
 import NoticeView
 
 class ExWebView: UIWebView {
-    override func loadRequest(request: NSURLRequest) {
-        if let mRequest = request.mutableCopy() as? NSMutableURLRequest {
+    override func loadRequest(_ request: URLRequest) {
+        if let mRequest = (request as NSURLRequest).mutableCopy() as? NSMutableURLRequest {
             mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
-            super.loadRequest(mRequest)
+            super.loadRequest(mRequest as URLRequest)
         }
     }
 }
@@ -27,13 +27,13 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     //=============================================
     var loginWebView: UIWebView!
     var redirectedTwitter: Bool = false
-    var whalebirdAPIURL: NSURL = NSURL(string: NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String)!
-    var whalebirdAPIWithKey: String = (NSBundle.mainBundle().objectForInfoDictionaryKey("apiurl") as! String) + "users/sign_in?"
+    var whalebirdAPIURL: URL = URL(string: Bundle.main.object(forInfoDictionaryKey: "apiurl") as! String)!
+    var whalebirdAPIWithKey: String = (Bundle.main.object(forInfoDictionaryKey: "apiurl") as! String) + "users/sign_in?"
 
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.title = "ログイン"
     }
@@ -47,20 +47,20 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
 
         self.loginWebView = ExWebView(frame: self.view.frame)
         self.loginWebView.scalesPageToFit = true
-        self.loginWebView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+        self.loginWebView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.loginWebView.delegate = self
-        let request = NSMutableURLRequest(URL: NSURL(string: self.whalebirdAPIWithKey)!)
-        if IJReachability.isConnectedToNetwork() {
-            self.loginWebView.loadRequest(request)
+        let request = NSMutableURLRequest(url: URL(string: self.whalebirdAPIWithKey)!)
+        if Reachability()!.isReachable {
+            self.loginWebView.loadRequest(request as URLRequest)
             self.view.addSubview(self.loginWebView)
         } else {
-            let notice = WBErrorNoticeView.errorNoticeInView(UIApplication.sharedApplication().delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
-            notice.alpha = 0.8
-            notice.originY = (UIApplication.sharedApplication().delegate as! AppDelegate).alertPosition
-            notice.show()
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            notice?.alpha = 0.8
+            notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
+            notice?.show()
         }
         // SVProgressHUDの表示スタイル設定
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginViewController.hudTapped), name: SVProgressHUDDidReceiveTouchEventNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.hudTapped), name: NSNotification.Name.SVProgressHUDDidReceiveTouchEvent, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,37 +69,37 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     }
     
     
-    func webViewDidStartLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         SVProgressHUD.dismiss()
     }
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if (self.redirectedTwitter && request.URL!.host == self.whalebirdAPIURL.host && (request.URL!.absoluteString as NSString!).rangeOfString("callback").location == NSNotFound) {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if (self.redirectedTwitter && request.url!.host == self.whalebirdAPIURL.host && (request.url!.absoluteString as NSString!).range(of: "callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession({ () -> Void in
-                SVProgressHUD.showWithStatus("キャンセル", maskType: SVProgressHUDMaskType.Clear)
+                SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
                 WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
                     SVProgressHUD.dismiss()
                 })
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.navigationController?.popViewControllerAnimated(true)
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.navigationController?.popViewController(animated: true)
             }, failure: { (error) -> Void in
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false                
             })
             return false
-        } else if ((request.URL!.absoluteString as NSString!).rangeOfString("api.twitter.com").location != NSNotFound) {
+        } else if ((request.url!.absoluteString as NSString!).range(of: "api.twitter.com").location != NSNotFound) {
             self.redirectedTwitter = true
         }
         return true
     }
     
     func hudTapped() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         self.loginWebView.stopLoading()
     }
 
