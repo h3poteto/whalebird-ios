@@ -74,5 +74,9 @@
 	<string>${APIURL}</string>
 	<key>weburl</key>
 	<string>${WebURL}</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To tweet with user&apos;s photo</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To tweet with user&apos;s photo</string>
 </dict>
 </plist>

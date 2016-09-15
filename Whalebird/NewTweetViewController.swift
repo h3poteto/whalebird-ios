@@ -153,7 +153,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         let windowSize = UIScreen.main.bounds.size
         if let info = (notification as NSNotification).userInfo as NSDictionary? {
             self.optionItemBar?.removeFromSuperview()
-            if let keyboardSize = (info.object(forKey: UIKeyboardFrameEndUserInfoKey) as AnyObject).cgRectValue as CGRect? {
+            info.object(forKey: UIKeyboardFrameEndUserInfoKey)
+            if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue as CGRect? {
                 self.optionItemBar = UIToolbar(frame: CGRect(x: 0, y: keyboardSize.origin.y - self.optionItemBarHeight, width: windowSize.width, height: self.optionItemBarHeight))
             }
             self.optionItemBar?.backgroundColor = UIColor.lightGray
@@ -166,8 +167,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             
             let itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
             self.optionItemBar?.setItems(itemArray, animated: true)
-            
-            self.view.addSubview(self.optionItemBar!)
+
+            if let itemBar = self.optionItemBar {
+                self.view.addSubview(itemBar)
+            }
         }
         
     }
