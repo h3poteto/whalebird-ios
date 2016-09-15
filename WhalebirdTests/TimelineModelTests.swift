@@ -85,8 +85,8 @@ class TimelineModelTests: XCTestCase {
         let timelineModel = TimelineModel()
         timelineModel.currentTimeline = array
         timelineModel.addFavorite(0)
-        XCTAssertEqual(timelineModel.currentTimeline[0].objectForKey("favorited?") as? Int, 1, "favorited flag should change")
+        XCTAssertEqual((timelineModel.currentTimeline[0] as? NSDictionary)?.object(forKey: "favorited?") as? Int, 1, "favorited flag should change")
         timelineModel.deleteFavorite(0)
-        XCTAssertEqual(timelineModel.currentTimeline[0].objectForKey("favorited?") as? Int, 0, "favorited flag should change")
+        XCTAssertEqual((timelineModel.currentTimeline[0] as? NSDictionary)?.object(forKey: "favorited?") as? Int, 0, "favorited flag should change")
     }
 }

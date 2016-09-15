@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37F71FC1838C1F14299F01B2 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DD5D281C674F48C2498983 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		24AE8E33C472E371892F4C5A /* Pods_Whalebird_WhalebirdTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE95EA0A8070A01ABEBBECBE /* Pods_Whalebird_WhalebirdTests.framework */; };
 		B3FCE42658FBFA4D9965FB4A /* Pods_Whalebird.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B397D56A446EFB001DDDC38 /* Pods_Whalebird.framework */; };
 		E9073A9E1B35B0E40049FCC2 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */; };
 		E9124399199524E000795EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9124398199524E000795EF0 /* AppDelegate.swift */; };
@@ -82,10 +82,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A77B9941FA64239BE3DC901 /* Pods-Whalebird-WhalebirdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird-WhalebirdTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird-WhalebirdTests/Pods-Whalebird-WhalebirdTests.release.xcconfig"; sourceTree = "<group>"; };
 		0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird.debug.xcconfig"; sourceTree = "<group>"; };
+		1B819DF1AB87096E57ED1DCB /* Pods-Whalebird-WhalebirdTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird-WhalebirdTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird-WhalebirdTests/Pods-Whalebird-WhalebirdTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8B397D56A446EFB001DDDC38 /* Pods_Whalebird.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Whalebird.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1DD5D281C674F48C2498983 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B24446D268050AF194D936BF /* Pods-Whalebird.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird.release.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird.release.xcconfig"; sourceTree = "<group>"; };
+		DE95EA0A8070A01ABEBBECBE /* Pods_Whalebird_WhalebirdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Whalebird_WhalebirdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9073A9D1B35B0E40049FCC2 /* NotificationUnread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUnread.swift; sourceTree = "<group>"; };
 		E9124393199524E000795EF0 /* Whalebird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whalebird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9124397199524E000795EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -166,7 +169,6 @@
 				E9869EE919AE3772009DD99D /* QuartzCore.framework in Frameworks */,
 				E9797B1C199526F6000FC13C /* Social.framework in Frameworks */,
 				E9797B1A199526EF000FC13C /* Accounts.framework in Frameworks */,
-				37F71FC1838C1F14299F01B2 /* Pods.framework in Frameworks */,
 				B3FCE42658FBFA4D9965FB4A /* Pods_Whalebird.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,6 +180,7 @@
 				E92C49F11A9C6D03006BD492 /* QuartzCore.framework in Frameworks */,
 				E92C49E41A9C6BC3006BD492 /* Accounts.framework in Frameworks */,
 				E92C49E31A9C6BBB006BD492 /* Social.framework in Frameworks */,
+				24AE8E33C472E371892F4C5A /* Pods_Whalebird_WhalebirdTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +200,7 @@
 				E9869EE719AE370F009DD99D /* QuartzCore.framework */,
 				B1DD5D281C674F48C2498983 /* Pods.framework */,
 				8B397D56A446EFB001DDDC38 /* Pods_Whalebird.framework */,
+				DE95EA0A8070A01ABEBBECBE /* Pods_Whalebird_WhalebirdTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -207,6 +211,8 @@
 				E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */,
 				0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */,
 				B24446D268050AF194D936BF /* Pods-Whalebird.release.xcconfig */,
+				1B819DF1AB87096E57ED1DCB /* Pods-Whalebird-WhalebirdTests.debug.xcconfig */,
+				0A77B9941FA64239BE3DC901 /* Pods-Whalebird-WhalebirdTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -387,9 +393,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E91243B2199524E000795EF0 /* Build configuration list for PBXNativeTarget "WhalebirdTests" */;
 			buildPhases = (
+				1B1F7298998B4BFAAC711554 /* 📦 Check Pods Manifest.lock */,
 				E91243A1199524E000795EF0 /* Sources */,
 				E91243A2199524E000795EF0 /* Frameworks */,
 				E91243A3199524E000795EF0 /* Resources */,
+				0FD59B55AF2EE3AC3D255E18 /* 📦 Embed Pods Frameworks */,
+				C38C5D271372468349D38F21 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -469,6 +478,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0FD59B55AF2EE3AC3D255E18 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Whalebird-WhalebirdTests/Pods-Whalebird-WhalebirdTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1B1F7298998B4BFAAC711554 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		6DBED313333D4B8A83058C37 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -497,6 +536,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C38C5D271372468349D38F21 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Whalebird-WhalebirdTests/Pods-Whalebird-WhalebirdTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C8ACE94C9C5D896B3B625F4F /* 📦 Embed Pods Frameworks */ = {
@@ -759,6 +813,7 @@
 		};
 		E91243B3199524E000795EF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1B819DF1AB87096E57ED1DCB /* Pods-Whalebird-WhalebirdTests.debug.xcconfig */;
 			buildSettings = {
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -790,6 +845,7 @@
 		};
 		E91243B4199524E000795EF0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0A77B9941FA64239BE3DC901 /* Pods-Whalebird-WhalebirdTests.release.xcconfig */;
 			buildSettings = {
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";

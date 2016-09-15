@@ -36,10 +36,10 @@ class WhalebirdAPIClientTests: XCTestCase {
         
         let notNullDictionary = WhalebirdAPIClient.sharedClient.cleanDictionary(nullDictionary)
         
-        XCTAssertEqual(notNullDictionary.objectForKey("intObject") as? Int, 1, "int object should not touch")
-        XCTAssertEqual(notNullDictionary.objectForKey("nullObject") as? String, "", "null objecct should convert string")
-        XCTAssertEqual(notNullDictionary.objectForKey("childDictionary")?.objectForKey("intObject") as? Int, 2, "int object should not touch")
-        XCTAssertEqual(notNullDictionary.objectForKey("childDictionary")?.objectForKey("nullObject") as? String, "", "null object should convert string")
+        XCTAssertEqual(notNullDictionary.object(forKey: "intObject") as? Int, 1, "int object should not touch")
+        XCTAssertEqual(notNullDictionary.object(forKey: "nullObject") as? String, "", "null objecct should convert string")
+        XCTAssertEqual((notNullDictionary.object(forKey: "childDictionary") as? NSDictionary)?.object(forKey: "intObject") as? Int, 2, "int object should not touch")
+        XCTAssertEqual((notNullDictionary.object(forKey: "childDictionary") as? NSDictionary)?.object(forKey: "nullObject") as? String, "", "null object should convert string")
         
     }
     

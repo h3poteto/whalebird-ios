@@ -31,4 +31,7 @@ target "Whalebird" do
       end
     end
   end
+
+  target "WhalebirdTests" do
+  end
 end

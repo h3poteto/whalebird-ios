@@ -217,24 +217,24 @@ class TimelineViewCell: UITableViewCell {
             //------------------------------------
             //  profileImageLabel
             //------------------------------------
-            let imageURL = URL(string: (aDictionary.object(forKey: "user") as AnyObject).object(forKey: "profile_image_url") as! String)
+            let imageURL = URL(string: (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "profile_image_url") as! String)
             self.profileImage.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "noimage"))
             //------------------------------------
             //  retweetedProfileImageLabel
             //------------------------------------
             if (retweeted) {
-                let imageURL = URL(string: (aDictionary.object(forKey: "retweeted") as AnyObject).object(forKey: "profile_image_url") as! String)
+                let imageURL = URL(string: (aDictionary.object(forKey: "retweeted") as! NSDictionary).object(forKey: "profile_image_url") as! String)
                 self.retweetedProfileImageLabel?.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "Warning"))
             }
             
-            let cScreenName = (aDictionary.object(forKey: "user") as AnyObject).object(forKey: "screen_name") as! String
+            let cScreenName = (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "screen_name") as! String
             //------------------------------------
             //  nameLabel
             //------------------------------------
             if (userDefault.object(forKey: "displayNameType") != nil && userDefault.integer(forKey: "displayNameType") == 2) {
                 self.nameLabel.text = "@" + cScreenName
             } else {
-                self.nameLabel.text = (aDictionary.object(forKey: "user") as AnyObject).object(forKey: "name") as? String
+                self.nameLabel.text = (aDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "name") as? String
             }
             self.nameLabel.textAlignment = NSTextAlignment.left
             self.nameLabel.textColor = UIColor.black
@@ -280,7 +280,7 @@ class TimelineViewCell: UITableViewCell {
             if (retweeted) {
                 self.retweetedLabel?.textAlignment = NSTextAlignment.right
                 self.retweetedLabel?.textColor = UIColor.gray
-                self.retweetedLabel?.text = "Retweeted by @" + ((aDictionary.object(forKey: "retweeted") as AnyObject).object(forKey: "screen_name") as! String)
+                self.retweetedLabel?.text = "Retweeted by @" + ((aDictionary.object(forKey: "retweeted") as! NSDictionary).object(forKey: "screen_name") as! String)
                 self.retweetedLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 13)
                 self.retweetedLabel?.sizeToFit()
                 self.retweetedLabel?.frame.origin.y = self.postDetailLable.frame.origin.y + self.postDetailLable.frame.size.height

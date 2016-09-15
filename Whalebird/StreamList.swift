@@ -25,11 +25,11 @@ class StreamList: NSObject {
             self.lists.removeAll()
             for streamList in userStreamList {
                 self.lists.insert(Stream(
-                    image: (streamList as AnyObject).object(forKey: "image") as! String,
-                    name: (streamList as AnyObject).object(forKey: "name") as! String,
-                    type: (streamList as AnyObject).object(forKey: "type") as! String,
-                    uri: (streamList as AnyObject).object(forKey: "uri") as! String,
-                    id: (streamList as AnyObject).object(forKey: "id") as! String),
+                    image: (streamList as! NSDictionary).object(forKey: "image") as! String,
+                    name: (streamList as! NSDictionary).object(forKey: "name") as! String,
+                    type: (streamList as! NSDictionary).object(forKey: "type") as! String,
+                    uri: (streamList as! NSDictionary).object(forKey: "uri") as! String,
+                    id: (streamList as! NSDictionary).object(forKey: "id") as! String),
                     at: 0)
             }
         } else {

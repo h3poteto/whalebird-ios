@@ -397,8 +397,8 @@ class WhalebirdAPIClient: NSObject {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
             do {
                 let jsonData = try JSONSerialization.jsonObject(with: operation.responseData, options: JSONSerialization.ReadingOptions.allowFragments)
-                if (jsonData as AnyObject).object(forKey: "errors") as? String != nil {
-                    errorMessage = (jsonData as AnyObject).object(forKey: "errors") as! String
+                if (jsonData as! NSDictionary).object(forKey: "errors") as? String != nil {
+                    errorMessage = (jsonData as! NSDictionary).object(forKey: "errors") as! String
                 }
             } catch {
             }

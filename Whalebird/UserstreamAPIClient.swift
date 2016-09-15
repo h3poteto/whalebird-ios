@@ -51,14 +51,14 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     class func convertRetweet(_ aDictionary: NSMutableDictionary) -> NSMutableDictionary {
         let mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
-        let cOriginalText = (mutableDictionary.object(forKey: "retweeted_status") as AnyObject).object(forKey: "text") as! String
-        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime((mutableDictionary.object(forKey: "retweeted_status") as AnyObject).object(forKey: "created_at") as! String)
-        let cOriginalName = ((mutableDictionary.object(forKey: "retweeted_status") as AnyObject).object(forKey: "user") as! NSDictionary).object(forKey: "name") as! String
-        let cOriginalScreenName = ((mutableDictionary.object(forKey: "retweeted_status") as AnyObject).object(forKey: "user") as! NSDictionary).object(forKey: "screen_name") as! String
-        let cOriginalProfileImageURL = ((mutableDictionary.object(forKey: "retweeted_status") as AnyObject).object(forKey: "user") as! NSDictionary).object(forKey: "profile_image_url_https") as! String
-        let cPostName = (mutableDictionary.object(forKey: "user") as AnyObject).object(forKey: "name") as! String
-        let cPostScreenName = (mutableDictionary.object(forKey: "user") as AnyObject).object(forKey: "screen_name") as! String
-        let cPostProfileImageURL = (mutableDictionary.object(forKey: "user") as AnyObject).object(forKey: "profile_image_url_https") as! String
+        let cOriginalText = (mutableDictionary.object(forKey: "retweeted_status") as! NSDictionary).object(forKey: "text") as! String
+        let cOriginalCreatedAt = UserstreamAPIClient.convertUTCTime((mutableDictionary.object(forKey: "retweeted_status") as! NSDictionary).object(forKey: "created_at") as! String)
+        let cOriginalName = ((mutableDictionary.object(forKey: "retweeted_status") as! NSDictionary).object(forKey: "user") as! NSDictionary).object(forKey: "name") as! String
+        let cOriginalScreenName = ((mutableDictionary.object(forKey: "retweeted_status") as! NSDictionary).object(forKey: "user") as! NSDictionary).object(forKey: "screen_name") as! String
+        let cOriginalProfileImageURL = ((mutableDictionary.object(forKey: "retweeted_status") as! NSDictionary).object(forKey: "user") as! NSDictionary).object(forKey: "profile_image_url_https") as! String
+        let cPostName = (mutableDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "name") as! String
+        let cPostScreenName = (mutableDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "screen_name") as! String
+        let cPostProfileImageURL = (mutableDictionary.object(forKey: "user") as! NSDictionary).object(forKey: "profile_image_url_https") as! String
         
         mutableDictionary.setValue(cOriginalText, forKey: "text")
         mutableDictionary.setValue(cOriginalCreatedAt, forKey: "created_at")
@@ -84,20 +84,20 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     
     class func convertMedia(_ aDictionary: NSMutableDictionary) -> NSMutableDictionary {
         let mutableDictionary = aDictionary.mutableCopy() as! NSMutableDictionary
-        let cOriginalMedia = (mutableDictionary.object(forKey: "entities") as AnyObject).object(forKey: "media") as! NSArray
+        let cOriginalMedia = (mutableDictionary.object(forKey: "entities") as! NSDictionary).object(forKey: "media") as! NSArray
         let mediaURLArray = NSMutableArray()
         for media in cOriginalMedia {
-            mediaURLArray.add((media as AnyObject).object(forKey: "media_url_https")!)
+            mediaURLArray.add((media as! NSDictionary).object(forKey: "media_url_https")!)
         }
         mutableDictionary.setValue(mediaURLArray, forKey: "media")
         
         // video
         let videoURLArray = NSMutableArray()
-        let cOriginalVideo = (mutableDictionary.object(forKey: "extended_entities") as AnyObject).object(forKey: "media") as! NSArray
+        let cOriginalVideo = (mutableDictionary.object(forKey: "extended_entities") as! NSDictionary).object(forKey: "media") as! NSArray
         for anime in cOriginalVideo {
-            if (anime as AnyObject).object(forKey: "type") as! String == "animated_gif" {
+            if (anime as! NSDictionary).object(forKey: "type") as! String == "animated_gif" {
                 var video: String! = ""
-                if let variants = ((anime as AnyObject).object(forKey: "video_info") as AnyObject).object(forKey: "variants") as? NSArray {
+                if let variants = ((anime as! NSDictionary).object(forKey: "video_info") as! NSDictionary).object(forKey: "variants") as? NSArray {
                     video = (variants.object(at: 0) as! NSDictionary).object(forKey: ("url")) as? String ?? ""
                 }
                 videoURLArray.add(video)
@@ -174,14 +174,14 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
             if (object.object(forKey: "text") != nil) {
                 // datetimeをサーバー側のデータに合わせて加工しておく
                 object.setValue(UserstreamAPIClient.convertUTCTime(object.object(forKey: "created_at") as! String), forKey: "created_at")
-                print((object.object(forKey: "user") as AnyObject).object(forKey: "screen_name"))
+                print((object.object(forKey: "user") as! NSDictionary).object(forKey: "screen_name"))
                 object.setValue(object.object(forKey: "favorited") as! Int, forKey: "favorited?")
                 if (object.object(forKey: "retweeted_status") == nil) {
                     object.setValue(nil, forKey: "retweeted")
                 } else {
                     object = UserstreamAPIClient.convertRetweet(object) as NSMutableDictionary
                 }
-                if ((object.object(forKey: "entities") as AnyObject).object(forKey: "media") == nil) {
+                if ((object.object(forKey: "entities") as! NSDictionary).object(forKey: "media") == nil) {
                     object.setValue(nil, forKey: "media")
                 } else {
                     object = UserstreamAPIClient.convertMedia(object) as NSMutableDictionary
