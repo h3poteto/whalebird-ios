@@ -386,7 +386,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             if (self.tweetModel.fProtected == true) {
                 let protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-                    return true
                 })
                 protectedAlert.addAction(okAction)
                 self.present(protectedAlert, animated: true, completion: nil)
@@ -415,7 +414,6 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             if (self.tweetModel.fProtected == true) {
                 let protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-                    return true
                 })
                 protectedAlert.addAction(okAction)
                 self.present(protectedAlert, animated: true, completion: nil)
