@@ -11,6 +11,7 @@ import Fabric
 import Crashlytics
 import NoticeView
 import SVProgressHUD
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
@@ -22,14 +23,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         Fabric.with([Crashlytics()])
-        
-        let types: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.sound, UIUserNotificationType.alert]
-        let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(types: types, categories: nil)
-        application.registerForRemoteNotifications()
-        application.registerUserNotificationSettings(notificationSettings)
-        
 
-        
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
+                guard error == nil else {
+                    // error handling
+                    return
+                }
+
+                if granted {
+
+                    // デバイストークンを発行
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            }
+        } else {
+            let types: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.sound, UIUserNotificationType.alert]
+            let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(types: types, categories: nil)
+            application.registerForRemoteNotifications()
+            application.registerUserNotificationSettings(notificationSettings)
+        }
+
+
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
         
@@ -166,14 +181,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // <>と" "(空白)を取る
-        let characterSet: CharacterSet = CharacterSet( charactersIn: "<>" )
-        let deviceTokenString: String = ( deviceToken.description as NSString )
-            .trimmingCharacters( in: characterSet )
-            .replacingOccurrences( of: " ", with: "" ) as String
+        var token = String(format: "%@", deviceToken as CVarArg) as String
+        let characterSet: CharacterSet = CharacterSet.init(charactersIn: "<>")
+        token = token.trimmingCharacters(in: characterSet)
+        token = token.replacingOccurrences(of: " ", with: "")
         let userDefault = UserDefaults.standard
-        userDefault.set(deviceTokenString, forKey: "deviceToken")
-        print(deviceTokenString)
-        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
+        userDefault.set(token, forKey: "deviceToken")
+        print("deviceToken: \(token)")
+        WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) in
         }
     }
     

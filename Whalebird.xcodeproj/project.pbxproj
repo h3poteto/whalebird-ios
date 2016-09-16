@@ -142,6 +142,7 @@
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
 		E9AB53B11B63B79400C53942 /* TimelineModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineModel.swift; sourceTree = "<group>"; };
+		E9B8BF811D8C4DD9004EF434 /* Whalebird.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Whalebird.entitlements; sourceTree = "<group>"; };
 		E9BB8C3B1A1786A300C10F32 /* ConversationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewController.swift; sourceTree = "<group>"; };
 		E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationSecrets.swift; sourceTree = "<group>"; };
 		E9BC3E641A40905E00D2D6BD /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -158,6 +159,7 @@
 		E9E9206C1A8E011E002F24D0 /* MinuteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinuteTableViewController.swift; sourceTree = "<group>"; };
 		E9FD20AA19C8808D00A3184C /* StackListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackListTableViewController.swift; sourceTree = "<group>"; };
 		E9FD9AF11B8E1CFB0026890A /* MediaImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImageView.swift; sourceTree = "<group>"; };
+		E9FF77071D8C3E7C00C5F279 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +192,7 @@
 		0249136FA29B42BCB7523044 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9FF77071D8C3E7C00C5F279 /* UserNotifications.framework */,
 				E92C49E01A9C6BA7006BD492 /* libPods.a */,
 				E92C49DD1A9C6B0E006BD492 /* libPods.a */,
 				E93433161A9C66F0004ACC03 /* libPods.a */,
@@ -242,6 +245,7 @@
 		E9124395199524E000795EF0 /* Whalebird */ = {
 			isa = PBXGroup;
 			children = (
+				E9B8BF811D8C4DD9004EF434 /* Whalebird.entitlements */,
 				E988D0141B722709003BAD31 /* Service */,
 				E9AB53B61B63D3B200C53942 /* View */,
 				E9AB53B51B63CFBB00C53942 /* ViewController */,
@@ -428,6 +432,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
 							};
 						};
 					};
@@ -747,13 +754,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */;
 			buildSettings = {
-				APIURL = "http://whalebird.localdomain:3001/";
+				APIURL = "192.168.55.3:3001/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird.dev;
 				BUNDLE_NAME = WhalebirdDev;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Whalebird/Whalebird.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Akira Fukushima (9PQ8S3P587)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Akira Fukushima (9PQ8S3P587)";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -762,6 +770,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Whalebird/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -770,7 +779,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ed74f581-0afb-41ad-bfca-7fd501ba1d5d";
+				PROVISIONING_PROFILE = "2c176638-496e-4c17-8722-52cba9548982";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -788,6 +797,7 @@
 				BUNDLE_IDENTIFIER = org.whalebird;
 				BUNDLE_NAME = Whalebird;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Whalebird/Whalebird.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				ENABLE_BITCODE = YES;
@@ -797,6 +807,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Whalebird/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -919,7 +930,8 @@
 				BUNDLE_IDENTIFIER = org.whalebird;
 				BUNDLE_NAME = Whalebird;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = Whalebird/Whalebird.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -928,6 +940,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Whalebird/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
