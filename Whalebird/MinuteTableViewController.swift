@@ -96,7 +96,7 @@ class MinuteTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let minute = self.minuteModel.getMinuteAtIndex((indexPath as NSIndexPath).row) {
             self.delegate.rewriteTweetWithMinute(minute, index: (indexPath as NSIndexPath).row)
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         }
     }
 

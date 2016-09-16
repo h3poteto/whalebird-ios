@@ -183,17 +183,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     
     func onCancelTapped() {
         if (self.newTweetText.text.isEmpty) {
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         } else {
             let minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
             let closeAction = UIAlertAction(title: "破棄する", style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 self.newTweetText.text = ""
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             })
             let minuteAction = UIAlertAction(title: "下書き保存", style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 self.minuteTableView?.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
                 self.newTweetText.text = ""
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             })
             let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 
@@ -425,7 +425,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 if self.selectedMinute != nil {
                     self.minuteTableView?.deleteMinute(self.selectedMinute!)
                 }
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             })
         }
     }

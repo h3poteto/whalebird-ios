@@ -87,7 +87,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
                     SVProgressHUD.dismiss()
                 })
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             }, failure: { (error) -> Void in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false                
             })

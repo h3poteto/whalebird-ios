@@ -368,7 +368,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             })
         })
         let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: {action in
