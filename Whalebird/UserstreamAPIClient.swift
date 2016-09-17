@@ -167,7 +167,6 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     
     func connection(_ connection: NSURLConnection,didReceive data: Data){
-        var jsonError:NSError?
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
             var object: NSMutableDictionary = jsonObject?.mutableCopy() as! NSMutableDictionary
@@ -189,7 +188,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                 self.timeline.realtimeUpdate(object)
             }
         } catch let error as NSError {
-            jsonError = error
+            print(error)
         }
     }
     func confirmConnectedNetwork() ->Bool {
