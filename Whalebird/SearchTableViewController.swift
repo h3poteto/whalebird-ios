@@ -47,18 +47,24 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         self.init(aStreamList: aStreamList)
         self.searchKeyword = keyword
     }
+
+    convenience init() {
+        self.init(style: UITableViewStyle.plain)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tweetSearchBar = UISearchBar()
-        self.tweetSearchBar.placeholder = "検索"
+        self.tweetSearchBar.placeholder = "ツイート検索"
         self.tweetSearchBar.keyboardType = UIKeyboardType.default
         self.tweetSearchBar.delegate = self
         
         self.navigationItem.titleView = self.tweetSearchBar
         self.tweetSearchBar.becomeFirstResponder()
-        
-        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchTableViewController.saveResult))
+
+        if self.streamList != nil {
+            self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchTableViewController.saveResult))
+        }
         
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
         

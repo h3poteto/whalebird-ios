@@ -21,6 +21,7 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     var refreshTimeline: ODRefreshControl!
     
     var newTweetButton: UIBarButtonItem!
+    var searchItemButton: UIBarButtonItem!
     
     var timelineModel: TimelineModel!
     
@@ -62,6 +63,9 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         
         self.newTweetButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(TimelineTableViewController.tappedNewTweet))
         self.navigationItem.rightBarButtonItem = self.newTweetButton
+
+        self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(TimelineTableViewController.displaySearch))
+        self.navigationItem.leftBarButtonItem = self.searchItemButton
 
         self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
         
@@ -222,5 +226,10 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         userDefaults.set(nil, forKey: "homeTimelineSinceID")
         userDefaults.set(nil, forKey: "homeTimeline")
         self.tableView.reloadData()
+    }
+
+    func displaySearch() {
+        let searchView = SearchTableViewController()
+        self.navigationController?.pushViewController(searchView, animated: true)
     }
 }
