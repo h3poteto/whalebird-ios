@@ -155,7 +155,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
     }
     
     func displaySearch() {
-        let searchView = SearchTableViewController(aStreamList: self.streamList)
+        let searchView = SearchAddListTableViewController(aStreamList: self.streamList)
         self.navigationController?.pushViewController(searchView, animated: true)
     }
     

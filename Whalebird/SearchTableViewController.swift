@@ -16,62 +16,44 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     //  instance variables
     //=============================================
     var tweetSearchBar: UISearchBar!
-    var resultCell: Array<AnyObject> = []
-    var saveButton: UIBarButtonItem!
+    var resultCell: Array<TimelineViewCell> = []
     var timelineModel: TimelineModel!
-    var streamList: StreamList?
-    var searchKeyword: String?
+
 
     //=============================================
     //  instance methods
     //=============================================
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    override init(style: UITableViewStyle) {
-        super.init(style: style)
-    }
-    
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    convenience init(aStreamList: StreamList) {
-        self.init()
-        self.streamList = aStreamList
-    }
-    
-    convenience init(aStreamList: StreamList, keyword: String) {
-        self.init(aStreamList: aStreamList)
-        self.searchKeyword = keyword
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.prepareTableView()
+    }
+
+    override func loadView() {
+        super.loadView()
+        self.prepareSearchBar()
+    }
+
+    func prepareSearchBar() {
         self.tweetSearchBar = UISearchBar()
-        self.tweetSearchBar.placeholder = "検索"
+        self.tweetSearchBar.placeholder = "ツイート検索"
         self.tweetSearchBar.keyboardType = UIKeyboardType.default
         self.tweetSearchBar.delegate = self
-        
+
         self.navigationItem.titleView = self.tweetSearchBar
         self.tweetSearchBar.becomeFirstResponder()
-        
-        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchTableViewController.saveResult))
-        
+    }
+
+    func prepareTableView() {
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
-        
+
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
+
         self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-        
-        if self.searchKeyword != nil {
-            self.tweetSearchBar.text = self.searchKeyword!
-            self.executeSearch()
-        }
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -144,7 +126,6 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        self.navigationItem.rightBarButtonItem = self.saveButton
         self.tweetSearchBar.showsCancelButton = false
         return true
     }
@@ -185,18 +166,4 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
                 
         })
     }
-    
-    func saveResult() {
-        if (self.tweetSearchBar.text!.characters.count > 0) {
-            self.streamList?.addNewStream(
-                "",
-                name: self.tweetSearchBar.text!,
-                type: "search",
-                uri: "users/apis/search.json",
-                id: ""
-            )
-            self.navigationController!.popViewController(animated: true)
-        }
-    }
-
 }
