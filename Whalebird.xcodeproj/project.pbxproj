@@ -59,6 +59,7 @@
 		E9C5DE0E19C6C3CD00C65CC4 /* ReplyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */; };
 		E9C5DE1219C73B8500C65CC4 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */; };
 		E9C5DE1419C73BE400C65CC4 /* ListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */; };
+		E9CD577E1D8D5AFB00487BC8 /* SearchAddListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD577D1D8D5AFB00487BC8 /* SearchAddListTableViewController.swift */; };
 		E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CD81E11A32FA9E00763660 /* WebViewController.swift */; };
 		E9D142801A382E3500EA3E67 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */; };
 		E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E9D493BE1A35BBDB00DE2051 /* Settings.bundle */; };
@@ -149,6 +150,7 @@
 		E9C5DE0D19C6C3CD00C65CC4 /* ReplyTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1119C73B8500C65CC4 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
 		E9C5DE1319C73BE400C65CC4 /* ListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewController.swift; sourceTree = "<group>"; };
+		E9CD577D1D8D5AFB00487BC8 /* SearchAddListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAddListTableViewController.swift; sourceTree = "<group>"; };
 		E9CD81E11A32FA9E00763660 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		E9D1427F1A382E3500EA3E67 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		E9D493BE1A35BBDB00DE2051 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				E91243B5199525C200795EF0 /* TimelineTableViewController.swift */,
 				E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */,
 				E9CD81E11A32FA9E00763660 /* WebViewController.swift */,
+				E9CD577D1D8D5AFB00487BC8 /* SearchAddListTableViewController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				E91B203C1A126A06008BF1ED /* MessageDetailViewController.swift in Sources */,
 				E9CD81E21A32FA9E00763660 /* WebViewController.swift in Sources */,
 				E9BC3E631A408E5700D2D6BD /* ApplicationSecrets.swift in Sources */,
+				E9CD577E1D8D5AFB00487BC8 /* SearchAddListTableViewController.swift in Sources */,
 				E9124399199524E000795EF0 /* AppDelegate.swift in Sources */,
 				E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */,
 				E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */,

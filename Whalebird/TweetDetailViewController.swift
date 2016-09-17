@@ -453,7 +453,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             return false
         } else if (URL.scheme!.hasPrefix("tag") == true) {
             let decodedURLString = URL.absoluteString.removingPercentEncoding
-            let searchView = SearchTableViewController(aStreamList: StreamList(), keyword: decodedURLString!.replacingOccurrences(of: "tag:#", with: "#", options: [], range: nil))
+            let searchView = SearchAddListTableViewController(aStreamList: StreamList(), keyword: decodedURLString!.replacingOccurrences(of: "tag:#", with: "#", options: [], range: nil))
             self.navigationController?.pushViewController(searchView, animated: true)
             return false
         } else {
