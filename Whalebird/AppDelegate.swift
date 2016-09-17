@@ -73,8 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         let directMessageNavigationController = UINavigationController(rootViewController: directMessageViewController)
         let settingsViewController = SettingsTableViewController(style: UITableViewStyle.grouped)
         let settingsNavigationController = UINavigationController(rootViewController: settingsViewController)
-        let controllers = NSArray(array: [timelineNavigationController, replyNavigationController, listNavigationController, directMessageNavigationController, settingsNavigationController])
-        self.rootController.setViewControllers((controllers as? [UIViewController]), animated: true)
+        let controllers = [timelineNavigationController, replyNavigationController, listNavigationController, directMessageNavigationController, settingsNavigationController]
+        self.rootController.setViewControllers((controllers), animated: true)
         self.window?.rootViewController = self.rootController
         self.window?.makeKeyAndVisible()
         

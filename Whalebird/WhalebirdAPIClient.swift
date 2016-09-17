@@ -154,8 +154,8 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.get(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if let object = responseObject as? NSArray {
-                    completed(object.reverseObjectEnumerator().allObjects as! [NSDictionary])
+                if let object = responseObject as? [NSDictionary] {
+                    completed(Array(object.reversed()))
                 } else {
                     print("blank response")
                 }
@@ -361,9 +361,9 @@ class WhalebirdAPIClient: NSObject {
     
     func loadCookie() {
         if let cookiesData = UserDefaults.standard.object(forKey: "cookiesKey") as? Data {
-            if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? NSArray {
+            if let cookies = NSKeyedUnarchiver.unarchiveObject(with: cookiesData) as? [HTTPCookie] {
                 for cookie in cookies {
-                    HTTPCookieStorage.shared.setCookie(cookie as! HTTPCookie)
+                    HTTPCookieStorage.shared.setCookie(cookie)
                 }
                 self.sessionManager = AFHTTPRequestOperationManager()
                 self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")

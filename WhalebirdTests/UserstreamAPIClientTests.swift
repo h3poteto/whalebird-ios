@@ -21,16 +21,16 @@ class UserstreamAPIClientTests: XCTestCase {
             "media_url_https" : "https://whalebird.org",
             "type" : "image"
             ])
-        let mediaArray = NSArray(array: [mediaDictionary])
+        let mediaArray = [mediaDictionary]
         let entitiesDictionary = NSDictionary(dictionary: ["media" : mediaArray])
         let streamDictionary = NSMutableDictionary(dictionary: [
             "entities" : entitiesDictionary,
             "extended_entities" : entitiesDictionary
             ])
-        let resultMediaArray = NSArray(array: ["https://whalebird.org"])
+        let resultMediaArray = ["https://whalebird.org"]
         
         let convertMedia = UserstreamAPIClient.convertMedia(streamDictionary)
-        XCTAssertEqual(convertMedia.object(forKey: "media") as! NSArray, resultMediaArray, "media url should fixed")
+        XCTAssertEqual(convertMedia.object(forKey: "media") as! [String], resultMediaArray, "media url should fixed")
     }
     
     func testConvertRetweet() {
