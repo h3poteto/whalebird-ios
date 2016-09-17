@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 }
 
                 if granted {
-
                     // デバイストークンを発行
                     UIApplication.shared.registerForRemoteNotifications()
                 }
@@ -118,19 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             }
 
         }
-        
-        // iOS7以下を切り捨てる
-        /*
-        if greaterThanOrEqual(8, minorVersion: 0, patchVersion: 0) {
-        } else {
-            print("システムバージョン < iOS 8.0.0")
-            let systemAlert = UIAlertController(title: "iOSのアップデートをしてください", message: "対応OSはiOS8.0以上です", preferredStyle: UIAlertControllerStyle.alert)
-            let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.cancel, handler: { (action) -> Void in
-            })
-            systemAlert.addAction(closeAction)
-            self.rootController.present(systemAlert, animated: true, completion: nil)
-        }
-        */
+
         // 認証前なら設定画面に飛ばす
         let userDefault = UserDefaults.standard
         if ( userDefault.object(forKey: "username") == nil) {
@@ -308,29 +295,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func hudTapped(_ notification: Notification) {
         WhalebirdAPIClient.sharedClient.cancelRequest()
         SVProgressHUD.dismiss()
-    }
-    /*
-    func greaterThanOrEqual(_ majorVersion: Int, minorVersion: Int, patchVersion: Int) -> Bool {
-        // NSProcessInfo#isOperatingSystemAtLeastVersion による判別
-        if ProcessInfo().responds(to: #selector(ProcessInfo.isOperatingSystemAtLeast(_:)(_:))) {
-            let version = OperatingSystemVersion(majorVersion: majorVersion, minorVersion: minorVersion, patchVersion: patchVersion)
-            return ProcessInfo().isOperatingSystemAtLeast(version)
-        }
-        // UIDevice#systemVersion による判別
-        let targetVarsion = shortedVersionNumber("\(majorVersion).\(minorVersion).\(patchVersion)")
-        let systemVersion: String = shortedVersionNumber(UIDevice.current.systemVersion)
-        return systemVersion.compare(targetVarsion, options: .numeric) != ComparisonResult.orderedAscending
-    }*/
-    
-    func shortedVersionNumber(_ version: String) -> String  {
-        let suffix = ".0"
-        var shortedVersion = version
-        while shortedVersion.hasSuffix(suffix) {
-            let endIndex = shortedVersion.characters.count - suffix.characters.count
-            let range = shortedVersion.characters.index(shortedVersion.startIndex, offsetBy: 0) ..< shortedVersion.characters.index(shortedVersion.startIndex, offsetBy: endIndex)
-            shortedVersion = shortedVersion.substring(with: range)
-        }
-        return shortedVersion;
     }
 }
 

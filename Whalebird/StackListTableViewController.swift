@@ -138,7 +138,7 @@ class StackListTableViewController: UITableViewController {
     }
 
     func decideSelected(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         if let selectedArray = self.tableView.indexPathsForSelectedRows as Array? {
             if (selectedArray.count > 0) {
                 let selectedStreamList = StreamList()
