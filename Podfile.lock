@@ -20,10 +20,10 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Crashlytics (3.7.0):
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - DACircularProgress (2.2.0)
-  - Fabric (1.6.6)
+  - Fabric (1.6.11)
   - HexColors (2.2.1)
   - NoticeView (3.0.7)
   - ODRefreshControl (1.1.0)
@@ -81,9 +81,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   DACircularProgress: 0f92b77239d5f3c612fc66185e2998391ac8e054
-  Fabric: 1abc1e59f11fa39ede6f690ef7309d8563e3ec59
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   HexColors: abfd172e329dab59888614ccba6f216cec59289d
   NoticeView: 20178f60a5ab0b7fc496a2da6518df72bf14c0b0
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea

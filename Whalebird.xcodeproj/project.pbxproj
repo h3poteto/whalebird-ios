@@ -50,6 +50,9 @@
 		E98A579E1BB048CC00447960 /* TweetModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579D1BB048CC00447960 /* TweetModelTests.swift */; };
 		E98A57A01BB05D5E00447960 /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579F1BB05D5E00447960 /* MessageModelTests.swift */; };
 		E98A57A21BB05EB900447960 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A57A11BB05EB900447960 /* NotificationUnread.swift */; };
+		E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */; };
+		E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
+		E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
@@ -132,13 +135,14 @@
 		E97EA3171AACB09800C0E0E3 /* EditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
 		E9830C03199A89A2005BBF42 /* Whalebird-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whalebird-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9869EE719AE370F009DD99D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.adhoc.xcconfig; sourceTree = "<group>"; };
 		E988D0181B72283B003BAD31 /* TweetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetModel.swift; sourceTree = "<group>"; };
 		E98A57991BAFAFFC00447960 /* StreamListTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamListTests.swift; sourceTree = "<group>"; };
 		E98A579B1BAFB69A00447960 /* TimelineModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineModelTests.swift; sourceTree = "<group>"; };
 		E98A579D1BB048CC00447960 /* TweetModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetModelTests.swift; sourceTree = "<group>"; };
 		E98A579F1BB05D5E00447960 /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		E98A57A11BB05EB900447960 /* NotificationUnread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationUnread.swift; sourceTree = "<group>"; };
+		E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird.adhoc.xcconfig"; sourceTree = "<group>"; };
+		E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Pods-Whalebird-WhalebirdTests.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-Whalebird-WhalebirdTests/Pods-Whalebird-WhalebirdTests.adhoc.xcconfig"; sourceTree = "<group>"; };
 		E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserstreamAPIClient.swift; sourceTree = "<group>"; };
 		E9A33A2F19AEC6460077B673 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
@@ -213,9 +217,10 @@
 		139551B5CDD3D85E95F73E64 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */,
+				E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */,
 				0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */,
 				B24446D268050AF194D936BF /* Pods-Whalebird.release.xcconfig */,
+				E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */,
 				1B819DF1AB87096E57ED1DCB /* Pods-Whalebird-WhalebirdTests.debug.xcconfig */,
 				0A77B9941FA64239BE3DC901 /* Pods-Whalebird-WhalebirdTests.release.xcconfig */,
 			);
@@ -475,6 +480,8 @@
 			files = (
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
+				E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */,
+				E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +489,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -939,7 +947,7 @@
 		};
 		E988D00B1B70E02C003BAD31 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */;
+			baseConfigurationReference = E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APIURL = "https://api.whalebird.org/";
@@ -975,7 +983,7 @@
 		};
 		E988D00C1B70E02C003BAD31 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E988D00D1B7109CB003BAD31 /* Config.adhoc.xcconfig */;
+			baseConfigurationReference = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APIURL = "http://api.whalebird.org/";
