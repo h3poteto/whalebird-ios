@@ -238,9 +238,11 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 let eachMediaButton = UIButton(frame: CGRect(x: self.cWindowSize.size.width * 0.05, y: startPosY, width: self.cWindowSize.size.width * 0.9, height: 100))
                 self.innerMediaButton!.append(eachMediaButton)
                 let imageURL = URL(string: mediaURL)
+
+                let loadingImage: UIImage! = UIImage(named: "Loading")
                 
                 // SDWebImageにより読み込むのでクロージャで位置を再調節
-                eachMediaButton.sd_setBackgroundImage(with: imageURL, for: UIControlState(), completed: { (image, error, cacheType, url) -> Void in
+                eachMediaButton.sd_setBackgroundImage(with: imageURL, for: UIControlState(), placeholderImage: loadingImage, options: .cacheMemoryOnly, completed: { (image, error, cacheType, url) in
 
                     var fixStartPosY = self.favButton.frame.origin.y + self.favButton.frame.size.height + 20.0
                     for mediaButton in self.innerMediaButton! {
