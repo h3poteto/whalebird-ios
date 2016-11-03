@@ -425,7 +425,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = AkiraFukushima;
 				TargetAttributes = {
 					E9124392199524E000795EF0 = {
