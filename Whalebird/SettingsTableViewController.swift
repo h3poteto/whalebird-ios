@@ -602,7 +602,7 @@ class SettingsTableViewController: UITableViewController{
             if let twitterAccountType: ACAccountType = self.accountStore?.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter) {
                 self.accountStore?.requestAccessToAccounts(with: twitterAccountType, options: nil) { (granted, error) -> Void in
                     if (error != nil) {
-                        print(error)
+                        print(error ?? "")
                     }
                     if (!granted) {
                         let alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.alert)
