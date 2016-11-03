@@ -87,7 +87,7 @@ class WhalebirdAPIClient: NSObject {
                     let shortener = UrlShortener()
                     shortener.shortenUrl(encodedURL, with: UrlShortenerServiceIsgd, completion: { (shortUrl) -> Void in
                         if (shortUrl?.hasPrefix("http://"))! || (shortUrl?.hasPrefix("https://"))! {
-                            pasteboard.setValue(shortUrl, forPasteboardType: "public.text")
+                            pasteboard.setValue(shortUrl ?? "", forPasteboardType: "public.text")
                         }
                     }, error: { (error) -> Void in
                         pasteboard.setValue(encodedURL, forPasteboardType: "public.text")
@@ -131,13 +131,13 @@ class WhalebirdAPIClient: NSObject {
         self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         let requestURL = self.whalebirdAPIURL + "users/apis.json"
         self.sessionManager.get(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
-            print(responseObject)
+            print(responseObject ?? "")
             self.saveCookie()
             let userDefault = UserDefaults.standard
             userDefault.set((responseObject as! [String: Any])["screen_name"], forKey: "username")
             success()
         }) { (operation, error) -> Void in
-            print(error)
+            print(error ?? "")
             self.displayErrorMessage(operation!, error: error as! NSError)
             SVProgressHUD.dismiss()
             failure(error as! NSError)
@@ -160,7 +160,7 @@ class WhalebirdAPIClient: NSObject {
                     print("blank response")
                 }
             }, failure: { (operation, error) -> Void in
-                print(error)
+                print(error ?? "")
                 if displayError {
                     self.displayErrorMessage(operation!, error: error as! NSError)
                 }
@@ -191,7 +191,7 @@ class WhalebirdAPIClient: NSObject {
                     notice?.show()
                 }
             }, failure: { (operation, error) -> Void in
-                print(error)
+                print(error ?? "")
                 self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
@@ -215,7 +215,7 @@ class WhalebirdAPIClient: NSObject {
                     print("blank response")
                 }
             }, failure: { (operation, error) -> Void in
-                print(error)
+                print(error ?? "")
                 self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
@@ -247,7 +247,7 @@ class WhalebirdAPIClient: NSObject {
                 
                 let operation = self.sessionManager.httpRequestOperation(with: request as URLRequest!, success: { (operation, responseObject) -> Void in
                     if (responseObject != nil) {
-                        print(responseObject)
+                        print(responseObject ?? "")
                         if let object = responseObject as? Data {
                             do {
                                 let jsonData = try JSONSerialization.jsonObject(with: object, options: JSONSerialization.ReadingOptions.allowFragments)
@@ -258,7 +258,7 @@ class WhalebirdAPIClient: NSObject {
                         }
                     }
                     }) { (operation, error) -> Void in
-                        print(error)
+                        print(error ?? "")
                         self.displayErrorMessage(operation!, error: error as! NSError)
                         failed(error as NSError?)
                 }
@@ -336,7 +336,7 @@ class WhalebirdAPIClient: NSObject {
                     callback(operation!)
                 }
             }, failure: { (operation, error) -> Void in
-                print(error)
+                print(error ?? "")
                 self.displayErrorMessage(operation!, error: error as! NSError)
                 SVProgressHUD.dismiss()
             })
