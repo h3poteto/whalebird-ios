@@ -50,9 +50,6 @@
 		E98A579E1BB048CC00447960 /* TweetModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579D1BB048CC00447960 /* TweetModelTests.swift */; };
 		E98A57A01BB05D5E00447960 /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579F1BB05D5E00447960 /* MessageModelTests.swift */; };
 		E98A57A21BB05EB900447960 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A57A11BB05EB900447960 /* NotificationUnread.swift */; };
-		E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */; };
-		E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
-		E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
@@ -430,7 +427,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = AkiraFukushima;
 				TargetAttributes = {
 					E9124392199524E000795EF0 = {
@@ -480,8 +477,6 @@
 			files = (
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
-				E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */,
-				E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +484,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,7 +767,7 @@
 			baseConfigurationReference = 0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APIURL = "http://whalebird.localdomain:3001/";
+				APIURL = "http://whalebird.localdomain:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird.dev;
