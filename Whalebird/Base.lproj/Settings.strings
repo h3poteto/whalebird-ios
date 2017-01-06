@@ -1,0 +1,57 @@
+/* 
+  Settings.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/07.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "Settings";
+
+"AccountSetting" = "Account Setting";
+"AccountName" = "Account";
+"DisconnectAccount" = "Disconnect Account";
+"DisconnectAccountTitle" = "Disconnect Account";
+"DisconnectAccountMessage" = "Can I disconnect account";
+"Profile" = "Profile";
+
+"NotificationSetting" = "Notification Setting";
+"BackgroundNotification" = "Background Notification";
+"ForegroundNotification" = "Foreground Notification";
+
+"DetailNotificationSetting" = "Detail Notification Setting";
+"NotificationMethod" = "Notification Method";
+"NotificationTypeAlert" = "Alert";
+"NotificationTypeHeader" = "Header";
+"ReplyNotification" = "Reply Notification";
+"FavoriteNotification" = "Favorite Notification";
+"RetweetNotification" = "Retweet Notification";
+"DMNotification" = "DM Notification";
+
+"DisplaySetting" = "Display Setting";
+"DisplayName" = "Display Name";
+"DisplayNameTypeBoth" = "Name + ScreenName";
+"DisplayNameTypeName" = "Name";
+"DisplayNameTypeScreen" = "ScreenName";
+"Time" = "Time";
+"DisplayTimeTypeAbsolute" = "Absolute Time";
+"DisplayTimeTypeRelative" = "Relative Time";
+"AfterRestart" = "Note: Reflected after restart";
+
+"UserstreamSetting" = "Userstream Setting";
+"Userstream" = "Userstream";
+"UserstreamErrorTitle" = "Permission Error";
+"UserstreamErrorMessage" = "Can not access twitter account in your iPhone setting";
+"AccountErrorTitle" = "Not Found Error";
+"AccountErrorMessage" = "Please setup twitter account in your iPhone setting";
+"WifiRecommend" = "Note: Recommend wifi";
+
+"UpdateTweetSetting" = "Update Tweet Setting";
+"Position" = "Position after updat";
+"PositionTypeTop" = "Top";
+"PositionTypeCurrent" = "Current";
+
+"Abount" = "About Whalebird";
+"Contact" = "Contact";
+"Help" = "Help";
+"@whalebirdorg" = "@whalebirdorg";

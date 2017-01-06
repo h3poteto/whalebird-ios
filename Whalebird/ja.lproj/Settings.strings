@@ -1,0 +1,57 @@
+/* 
+  Settings.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/07.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "設定";
+
+"AccountSetting" = "アカウント設定";
+"AccountName" = "アカウント";
+"DisconnectAccount" = "アカウント連携を削除";
+"DisconnectAccountTitle" = "アカウント連携を削除";
+"DisconnectAccountMessage" = "アカウント連携を削除してよろしいですか？";
+"Profile" = "プロフィール";
+
+"NotificationSetting" = "通知設定";
+"BackgroundNotification" = "バックグラウンド時の通知";
+"ForegroundNotification" = "起動中の通知";
+
+"DetailNotificationSetting" = "通知詳細設定";
+"NotificationMethod" = "起動中の通知方法";
+"NotificationTypeAlert" = "アラート表示";
+"NotificationTypeHeader" = "ヘッダー表示";
+"ReplyNotification" = "リプライ通知";
+"FavoriteNotification" = "Fav通知";
+"RetweetNotification" = "RT通知";
+"DMNotification" = "DM通知";
+
+"DisplaySetting" = "表示設定";
+"DisplayName" = "表示名";
+"DisplayNameTypeBoth" = "名前+スクリーンネーム";
+"DisplayNameTypeName" = "名前";
+"DisplayNameTypeScreen" = "スクリーンネーム";
+"Time" = "時刻";
+"DisplayTimeTypeAbsolute" = "絶対時刻";
+"DisplayTimeTypeRelative" = "相対時刻";
+"AfterRestart" = "※再起動後に反映されます";
+
+"UserstreamSetting" = "Userstream";
+"Userstream" = "Userstream";
+"UserstreamErrorTitle" = "エラー";
+"UserstreamErrorMessage" = "アカウントへのアクセス権がありません";
+"AccountErrorTitle" = "エラー";
+"AccountErrorMessage" = "iPhoneの設定からtwitterアカウントを登録してください";
+"WifiRecommend" = "※Wifi推奨";
+
+"UpdateTweetSetting" = "ツイート更新設定";
+"Position" = "新着更新後の位置";
+"PositionTypeTop" = "トップ";
+"PositionTypeCurrent" = "そのまま";
+
+"Abount" = "Whalebirdについて";
+"Contact" = "お問い合わせ";
+"Help" = "ヘルプ";
+"@whalebirdorg" = "@whalebirdorg";

@@ -26,6 +26,8 @@
 		E92C49F11A9C6D03006BD492 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */; };
+		E942FEED1E1FDF9B0014956D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEEF1E1FDF9B0014956D /* Localizable.strings */; };
+		E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEF51E1FEDFB0014956D /* Settings.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -112,6 +114,10 @@
 		E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigIntegerTests.swift; sourceTree = "<group>"; };
 		E93433131A9C650D004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E93433161A9C66F0004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		E942FEEE1E1FDF9B0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E942FEF01E1FDFD50014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E942FEF41E1FEDFB0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Settings.strings; sourceTree = "<group>"; };
+		E942FEF61E1FEE0D0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Settings.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -249,6 +255,8 @@
 		E9124395199524E000795EF0 /* Whalebird */ = {
 			isa = PBXGroup;
 			children = (
+				E942FEEF1E1FDF9B0014956D /* Localizable.strings */,
+				E942FEF51E1FEDFB0014956D /* Settings.strings */,
 				E9B8BF811D8C4DD9004EF434 /* Whalebird.entitlements */,
 				E988D0141B722709003BAD31 /* Service */,
 				E9AB53B61B63D3B200C53942 /* View */,
@@ -458,6 +466,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = E912438A199524E000795EF0;
 			productRefGroup = E9124394199524E000795EF0 /* Products */;
@@ -476,6 +485,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
+				E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */,
+				E942FEED1E1FDF9B0014956D /* Localizable.strings in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -672,11 +683,33 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		E942FEEF1E1FDF9B0014956D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FEEE1E1FDF9B0014956D /* Base */,
+				E942FEF01E1FDFD50014956D /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		E942FEF51E1FEDFB0014956D /* Settings.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FEF41E1FEDFB0014956D /* Base */,
+				E942FEF61E1FEE0D0014956D /* ja */,
+			);
+			name = Settings.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		E91243AD199524E000795EF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -725,6 +758,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -902,6 +936,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
