@@ -10,3 +10,6 @@
 "Cancel" = "Cancel";
 "Close" = "Close";
 "Back" = "Back";
+
+"NoNewTweets" = "No new tweets";
+"NewTweets" = "%d tweets updated";

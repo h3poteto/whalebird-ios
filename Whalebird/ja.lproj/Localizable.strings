@@ -10,3 +10,6 @@
 "Cancel" = "キャンセル";
 "Close" = "閉じる";
 "Back" = "戻る";
+
+"NoNewTweets" = "新着なし";
+"NewTweets" = "%d件更新";
