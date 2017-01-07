@@ -1,0 +1,12 @@
+/* 
+  NewDirectMessage.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "New DirectMessage";
+"Cancel" = "Cancel";
+"Send" = "Send";
+"DirectMessageCompleted" = "Send completed";
