@@ -30,6 +30,7 @@
 		E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEF51E1FEDFB0014956D /* Settings.strings */; };
 		E942FEF91E20AC430014956D /* Timeline.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEFB1E20AC430014956D /* Timeline.strings */; };
 		E942FEFF1E210BA40014956D /* NewTweet.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF011E210BA40014956D /* NewTweet.strings */; };
+		E942FF051E2137050014956D /* TweetDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF071E2137050014956D /* TweetDetail.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -124,6 +125,8 @@
 		E942FEFC1E20AC440014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Timeline.strings; sourceTree = "<group>"; };
 		E942FF001E210BA40014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/NewTweet.strings; sourceTree = "<group>"; };
 		E942FF021E210BA60014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/NewTweet.strings; sourceTree = "<group>"; };
+		E942FF061E2137050014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TweetDetail.strings; sourceTree = "<group>"; };
+		E942FF081E21370C0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/TweetDetail.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -265,6 +268,7 @@
 				E942FEF51E1FEDFB0014956D /* Settings.strings */,
 				E942FEFB1E20AC430014956D /* Timeline.strings */,
 				E942FF011E210BA40014956D /* NewTweet.strings */,
+				E942FF071E2137050014956D /* TweetDetail.strings */,
 				E9B8BF811D8C4DD9004EF434 /* Whalebird.entitlements */,
 				E988D0141B722709003BAD31 /* Service */,
 				E9AB53B61B63D3B200C53942 /* View */,
@@ -498,6 +502,7 @@
 				E942FEF91E20AC430014956D /* Timeline.strings in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
 				E942FEFF1E210BA40014956D /* NewTweet.strings in Resources */,
+				E942FF051E2137050014956D /* TweetDetail.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,6 +733,15 @@
 				E942FF021E210BA60014956D /* ja */,
 			);
 			name = NewTweet.strings;
+			sourceTree = "<group>";
+		};
+		E942FF071E2137050014956D /* TweetDetail.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF061E2137050014956D /* Base */,
+				E942FF081E21370C0014956D /* ja */,
+			);
+			name = TweetDetail.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

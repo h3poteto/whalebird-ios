@@ -62,7 +62,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         self.tweetModel = aTweetModel
         self.timelineModel = aTimelineModel
         self.parentIndex = aParentIndex
-        self.title = "詳細"
+        self.title = NSLocalizedString("Title", tableName: "TweetDetail", comment: "")
     }
     
     override func loadView() {
@@ -314,10 +314,10 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //  memo: favDeleteアクションもここで実装
     //-------------------------------------------------
     func tappedFavorite() {
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.tweetModel.favoriteTweet({ () -> Void in
             SVProgressHUD.dismiss()
-            let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "お気に入り追加")
+            let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("AddFav",  tableName: "TweetDetail",comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()
@@ -339,7 +339,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             }
         }, unfavorited: { () -> Void in
             SVProgressHUD.dismiss()
-            let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "お気に入り削除")
+            let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("DeleteFav",  tableName: "TweetDetail",comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()
@@ -361,20 +361,19 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
 
     func tappedDelete() {
-        let alertController = UIAlertController(title: "ツイート削除", message: "本当に削除しますか？", preferredStyle: .alert)
-        let cOkAction = UIAlertAction(title: "削除する", style: .default, handler: {action in
-            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        let alertController = UIAlertController(title: NSLocalizedString("TweetDeleteTitle",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("TweetDeleteMessage",  tableName: "TweetDetail",comment: ""), preferredStyle: .alert)
+        let cOkAction = UIAlertAction(title: NSLocalizedString("TweetDeleteOK",  tableName: "TweetDetail",comment: ""), style: .default, handler: {action in
+            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
             self.tweetModel.deleteTweet({ () -> Void in
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "削除完了")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("TweetDeleteComplete",  tableName: "TweetDetail",comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
                 _ = self.navigationController?.popViewController(animated: true)
             })
         })
-        let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: {action in
-            print("Cancel")
+        let cCancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: {action in
         })
         alertController.addAction(cCancelAction)
         alertController.addAction(cOkAction)
@@ -383,39 +382,38 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
     
     func tappedMore() {
-        let retweetSelectSheet = UIAlertController(title: "Retweet", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let oficialRetweetAction = UIAlertAction(title: "公式RT", style: UIAlertActionStyle.default) { (action) -> Void in
+        let retweetSelectSheet = UIAlertController(title: NSLocalizedString("RTTitle",  tableName: "TweetDetail",comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let oficialRetweetAction = UIAlertAction(title: NSLocalizedString("RTOfficial",  tableName: "TweetDetail",comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             if (self.tweetModel.fProtected == true) {
-                let protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                let protectedAlert = UIAlertController(title: NSLocalizedString("RTError",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("RTPrivate",  tableName: "TweetDetail",comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 })
                 protectedAlert.addAction(okAction)
                 self.present(protectedAlert, animated: true, completion: nil)
             } else {
                 // 公式RTの処理．直接POSTしちゃって構わない
-                let alertController = UIAlertController(title: "公式RT", message: "RTしますか？", preferredStyle: .alert)
-                let cOkAction = UIAlertAction(title: "RTする", style: .default, handler: {action in
-                    SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+                let alertController = UIAlertController(title: NSLocalizedString("RTOfficial",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("RTConfirm",  tableName: "TweetDetail",comment: ""), preferredStyle: .alert)
+                let cOkAction = UIAlertAction(title: NSLocalizedString("RTPost",  tableName: "TweetDetail",comment: ""), style: .default, handler: {action in
+                    SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
                     self.tweetModel.retweetTweet({ () -> Void in
                         SVProgressHUD.dismiss()
-                        let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "RTしました")
+                        let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("RTComplete",  tableName: "TweetDetail",comment: ""))
                         notice?.alpha = 0.8
                         notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                         notice?.show()
                     })
                 })
-                let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel, handler: {action in
-                    print("Cancel")
+                let cCancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: {action in
                 })
                 alertController.addAction(cCancelAction)
                 alertController.addAction(cOkAction)
                 self.present(alertController, animated: true, completion: nil)
             }
         }
-        let unoficialRetweetAction = UIAlertAction(title: "非公式RT", style: UIAlertActionStyle.default) { (action) -> Void in
+        let unoficialRetweetAction = UIAlertAction(title: NSLocalizedString("RTUnofficial",  tableName: "TweetDetail",comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             if (self.tweetModel.fProtected == true) {
-                let protectedAlert = UIAlertController(title: "RTできません", message: "非公開アカウントです", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                let protectedAlert = UIAlertController(title: NSLocalizedString("RTError",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("RTPrivate",  tableName: "TweetDetail",comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 })
                 protectedAlert.addAction(okAction)
                 self.present(protectedAlert, animated: true, completion: nil)
@@ -424,7 +422,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 self.navigationController?.pushViewController(retweetView, animated: true)
             }
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         retweetSelectSheet.addAction(oficialRetweetAction)
         retweetSelectSheet.addAction(unoficialRetweetAction)

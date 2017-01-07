@@ -1,0 +1,25 @@
+/* 
+  TweetDetail.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/07.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "Detail";
+
+"AddFav" = "Add favorite";
+"DeleteFav" = "Delete favorite";
+"TweetDeleteTitle" = "Delete tweet";
+"TweetDeleteMessage" = "Do you want to delete this tweet?";
+"TweetDeleteOK" = "Delete";
+"TweetDeleteComplete" = "Delete complete";
+
+"RTTitle" = "Retweet";
+"RTOfficial" = "Official retweet";
+"RTConfirm" = "Do you want to retweet?";
+"RTPost" = "Retweet";
+"RTComplete" = "Retweet complete";
+"RTUnofficial" = "Unofficial retweet";
+"RTError" = "Retweet error";
+"RTPrivate" = "This is a protected tweet";
