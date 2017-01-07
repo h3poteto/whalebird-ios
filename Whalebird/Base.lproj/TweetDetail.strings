@@ -6,7 +6,7 @@
   Copyright © 2017年 AkiraFukushima. All rights reserved.
 */
 
-"Title" = "Detail";
+"Title" = "Tweet Detail";
 
 "AddFav" = "Add favorite";
 "DeleteFav" = "Delete favorite";
