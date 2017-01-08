@@ -58,7 +58,7 @@ class WhalebirdAPIClient: NSObject {
                 } else if(timeInterval < 3600 * 24) {
                     jstDate = String(format: NSLocalizedString("HoursAgo", tableName: "API", comment: ""), Int(timeInterval / 3600.0))
                 } else {
-                    jstDate = String(format: NSLocalizedString("MinutesAgo", tableName: "API", comment: ""), Int(timeInterval / (3600.0 * 24.0)))
+                    jstDate = String(format: NSLocalizedString("DaysAgo", tableName: "API", comment: ""), Int(timeInterval / (3600.0 * 24.0)))
                 }
             } else {
                 jstDate = jstDateFormatter.string(from: utcDate)
