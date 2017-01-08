@@ -19,7 +19,9 @@ class DirectMessageTableViewController: UITableViewController {
     var refreshMessage: ODRefreshControl!
     var newMessageButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
-    
+    let saveKeySinceId = "directMessagesSinceId"
+    let saveKeyMessage = "directMessage"
+
     //============================================
     //  instance methods
     //============================================
@@ -32,8 +34,8 @@ class DirectMessageTableViewController: UITableViewController {
         self.title = NSLocalizedString("Title", tableName: "DirectMessage", comment: "")
         self.tabBarItem.image = UIImage(named: "Mail")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "directMessageSinceId") as String?
-        let directMessage = userDefaults.array(forKey: "directMessage") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let directMessage = userDefaults.array(forKey: saveKeyMessage) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage as Array<AnyObject>?)
     }
@@ -165,14 +167,14 @@ class DirectMessageTableViewController: UITableViewController {
     }
     
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("directMessage", sinceIdKey: "directMessageSinceId")
+        self.timelineModel.saveCurrentTimeline(saveKeyMessage, sinceIdKey: saveKeySinceId)
     }
     
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "directMessageSinceID")
-        userDefaults.set(nil, forKey: "directMessage")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyMessage)
         self.tableView.reloadData()
     }
 }

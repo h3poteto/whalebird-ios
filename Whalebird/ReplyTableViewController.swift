@@ -19,6 +19,8 @@ class ReplyTableViewController: UITableViewController {
     var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
+    let saveKeySinceId = "replyTimelineSinceId"
+    let saveKeyTimeline = "replyTimeline"
     
     //=============================================
     //  instance methods
@@ -32,8 +34,8 @@ class ReplyTableViewController: UITableViewController {
         self.title = NSLocalizedString("Title", tableName: "Reply", comment: "")
         self.tabBarItem.image = UIImage(named: "Speaking-Line")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "replyTimelineSinceId") as String?
-        let replyTimeline = userDefaults.array(forKey: "replyTimeline") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let replyTimeline = userDefaults.array(forKey: saveKeyTimeline) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: replyTimeline as Array<AnyObject>?)
     }
@@ -170,14 +172,14 @@ class ReplyTableViewController: UITableViewController {
     }
     
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("replyTimeline", sinceIdKey: "replyTimelineSinceId")
+        self.timelineModel.saveCurrentTimeline(saveKeyTimeline, sinceIdKey: saveKeySinceId)
     }
     
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "replyTimelineSinceID")
-        userDefaults.set(nil, forKey: "replyTimeline")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyTimeline)
         self.tableView.reloadData()
     }
 }

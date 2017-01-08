@@ -24,6 +24,8 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     var searchItemButton: UIBarButtonItem!
     
     var timelineModel: TimelineModel!
+    let saveKeySinceId = "homeTimelineSinceId"
+    let saveKeyTimeline = "homeTimeline"
     
     //=========================================
     //  instance methods
@@ -43,8 +45,8 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.title = NSLocalizedString("Title", tableName: "Timeline", comment: "")
         self.tabBarItem.image = UIImage(named: "Home")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "homeTimelineSinceId") as String?
-        let homeTimeline = userDefaults.array(forKey: "homeTimeline") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let homeTimeline = userDefaults.array(forKey: saveKeyTimeline) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline as Array<AnyObject>?)
         self.timelineModel.delegate = self
@@ -217,14 +219,14 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     }
 
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("homeTimeline", sinceIdKey: "homeTimelineSinceID")
+        self.timelineModel.saveCurrentTimeline(saveKeyTimeline, sinceIdKey: saveKeySinceId)
     }
     // これログアウトで使う
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "homeTimelineSinceID")
-        userDefaults.set(nil, forKey: "homeTimeline")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyTimeline)
         self.tableView.reloadData()
     }
 
