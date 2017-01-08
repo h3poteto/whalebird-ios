@@ -35,7 +35,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "ログイン"
+        self.title = NSLocalizedString("Title", tableName: "Login", comment: "")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,7 +54,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             self.loginWebView.loadRequest(request as URLRequest)
             self.view.addSubview(self.loginWebView)
         } else {
-            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "Login", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "Login", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()
@@ -71,7 +71,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
@@ -82,7 +82,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if (self.redirectedTwitter && request.url!.host == self.whalebirdAPIURL.host && (request.url!.absoluteString as NSString!).range(of: "callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession({ () -> Void in
-                SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+                SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
                 WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
                     SVProgressHUD.dismiss()
                 })
