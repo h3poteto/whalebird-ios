@@ -45,13 +45,13 @@ class StreamList: NSObject {
         self.lists.removeAll()
         let favStream = type(of: self).Stream(
             image: "",
-            name: "お気に入り",
+            name: NSLocalizedString("Favorite", tableName: "StreamList", comment: ""),
             type: "myself",
             uri: "users/apis/user_favorites.json",
             id: "")
         let myselfStream = type(of: self).Stream(
             image: "",
-            name: "送信済みツイート",
+            name: NSLocalizedString("SentTweets", tableName: "StreamList", comment: ""),
             type: "myself",
             uri: "users/apis/user_timeline.json",
             id: "")
