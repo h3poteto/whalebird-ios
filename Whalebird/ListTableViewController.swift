@@ -30,7 +30,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.title = "リスト"
+        self.title = NSLocalizedString("Title", tableName: "List", comment: "")
         self.tabBarItem.image = UIImage(named: "List-Boxes")
         self.streamList = StreamList()
     }
@@ -44,7 +44,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.editButtonItem.title = "編集"
+        self.editButtonItem.title = NSLocalizedString("Edit", tableName: "List", comment: "")
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.searchItemButton = UIBarButtonItem(image: UIImage(named: "Search-Line"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ListTableViewController.displaySearch))
         self.navigationItem.leftBarButtonItem = self.searchItemButton
@@ -109,11 +109,11 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if(self.isEditing){
-            self.editButtonItem.title = "完了"
+            self.editButtonItem.title = NSLocalizedString("Done", tableName: "List", comment: "")
             self.addItemButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(ListTableViewController.addNewItem(_:)))
             self.navigationItem.leftBarButtonItem = self.addItemButton
         }else{
-            self.editButtonItem.title = "編集"
+            self.editButtonItem.title = NSLocalizedString("Edit", tableName: "List", comment: "")
             self.navigationItem.rightBarButtonItem = self.editButtonItem
             self.navigationItem.leftBarButtonItem = self.searchItemButton
         }
