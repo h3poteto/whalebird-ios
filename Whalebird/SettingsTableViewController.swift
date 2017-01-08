@@ -308,7 +308,7 @@ class SettingsTableViewController: UITableViewController{
                     cellDetailTitle = NSLocalizedString("DisplayNameTypeName", tableName: "Settings", comment: "")
                     break
                 default:
-                    cellDetailTitle = NSLocalizedString("DisplayNameBoth", tableName: "Settings", comment: "")
+                    cellDetailTitle = NSLocalizedString("DisplayNameTypeBoth", tableName: "Settings", comment: "")
                     break
                 }
                 break
