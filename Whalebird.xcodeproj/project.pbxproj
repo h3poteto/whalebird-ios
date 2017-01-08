@@ -41,6 +41,7 @@
 		E942FF3C1E2218BB0014956D /* Minute.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF3E1E2218BB0014956D /* Minute.strings */; };
 		E942FF421E2219DB0014956D /* Search.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF441E2219DB0014956D /* Search.strings */; };
 		E942FF481E221C970014956D /* List.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF4A1E221C970014956D /* List.strings */; };
+		E942FF4E1E221DBF0014956D /* StackList.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF501E221DBF0014956D /* StackList.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -157,6 +158,8 @@
 		E942FF451E2219DD0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Search.strings; sourceTree = "<group>"; };
 		E942FF491E221C970014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/List.strings; sourceTree = "<group>"; };
 		E942FF4B1E221C990014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/List.strings; sourceTree = "<group>"; };
+		E942FF4F1E221DBF0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/StackList.strings; sourceTree = "<group>"; };
+		E942FF511E221DC10014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/StackList.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -365,6 +368,7 @@
 				E942FF3E1E2218BB0014956D /* Minute.strings */,
 				E942FF441E2219DB0014956D /* Search.strings */,
 				E942FF4A1E221C970014956D /* List.strings */,
+				E942FF501E221DBF0014956D /* StackList.strings */,
 			);
 			name = Localization;
 			sourceTree = "<group>";
@@ -561,6 +565,7 @@
 				E942FF481E221C970014956D /* List.strings in Resources */,
 				E942FF181E2153CF0014956D /* Reply.strings in Resources */,
 				E942FF121E21461F0014956D /* Conversation.strings in Resources */,
+				E942FF4E1E221DBF0014956D /* StackList.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -890,6 +895,15 @@
 				E942FF4B1E221C990014956D /* ja */,
 			);
 			name = List.strings;
+			sourceTree = "<group>";
+		};
+		E942FF501E221DBF0014956D /* StackList.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF4F1E221DBF0014956D /* Base */,
+				E942FF511E221DC10014956D /* ja */,
+			);
+			name = StackList.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

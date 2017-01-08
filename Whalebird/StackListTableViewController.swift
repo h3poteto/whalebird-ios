@@ -36,7 +36,7 @@ class StackListTableViewController: UITableViewController {
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.title = "リストを選択"
+        self.title = NSLocalizedString("Title", tableName: "StackList", comment: "")
         let userDefault = UserDefaults.standard
         self.twitterScreenName = userDefault.object(forKey: "username") as? String
     }
@@ -56,9 +56,9 @@ class StackListTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        let selectButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.done, target: self, action: #selector(StackListTableViewController.decideSelected(_:)))
+        let selectButton = UIBarButtonItem(title: NSLocalizedString("Done", tableName: "StackList", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(StackListTableViewController.decideSelected(_:)))
         self.navigationItem.rightBarButtonItem = selectButton
-        
+
         self.tableView.allowsMultipleSelection = true
         
         
@@ -69,7 +69,7 @@ class StackListTableViewController: UITableViewController {
             let cParameter: Dictionary<String, AnyObject> = [
                 "settings" : params as AnyObject
             ]
-            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.getArrayAPI("users/apis/lists.json", displayError: true, params: cParameter,
                 completed: { (aStackList) -> Void in
                     let q_main = DispatchQueue.main
