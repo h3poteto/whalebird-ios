@@ -38,6 +38,7 @@
 		E942FF2A1E2157D30014956D /* MessageDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF2C1E2157D30014956D /* MessageDetail.strings */; };
 		E942FF301E2159630014956D /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF321E2159630014956D /* Profile.strings */; };
 		E942FF361E22171C0014956D /* EditImage.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF381E22171C0014956D /* EditImage.strings */; };
+		E942FF3C1E2218BB0014956D /* Minute.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF3E1E2218BB0014956D /* Minute.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -148,6 +149,8 @@
 		E942FF331E2159650014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Profile.strings; sourceTree = "<group>"; };
 		E942FF371E22171C0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/EditImage.strings; sourceTree = "<group>"; };
 		E942FF391E22171E0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/EditImage.strings; sourceTree = "<group>"; };
+		E942FF3D1E2218BB0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Minute.strings; sourceTree = "<group>"; };
+		E942FF3F1E2218BC0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Minute.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -353,6 +356,7 @@
 				E942FF2C1E2157D30014956D /* MessageDetail.strings */,
 				E942FF321E2159630014956D /* Profile.strings */,
 				E942FF381E22171C0014956D /* EditImage.strings */,
+				E942FF3E1E2218BB0014956D /* Minute.strings */,
 			);
 			name = Localization;
 			sourceTree = "<group>";
@@ -536,6 +540,7 @@
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
 				E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */,
 				E942FEED1E1FDF9B0014956D /* Localizable.strings in Resources */,
+				E942FF3C1E2218BB0014956D /* Minute.strings in Resources */,
 				E942FEF91E20AC430014956D /* Timeline.strings in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
 				E942FF2A1E2157D30014956D /* MessageDetail.strings in Resources */,
@@ -848,6 +853,15 @@
 				E942FF391E22171E0014956D /* ja */,
 			);
 			name = EditImage.strings;
+			sourceTree = "<group>";
+		};
+		E942FF3E1E2218BB0014956D /* Minute.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF3D1E2218BB0014956D /* Base */,
+				E942FF3F1E2218BC0014956D /* ja */,
+			);
+			name = Minute.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
