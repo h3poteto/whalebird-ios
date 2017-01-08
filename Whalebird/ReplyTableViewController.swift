@@ -143,7 +143,7 @@ class ReplyTableViewController: UITableViewController {
             }, noUpdated: { () -> Void in
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("NoNewTweet", comment: ""))
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("NoNewTweets", comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
