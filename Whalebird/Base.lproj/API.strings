@@ -1,0 +1,25 @@
+/* 
+  API.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"DateFormat" = "MM/dd HH:mm";
+"JustNow" = "Just now";
+"MinutesAgo" = "%d minutes ago";
+"HoursAgo" = "%d hours ago";
+"DaysAgo" = "%d days ago";
+
+"RequestErrorTitle" = "Request Error";
+"RequestErrorMessage" = "Do not exist any information";
+
+"AccountErrorTitle" = "Account Error";
+"AccountErrorMessage" = "Please setup your twitter account";
+
+"LoginRequred" = "Please login again";
+"UnexpectedError" = "Unexpected error occurred";
+
+"NetworkErrorTitle" = "Network Error";
+"NetworkErrorMessage" = "Can not connect to network";

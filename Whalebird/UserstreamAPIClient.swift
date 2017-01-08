@@ -130,7 +130,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
                     }
                 }
                 if (selectedAccount == nil) {
-                    let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+                    let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("AccountErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("AccountErrorMessage", tableName: "API", comment: ""))
                     notice?.alpha = 0.8
                     notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                     notice?.show()
@@ -193,7 +193,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
     }
     func confirmConnectedNetwork() ->Bool {
         if !Reachability()!.isReachable {
-            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "API", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()

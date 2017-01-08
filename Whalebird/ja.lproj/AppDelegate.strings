@@ -1,0 +1,18 @@
+/* 
+  AppDelegate.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"AccountErrorTitle" = "アカウントエラー";
+"AccountErrorMessage" = "アカウントを設定してください";
+
+"ReplyAlert" = "リプライ";
+"ReplyOpen" = "開く";
+"ReplyClose" = "閉じる";
+
+"DirectMessageAlert" = "ダイレクトメッセージ";
+"DirectMessageOpen" = "開く";
+"DirectMessageClose" = "閉じる";

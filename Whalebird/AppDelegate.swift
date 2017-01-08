@@ -121,7 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // 認証前なら設定画面に飛ばす
         let userDefault = UserDefaults.standard
         if ( userDefault.object(forKey: "username") == nil) {
-            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("AccountErrorTitle", tableName: "AppDelegate", comment: ""), message: NSLocalizedString("AccountErrorMessage", tableName: "AppDelegate", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = self.alertPosition
             notice?.show()
@@ -201,8 +201,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                         // デフォルトはアラート通知
                         switch(category) {
                         case "reply":
-                            let alertController = UIAlertController(title: "Reply", message: message, preferredStyle: .alert)
-                            let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.default, handler: {action in
+                            let alertController = UIAlertController(title: NSLocalizedString("ReplyAlert", tableName: "AppDelegate", comment: ""), message: message, preferredStyle: .alert)
+                            let cOpenAction = UIAlertAction(title: NSLocalizedString("ReplyOpen", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: {action in
                                 let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
                                 let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
 
@@ -210,21 +210,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                                 // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
                             })
-                            let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.default, handler: {action in
+                            let cOkAction = UIAlertAction(title: NSLocalizedString("ReplyClose", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: {action in
                             })
                             alertController.addAction(cOkAction)
                             alertController.addAction(cOpenAction)
                             self.rootController.present(alertController, animated: true, completion: nil)
                             break
                         case "direct_message":
-                            let alertController = UIAlertController(title: "DirectMessage", message: message, preferredStyle: .alert)
-                            let cOpenAction = UIAlertAction(title: "開く", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                            let alertController = UIAlertController(title: NSLocalizedString("DirectMessageAlert", tableName: "AppDelegate", comment: ""), message: message, preferredStyle: .alert)
+                            let cOpenAction = UIAlertAction(title: NSLocalizedString("DirectMessageOpen", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                                 let messageModel = MessageModel(notificationDict: userInfo as [NSObject : AnyObject])
                                 let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
                                 NotificationUnread.decrementUnreadBadge()
                                 (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
                             })
-                            let cOkAction = UIAlertAction(title: "閉じる", style: .default, handler: { (action) -> Void in
+                            let cOkAction = UIAlertAction(title: NSLocalizedString("DirectMessageClose", tableName: "AppDelegate", comment: ""), style: .default, handler: { (action) -> Void in
                             })
                             alertController.addAction(cOkAction)
                             alertController.addAction(cOpenAction)

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>ja_JP</string>
+	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -65,9 +65,9 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>To tweet with user's photo</string>
+	<string>To tweet with user&apos;s photo</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To tweet with user's photo</string>
+	<string>To tweet with user&apos;s photo</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -44,6 +44,8 @@
 		E942FF4E1E221DBF0014956D /* StackList.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF501E221DBF0014956D /* StackList.strings */; };
 		E942FF541E221E9A0014956D /* Login.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF561E221E9A0014956D /* Login.strings */; };
 		E942FF5A1E221FD00014956D /* WebView.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF5C1E221FD00014956D /* WebView.strings */; };
+		E942FF601E2222FC0014956D /* API.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF621E2222FC0014956D /* API.strings */; };
+		E942FF661E22280E0014956D /* AppDelegate.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF681E22280E0014956D /* AppDelegate.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -166,6 +168,10 @@
 		E942FF571E221E9C0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Login.strings; sourceTree = "<group>"; };
 		E942FF5B1E221FD00014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/WebView.strings; sourceTree = "<group>"; };
 		E942FF5D1E221FD10014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/WebView.strings; sourceTree = "<group>"; };
+		E942FF611E2222FC0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/API.strings; sourceTree = "<group>"; };
+		E942FF631E2222FD0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/API.strings; sourceTree = "<group>"; };
+		E942FF671E22280E0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/AppDelegate.strings; sourceTree = "<group>"; };
+		E942FF691E2228100014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/AppDelegate.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -360,6 +366,8 @@
 			isa = PBXGroup;
 			children = (
 				E942FEEF1E1FDF9B0014956D /* Localizable.strings */,
+				E942FF681E22280E0014956D /* AppDelegate.strings */,
+				E942FF621E2222FC0014956D /* API.strings */,
 				E942FEF51E1FEDFB0014956D /* Settings.strings */,
 				E942FEFB1E20AC430014956D /* Timeline.strings */,
 				E942FF011E210BA40014956D /* NewTweet.strings */,
@@ -566,6 +574,7 @@
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
 				E942FF2A1E2157D30014956D /* MessageDetail.strings in Resources */,
 				E942FF241E2156060014956D /* NewDirectMessage.strings in Resources */,
+				E942FF601E2222FC0014956D /* API.strings in Resources */,
 				E942FEFF1E210BA40014956D /* NewTweet.strings in Resources */,
 				E942FF051E2137050014956D /* TweetDetail.strings in Resources */,
 				E942FF541E221E9A0014956D /* Login.strings in Resources */,
@@ -574,6 +583,7 @@
 				E942FF1E1E2154FC0014956D /* DirectMessage.strings in Resources */,
 				E942FF481E221C970014956D /* List.strings in Resources */,
 				E942FF181E2153CF0014956D /* Reply.strings in Resources */,
+				E942FF661E22280E0014956D /* AppDelegate.strings in Resources */,
 				E942FF121E21461F0014956D /* Conversation.strings in Resources */,
 				E942FF4E1E221DBF0014956D /* StackList.strings in Resources */,
 			);
@@ -932,6 +942,24 @@
 				E942FF5D1E221FD10014956D /* ja */,
 			);
 			name = WebView.strings;
+			sourceTree = "<group>";
+		};
+		E942FF621E2222FC0014956D /* API.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF611E2222FC0014956D /* Base */,
+				E942FF631E2222FD0014956D /* ja */,
+			);
+			name = API.strings;
+			sourceTree = "<group>";
+		};
+		E942FF681E22280E0014956D /* AppDelegate.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF671E22280E0014956D /* Base */,
+				E942FF691E2228100014956D /* ja */,
+			);
+			name = AppDelegate.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
