@@ -1,0 +1,27 @@
+/* 
+  NewTweet.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/07.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "New Tweet";
+"Cancel" = "Cancel";
+"Send" = "Send";
+"Draft" = "Draft";
+
+"CloseTweetTitle" = "Do you want to save draft?";
+"CloseTweetDelete" = "Delete";
+"CloseTweetDraft" = "Save draft";
+
+"OpenAttachmentOverCapacity" = "Can not attach any more";
+"OpenAttachmentWait" = "Please wait";
+"OpenAttachmentInProgress" = "Please upload images one at a time";
+
+"OnSendUploading" = "Uploading image";
+"OnSendTryAfterUpload" = "Please send after upload";
+"OnSendError" = "Tweet error";
+"OnSendBlank" = "Please write tweet body";
+
+"TweetCompleted" = "Tweet completed";

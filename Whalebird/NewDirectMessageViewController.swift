@@ -27,7 +27,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     //=============================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "DM送信"
+        self.title = NSLocalizedString("Title", tableName: "NewDirectMessage", comment: "")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -36,7 +36,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     
     convenience init(aReplyToUser: String?) {
         self.init()
-        self.title = "DM送信"        
+        self.title = NSLocalizedString("Title", tableName: "NewDirectMessage", comment: "")
         self.replyToUser = aReplyToUser
     }
     
@@ -49,10 +49,10 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         let cMaxSize = UIScreen.main.bounds.size
 
-        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewDirectMessageViewController.onCancelTapped))
+        self.cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", tableName: "NewDirectMessage", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewDirectMessageViewController.onCancelTapped))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.done, target: self, action: #selector(NewDirectMessageViewController.onSendTapped))
+        self.sendButton = UIBarButtonItem(title: NSLocalizedString("Send", tableName: "NewDirectMessage", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(NewDirectMessageViewController.onSendTapped))
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.sendToUserLabel = UILabel(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height, width: cMaxSize.width, height: 35))
@@ -100,11 +100,11 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
             "settings" : params as AnyObject
         ]
         
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: { () -> Void in
-                let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: "送信しました")
+                let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("DirectMessageCompleted", tableName: "NewDirectMessage", comment: ""))
                 SVProgressHUD.dismiss()
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition

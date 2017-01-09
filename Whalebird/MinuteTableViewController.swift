@@ -49,8 +49,8 @@ class MinuteTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        self.editButtonItem.title = "編集"
-        
+        self.editButtonItem.title = NSLocalizedString("Edit", tableName: "Minute", comment: "")
+
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -63,9 +63,9 @@ class MinuteTableViewController: UITableViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if(self.isEditing){
-            self.editButtonItem.title = "完了"
+            self.editButtonItem.title = NSLocalizedString("Done", tableName: "Minute", comment: "")
         }else{
-            self.editButtonItem.title = "編集"
+            self.editButtonItem.title = NSLocalizedString("Edit", tableName: "Minute", comment: "")
         }
     }
 

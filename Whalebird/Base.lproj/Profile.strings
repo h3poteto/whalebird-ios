@@ -1,0 +1,29 @@
+/* 
+  Profile.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Follow" = "Follow";
+"Unfollow" = "Unfollow";
+
+"BeingFollowed" = "You are followed";
+"NotBeingFollowed" = "You are not followed";
+
+"TweetCount" = "Tweet:";
+"FriendCount" = "Follow:";
+"FollowerCount" = "Follower:";
+
+"ProtectedAccount" = "This is protected account";
+
+"FollowTitle" = "Follow";
+"FollowConfirm" = "Do you want to follow?";
+"FollowOK" = "Follow";
+"FollowComplete" = "Follow complete";
+
+"UnfollowTitle" = "Unfollow";
+"UnfollowConfirm" = "Do you want to unfollow?";
+"UnfollowOK" = "Unfollow";
+"UnfollowComplete" = "Unfollow complete";

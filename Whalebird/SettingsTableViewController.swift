@@ -39,7 +39,7 @@ class SettingsTableViewController: UITableViewController{
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.title = "設定"
+        self.title = NSLocalizedString("Title", tableName: "Settings", comment: "")
         self.tabBarItem.image = UIImage(named: "Settings-Line")
     }
     
@@ -106,25 +106,25 @@ class SettingsTableViewController: UITableViewController{
         var sectionTitle = String?("")
         switch(section) {
         case 0:
-            sectionTitle = "アカウント設定"
+            sectionTitle = NSLocalizedString("AccountSetting", tableName: "Settings", comment: "")
             break
         case 1:
-            sectionTitle = "通知設定"
+            sectionTitle = NSLocalizedString("NotificationSetting", tableName: "Settings", comment: "")
             break
         case 2:
-            sectionTitle = "通知詳細設定"
+            sectionTitle = NSLocalizedString("DetailNotificationSetting", tableName: "Settings", comment: "")
             break
         case 3:
-            sectionTitle = "表示設定"
+            sectionTitle = NSLocalizedString("DisplaySetting", tableName: "Settings", comment: "")
             break
         case 4:
-            sectionTitle = "Userstream"
+            sectionTitle = NSLocalizedString("UserstreamSetting", tableName: "Settings", comment: "")
             break
         case 5:
-            sectionTitle = "ツイート更新設定"
+            sectionTitle = NSLocalizedString("UpdateTweetSetting", tableName: "Settings", comment: "")
             break
         case 6:
-            sectionTitle = "Whalebirdについて"
+            sectionTitle = NSLocalizedString("About", tableName: "Settings", comment: "")
             break
         default:
             sectionTitle = ""
@@ -150,10 +150,10 @@ class SettingsTableViewController: UITableViewController{
         case 2:
             break
         case 3:
-            sectionTitle = "※再起動後に反映されます"
+            sectionTitle = NSLocalizedString("AfterRestart", tableName: "Settings", comment: "")
             break
         case 4:
-            sectionTitle = "※Wifi推奨"
+            sectionTitle = NSLocalizedString("WifiRecommend", tableName: "Settings", comment: "")
             break
         case 5:
             break
@@ -180,15 +180,15 @@ class SettingsTableViewController: UITableViewController{
         case 0:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "アカウント"
+                cellTitle = NSLocalizedString("AccountName", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 cellDetailTitle = userDefault.string(forKey: "username")
                 break
             case 1:
-                cellTitle = "アカウント連携を削除"
+                cellTitle = NSLocalizedString("DisconnectAccount", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             case 2:
-                cellTitle = "プロフィール"
+                cellTitle = NSLocalizedString("Profile", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             default:
@@ -198,7 +198,7 @@ class SettingsTableViewController: UITableViewController{
         case 1:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "バックグラウンド時の通知"
+                cellTitle = NSLocalizedString("BackgroundNotification", tableName: "Settings", comment: "")
                 let notificationBackgroundSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationBackgroundFlag") != nil) {
@@ -209,7 +209,7 @@ class SettingsTableViewController: UITableViewController{
                 cell.accessoryView = notificationBackgroundSwitch
                 break
             case 1:
-                cellTitle = "起動中の通知"
+                cellTitle = NSLocalizedString("ForegroundNotification", tableName: "Settings", comment: "")
                 self.notificationForegroundSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationForegroundFlag") != nil) {
@@ -228,23 +228,23 @@ class SettingsTableViewController: UITableViewController{
         case 2:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "起動中の通知方法"
+                cellTitle = NSLocalizedString("NotificationMethod", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 let notificationType = userDefault.integer(forKey: "notificationType") as Int
                 switch(notificationType) {
                 case 1:
-                    cellDetailTitle = "アラート表示"
+                    cellDetailTitle = NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: "")
                     break
                 case 2:
-                    cellDetailTitle = "ヘッダー表示"
+                    cellDetailTitle = NSLocalizedString("NotificationTypeHeader", tableName: "Settings", comment: "")
                     break
                 default:
-                    cellDetailTitle = "アラート表示"
+                    cellDetailTitle = NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: "")
                     break
                 }
                 break
             case 1:
-                cellTitle = "リプライ通知"
+                cellTitle = NSLocalizedString("ReplyNotification", tableName: "Settings", comment: "")
                 let notificationReplySwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationReplyFlag") != nil) {
@@ -255,7 +255,7 @@ class SettingsTableViewController: UITableViewController{
                 cell.accessoryView = notificationReplySwitch
                 break
             case 2:
-                cellTitle = "Fav通知"
+                cellTitle = NSLocalizedString("FavoriteNotification", tableName: "Settings", comment: "")
                 let notificationFavSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationFavFlag") != nil) {
@@ -266,7 +266,7 @@ class SettingsTableViewController: UITableViewController{
                 cell.accessoryView = notificationFavSwitch
                 break
             case 3:
-                cellTitle = "RT通知"
+                cellTitle = NSLocalizedString("RetweetNotification", tableName: "Settings", comment: "")
                 let notificationRTSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationRTFlag") != nil) {
@@ -277,7 +277,7 @@ class SettingsTableViewController: UITableViewController{
                 cell.accessoryView = notificationRTSwitch
                 break
             case 4:
-                cellTitle = "DM通知"
+                cellTitle = NSLocalizedString("DMNotification", tableName: "Settings", comment: "")
                 let notificationDMSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "notificationDMFlag") != nil) {
@@ -294,37 +294,37 @@ class SettingsTableViewController: UITableViewController{
         case 3:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "表示名"
+                cellTitle = NSLocalizedString("DisplayName", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 let nameType = userDefault.integer(forKey: "displayNameType") as Int
                 switch(nameType) {
                 case 1:
-                    cellDetailTitle = "名前+スクリーンネーム"
+                    cellDetailTitle = NSLocalizedString("DisplayNameTypeBoth", tableName: "Settings", comment: "")
                     break
                 case 2:
-                    cellDetailTitle = "スクリーンネーム"
+                    cellDetailTitle = NSLocalizedString("DisplayNameTypeScreen", tableName: "Settings", comment: "")
                     break
                 case 3:
-                    cellDetailTitle = "名前"
+                    cellDetailTitle = NSLocalizedString("DisplayNameTypeName", tableName: "Settings", comment: "")
                     break
                 default:
-                    cellDetailTitle = "名前+スクリーンネーム"
+                    cellDetailTitle = NSLocalizedString("DisplayNameTypeBoth", tableName: "Settings", comment: "")
                     break
                 }
                 break
             case 1:
-                cellTitle = "時刻"
+                cellTitle = NSLocalizedString("Time", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 let timeType = userDefault.integer(forKey: "displayTimeType") as Int
                 switch(timeType) {
                 case 1:
-                    cellDetailTitle = "絶対時刻"
+                    cellDetailTitle = NSLocalizedString("DisplayTimeTypeAbsolute", tableName: "Settings", comment: "")
                     break
                 case 2:
-                    cellDetailTitle = "相対時刻"
+                    cellDetailTitle = NSLocalizedString("DisplayTimeTypeRelative", tableName: "Settings", comment: "")
                     break
                 default:
-                    cellDetailTitle = "絶対時刻"
+                    cellDetailTitle = NSLocalizedString("DisplayTimeTypeAbsolute", tableName: "Settings", comment: "")
                     break
                 }
                 break
@@ -335,7 +335,7 @@ class SettingsTableViewController: UITableViewController{
         case 4:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "Userstream"
+                cellTitle = NSLocalizedString("Userstream", tableName: "Settings", comment: "")
                 let userstreamSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
                 if (userDefault.object(forKey: "userstreamFlag") != nil) {
@@ -352,18 +352,18 @@ class SettingsTableViewController: UITableViewController{
         case 5:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "新着更新後の位置"
+                cellTitle = NSLocalizedString("Position", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 let timeType = userDefault.integer(forKey: "afterUpdatePosition") as Int
                 switch(timeType) {
                 case 1:
-                    cellDetailTitle = "トップ"
+                    cellDetailTitle = NSLocalizedString("PositionTypeTop", tableName: "Settings", comment: "")
                     break
                 case 2:
-                    cellDetailTitle = "そのまま"
+                    cellDetailTitle = NSLocalizedString("PositionTypeCurrent", tableName: "Settings", comment: "")
                     break
                 default:
-                    cellDetailTitle = "トップ"
+                    cellDetailTitle = NSLocalizedString("PositionTypeTop", tableName: "Settings", comment: "")
                     break
                 }
                 break
@@ -374,15 +374,15 @@ class SettingsTableViewController: UITableViewController{
         case 6:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = "お問い合わせ"
+                cellTitle = NSLocalizedString("Contact", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             case 1:
-                cellTitle = "ヘルプ"
+                cellTitle = NSLocalizedString("Help", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             case 2:
-                cellTitle = "@whalebirdorg"
+                cellTitle = NSLocalizedString("@whalebirdorg", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
             default:
@@ -410,11 +410,11 @@ class SettingsTableViewController: UITableViewController{
                 self.navigationController?.pushViewController(loginViewController, animated: true)
                 break
             case 1:
-                let alertController = UIAlertController(title: "Remove Account Information", message: "アカウント情報を削除してよろしいですか？", preferredStyle: UIAlertControllerStyle.alert)
-                let cOkAction = UIAlertAction(title: "削除する", style: UIAlertActionStyle.default, handler: { (aAction) -> Void in
+                let alertController = UIAlertController(title: NSLocalizedString("DisconnectAccountTitle", tableName: "Settings", comment: ""), message: NSLocalizedString("DisconnectAccountMessage", tableName: "Settings", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                let cOkAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (aAction) -> Void in
                     self.removeAccountInfo()
                 })
-                let cCloseAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel, handler: nil)
+                let cCloseAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(cCloseAction)
                 alertController.addAction(cOkAction)
                 self.present(alertController, animated: true, completion: nil)
@@ -476,11 +476,11 @@ class SettingsTableViewController: UITableViewController{
         case 6:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                let inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: "お問い合わせ")
+                let inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: NSLocalizedString("Contact", tableName: "Settings", comment: ""))
                 self.navigationController?.pushViewController(inquiryView, animated: true)
                 break
             case 1:
-                let helpView = WebViewController(aOpenURL: "helps", aTitle: "ヘルプ")
+                let helpView = WebViewController(aOpenURL: "helps", aTitle: NSLocalizedString("Help", tableName: "Settings", comment: ""))
                 self.navigationController?.pushViewController(helpView, animated: true)
                 break
             case 2:
@@ -500,18 +500,18 @@ class SettingsTableViewController: UITableViewController{
     
     func stackNotificationType() {
         
-        let notificationTypeSheet = UIAlertController(title: "通知方法選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let alertAction = UIAlertAction(title: "アラート表示", style: UIAlertActionStyle.default) { (action) -> Void in
+        let notificationTypeSheet = UIAlertController(title: NSLocalizedString("NotificationMethod", tableName: "Settings", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let alertAction = UIAlertAction(title: NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(1, forKey: "notificationType")
             self.tableView.reloadData()
         }
-        let headerAction = UIAlertAction(title: "ヘッダー表示", style: UIAlertActionStyle.default) { (action) -> Void in
+        let headerAction = UIAlertAction(title: NSLocalizedString("NotificationTypeHeader", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(2, forKey: "notificationType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         notificationTypeSheet.addAction(alertAction)
         notificationTypeSheet.addAction(headerAction)
@@ -521,23 +521,23 @@ class SettingsTableViewController: UITableViewController{
     
     func stackDisplayNameType() {
         
-        let nameTypeSheet = UIAlertController(title: "表示名選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let nameAndScreenAction = UIAlertAction(title: "名前+スクリーンネーム", style: UIAlertActionStyle.default) { (action) -> Void in
+        let nameTypeSheet = UIAlertController(title: NSLocalizedString("DisplayName", tableName: "Settings", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let nameAndScreenAction = UIAlertAction(title: NSLocalizedString("DisplayNameTypeBoth", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(1, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let screenAction = UIAlertAction(title: "スクリーンネーム", style: UIAlertActionStyle.default) { (action) -> Void in
+        let screenAction = UIAlertAction(title: NSLocalizedString("DisplayNameTypeScreen", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(2, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let nameAction = UIAlertAction(title: "名前", style: UIAlertActionStyle.default) { (action) -> Void in
+        let nameAction = UIAlertAction(title: NSLocalizedString("DisplayNameTypeName", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(3, forKey: "displayNameType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         nameTypeSheet.addAction(nameAndScreenAction)
         nameTypeSheet.addAction(screenAction)
@@ -548,18 +548,18 @@ class SettingsTableViewController: UITableViewController{
     
     func stackDisplayTimeType() {
         
-        let timeTypeSheet = UIAlertController(title: "時刻表示選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let absoluteTimeAction = UIAlertAction(title: "絶対時刻", style: UIAlertActionStyle.default) { (action) -> Void in
+        let timeTypeSheet = UIAlertController(title: NSLocalizedString("Time", tableName: "Settings", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let absoluteTimeAction = UIAlertAction(title: NSLocalizedString("DisplayTimeTypeAbsolute", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(1, forKey: "displayTimeType")
             self.tableView.reloadData()
         }
-        let relativeTimeAction = UIAlertAction(title: "相対時刻", style: UIAlertActionStyle.default) { (action) -> Void in
+        let relativeTimeAction = UIAlertAction(title: NSLocalizedString("DisplayTimeTypeRelative", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(2, forKey: "displayTimeType")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         timeTypeSheet.addAction(absoluteTimeAction)
         timeTypeSheet.addAction(relativeTimeAction)
@@ -568,18 +568,18 @@ class SettingsTableViewController: UITableViewController{
     }
     
     func stackAfterUpdateType() {
-        let updateTypeSheet = UIAlertController(title: "新着ツイート更新後位置選択", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let topAction = UIAlertAction(title: "トップ", style: UIAlertActionStyle.default) { (action) -> Void in
+        let updateTypeSheet = UIAlertController(title: NSLocalizedString("Position", tableName: "Settings", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let topAction = UIAlertAction(title: NSLocalizedString("PositionTypeTop", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(1, forKey: "afterUpdatePosition")
             self.tableView.reloadData()
         }
-        let currentAction = UIAlertAction(title: "そのまま", style: UIAlertActionStyle.default) { (action) -> Void in
+        let currentAction = UIAlertAction(title: NSLocalizedString("PositionTypeCurrent", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             let userDefault = UserDefaults.standard
             userDefault.set(2, forKey: "afterUpdatePosition")
             self.tableView.reloadData()
         }
-        let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         updateTypeSheet.addAction(topAction)
         updateTypeSheet.addAction(currentAction)
@@ -605,8 +605,8 @@ class SettingsTableViewController: UITableViewController{
                         print(error ?? "")
                     }
                     if (!granted) {
-                        let alertController = UIAlertController(title: "Permission Error", message: "アカウントへのアクセス権限がありません", preferredStyle: UIAlertControllerStyle.alert)
-                        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.cancel, handler: nil)
+                        let alertController = UIAlertController(title: NSLocalizedString("UserstreamErrorTitle", tableName: "Settings", comment: ""), message: NSLocalizedString("UserstreamErrorMessage", tableName: "Settings", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                        let closeAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.cancel, handler: nil)
                         alertController.addAction(closeAction)
                         self.present(alertController, animated: true, completion: nil)
                         return
@@ -655,7 +655,7 @@ class SettingsTableViewController: UITableViewController{
         } else {
             self.notificationForegroundSwitch?.isEnabled = true
         }
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -665,7 +665,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
         self.notificationReplyFlag = !self.notificationReplyFlag
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -675,7 +675,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationFavFlag, forKey: "notificationFavFlag")
         self.notificationFavFlag = !self.notificationFavFlag
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -685,7 +685,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationRTFlag, forKey: "notificationRTFlag")
         self.notificationRTFlag = !self.notificationRTFlag
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -695,15 +695,15 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationDMFlag, forKey: "notificationDMFlag")
         self.notificationDMFlag = !self.notificationDMFlag
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
     }
 
     func accountAlert() {
-        let alertController = UIAlertController(title: "Account not found", message: "iPhoneの設定からtwitterアカウントを登録してください", preferredStyle: UIAlertControllerStyle.alert)
-        let closeAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let alertController = UIAlertController(title: NSLocalizedString("AccountErrorTitle", tableName: "Settings",comment: ""), message: NSLocalizedString("AccountErrorMessage", tableName: "Settings",comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+        let closeAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         alertController.addAction(closeAction)
         self.present(alertController, animated: true, completion: nil)

@@ -45,7 +45,7 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
     convenience init(aMessageModel: MessageModel) {
         self.init()
         self.messageModel = aMessageModel
-        self.title = "詳細"
+        self.title = NSLocalizedString("Title", tableName: "MessageDetail", comment: "")
     }
     
     override func loadView() {

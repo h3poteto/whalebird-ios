@@ -19,6 +19,8 @@ class ReplyTableViewController: UITableViewController {
     var refreshTimeline: ODRefreshControl!
     var newTweetButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
+    let saveKeySinceId = "replyTimelineSinceId"
+    let saveKeyTimeline = "replyTimeline"
     
     //=============================================
     //  instance methods
@@ -29,11 +31,11 @@ class ReplyTableViewController: UITableViewController {
     }
     override init(style: UITableViewStyle) {
         super.init(style: style)        
-        self.title = "リプライ"
+        self.title = NSLocalizedString("Title", tableName: "Reply", comment: "")
         self.tabBarItem.image = UIImage(named: "Speaking-Line")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "replyTimelineSinceId") as String?
-        let replyTimeline = userDefaults.array(forKey: "replyTimeline") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let replyTimeline = userDefaults.array(forKey: saveKeyTimeline) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: replyTimeline as Array<AnyObject>?)
     }
@@ -125,7 +127,7 @@ class ReplyTableViewController: UITableViewController {
 
     
     func updateTimeline(_ aSinceID: String?, aMoreIndex: Int?) {
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/mentions.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
@@ -135,7 +137,7 @@ class ReplyTableViewController: UITableViewController {
                     self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(format: NSLocalizedString("NewTweets", comment: ""), count))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -143,7 +145,7 @@ class ReplyTableViewController: UITableViewController {
             }, noUpdated: { () -> Void in
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("NoNewTweets", comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -170,14 +172,14 @@ class ReplyTableViewController: UITableViewController {
     }
     
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("replyTimeline", sinceIdKey: "replyTimelineSinceId")
+        self.timelineModel.saveCurrentTimeline(saveKeyTimeline, sinceIdKey: saveKeySinceId)
     }
     
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "replyTimelineSinceID")
-        userDefaults.set(nil, forKey: "replyTimeline")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyTimeline)
         self.tableView.reloadData()
     }
 }

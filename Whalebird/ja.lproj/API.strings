@@ -1,0 +1,25 @@
+/* 
+  API.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"DateFormat" = "MM月dd日 HH:mm";
+"JustNow" = "1分以内";
+"MinutesAgo" = "%d分前";
+"HoursAgo" = "%d時間前";
+"DaysAgo" = "%d日前";
+
+"RequestErrorTitle" = "リクエストエラー";
+"RequestErrorMessage" = "情報がありません";
+
+"AccountErrorTitle" = "アカウントエラー";
+"AccountErrorMessage" = "アカウントを設定してください";
+
+"LoginRequred" = "ログインしなおしてください";
+"UnexpectedError" = "予期しないエラーが発生しました";
+
+"NetworkErrorTitle" = "ネットワークエラー";
+"NetworkErrorMessage" = "ネットワークに接続できません";

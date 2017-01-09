@@ -50,7 +50,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
             }
              self.view.addSubview(self.webView)
         } else {
-            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "WebView", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "WebView", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()
@@ -67,7 +67,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
     func webViewDidStartLoad(_ webView: UIWebView) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {

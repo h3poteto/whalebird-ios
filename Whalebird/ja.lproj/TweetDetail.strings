@@ -1,0 +1,25 @@
+/* 
+  TweetDetail.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/07.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"Title" = "ツイート詳細";
+
+"AddFav" = "お気に入り追加";
+"DeleteFav" = "お気に入り削除";
+"TweetDeleteTitle" = "ツイート削除";
+"TweetDeleteMessage" = "本当に削除しますか？";
+"TweetDeleteOK" = "削除する";
+"TweetDeleteComplete" = "削除完了";
+
+"RTTitle" = "リツイート";
+"RTOfficial" = "公式RT";
+"RTConfirm" = "RTしますか？";
+"RTPost" = "RTする";
+"RTComplete" = "RT完了";
+"RTUnofficial" = "非公式RT";
+"RTError" = "RTできません";
+"RTPrivate" = "非公開アカウントです";

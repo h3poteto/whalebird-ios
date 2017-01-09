@@ -57,14 +57,14 @@ class EditImageViewController: UIViewController {
         self.toolBoxView = UIToolbar(frame: CGRect(x: 0, y: cWindowSize.size.height - self.toolBoxHeight, width: cWindowSize.size.width, height: self.toolBoxHeight))
         self.toolBoxView.barStyle = UIBarStyle.black
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "戻る", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedCancel))
+        let cancelButton = UIBarButtonItem(title: NSLocalizedString("Back", tableName: "EditImage", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedCancel))
         let rotationButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.refresh, target: self, action: #selector(EditImageViewController.tappedRotation))
         let rotationToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         rotationToolBar.setItems([rotationButton], animated: true)
         rotationToolBar.barStyle = UIBarStyle.black
         rotationToolBar.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         let wrappedRotationButton = UIBarButtonItem(customView: rotationToolBar)
-        let completeButton = UIBarButtonItem(title: "完了", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedComplete))
+        let completeButton = UIBarButtonItem(title: NSLocalizedString("Done", tableName: "EditImage", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(EditImageViewController.tappedComplete))
         let itemArray = [spacer, cancelButton, spacer, wrappedRotationButton, spacer, completeButton, spacer]
         self.toolBoxView.setItems(itemArray, animated: true)
         

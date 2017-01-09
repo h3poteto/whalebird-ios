@@ -26,6 +26,27 @@
 		E92C49F11A9C6D03006BD492 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
 		E92D4C76199CF2B80017B751 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92D4C75199CF2B80017B751 /* ProfileViewController.swift */; };
 		E934330F1A9C5ED6004ACC03 /* BigIntegerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */; };
+		E942FEED1E1FDF9B0014956D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEEF1E1FDF9B0014956D /* Localizable.strings */; };
+		E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEF51E1FEDFB0014956D /* Settings.strings */; };
+		E942FEF91E20AC430014956D /* Timeline.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FEFB1E20AC430014956D /* Timeline.strings */; };
+		E942FEFF1E210BA40014956D /* NewTweet.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF011E210BA40014956D /* NewTweet.strings */; };
+		E942FF051E2137050014956D /* TweetDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF071E2137050014956D /* TweetDetail.strings */; };
+		E942FF121E21461F0014956D /* Conversation.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF141E21461F0014956D /* Conversation.strings */; };
+		E942FF181E2153CF0014956D /* Reply.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF1A1E2153CF0014956D /* Reply.strings */; };
+		E942FF1E1E2154FC0014956D /* DirectMessage.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF201E2154FC0014956D /* DirectMessage.strings */; };
+		E942FF241E2156060014956D /* NewDirectMessage.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF261E2156060014956D /* NewDirectMessage.strings */; };
+		E942FF2A1E2157D30014956D /* MessageDetail.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF2C1E2157D30014956D /* MessageDetail.strings */; };
+		E942FF301E2159630014956D /* Profile.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF321E2159630014956D /* Profile.strings */; };
+		E942FF361E22171C0014956D /* EditImage.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF381E22171C0014956D /* EditImage.strings */; };
+		E942FF3C1E2218BB0014956D /* Minute.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF3E1E2218BB0014956D /* Minute.strings */; };
+		E942FF421E2219DB0014956D /* Search.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF441E2219DB0014956D /* Search.strings */; };
+		E942FF481E221C970014956D /* List.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF4A1E221C970014956D /* List.strings */; };
+		E942FF4E1E221DBF0014956D /* StackList.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF501E221DBF0014956D /* StackList.strings */; };
+		E942FF541E221E9A0014956D /* Login.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF561E221E9A0014956D /* Login.strings */; };
+		E942FF5A1E221FD00014956D /* WebView.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF5C1E221FD00014956D /* WebView.strings */; };
+		E942FF601E2222FC0014956D /* API.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF621E2222FC0014956D /* API.strings */; };
+		E942FF661E22280E0014956D /* AppDelegate.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF681E22280E0014956D /* AppDelegate.strings */; };
+		E942FF6C1E2282EE0014956D /* StreamList.strings in Resources */ = {isa = PBXBuildFile; fileRef = E942FF6E1E2282EE0014956D /* StreamList.strings */; };
 		E94ABBF71B74F1AF00EEB5DF /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */; };
 		E9514A771A9AF39700BC4811 /* BigInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9514A761A9AF39700BC4811 /* BigInteger.swift */; };
 		E95D32111B87818000F969F9 /* TagsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95D32101B87818000F969F9 /* TagsList.swift */; };
@@ -50,9 +71,6 @@
 		E98A579E1BB048CC00447960 /* TweetModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579D1BB048CC00447960 /* TweetModelTests.swift */; };
 		E98A57A01BB05D5E00447960 /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A579F1BB05D5E00447960 /* MessageModelTests.swift */; };
 		E98A57A21BB05EB900447960 /* NotificationUnread.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98A57A11BB05EB900447960 /* NotificationUnread.swift */; };
-		E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */; };
-		E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
-		E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */; };
 		E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A33A2D19AEAFFF0077B673 /* UserstreamAPIClient.swift */; };
 		E9A742C61B915EAD00D6F373 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A742C51B915EAD00D6F373 /* AnimatedImageView.swift */; };
 		E9AB53B21B63B79400C53942 /* TimelineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AB53B11B63B79400C53942 /* TimelineModel.swift */; };
@@ -115,6 +133,48 @@
 		E934330E1A9C5ED6004ACC03 /* BigIntegerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigIntegerTests.swift; sourceTree = "<group>"; };
 		E93433131A9C650D004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E93433161A9C66F0004ACC03 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		E942FEEE1E1FDF9B0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E942FEF01E1FDFD50014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E942FEF41E1FEDFB0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Settings.strings; sourceTree = "<group>"; };
+		E942FEF61E1FEE0D0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Settings.strings; sourceTree = "<group>"; };
+		E942FEFA1E20AC430014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Timeline.strings; sourceTree = "<group>"; };
+		E942FEFC1E20AC440014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Timeline.strings; sourceTree = "<group>"; };
+		E942FF001E210BA40014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/NewTweet.strings; sourceTree = "<group>"; };
+		E942FF021E210BA60014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/NewTweet.strings; sourceTree = "<group>"; };
+		E942FF061E2137050014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TweetDetail.strings; sourceTree = "<group>"; };
+		E942FF081E21370C0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/TweetDetail.strings; sourceTree = "<group>"; };
+		E942FF131E21461F0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Conversation.strings; sourceTree = "<group>"; };
+		E942FF151E2146210014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Conversation.strings; sourceTree = "<group>"; };
+		E942FF191E2153CF0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Reply.strings; sourceTree = "<group>"; };
+		E942FF1B1E2153D30014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Reply.strings; sourceTree = "<group>"; };
+		E942FF1F1E2154FC0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/DirectMessage.strings; sourceTree = "<group>"; };
+		E942FF211E2154FD0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/DirectMessage.strings; sourceTree = "<group>"; };
+		E942FF251E2156060014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/NewDirectMessage.strings; sourceTree = "<group>"; };
+		E942FF271E2156070014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/NewDirectMessage.strings; sourceTree = "<group>"; };
+		E942FF2B1E2157D30014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/MessageDetail.strings; sourceTree = "<group>"; };
+		E942FF2D1E2157E50014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MessageDetail.strings; sourceTree = "<group>"; };
+		E942FF311E2159630014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Profile.strings; sourceTree = "<group>"; };
+		E942FF331E2159650014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Profile.strings; sourceTree = "<group>"; };
+		E942FF371E22171C0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/EditImage.strings; sourceTree = "<group>"; };
+		E942FF391E22171E0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/EditImage.strings; sourceTree = "<group>"; };
+		E942FF3D1E2218BB0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Minute.strings; sourceTree = "<group>"; };
+		E942FF3F1E2218BC0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Minute.strings; sourceTree = "<group>"; };
+		E942FF431E2219DB0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Search.strings; sourceTree = "<group>"; };
+		E942FF451E2219DD0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Search.strings; sourceTree = "<group>"; };
+		E942FF491E221C970014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/List.strings; sourceTree = "<group>"; };
+		E942FF4B1E221C990014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/List.strings; sourceTree = "<group>"; };
+		E942FF4F1E221DBF0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/StackList.strings; sourceTree = "<group>"; };
+		E942FF511E221DC10014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/StackList.strings; sourceTree = "<group>"; };
+		E942FF551E221E9A0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Login.strings; sourceTree = "<group>"; };
+		E942FF571E221E9C0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Login.strings; sourceTree = "<group>"; };
+		E942FF5B1E221FD00014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/WebView.strings; sourceTree = "<group>"; };
+		E942FF5D1E221FD10014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/WebView.strings; sourceTree = "<group>"; };
+		E942FF611E2222FC0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/API.strings; sourceTree = "<group>"; };
+		E942FF631E2222FD0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/API.strings; sourceTree = "<group>"; };
+		E942FF671E22280E0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/AppDelegate.strings; sourceTree = "<group>"; };
+		E942FF691E2228100014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/AppDelegate.strings; sourceTree = "<group>"; };
+		E942FF6D1E2282EE0014956D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/StreamList.strings; sourceTree = "<group>"; };
+		E942FF6F1E2282EF0014956D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/StreamList.strings; sourceTree = "<group>"; };
 		E94ABBF61B74F1AF00EEB5DF /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		E9514A761A9AF39700BC4811 /* BigInteger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigInteger.swift; sourceTree = "<group>"; };
 		E95D32101B87818000F969F9 /* TagsList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsList.swift; sourceTree = "<group>"; };
@@ -253,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				E9B8BF811D8C4DD9004EF434 /* Whalebird.entitlements */,
+				E942FF091E2145AC0014956D /* Localization */,
 				E988D0141B722709003BAD31 /* Service */,
 				E9AB53B61B63D3B200C53942 /* View */,
 				E9AB53B51B63CFBB00C53942 /* ViewController */,
@@ -302,6 +363,34 @@
 				E91243AA199524E000795EF0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E942FF091E2145AC0014956D /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				E942FEEF1E1FDF9B0014956D /* Localizable.strings */,
+				E942FF681E22280E0014956D /* AppDelegate.strings */,
+				E942FF621E2222FC0014956D /* API.strings */,
+				E942FEF51E1FEDFB0014956D /* Settings.strings */,
+				E942FEFB1E20AC430014956D /* Timeline.strings */,
+				E942FF011E210BA40014956D /* NewTweet.strings */,
+				E942FF071E2137050014956D /* TweetDetail.strings */,
+				E942FF141E21461F0014956D /* Conversation.strings */,
+				E942FF1A1E2153CF0014956D /* Reply.strings */,
+				E942FF201E2154FC0014956D /* DirectMessage.strings */,
+				E942FF261E2156060014956D /* NewDirectMessage.strings */,
+				E942FF2C1E2157D30014956D /* MessageDetail.strings */,
+				E942FF321E2159630014956D /* Profile.strings */,
+				E942FF381E22171C0014956D /* EditImage.strings */,
+				E942FF3E1E2218BB0014956D /* Minute.strings */,
+				E942FF441E2219DB0014956D /* Search.strings */,
+				E942FF4A1E221C970014956D /* List.strings */,
+				E942FF501E221DBF0014956D /* StackList.strings */,
+				E942FF561E221E9A0014956D /* Login.strings */,
+				E942FF5C1E221FD00014956D /* WebView.strings */,
+				E942FF6E1E2282EE0014956D /* StreamList.strings */,
+			);
+			name = Localization;
 			sourceTree = "<group>";
 		};
 		E97522811B667E7C00AEB430 /* API */ = {
@@ -430,7 +519,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = AkiraFukushima;
 				TargetAttributes = {
 					E9124392199524E000795EF0 = {
@@ -461,6 +550,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = E912438A199524E000795EF0;
 			productRefGroup = E9124394199524E000795EF0 /* Products */;
@@ -478,10 +568,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E942FF361E22171C0014956D /* EditImage.strings in Resources */,
 				E91243A0199524E000795EF0 /* Images.xcassets in Resources */,
+				E942FEF31E1FEDFB0014956D /* Settings.strings in Resources */,
+				E942FEED1E1FDF9B0014956D /* Localizable.strings in Resources */,
+				E942FF5A1E221FD00014956D /* WebView.strings in Resources */,
+				E942FF3C1E2218BB0014956D /* Minute.strings in Resources */,
+				E942FF6C1E2282EE0014956D /* StreamList.strings in Resources */,
+				E942FEF91E20AC430014956D /* Timeline.strings in Resources */,
 				E9D493BF1A35BBDB00DE2051 /* Settings.bundle in Resources */,
-				E993FE7A1DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig in Resources */,
-				E993FE7C1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
+				E942FF2A1E2157D30014956D /* MessageDetail.strings in Resources */,
+				E942FF241E2156060014956D /* NewDirectMessage.strings in Resources */,
+				E942FF601E2222FC0014956D /* API.strings in Resources */,
+				E942FEFF1E210BA40014956D /* NewTweet.strings in Resources */,
+				E942FF051E2137050014956D /* TweetDetail.strings in Resources */,
+				E942FF541E221E9A0014956D /* Login.strings in Resources */,
+				E942FF301E2159630014956D /* Profile.strings in Resources */,
+				E942FF421E2219DB0014956D /* Search.strings in Resources */,
+				E942FF1E1E2154FC0014956D /* DirectMessage.strings in Resources */,
+				E942FF481E221C970014956D /* List.strings in Resources */,
+				E942FF181E2153CF0014956D /* Reply.strings in Resources */,
+				E942FF661E22280E0014956D /* AppDelegate.strings in Resources */,
+				E942FF121E21461F0014956D /* Conversation.strings in Resources */,
+				E942FF4E1E221DBF0014956D /* StackList.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +598,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E993FE7D1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,11 +786,204 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		E942FEEF1E1FDF9B0014956D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FEEE1E1FDF9B0014956D /* Base */,
+				E942FEF01E1FDFD50014956D /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		E942FEF51E1FEDFB0014956D /* Settings.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FEF41E1FEDFB0014956D /* Base */,
+				E942FEF61E1FEE0D0014956D /* ja */,
+			);
+			name = Settings.strings;
+			sourceTree = "<group>";
+		};
+		E942FEFB1E20AC430014956D /* Timeline.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FEFA1E20AC430014956D /* Base */,
+				E942FEFC1E20AC440014956D /* ja */,
+			);
+			name = Timeline.strings;
+			sourceTree = "<group>";
+		};
+		E942FF011E210BA40014956D /* NewTweet.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF001E210BA40014956D /* Base */,
+				E942FF021E210BA60014956D /* ja */,
+			);
+			name = NewTweet.strings;
+			sourceTree = "<group>";
+		};
+		E942FF071E2137050014956D /* TweetDetail.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF061E2137050014956D /* Base */,
+				E942FF081E21370C0014956D /* ja */,
+			);
+			name = TweetDetail.strings;
+			sourceTree = "<group>";
+		};
+		E942FF141E21461F0014956D /* Conversation.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF131E21461F0014956D /* Base */,
+				E942FF151E2146210014956D /* ja */,
+			);
+			name = Conversation.strings;
+			sourceTree = "<group>";
+		};
+		E942FF1A1E2153CF0014956D /* Reply.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF191E2153CF0014956D /* Base */,
+				E942FF1B1E2153D30014956D /* ja */,
+			);
+			name = Reply.strings;
+			sourceTree = "<group>";
+		};
+		E942FF201E2154FC0014956D /* DirectMessage.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF1F1E2154FC0014956D /* Base */,
+				E942FF211E2154FD0014956D /* ja */,
+			);
+			name = DirectMessage.strings;
+			sourceTree = "<group>";
+		};
+		E942FF261E2156060014956D /* NewDirectMessage.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF251E2156060014956D /* Base */,
+				E942FF271E2156070014956D /* ja */,
+			);
+			name = NewDirectMessage.strings;
+			sourceTree = "<group>";
+		};
+		E942FF2C1E2157D30014956D /* MessageDetail.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF2B1E2157D30014956D /* Base */,
+				E942FF2D1E2157E50014956D /* ja */,
+			);
+			name = MessageDetail.strings;
+			sourceTree = "<group>";
+		};
+		E942FF321E2159630014956D /* Profile.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF311E2159630014956D /* Base */,
+				E942FF331E2159650014956D /* ja */,
+			);
+			name = Profile.strings;
+			sourceTree = "<group>";
+		};
+		E942FF381E22171C0014956D /* EditImage.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF371E22171C0014956D /* Base */,
+				E942FF391E22171E0014956D /* ja */,
+			);
+			name = EditImage.strings;
+			sourceTree = "<group>";
+		};
+		E942FF3E1E2218BB0014956D /* Minute.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF3D1E2218BB0014956D /* Base */,
+				E942FF3F1E2218BC0014956D /* ja */,
+			);
+			name = Minute.strings;
+			sourceTree = "<group>";
+		};
+		E942FF441E2219DB0014956D /* Search.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF431E2219DB0014956D /* Base */,
+				E942FF451E2219DD0014956D /* ja */,
+			);
+			name = Search.strings;
+			sourceTree = "<group>";
+		};
+		E942FF4A1E221C970014956D /* List.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF491E221C970014956D /* Base */,
+				E942FF4B1E221C990014956D /* ja */,
+			);
+			name = List.strings;
+			sourceTree = "<group>";
+		};
+		E942FF501E221DBF0014956D /* StackList.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF4F1E221DBF0014956D /* Base */,
+				E942FF511E221DC10014956D /* ja */,
+			);
+			name = StackList.strings;
+			sourceTree = "<group>";
+		};
+		E942FF561E221E9A0014956D /* Login.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF551E221E9A0014956D /* Base */,
+				E942FF571E221E9C0014956D /* ja */,
+			);
+			name = Login.strings;
+			sourceTree = "<group>";
+		};
+		E942FF5C1E221FD00014956D /* WebView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF5B1E221FD00014956D /* Base */,
+				E942FF5D1E221FD10014956D /* ja */,
+			);
+			name = WebView.strings;
+			sourceTree = "<group>";
+		};
+		E942FF621E2222FC0014956D /* API.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF611E2222FC0014956D /* Base */,
+				E942FF631E2222FD0014956D /* ja */,
+			);
+			name = API.strings;
+			sourceTree = "<group>";
+		};
+		E942FF681E22280E0014956D /* AppDelegate.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF671E22280E0014956D /* Base */,
+				E942FF691E2228100014956D /* ja */,
+			);
+			name = AppDelegate.strings;
+			sourceTree = "<group>";
+		};
+		E942FF6E1E2282EE0014956D /* StreamList.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E942FF6D1E2282EE0014956D /* Base */,
+				E942FF6F1E2282EF0014956D /* ja */,
+			);
+			name = StreamList.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		E91243AD199524E000795EF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -731,6 +1032,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -773,7 +1075,7 @@
 			baseConfigurationReference = 0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APIURL = "http://whalebird.localdomain:3001/";
+				APIURL = "http://whalebird.localdomain:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird.dev;
@@ -908,6 +1210,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -959,6 +1262,7 @@
 				CODE_SIGN_ENTITLEMENTS = Whalebird/Whalebird.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
+				DEVELOPMENT_TEAM = HB4N6B2YVM;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -975,6 +1279,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d52c381e-833e-4d99-84c2-da1adb985c98";
+				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: org.whalebird";
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				WebURL = "https://whalebird.org/";

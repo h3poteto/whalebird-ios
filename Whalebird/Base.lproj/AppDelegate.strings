@@ -1,0 +1,18 @@
+/* 
+  AppDelegate.strings
+  Whalebird
+
+  Created by akirafukushima on 2017/01/08.
+  Copyright © 2017年 AkiraFukushima. All rights reserved.
+*/
+
+"AccountErrorTitle" = "Account Error";
+"AccountErrorMessage" = "Please setup your twitter account";
+
+"ReplyAlert" = "Reply";
+"ReplyOpen" = "Open";
+"ReplyClose" = "Close";
+
+"DirectMessageAlert" = "DirectMessage";
+"DirectMessageOpen" = "Open";
+"DirectMessageClose" = "Close";

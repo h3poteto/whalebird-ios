@@ -24,6 +24,8 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     var searchItemButton: UIBarButtonItem!
     
     var timelineModel: TimelineModel!
+    let saveKeySinceId = "homeTimelineSinceId"
+    let saveKeyTimeline = "homeTimeline"
     
     //=========================================
     //  instance methods
@@ -40,11 +42,11 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     override init(style: UITableViewStyle) {
         super.init(style: UITableViewStyle.plain)
         self.view.backgroundColor = UIColor.white
-        self.title = "タイムライン"
+        self.title = NSLocalizedString("Title", tableName: "Timeline", comment: "")
         self.tabBarItem.image = UIImage(named: "Home")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "homeTimelineSinceId") as String?
-        let homeTimeline = userDefaults.array(forKey: "homeTimeline") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let homeTimeline = userDefaults.array(forKey: saveKeyTimeline) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline as Array<AnyObject>?)
         self.timelineModel.delegate = self
@@ -166,7 +168,7 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     
     func updateTimeline(_ aSinceID: String?, aMoreIndex: Int?) {
         
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/home_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
@@ -176,7 +178,7 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
                 self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(format: NSLocalizedString("NewTweets", comment: ""), count))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -185,7 +187,7 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
                 // アップデートがなくても未読の変更が発生しているのでテーブル更新は必須
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("NoNewTweets", comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -217,14 +219,14 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     }
 
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("homeTimeline", sinceIdKey: "homeTimelineSinceID")
+        self.timelineModel.saveCurrentTimeline(saveKeyTimeline, sinceIdKey: saveKeySinceId)
     }
     // これログアウトで使う
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "homeTimelineSinceID")
-        userDefaults.set(nil, forKey: "homeTimeline")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyTimeline)
         self.tableView.reloadData()
     }
 

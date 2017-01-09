@@ -166,7 +166,7 @@ class StreamTableViewController: UITableViewController {
     
     func updateTimeline(_ aSinceID: String?, aMoreIndex: Int?) {
 
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/list_timeline.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: self.streamElement,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
@@ -176,7 +176,7 @@ class StreamTableViewController: UITableViewController {
                     self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.parentNavigation.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNotice(in: self.parentNavigation.view, title: String(format: NSLocalizedString("NewTweets", comment: ""), count))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -184,7 +184,7 @@ class StreamTableViewController: UITableViewController {
             }, noUpdated: { () -> Void in
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.parentNavigation.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNotice(in: self.parentNavigation.view, title: NSLocalizedString("NoNewTweets", comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()

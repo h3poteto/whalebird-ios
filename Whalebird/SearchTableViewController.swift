@@ -37,7 +37,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
     func prepareSearchBar() {
         self.tweetSearchBar = UISearchBar()
-        self.tweetSearchBar.placeholder = "ツイート検索"
+        self.tweetSearchBar.placeholder = NSLocalizedString("SearchBar", tableName: "Search", comment: "")
         self.tweetSearchBar.keyboardType = UIKeyboardType.default
         self.tweetSearchBar.delegate = self
 
@@ -150,7 +150,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
             "settings" : params as AnyObject,
             "q" : self.tweetSearchBar.text! as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
             completed: { (count, currentRowIndex) -> Void in
                 SVProgressHUD.dismiss()

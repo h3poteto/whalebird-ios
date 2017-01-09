@@ -26,12 +26,12 @@ class ConversationTableViewController: UITableViewController {
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.title = "会話"        
+        self.title = NSLocalizedString("Title", tableName: "Conversation", comment: "")
     }
     
     convenience init(aTweetID: String) {
         self.init()
-        self.title = "会話"         
+        self.title = NSLocalizedString("Title", tableName: "Conversation", comment: "")
         self.rootTweetID = aTweetID
         self.timelineModel = TimelineModel(initSinceId: nil, initTimeline: nil)
     }
@@ -120,7 +120,7 @@ class ConversationTableViewController: UITableViewController {
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineOnlyNew("users/apis/conversations.json", requestParameter: parameter,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()

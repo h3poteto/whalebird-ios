@@ -138,7 +138,7 @@ class TimelineViewCell: UITableViewCell {
             self.bodyLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 16)
             self.bodyLabel.textAlignment = NSTextAlignment.center
             self.bodyLabel.textColor = UIColor.gray
-            self.bodyLabel.text = "もっと読む"
+            self.bodyLabel.text = NSLocalizedString("Read more", comment: "")
             self.bodyLabel.backgroundColor = UIColor(red: 0.945, green: 0.946, blue: 0.947, alpha: 1.0)
             self.contentView.addSubview(self.bodyLabel)
             

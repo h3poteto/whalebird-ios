@@ -92,8 +92,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.windowSize = UIScreen.main.bounds
         self.headerHeight = self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.size.height
         
-        self.followButton = UIBarButtonItem(title: "フォローする", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedFollow))
-        self.unfollowButton = UIBarButtonItem(title: "フォロー解除", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedUnfollow))
+        self.followButton = UIBarButtonItem(title: NSLocalizedString("Follow", tableName: "Profile", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedFollow))
+        self.unfollowButton = UIBarButtonItem(title: NSLocalizedString("Unfollow", tableName: "Profile", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ProfileViewController.tappedUnfollow))
         
         self.tableView = UITableView(frame: CGRect(x: 0, y: self.headerImageHeight + ProfileViewController.StatusHeight, width: self.windowSize.size.width, height: 100))
         self.tableView.delegate = self
@@ -121,7 +121,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         //-------------------------
         //  header
         //-------------------------
@@ -201,9 +201,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followStatusLabel = UILabel(frame: CGRect(x: self.windowSize.width * 0.1, y: self.userNameLabel.frame.origin.y + self.userNameLabel.frame.size.height + ProfileViewController.TextMargin, width: self.windowSize.width * 0.8, height: 15))
                     if !self.myself {
                         if aUserData.object(forKey: "follower?") as! Bool {
-                            self.followStatusLabel.text = "フォローされています"
+                            self.followStatusLabel.text = NSLocalizedString("BeingFollowed", tableName: "Profile", comment: "")
                         } else {
-                            self.followStatusLabel.text = "フォローされていません"
+                            self.followStatusLabel.text = NSLocalizedString("NotBeingFollowed", tableName: "Profile", comment: "")
                         }
                     }
                     self.followStatusLabel.font = UIFont(name: TimelineViewCell.NormalFont, size: 10)
@@ -252,9 +252,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //  status
                     //-----------------------------
                     
-                    let tweetNumText = ("ツイート：" + String(aUserData.object(forKey: "statuses_count") as! Int)) as NSString
+                    let tweetNumText = (NSLocalizedString("TweetCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "statuses_count") as! Int)) as NSString
                     let tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
-                    let tweetNumRange: NSRange = tweetNumText.range(of: "ツイート：")
+                    let tweetNumRange = tweetNumText.range(of: NSLocalizedString("TweetCount", tableName: "Profile", comment: ""))
                     tweetNumAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: tweetNumRange)
                     
                     self.tweetNumLabel = UIButton(frame: CGRect(x: 0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
@@ -268,9 +268,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.tweetNumLabel)
                     
                     
-                    let followText = ("フォロー：" + String(aUserData.object(forKey: "friends_count") as! Int)) as NSString
+                    let followText = (NSLocalizedString("FriendCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "friends_count") as! Int)) as NSString
                     let followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
-                    let followRange: NSRange = followText.range(of: "フォロー：")
+                    let followRange: NSRange = followText.range(of: NSLocalizedString("FriendCount", tableName: "Profile", comment: ""))
                     followAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followRange)
                     
                     self.followNumLabel = UIButton(frame: CGRect(x: self.windowSize.size.width / 3.0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
@@ -283,9 +283,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.scrollView.addSubview(self.followNumLabel)
                     self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                     
-                    let followerText = ("フォロワー：" + String(aUserData.object(forKey: "followers_count") as! Int)) as NSString
+                    let followerText = (NSLocalizedString("FollowerCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "followers_count") as! Int)) as NSString
                     let followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
-                    let followerRange: NSRange = followerText.range(of: "フォロワー：")
+                    let followerRange: NSRange = followerText.range(of: NSLocalizedString("FollowerCount", tableName: "Profile", comment: ""))
                     followerAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followerRange)
                     
                     self.followerNumLabel = UIButton(frame: CGRect(x: self.windowSize.size.width * 2.0 / 3.0, y: self.headerImageHeight, width: self.windowSize.size.width / 3.0, height: ProfileViewController.StatusHeight))
@@ -384,7 +384,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             break
         case 3:
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
-            cell?.textLabel?.text = "非公開アカウントです"
+            cell?.textLabel?.text = NSLocalizedString("ProtectedAccount", tableName: "Profile", comment: "")
             cell?.textLabel?.font = UIFont(name: TimelineViewCell.NormalFont, size: 14)
             break
         default:
@@ -458,7 +458,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params as AnyObject,
             "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimelineWithoutMoreCell("users/apis/user_timeline.json",
             requestParameter: cParameter,
             moreIndex: aMoreIndex,
@@ -486,7 +486,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
@@ -513,7 +513,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params as AnyObject,
             "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
@@ -613,20 +613,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tappedFollow() {
-        let followAlert = UIAlertController(title: "Follow", message: "フォローしますか？", preferredStyle: .alert)
-        let cOkAction = UIAlertAction(title: "フォローする", style: .default) { (action) -> Void in
+        let followAlert = UIAlertController(title: NSLocalizedString("FollowTitle", tableName: "Profile", comment: ""), message: NSLocalizedString("FollowConfirm", tableName: "Profile", comment: ""), preferredStyle: .alert)
+        let cOkAction = UIAlertAction(title: NSLocalizedString("FollowOK", tableName: "Profile", comment: ""), style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [
                 "screen_name" : self.twitterScreenName as AnyObject
             ]
             let params: Dictionary<String, AnyObject> = [
                 "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/follow.json", params: params) { (response) -> Void in
                 let q_main = DispatchQueue.main
                 q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
-                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォローしました")
+                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("FollowComplete", tableName: "Profile", comment: ""))
                     notice?.alpha = 0.8
                     notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                     notice?.show()
@@ -637,7 +637,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 })
             }
         }
-        let cCancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cCancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
         }
         followAlert.addAction(cCancelAction)
         followAlert.addAction(cOkAction)
@@ -645,20 +645,20 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tappedUnfollow() {
-        let unfollowAlert = UIAlertController(title: "Unfollow", message: "フォロー解除しますか？", preferredStyle: .alert)
-        let cOkAction = UIAlertAction(title: "フォロー解除", style: .default) { (action) -> Void in
+        let unfollowAlert = UIAlertController(title: NSLocalizedString("UnfollowTitle", tableName: "Profile", comment: ""), message: NSLocalizedString("UnfollowConfirm", tableName: "Profile", comment: ""), preferredStyle: .alert)
+        let cOkAction = UIAlertAction(title: NSLocalizedString("UnfollowOK", tableName: "Profile", comment: ""), style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [
                 "screen_name" : self.twitterScreenName as AnyObject
             ]
             let params: Dictionary<String, AnyObject> = [
                 "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/unfollow.json", params: params) { (response) -> Void in
                 let q_main = DispatchQueue.main
                 q_main.async(execute: {()->Void in
                     SVProgressHUD.dismiss()
-                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "フォロー解除しました")
+                    let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("UnfollowComplete", tableName: "Profile", comment: ""))
                     notice?.alpha = 0.8
                     notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                     notice?.show()
@@ -666,7 +666,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 })
             }
         }
-        let cCancelAction = UIAlertAction(title: "キャンセル", style: .cancel) { (action) -> Void in
+        let cCancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { (action) -> Void in
         }
         unfollowAlert.addAction(cCancelAction)
         unfollowAlert.addAction(cOkAction)

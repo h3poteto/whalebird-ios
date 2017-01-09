@@ -52,7 +52,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //======================================
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.title = "ツイート送信"
+        self.title = NSLocalizedString("Title", tableName: "NewTweet", comment: "")
         self.newTweetModel = NewTweetModel()
     }
     
@@ -67,7 +67,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if aTopCursor != nil {
             self.fTopCursor = aTopCursor!
         }
-        self.title = "ツイート送信"
+        self.title = NSLocalizedString("Title", tableName: "NewTweet", comment: "")
         self.newTweetModel = NewTweetModel()
     }
     
@@ -82,10 +82,10 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
         self.maxSize = cWindowSize.size
         
-        self.cancelButton = UIBarButtonItem(title: "キャンセル", style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.onCancelTapped))
+        self.cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", tableName: "NewTweet", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.onCancelTapped))
         self.navigationItem.leftBarButtonItem = self.cancelButton
         
-        self.sendButton = UIBarButtonItem(title: "送信", style: UIBarButtonItemStyle.done, target: self, action: #selector(NewTweetViewController.onSendTapped))
+        self.sendButton = UIBarButtonItem(title: NSLocalizedString("Send", tableName: "NewTweet", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(NewTweetViewController.onSendTapped))
         self.navigationItem.rightBarButtonItem = self.sendButton
         
         self.newTweetText = UITextView(frame: CGRect(x: 0, y: 0, width: self.maxSize.width, height: self.maxSize.height / 2.0))
@@ -162,7 +162,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
             self.photostreamButton = UIBarButtonItem(image: UIImage(named: "Image"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.openPhotostream))
             self.cameraButton = UIBarButtonItem(image: UIImage(named: "Camera-Line"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.openCamera))
-            self.minuteButton = UIBarButtonItem(title: "下書き", style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.openMinute))
+            self.minuteButton = UIBarButtonItem(title: NSLocalizedString("Draft", tableName: "NewTweet", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(NewTweetViewController.openMinute))
             self.currentCharactersView = UIBarButtonItem(title: String(self.currentCharacters), style: UIBarButtonItemStyle.plain, target: nil, action: nil)
             
             let itemArray = [spacer, self.photostreamButton!, spacer, self.cameraButton!, spacer, self.minuteButton!, spacer, self.currentCharactersView!]
@@ -185,17 +185,17 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.newTweetText.text.isEmpty) {
             _ = self.navigationController?.popViewController(animated: true)
         } else {
-            let minuteSheet = UIAlertController(title: "下書き保存しますか？", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-            let closeAction = UIAlertAction(title: "破棄する", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let minuteSheet = UIAlertController(title: NSLocalizedString("CloseTweetTitle", tableName: "NewTweet", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+            let closeAction = UIAlertAction(title: NSLocalizedString("CloseTweetDelete", tableName: "NewTweet", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 self.newTweetText.text = ""
                 _ = self.navigationController?.popViewController(animated: true)
             })
-            let minuteAction = UIAlertAction(title: "下書き保存", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let minuteAction = UIAlertAction(title: NSLocalizedString("CloseTweetDraft", tableName: "NewTweet", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 self.minuteTableView?.addMinute(self.newTweetText.text as String, minuteReplyToID: self.replyToID)
                 self.newTweetText.text = ""
                 _ = self.navigationController?.popViewController(animated: true)
             })
-            let cancelAction = UIAlertAction(title: "キャンセル", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 
             })
             minuteSheet.addAction(closeAction)
@@ -204,7 +204,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             self.present(minuteSheet, animated: true, completion: nil)
             
         }
-        
+
     }
     
     func openPhotostream() {
@@ -216,15 +216,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 ipc.allowsEditing = false
                 self.present(ipc, animated:true, completion:nil)
             } else {
-                let overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                let overContentsAlert = UIAlertController(title: NSLocalizedString("OpenAttachmentOverCapacity", tableName: "NewTweet", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 })
                 overContentsAlert.addAction(okAction)
                 self.present(overContentsAlert, animated: true, completion: nil)
             }
         } else {
-            let overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let overContentsAlert = UIAlertController(title: NSLocalizedString("OpenAttachmentWait", tableName: "NewTweet", comment: ""), message: NSLocalizedString("OpenAttachmentInProgress", tableName: "NewTweet", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
             self.present(overContentsAlert, animated: true, completion: nil)
@@ -245,15 +245,15 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
                 }
             
             } else {
-                let overContentsAlert = UIAlertController(title: "これ以上添付できません", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                let overContentsAlert = UIAlertController(title: NSLocalizedString("OpenAttachmentOverCapacity", tableName: "NewTweet", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
                 })
                 overContentsAlert.addAction(okAction)
                 self.present(overContentsAlert, animated: true, completion: nil)
             }
         } else {
-            let overContentsAlert = UIAlertController(title: "お待ちください", message: "画像のアップロードは一件ずつお願いします", preferredStyle: UIAlertControllerStyle.alert)
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let overContentsAlert = UIAlertController(title: NSLocalizedString("OpenAttachmentWait", tableName: "NewTweet", comment: ""), message: NSLocalizedString("OpenAttachmentInProgress", tableName: "NewTweet", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             })
             overContentsAlert.addAction(okAction)
             self.present(overContentsAlert, animated: true, completion: nil)
@@ -373,8 +373,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //-----------------------------------------
     func onSendTapped() -> Bool {
         if (self.fUploadProgress) {
-            let alertController = UIAlertController(title: "画像アップロード中です", message: "アップロード後にもう一度送信してください", preferredStyle: .alert)
-            let cOkAction = UIAlertAction(title: "閉じる", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let alertController = UIAlertController(title: NSLocalizedString("OnSendUploading", tableName: "NewTweet", comment: ""), message: NSLocalizedString("OnSendTryAfterUpload", tableName: "NewTweet", comment: ""), preferredStyle: .alert)
+            let cOkAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             })
             alertController.addAction(cOkAction)
             self.present(alertController, animated: true, completion: nil)
@@ -385,8 +385,8 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             postTweet(newTweetText.text as NSString)
             return true
         } else {
-            let blankTweetAlert = UIAlertController(title: "ツイートできません", message: "本文を入力してください", preferredStyle: .alert)
-            let cOkAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            let blankTweetAlert = UIAlertController(title: NSLocalizedString("OnSendError", tableName: "NewTweet", comment: ""), message: NSLocalizedString("OnSendBlank", tableName: "NewTweet", comment: ""), preferredStyle: .alert)
+            let cOkAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             })
             blankTweetAlert.addAction(cOkAction)
             self.present(blankTweetAlert, animated: true, completion: nil)
@@ -413,11 +413,11 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (params.count != 0) {
             parameter["settings"] = params as AnyObject?
         }
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
-                let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: "投稿しました")
+                let notice = WBSuccessNoticeView.successNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("TweetCompleted", tableName: "NewTweet", comment: ""))
                 SVProgressHUD.dismiss()
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition

@@ -19,7 +19,9 @@ class DirectMessageTableViewController: UITableViewController {
     var refreshMessage: ODRefreshControl!
     var newMessageButton: UIBarButtonItem!
     var timelineModel: TimelineModel!
-    
+    let saveKeySinceId = "directMessagesSinceId"
+    let saveKeyMessage = "directMessage"
+
     //============================================
     //  instance methods
     //============================================
@@ -29,11 +31,11 @@ class DirectMessageTableViewController: UITableViewController {
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.title = "DM"
+        self.title = NSLocalizedString("Title", tableName: "DirectMessage", comment: "")
         self.tabBarItem.image = UIImage(named: "Mail")
         let userDefaults = UserDefaults.standard
-        let sinceId = userDefaults.string(forKey: "directMessageSinceId") as String?
-        let directMessage = userDefaults.array(forKey: "directMessage") as Array?
+        let sinceId = userDefaults.string(forKey: saveKeySinceId) as String?
+        let directMessage = userDefaults.array(forKey: saveKeyMessage) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: directMessage as Array<AnyObject>?)
     }
@@ -123,7 +125,7 @@ class DirectMessageTableViewController: UITableViewController {
     }
     
     func updateMessage(_ aSinceID: String?, aMoreIndex: Int?) {
-        SVProgressHUD.show(withStatus: "キャンセル", maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.timelineModel.updateTimeline("users/apis/direct_messages.json", aSinceID: aSinceID, aMoreIndex: aMoreIndex, streamElement: nil,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()
@@ -133,7 +135,7 @@ class DirectMessageTableViewController: UITableViewController {
                     self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: false)
                 }
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(count) + "件更新")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: String(format: NSLocalizedString("NewTweets", comment: ""), count))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -141,7 +143,7 @@ class DirectMessageTableViewController: UITableViewController {
             }, noUpdated: { () -> Void in
                 self.tableView.reloadData()
                 SVProgressHUD.dismiss()
-                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: "新着なし")
+                let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("NoNewTweets", comment: ""))
                 notice?.alpha = 0.8
                 notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                 notice?.show()
@@ -165,14 +167,14 @@ class DirectMessageTableViewController: UITableViewController {
     }
     
     func destroy() {
-        self.timelineModel.saveCurrentTimeline("directMessage", sinceIdKey: "directMessageSinceId")
+        self.timelineModel.saveCurrentTimeline(saveKeyMessage, sinceIdKey: saveKeySinceId)
     }
     
     func clearData() {
         self.timelineModel.clearData()
         let userDefaults = UserDefaults.standard
-        userDefaults.set(nil, forKey: "directMessageSinceID")
-        userDefaults.set(nil, forKey: "directMessage")
+        userDefaults.set(nil, forKey: saveKeySinceId)
+        userDefaults.set(nil, forKey: saveKeyMessage)
         self.tableView.reloadData()
     }
 }

@@ -27,7 +27,7 @@ class SearchAddListTableViewController: SearchTableViewController {
         super.viewDidLoad()
 
         self.prepareSearchBar()
-        self.saveButton = UIBarButtonItem(title: "保存", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchAddListTableViewController.saveResult))
+        self.saveButton = UIBarButtonItem(title: NSLocalizedString("Save", tableName: "Search", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(SearchAddListTableViewController.saveResult))
 
         if self.searchKeyword != nil {
             self.tweetSearchBar.text = self.searchKeyword!
@@ -38,7 +38,7 @@ class SearchAddListTableViewController: SearchTableViewController {
 
     override func prepareSearchBar() {
         self.tweetSearchBar = UISearchBar()
-        self.tweetSearchBar.placeholder = "ツイート検索"
+        self.tweetSearchBar.placeholder = NSLocalizedString("SearchBar", tableName: "Search", comment: "")
         self.tweetSearchBar.keyboardType = UIKeyboardType.default
         self.tweetSearchBar.delegate = self
 

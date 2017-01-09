@@ -43,7 +43,7 @@ class WhalebirdAPIClient: NSObject {
         let jstDateFormatter =  DateFormatter()
         jstDateFormatter.dateStyle = DateFormatter.Style.long
         jstDateFormatter.timeStyle = DateFormatter.Style.none
-        jstDateFormatter.dateFormat = "MM月dd日 HH:mm"
+        jstDateFormatter.dateFormat = NSLocalizedString("DateFormat", tableName: "API", comment: "")
         var jstDate = String()
         
         if let utcDate = utcDateFormatter.date(from: aUtctime) {
@@ -52,13 +52,13 @@ class WhalebirdAPIClient: NSObject {
                 let current = Date(timeIntervalSinceNow: 0)
                 let timeInterval = current.timeIntervalSince(utcDate)
                 if (timeInterval < 60) {
-                    jstDate = "1分以内"
+                    jstDate = NSLocalizedString("JustNow", tableName: "API", comment: "")
                 } else if(timeInterval < 3600) {
-                    jstDate = String(Int(timeInterval / 60.0)) + "分前"
+                    jstDate = String(format: NSLocalizedString("MinutesAgo", tableName: "API", comment: ""), Int(timeInterval / 60.0))
                 } else if(timeInterval < 3600 * 24) {
-                    jstDate = String(Int(timeInterval / 3600.0)) + "時間前"
+                    jstDate = String(format: NSLocalizedString("HoursAgo", tableName: "API", comment: ""), Int(timeInterval / 3600.0))
                 } else {
-                    jstDate = String(Int(timeInterval / (3600.0 * 24.0))) + "日前"
+                    jstDate = String(format: NSLocalizedString("DaysAgo", tableName: "API", comment: ""), Int(timeInterval / (3600.0 * 24.0)))
                 }
             } else {
                 jstDate = jstDateFormatter.string(from: utcDate)
@@ -185,7 +185,7 @@ class WhalebirdAPIClient: NSObject {
                     callback(object)
                 } else {
                     print("blank response")
-                    let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Request Error", message: "情報がありません")
+                    let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("RequestErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("RequestErrorMessage", tableName: "API", comment: ""))
                     notice?.alpha = 0.8
                     notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
                     notice?.show()
@@ -352,7 +352,7 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func regenerateSession() {
-        let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Account Error", message: "アカウントを設定してください")
+        let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("AccountErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("AccountErrorMessage", tableName: "API", comment: ""))
         notice?.alpha = 0.8
         notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
         notice?.show()
@@ -390,9 +390,9 @@ class WhalebirdAPIClient: NSObject {
                 return
             }
         } else if (operation.response.statusCode == 401) {
-            errorMessage = "ログインしなおしてください"
+            errorMessage = NSLocalizedString("LoginRequired", tableName: "API", comment: "")
         } else if (operation.response.statusCode == 200) {
-            errorMessage = "予期しないエラーが発生しました"
+            errorMessage = NSLocalizedString("UnexpectedError", tableName: "API", comment: "")
         } else if (operation.response.statusCode == 499) {
             errorMessage = "Status Code: " + String(operation.response.statusCode)
             do {
@@ -414,7 +414,7 @@ class WhalebirdAPIClient: NSObject {
     
     func confirmConnectedNetwork() ->Bool {
         if !(Reachability()?.isReachable)! {
-            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Network Error", message: "ネットワークに接続できません")
+            let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "API", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition
             notice?.show()
