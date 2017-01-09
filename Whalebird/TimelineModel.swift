@@ -304,14 +304,14 @@ class TimelineModel: NSObject {
     
     func addFavorite(_ index: Int) {
         if var object = self.getTweetAtIndex(index) {
-            object["favorited?"] = 1
+            object["favorited?"] = true
             self.setTweetAtIndex(index, object: object)
         }
     }
     
     func deleteFavorite(_ index: Int) {
         if var object = self.getTweetAtIndex(index) {
-            object["favorited?"] = 0
+            object["favorited?"] = false
             self.setTweetAtIndex(index, object: object)
         }
     }
