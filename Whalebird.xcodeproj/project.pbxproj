@@ -1074,7 +1074,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "http://whalebird.localdomain:3000/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1112,7 +1112,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B24446D268050AF194D936BF /* Pods-Whalebird.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "https://api.whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1148,7 +1148,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B819DF1AB87096E57ED1DCB /* Pods-Whalebird-WhalebirdTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1181,7 +1181,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0A77B9941FA64239BE3DC901 /* Pods-Whalebird-WhalebirdTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1252,7 +1252,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E993FE791DCB9B9C00961746 /* Pods-Whalebird.adhoc.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "https://api.whalebird.org/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1290,7 +1290,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E993FE7B1DCB9BB900961746 /* Pods-Whalebird-WhalebirdTests.adhoc.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APIURL = "http://api.whalebird.org/";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
