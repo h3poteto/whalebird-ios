@@ -253,7 +253,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     //-----------------------------
                     
                     let tweetNumText = (NSLocalizedString("TweetCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "statuses_count") as! Int)) as NSString
-                    let tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSForegroundColorAttributeName: self.selectedTextColor,  NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let tweetNumAttributedString = NSMutableAttributedString(string: tweetNumText as String, attributes: [NSAttributedStringKey.foregroundColor: self.selectedTextColor,  NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
                     let tweetNumRange = tweetNumText.range(of: NSLocalizedString("TweetCount", tableName: "Profile", comment: ""))
                     tweetNumAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: tweetNumRange)
                     
@@ -269,7 +269,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     
                     
                     let followText = (NSLocalizedString("FriendCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "friends_count") as! Int)) as NSString
-                    let followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let followAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followText as String, attributes: [NSAttributedStringKey.foregroundColor: self.unselectedTextColor, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
                     let followRange: NSRange = followText.range(of: NSLocalizedString("FriendCount", tableName: "Profile", comment: ""))
                     followAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followRange)
                     
@@ -284,7 +284,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.followNumLabel.titleLabel?.textColor = self.unselectedTextColor
                     
                     let followerText = (NSLocalizedString("FollowerCount", tableName: "Profile", comment: "") + String(aUserData.object(forKey: "followers_count") as! Int)) as NSString
-                    let followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSForegroundColorAttributeName: self.unselectedTextColor, NSFontAttributeName: UIFont.systemFont(ofSize: 14)])
+                    let followerAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: followerText as String, attributes: [NSAttributedStringKey.foregroundColor: self.unselectedTextColor, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
                     let followerRange: NSRange = followerText.range(of: NSLocalizedString("FollowerCount", tableName: "Profile", comment: ""))
                     followerAttributedString.setFont(UIFont.systemFont(ofSize: 10), range: followerRange)
                     
@@ -530,7 +530,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     
-    func tappedTweetNum() {
+    @objc func tappedTweetNum() {
         if (!self.privateAccount) {
             self.tableType = 0
             self.tableView.reloadData()
@@ -546,7 +546,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func tappedFollowNum() {
+    @objc func tappedFollowNum() {
         if (!self.privateAccount) {
             self.tableType = 1
             self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
@@ -554,7 +554,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.followNumLabel.backgroundColor = self.selectedButtonColor
             let attributed = self.followNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             let range = NSRangeFromString((self.followNumLabel.titleLabel?.text)!)
-            attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+            attributed.addAttributes([NSAttributedStringKey.foregroundColor : self.selectedTextColor], range: range)
             self.followNumLabel.setAttributedTitle(attributed, for: UIControlState())
             self.followNumLabel.titleLabel?.textColor = self.selectedTextColor
             self.followerNumLabel.backgroundColor = self.unselectedButtonColor
@@ -568,7 +568,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func tappedFollowerNum() {
+    @objc func tappedFollowerNum() {
         if (!self.privateAccount) {
             self.tableType = 2
             self.tweetNumLabel.backgroundColor = self.unselectedButtonColor
@@ -578,7 +578,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.followerNumLabel.backgroundColor = self.selectedButtonColor
             let attributed = self.followerNumLabel.titleLabel?.attributedText as! NSMutableAttributedString
             let range = NSRangeFromString((self.followerNumLabel.titleLabel?.text)!)
-            attributed.addAttributes([NSForegroundColorAttributeName : self.selectedTextColor], range: range)
+            attributed.addAttributes([NSAttributedStringKey.foregroundColor : self.selectedTextColor], range: range)
             self.followerNumLabel.setAttributedTitle(attributed, for: UIControlState())
             self.followerNumLabel.titleLabel?.textColor = self.selectedTextColor
             if (self.followerUsers.count == 0) {
@@ -608,11 +608,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func hudTapped() {
+    @objc func hudTapped() {
         self.scrollView.pullToRefreshView.stopAnimating()
     }
     
-    func tappedFollow() {
+    @objc func tappedFollow() {
         let followAlert = UIAlertController(title: NSLocalizedString("FollowTitle", tableName: "Profile", comment: ""), message: NSLocalizedString("FollowConfirm", tableName: "Profile", comment: ""), preferredStyle: .alert)
         let cOkAction = UIAlertAction(title: NSLocalizedString("FollowOK", tableName: "Profile", comment: ""), style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [
@@ -644,7 +644,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.present(followAlert, animated: true, completion: nil)
     }
     
-    func tappedUnfollow() {
+    @objc func tappedUnfollow() {
         let unfollowAlert = UIAlertController(title: NSLocalizedString("UnfollowTitle", tableName: "Profile", comment: ""), message: NSLocalizedString("UnfollowConfirm", tableName: "Profile", comment: ""), preferredStyle: .alert)
         let cOkAction = UIAlertAction(title: NSLocalizedString("UnfollowOK", tableName: "Profile", comment: ""), style: .default) { (action) -> Void in
             let parameter: Dictionary<String, AnyObject> = [

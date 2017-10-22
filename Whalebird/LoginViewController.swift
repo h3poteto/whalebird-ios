@@ -98,7 +98,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         return true
     }
     
-    func hudTapped() {
+    @objc func hudTapped() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         self.loginWebView.stopLoading()
     }

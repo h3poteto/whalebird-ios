@@ -153,7 +153,7 @@ class DirectMessageTableViewController: UITableViewController {
     }
 
     
-    func onRefresh() {
+    @objc func onRefresh() {
         self.refreshMessage.beginRefreshing()
         updateMessage(self.timelineModel.sinceId, aMoreIndex: nil)
         self.refreshMessage.endRefreshing()

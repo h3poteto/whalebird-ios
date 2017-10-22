@@ -588,7 +588,7 @@ class SettingsTableViewController: UITableViewController{
     }
 
 
-    func tappedUserstreamSwitch() {
+    @objc func tappedUserstreamSwitch() {
         let userDefault = UserDefaults.standard
         if (self.userstreamFlag) {
             // trueだった場合は問答無用で切る
@@ -637,13 +637,13 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func tappedNotificationForegroundSwitch() {
+    @objc func tappedNotificationForegroundSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationForegroundFlag, forKey: "notificationForegroundFlag")
         self.notificationForegroundFlag = !self.notificationForegroundFlag
     }
     
-    func tappedNotificationBackgroundSwitch() {
+    @objc func tappedNotificationBackgroundSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
         
@@ -661,7 +661,7 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func tappedNotificationReplySwitch() {
+    @objc func tappedNotificationReplySwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
         self.notificationReplyFlag = !self.notificationReplyFlag
@@ -671,7 +671,7 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func tappedNotificationFavSwitch() {
+    @objc func tappedNotificationFavSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationFavFlag, forKey: "notificationFavFlag")
         self.notificationFavFlag = !self.notificationFavFlag
@@ -681,7 +681,7 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func tappedNotificationRTSwitch() {
+    @objc func tappedNotificationRTSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationRTFlag, forKey: "notificationRTFlag")
         self.notificationRTFlag = !self.notificationRTFlag
@@ -691,7 +691,7 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func tappedNotificationDMSwitch() {
+    @objc func tappedNotificationDMSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationDMFlag, forKey: "notificationDMFlag")
         self.notificationDMFlag = !self.notificationDMFlag

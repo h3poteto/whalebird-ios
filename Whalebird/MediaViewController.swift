@@ -99,7 +99,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
     }
     
     
-    func doubleTap(_ gesture: UITapGestureRecognizer) {
+    @objc func doubleTap(_ gesture: UITapGestureRecognizer) {
         // ここ拡大縮小させたい
         if self.fZoom {
             let zoomRect = self.zoomRectToScale(2.0, center: gesture.location(in: gesture.view))
@@ -120,7 +120,7 @@ class MediaViewController: UIViewController, UIScrollViewDelegate {
         return zoomRect
     }
     
-    func closeView() {
+    @objc func closeView() {
         self.dismiss(animated: true, completion: nil)
     }
 

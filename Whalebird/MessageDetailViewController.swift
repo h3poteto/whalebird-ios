@@ -128,12 +128,12 @@ class MessageDetailViewController: UIViewController, UITextViewDelegate, NSLayou
         return 4;
     }
 
-    func tappedReplyMessage() {
+    @objc func tappedReplyMessage() {
         let newMessage = NewDirectMessageViewController(aReplyToUser: self.messageModel.screenName)
         self.navigationController?.pushViewController(newMessage, animated: true)
     }
     
-    func tappedUserProfile() {
+    @objc func tappedUserProfile() {
         let userProfileView = ProfileViewController(aScreenName: self.messageModel.screenName)
         self.navigationController?.pushViewController(userProfileView, animated: true)
     }

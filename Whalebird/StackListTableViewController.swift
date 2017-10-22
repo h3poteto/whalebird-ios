@@ -137,7 +137,7 @@ class StackListTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
     }
 
-    func decideSelected(_ sender: AnyObject) {
+    @objc func decideSelected(_ sender: AnyObject) {
         _ = self.navigationController?.popViewController(animated: true)
         if let selectedArray = self.tableView.indexPathsForSelectedRows as Array? {
             if (selectedArray.count > 0) {

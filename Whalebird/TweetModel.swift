@@ -180,17 +180,17 @@ class TweetModel: NSObject {
     
     func customAttributedString() -> NSMutableAttributedString {
         let escapedTweetBody = WhalebirdAPIClient.escapeString(self.tweetBody)
-        let attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSForegroundColorAttributeName: UIColor.black])
+        let attributedString = NSMutableAttributedString(string: escapedTweetBody, attributes: [NSAttributedStringKey.foregroundColor: UIColor.black])
         attributedString.setFont(UIFont(name: TimelineViewCell.NormalFont, size: 15))
         
         for screenName in TweetModel.listUpSentence(self.tweetBody, startCharacter: "@", fScreenName: true) {
             let nameRange: NSRange = (escapedTweetBody as NSString).range(of: screenName)
-            attributedString.addAttributes([NSLinkAttributeName: "at:" + screenName], range: nameRange)
+            attributedString.addAttributes([NSAttributedStringKey.link: "at:" + screenName], range: nameRange)
         }
         for tag in TweetModel.listUpSentence(self.tweetBody, startCharacter: "#", fScreenName: false) {
             let tagRange: NSRange = (escapedTweetBody as NSString).range(of: tag)
             let encodedTag = tag.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-            attributedString.addAttributes([NSLinkAttributeName: "tag:" + encodedTag!], range: tagRange)
+            attributedString.addAttributes([NSAttributedStringKey.link: "tag:" + encodedTag!], range: tagRange)
         }
         return attributedString
     }

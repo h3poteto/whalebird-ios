@@ -193,7 +193,7 @@ class StreamTableViewController: UITableViewController {
         })
     }
 
-    func onRefresh(_ sender: AnyObject) {
+    @objc func onRefresh(_ sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.timelineModel.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()

@@ -29,7 +29,7 @@ PODS:
   - ODRefreshControl (1.1.0)
   - OHAttributedLabel (3.5.5)
   - ReachabilitySwift (2.3.3)
-  - RNCryptor (2.2)
+  - RNCryptor (5.0.1)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
@@ -50,7 +50,7 @@ DEPENDENCIES:
   - ODRefreshControl
   - OHAttributedLabel
   - ReachabilitySwift
-  - RNCryptor (from `https://github.com/h3poteto/RNCryptor.git`, branch `master`)
+  - RNCryptor
   - SDWebImage
   - SVProgressHUD
   - SVPullToRefresh (from `https://github.com/samvermette/SVPullToRefresh.git`)
@@ -60,18 +60,12 @@ DEPENDENCIES:
   - UrlShortener (from `https://github.com/h3poteto/URL-Shortener.git`)
 
 EXTERNAL SOURCES:
-  RNCryptor:
-    :branch: master
-    :git: https://github.com/h3poteto/RNCryptor.git
   SVPullToRefresh:
     :git: https://github.com/samvermette/SVPullToRefresh.git
   UrlShortener:
     :git: https://github.com/h3poteto/URL-Shortener.git
 
 CHECKOUT OPTIONS:
-  RNCryptor:
-    :commit: 9e1d297b464e5b2d538d8d9eb90024f9e9536ae0
-    :git: https://github.com/h3poteto/RNCryptor.git
   SVPullToRefresh:
     :commit: a5f9dfee86a27c4e994d7edf93d0768c881d58bb
     :git: https://github.com/samvermette/SVPullToRefresh.git
@@ -89,7 +83,7 @@ SPEC CHECKSUMS:
   ODRefreshControl: 4c4c413bf70d2ea0c02a28ac0a0b3b4bf4dbfdea
   OHAttributedLabel: 9b2eb99323dee6b3a81ef3bc8e98b084117bca2d
   ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
-  RNCryptor: e22d058d92b9a24a971fea324aea7efc7b25c6f7
+  RNCryptor: 2e352a488779d1a9184ab629be22a7c5bc84acb5
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
@@ -98,6 +92,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 2ba85bee473885c2aada2bdfec584d39f1869338
   UrlShortener: fb6faa925f3abe3d7fdf7ee7cd825df9a4dd18d8
 
-PODFILE CHECKSUM: 41352b008b10177f4d3fc8c60972c1617d691806
+PODFILE CHECKSUM: f1f6f3b4584f6e87f70a75a5803f2bebb03438a3
 
 COCOAPODS: 1.2.0.beta.3

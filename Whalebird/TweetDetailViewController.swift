@@ -293,7 +293,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         return 3;
     }
     
-    func tappedReply() {
+    @objc func tappedReply() {
         let userDefault = UserDefaults.standard
         if let userScreenName = userDefault.object(forKey: "username") as? String {
             let newTweetView = NewTweetViewController(
@@ -305,7 +305,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         }
     }
     
-    func tappedConversation() {
+    @objc func tappedConversation() {
         let conversationView = ConversationTableViewController(aTweetID: self.tweetModel.tweetID)
         self.navigationController?.pushViewController(conversationView, animated: true)
     }
@@ -313,7 +313,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //-------------------------------------------------
     //  memo: favDeleteアクションもここで実装
     //-------------------------------------------------
-    func tappedFavorite() {
+    @objc func tappedFavorite() {
         SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         self.tweetModel.favoriteTweet({ () -> Void in
             SVProgressHUD.dismiss()
@@ -360,7 +360,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         })
     }
 
-    func tappedDelete() {
+    @objc func tappedDelete() {
         let alertController = UIAlertController(title: NSLocalizedString("TweetDeleteTitle",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("TweetDeleteMessage",  tableName: "TweetDetail",comment: ""), preferredStyle: .alert)
         let cOkAction = UIAlertAction(title: NSLocalizedString("TweetDeleteOK",  tableName: "TweetDetail",comment: ""), style: .default, handler: {action in
             SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
@@ -381,7 +381,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
     }
     
-    func tappedMore() {
+    @objc func tappedMore() {
         let retweetSelectSheet = UIAlertController(title: NSLocalizedString("RTTitle",  tableName: "TweetDetail",comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         let oficialRetweetAction = UIAlertAction(title: NSLocalizedString("RTOfficial",  tableName: "TweetDetail",comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
             if (self.tweetModel.fProtected == true) {
@@ -431,17 +431,17 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
         
     }
     
-    func tappedNewTweet(_ sender: AnyObject) {
+    @objc func tappedNewTweet(_ sender: AnyObject) {
         let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
     
-    func tappedUserProfile() {
+    @objc func tappedUserProfile() {
         let userProfileView = ProfileViewController(aScreenName: self.tweetModel.screenName)
         self.navigationController?.pushViewController(userProfileView, animated: true)
     }
     
-    func tappedRetweetedProfile() {
+    @objc func tappedRetweetedProfile() {
         let userProfileView = ProfileViewController(aScreenName: self.tweetModel.retweetedName!)
         self.navigationController?.pushViewController(userProfileView, animated: true)
     }
@@ -463,7 +463,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     }
     
     // 画像が押された時
-    func tappedMedia(_ sender: AnyObject) {
+    @objc func tappedMedia(_ sender: AnyObject) {
         if let button = sender as? UIButton {
             let mediaImage = button.backgroundImage(for: UIControlState())
             let index = button.tag

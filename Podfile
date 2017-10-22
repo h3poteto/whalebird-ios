@@ -14,7 +14,7 @@ target "Whalebird" do
   pod 'ODRefreshControl'
   pod 'SwipeView'
   pod 'SDWebImage'
-  pod 'RNCryptor', git: "https://github.com/h3poteto/RNCryptor.git", branch: "master"
+  pod 'RNCryptor'
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'UrlShortener', git: "https://github.com/h3poteto/URL-Shortener.git"
@@ -25,11 +25,11 @@ target "Whalebird" do
     require 'fileutils'
     FileUtils.cp_r('Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird-acknowledgements.plist', 'Whalebird/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
 
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['SWIFT_VERSION'] = '3.0'
-      end
-    end
+    # installer.pods_project.targets.each do |target|
+    #   target.build_configurations.each do |config|
+    #     config.build_settings['SWIFT_VERSION'] = '3.0'
+    #   end
+    # end
   end
 
   target "WhalebirdTests" do
