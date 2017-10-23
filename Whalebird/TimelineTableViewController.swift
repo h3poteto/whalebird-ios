@@ -88,11 +88,11 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.timelineModel.prepareUserstream()
     }
     
-    func appDidBecomeActive(_ notification: Notification) {
+    @objc func appDidBecomeActive(_ notification: Notification) {
         self.timelineModel.prepareUserstream()
     }
     
-    func appWillResignActive(_ notification: Notification) {
+    @objc func appWillResignActive(_ notification: Notification) {
         self.timelineModel.stopUserstream()
     }
 
@@ -197,14 +197,14 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         
     }
     
-    func onRefresh() {
+    @objc func onRefresh() {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.timelineModel.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
         NotificationUnread.clearUnreadBadge()
     }
     
-    func tappedNewTweet() {
+    @objc func tappedNewTweet() {
         let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }
@@ -230,7 +230,7 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.tableView.reloadData()
     }
 
-    func displaySearch() {
+    @objc func displaySearch() {
         let searchView = SearchTableViewController()
         self.navigationController?.pushViewController(searchView, animated: true)
     }

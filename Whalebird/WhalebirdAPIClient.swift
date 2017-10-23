@@ -11,7 +11,7 @@ import AFNetworking
 import UrlShortener
 import SVProgressHUD
 import NoticeView
-import ReachabilitySwift
+import Reachability
 
 class WhalebirdAPIClient: NSObject {
 
@@ -210,7 +210,7 @@ class WhalebirdAPIClient: NSObject {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.post(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback(operation!)
+                    callback(operation)
                 } else {
                     print("blank response")
                 }
@@ -243,7 +243,7 @@ class WhalebirdAPIClient: NSObject {
                             fileName: "test.png",
                             mimeType: "image/png")
                     
-                    }, error:())
+                }, error: nil)
                 
                 let operation = self.sessionManager.httpRequestOperation(with: request as URLRequest!, success: { (operation, responseObject) -> Void in
                     if (responseObject != nil) {
@@ -259,16 +259,16 @@ class WhalebirdAPIClient: NSObject {
                     }
                     }) { (operation, error) -> Void in
                         print(error ?? "")
-                        self.displayErrorMessage(operation!, error: error as! NSError)
+                        self.displayErrorMessage(operation, error: error as! NSError)
                         failed(error as NSError?)
                 }
                 
-                operation?.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
+                operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
                     let written = Float(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
                     progress(written)
                 }
                 
-                self.sessionManager.operationQueue.addOperation(operation!)
+                self.sessionManager.operationQueue.addOperation(operation)
             } catch {
                 failed(nil)
             }
@@ -330,10 +330,10 @@ class WhalebirdAPIClient: NSObject {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.delete(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
                 if (responseObject != nil) {
-                    callback(operation!)
+                    callback(operation)
                 } else {
                     print("blank response")
-                    callback(operation!)
+                    callback(operation)
                 }
             }, failure: { (operation, error) -> Void in
                 print(error ?? "")
@@ -389,21 +389,21 @@ class WhalebirdAPIClient: NSObject {
             } else {
                 return
             }
-        } else if (operation.response.statusCode == 401) {
+        } else if (operation.response?.statusCode == 401) {
             errorMessage = NSLocalizedString("LoginRequired", tableName: "API", comment: "")
-        } else if (operation.response.statusCode == 200) {
+        } else if (operation.response?.statusCode == 200) {
             errorMessage = NSLocalizedString("UnexpectedError", tableName: "API", comment: "")
-        } else if (operation.response.statusCode == 499) {
-            errorMessage = "Status Code: " + String(operation.response.statusCode)
+        } else if (operation.response?.statusCode == 499) {
+            errorMessage = "Status Code: " + String(describing: operation.response?.statusCode)
             do {
-                let jsonData = try JSONSerialization.jsonObject(with: operation.responseData, options: JSONSerialization.ReadingOptions.allowFragments)
+                let jsonData = try JSONSerialization.jsonObject(with: operation.responseData!, options: JSONSerialization.ReadingOptions.allowFragments)
                 if (jsonData as! NSDictionary).object(forKey: "errors") as? String != nil {
                     errorMessage = (jsonData as! NSDictionary).object(forKey: "errors") as! String
                 }
             } catch {
             }
         } else {
-            errorMessage = "Status Code: " + String(operation.response.statusCode)
+            errorMessage = "Status Code: " + String(describing: operation.response?.statusCode)
         }
 
         let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: "Server Error", message: errorMessage)

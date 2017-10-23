@@ -148,7 +148,7 @@ class SwipeViewController: UIViewController, SwipeViewDelegate, SwipeViewDataSou
         }
     }
 
-    func tappedNewTweet() {
+    @objc func tappedNewTweet() {
         for i in 0 ..< self.streamList.count() {
             self.currentScroll[i] = self.viewItems[i].getCurrentOffset()
         }

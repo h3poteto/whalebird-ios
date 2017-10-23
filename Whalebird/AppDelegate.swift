@@ -49,15 +49,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         // 共通フォント設定
         if let tabBarFont: UIFont = UIFont(name: TimelineViewCell.NormalFont, size: 10) {
-            let tabBarFontDict = [NSFontAttributeName: tabBarFont]
+            let tabBarFontDict = [NSAttributedStringKey.font: tabBarFont]
             UITabBarItem.appearance().setTitleTextAttributes(tabBarFontDict, for: UIControlState())
             UITabBarItem.appearance().setTitleTextAttributes(tabBarFontDict, for: UIControlState.selected)
         }
         if let navBarFont: UIFont = UIFont(name: TimelineViewCell.BoldFont, size: 16) {
-            UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: navBarFont]
+            UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: navBarFont]
         }
         if let barButtonFont: UIFont = UIFont(name: TimelineViewCell.NormalFont, size: 16) {
-            UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barButtonFont], for: UIControlState())
+            UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.font: barButtonFont], for: UIControlState())
         }
         
         // tabBar設定
@@ -292,7 +292,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
     }
     
-    func hudTapped(_ notification: Notification) {
+    @objc func hudTapped(_ notification: Notification) {
         WhalebirdAPIClient.sharedClient.cancelRequest()
         SVProgressHUD.dismiss()
     }

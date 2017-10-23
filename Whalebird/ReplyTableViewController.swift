@@ -154,14 +154,14 @@ class ReplyTableViewController: UITableViewController {
         })
     }
     
-    func onRefresh(_ sender: AnyObject) {
+    @objc func onRefresh(_ sender: AnyObject) {
         self.refreshTimeline.beginRefreshing()
         updateTimeline(self.timelineModel.sinceId, aMoreIndex: nil)
         self.refreshTimeline.endRefreshing()
         NotificationUnread.clearUnreadBadge()
     }
     
-    func tappedNewTweet(_ sender: AnyObject) {
+    @objc func tappedNewTweet(_ sender: AnyObject) {
         let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
     }

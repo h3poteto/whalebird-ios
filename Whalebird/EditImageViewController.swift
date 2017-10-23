@@ -76,7 +76,7 @@ class EditImageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedCancel() {
+    @objc func tappedCancel() {
         // カメラのときは戻すだけだと操作不能になるのでpicker自体を消す
         self.dismiss(animated: true, completion: { () -> Void in
             if self.picker.sourceType == UIImagePickerControllerSourceType.camera {
@@ -89,7 +89,7 @@ class EditImageViewController: UIViewController {
     // ここではプレビューとしてimageViewを回転させる
     // image自体には触れない
     //-----------------------------------------
-    func tappedRotation() {
+    @objc func tappedRotation() {
         self.rotationAngle += 90
         UIView.animate(withDuration: 1.0, animations: { () -> Void in
             
@@ -110,7 +110,7 @@ class EditImageViewController: UIViewController {
     //----------------------------------------
     //  デリゲートの処理呼び出し
     //----------------------------------------
-    func tappedComplete() {
+    @objc func tappedComplete() {
         let rotationImage = self.rotationAndResizeImage(self.pickerImage, angle: self.rotationAngle)
         self.dismiss(animated: true, completion: nil)
         self.picker.dismiss(animated: true, completion: nil)

@@ -79,12 +79,12 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
         super.viewWillAppear(true)
     }
     
-    func onCancelTapped() {
+    @objc func onCancelTapped() {
         _ = self.navigationController?.popViewController(animated: true)
     
     }
     
-    func onSendTapped() {
+    @objc func onSendTapped() {
         if ((self.newMessageText.text as String).characters.count > 0 && self.replyToUser != nil) {
             self.postDirectMessage(self.newMessageText.text)
         }

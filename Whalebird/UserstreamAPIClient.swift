@@ -10,7 +10,7 @@ import UIKit
 import Social
 import Accounts
 import NoticeView
-import ReachabilitySwift
+import Reachability
 
 class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
 

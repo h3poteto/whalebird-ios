@@ -148,7 +148,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         return true
     }
     
-    func keyboardDidShow(_ notification: Notification) {
+    @objc func keyboardDidShow(_ notification: Notification) {
         
         let windowSize = UIScreen.main.bounds.size
         if let info = (notification as NSNotification).userInfo as NSDictionary? {
@@ -175,13 +175,13 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         if (self.optionItemBar != nil) {
             self.optionItemBar?.removeFromSuperview()
         }
     }
     
-    func onCancelTapped() {
+    @objc func onCancelTapped() {
         if (self.newTweetText.text.isEmpty) {
             _ = self.navigationController?.popViewController(animated: true)
         } else {
@@ -207,7 +207,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
 
     }
     
-    func openPhotostream() {
+    @objc func openPhotostream() {
         if (!self.fUploadProgress) {
             if (self.newTweetMedias.count < 4) {
                 let ipc:UIImagePickerController = UIImagePickerController();
@@ -231,7 +231,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
     }
     
-    func openCamera() {
+    @objc func openCamera() {
         if (!self.fUploadProgress) {
             if (self.newTweetMedias.count < 4) {
                 if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
@@ -260,7 +260,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
     }
     
-    func openMinute() {
+    @objc func openMinute() {
         if (self.minuteTableView != nil) {
             self.navigationController?.pushViewController(self.minuteTableView!, animated: true)
         }
@@ -341,7 +341,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         }
     }
 
-    func removeImage(_ id: AnyObject) {
+    @objc func removeImage(_ id: AnyObject) {
         // upload中は移動を伴うキャンセルはロックする
         if let closeButton = id as? UIButton {
             let removeIndex = closeButton.tag
@@ -371,7 +371,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     //-----------------------------------------
     //  送信ボタンを押した時の処理
     //-----------------------------------------
-    func onSendTapped() -> Bool {
+    @objc func onSendTapped() -> Bool {
         if (self.fUploadProgress) {
             let alertController = UIAlertController(title: NSLocalizedString("OnSendUploading", tableName: "NewTweet", comment: ""), message: NSLocalizedString("OnSendTryAfterUpload", tableName: "NewTweet", comment: ""), preferredStyle: .alert)
             let cOkAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in

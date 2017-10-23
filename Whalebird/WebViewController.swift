@@ -8,7 +8,7 @@
 
 import UIKit
 import SVProgressHUD
-import ReachabilitySwift
+import Reachability
 import NoticeView
 
 class WebViewController: UIViewController, UIWebViewDelegate {

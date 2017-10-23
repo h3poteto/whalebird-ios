@@ -144,7 +144,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
     }
     
 
-    func addNewItem(_ sender: AnyObject) {
+    @objc func addNewItem(_ sender: AnyObject) {
         let stackListTableView = StackListTableViewController()
         stackListTableView.delegate = self
         self.navigationController?.pushViewController(stackListTableView, animated: true)
@@ -154,7 +154,7 @@ class ListTableViewController: UITableViewController, StackListTableViewControll
         self.streamList.mergeStreamList(stackStreamList)
     }
     
-    func displaySearch() {
+    @objc func displaySearch() {
         let searchView = SearchAddListTableViewController(aStreamList: self.streamList)
         self.navigationController?.pushViewController(searchView, animated: true)
     }

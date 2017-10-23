@@ -26,7 +26,7 @@ class AnimatedImageView: UIView {
         let playerItem = AVPlayerItem(url: animatedImageURL)
         self.videoPlayer = AVPlayer(playerItem: playerItem)
         self.setPlayer(videoPlayer)
-        self.setVideoFillMode(AVLayerVideoGravityResizeAspect as NSString)
+        self.setVideoFillMode(AVLayerVideoGravity.resizeAspect as NSString)
         NotificationCenter.default.addObserver(self, selector: #selector(AnimatedImageView.playerItemDidReachEnd(_:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
         self.videoPlayer.play()
     }
@@ -46,7 +46,7 @@ class AnimatedImageView: UIView {
     
     func setVideoFillMode(_ fillMode: NSString) {
         let layer: AVPlayerLayer = self.layer as! AVPlayerLayer
-        layer.videoGravity = fillMode as String
+        layer.videoGravity = AVLayerVideoGravity(rawValue: fillMode as String as String)
     }
     
     func videoFillMode() -> NSString {
@@ -54,7 +54,7 @@ class AnimatedImageView: UIView {
         return layer.videoGravity as NSString
     }
     
-    func playerItemDidReachEnd(_ sender: AnyObject) {
+    @objc func playerItemDidReachEnd(_ sender: AnyObject) {
         self.videoPlayer.seek(to: kCMTimeZero)
         self.videoPlayer.play()
     }
