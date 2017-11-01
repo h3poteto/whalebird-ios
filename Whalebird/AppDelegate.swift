@@ -14,7 +14,7 @@ import SVProgressHUD
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegate, UNUserNotificationCenterDelegate {
     var rootController: UITabBarController!
     var window: UIWindow?
     var alertPosition: CGFloat = 0.0
@@ -36,12 +36,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             }
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
         } else {
             let types: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.sound, UIUserNotificationType.alert]
             let notificationSettings: UIUserNotificationSettings = UIUserNotificationSettings(types: types, categories: nil)
             application.registerForRemoteNotifications()
             application.registerUserNotificationSettings(notificationSettings)
         }
+
 
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
@@ -80,42 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         
         if let navigationController = self.rootController.selectedViewController as? UINavigationController {
             self.alertPosition = navigationController.navigationBar.frame.origin.y + navigationController.navigationBar.frame.size.height
-        }
-        
-        // RemoteNotificationからのアプリ起動処理
-        if (launchOptions != nil) {
-            if let userInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] {
-                if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "reply" {
-                    let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                    let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                    NotificationUnread.decrementUnreadBadge()
-                    // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
-                } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "direct_message" {
-                    let messageModel = MessageModel(notificationDict: userInfo as [NSObject : AnyObject])
-                    let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
-                    
-                    NotificationUnread.decrementUnreadBadge()
-                    (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
-                } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "retweet" {
-                    if (userInfo["id"] != nil) {
-                        let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                        let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        
-                        // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
-                    }
-                } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "favorite" {
-                    if (userInfo["id"] != nil) {
-                        let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                        let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        
-                        // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
-                    }
-                }
-            }
-
         }
 
         // 認証前なら設定画面に飛ばす
@@ -165,7 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // <>と" "(空白)を取る
         var token = String(format: "%@", deviceToken as CVarArg) as String
@@ -182,114 +148,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print(error)
     }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        print(userInfo)
-        let userDefault = UserDefaults.standard
-        if let aps = userInfo["aps"] as? NSDictionary {
-            if let message = aps.object(forKey: "alert") as? String, let category = aps.object(forKey: "category") as? String {
-                if (application.applicationState == UIApplicationState.active && (userDefault.object(forKey: "notificationForegroundFlag") == nil || userDefault.bool(forKey: "notificationForegroundFlag"))) {
-                    // 起動中の通知
-                    
-                    if (userDefault.integer(forKey: "notificationType") == 2 ) {
-                        // wbによる通知
-                        let notice = WBSuccessNoticeView.successNotice(in: self.window, title: message)
-                        notice?.alpha = 0.8
-                        notice?.originY = self.alertPosition
-                        notice?.show()
-                    } else {
-                        // デフォルトはアラート通知
-                        switch(category) {
-                        case "reply":
-                            let alertController = UIAlertController(title: NSLocalizedString("ReplyAlert", tableName: "AppDelegate", comment: ""), message: message, preferredStyle: .alert)
-                            let cOpenAction = UIAlertAction(title: NSLocalizedString("ReplyOpen", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: {action in
-                                let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                                let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
 
-                                NotificationUnread.decrementUnreadBadge()
-                                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                                (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
-                            })
-                            let cOkAction = UIAlertAction(title: NSLocalizedString("ReplyClose", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: {action in
-                            })
-                            alertController.addAction(cOkAction)
-                            alertController.addAction(cOpenAction)
-                            self.rootController.present(alertController, animated: true, completion: nil)
-                            break
-                        case "direct_message":
-                            let alertController = UIAlertController(title: NSLocalizedString("DirectMessageAlert", tableName: "AppDelegate", comment: ""), message: message, preferredStyle: .alert)
-                            let cOpenAction = UIAlertAction(title: NSLocalizedString("DirectMessageOpen", tableName: "AppDelegate", comment: ""), style: UIAlertActionStyle.default, handler: { (action) -> Void in
-                                let messageModel = MessageModel(notificationDict: userInfo as [NSObject : AnyObject])
-                                let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
-                                NotificationUnread.decrementUnreadBadge()
-                                (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
-                            })
-                            let cOkAction = UIAlertAction(title: NSLocalizedString("DirectMessageClose", tableName: "AppDelegate", comment: ""), style: .default, handler: { (action) -> Void in
-                            })
-                            alertController.addAction(cOkAction)
-                            alertController.addAction(cOpenAction)
-                            self.rootController.present(alertController, animated: true, completion: nil)
-                            break
-                        case "favorite":
-                            // wbによる通知
-                            let notice = WBSuccessNoticeView.successNotice(in: self.window, title: message)
-                            notice?.alpha = 0.8
-                            notice?.originY = self.alertPosition
-                            notice?.show()
-                            break
-                        case "retweet":
-                            // wbによる通知
-                            let notice = WBSuccessNoticeView.successNotice(in: self.window, title: message)
-                            notice?.alpha = 0.8
-                            notice?.originY = self.alertPosition
-                            notice?.show()
-                            break
-                        default:
-                            break
-                            
-                        }
-                    }
-                } else if (application.applicationState != UIApplicationState.active) {
-                    // 起動済みで通知から復旧した時
-                    switch(category) {
-                    case "reply":
-                        let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                        let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                        
-                        NotificationUnread.decrementUnreadBadge()
-                        
-                        // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
-                        break
-                    case "direct_message":
-                        let messageModel = MessageModel(notificationDict: userInfo as [NSObject : AnyObject])
-                        let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
-                        NotificationUnread.decrementUnreadBadge()
-                        (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
-                        break
-                    case "favorite":
-                        if (userInfo["id"] != nil) {
-                            let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                            let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                            (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
-                        }
-                        break
-                    case "retweet":
-                        if (userInfo["id"] != nil) {
-                            let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
-                            let detailViewController = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
-                            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
-                            (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailViewController, animated: true)
-                        }
-                        break
-                    default:
-                        break
-                    }
-                }
+    // https://qiita.com/mshrwtnb/items/3135e931eedc97479bb5
+    // フォアグラウンド時の通知
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+    }
+
+    // 通知復帰時の処理
+    // アプリが起動していない状態からの通知復帰でもここが呼ばれる
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        let userInfo = response.notification.request.content.userInfo
+        if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "reply" {
+            let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
+            let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+            NotificationUnread.decrementUnreadBadge()
+            // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+            (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
+        } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "direct_message" {
+            let messageModel = MessageModel(notificationDict: userInfo as [NSObject : AnyObject])
+            let messageViewController = MessageDetailViewController(aMessageModel: messageModel)
+
+            NotificationUnread.decrementUnreadBadge()
+            (self.rootController.selectedViewController as! UINavigationController).pushViewController(messageViewController, animated: true)
+        } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "retweet" {
+            if (userInfo["id"] != nil) {
+                let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+
+                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
+            }
+        } else if (userInfo["aps"] as? [AnyHashable: Any])?["category"] as? String == "favorite" {
+            if (userInfo["id"] != nil) {
+                let tweetModel = TweetModel(notificationDict: userInfo as [NSObject : AnyObject])
+                let detailView = TweetDetailViewController(aTweetModel: tweetModel, aTimelineModel: nil, aParentIndex: nil)
+
+                // ここで遷移させる必要があるので，すべてのViewはnavigationControllerの上に実装する必要がある
+                (self.rootController.selectedViewController as! UINavigationController).pushViewController(detailView, animated: true)
             }
         }
-
+        completionHandler()
     }
     
     @objc func hudTapped(_ notification: Notification) {
