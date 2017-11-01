@@ -17,14 +17,12 @@ class SettingsTableViewController: UITableViewController{
     //============================================
     var twitterAccounts = NSArray()
     var userstreamFlag: Bool = false
-    var notificationForegroundFlag: Bool = true
     var notificationBackgroundFlag: Bool = true
     var notificationReplyFlag: Bool = true
     var notificationFavFlag: Bool = true
     var notificationRTFlag: Bool = true
     var notificationDMFlag: Bool = true
     var deviceToken = String?("")
-    var notificationForegroundSwitch: UISwitch?
     
     var account: ACAccount?
     var accountStore: ACAccountStore?
@@ -80,10 +78,10 @@ class SettingsTableViewController: UITableViewController{
             cellCount = 3
             break
         case 1:
-            cellCount = 2
+            cellCount = 1
             break
         case 2:
-            cellCount = 5
+            cellCount = 4
             break
         case 3:
             cellCount = 2
@@ -208,19 +206,6 @@ class SettingsTableViewController: UITableViewController{
                 notificationBackgroundSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationBackgroundSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationBackgroundSwitch
                 break
-            case 1:
-                cellTitle = NSLocalizedString("ForegroundNotification", tableName: "Settings", comment: "")
-                self.notificationForegroundSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = UserDefaults.standard
-                if (userDefault.object(forKey: "notificationForegroundFlag") != nil) {
-                    self.notificationForegroundFlag = userDefault.bool(forKey: "notificationForegroundFlag")
-                }
-                self.notificationForegroundSwitch?.isOn = self.notificationForegroundFlag
-                // そもそもの通知がオフの時は使えなくする必要がある
-                self.notificationForegroundSwitch?.isEnabled = self.notificationBackgroundFlag
-                self.notificationForegroundSwitch?.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationForegroundSwitch), for: UIControlEvents.touchUpInside)
-                cell.accessoryView = self.notificationForegroundSwitch
-                break
             default:
                 break
             }
@@ -228,22 +213,6 @@ class SettingsTableViewController: UITableViewController{
         case 2:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = NSLocalizedString("NotificationMethod", tableName: "Settings", comment: "")
-                let userDefault = UserDefaults.standard
-                let notificationType = userDefault.integer(forKey: "notificationType") as Int
-                switch(notificationType) {
-                case 1:
-                    cellDetailTitle = NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: "")
-                    break
-                case 2:
-                    cellDetailTitle = NSLocalizedString("NotificationTypeHeader", tableName: "Settings", comment: "")
-                    break
-                default:
-                    cellDetailTitle = NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: "")
-                    break
-                }
-                break
-            case 1:
                 cellTitle = NSLocalizedString("ReplyNotification", tableName: "Settings", comment: "")
                 let notificationReplySwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
@@ -254,7 +223,7 @@ class SettingsTableViewController: UITableViewController{
                 notificationReplySwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationReplySwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationReplySwitch
                 break
-            case 2:
+            case 1:
                 cellTitle = NSLocalizedString("FavoriteNotification", tableName: "Settings", comment: "")
                 let notificationFavSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
@@ -265,7 +234,7 @@ class SettingsTableViewController: UITableViewController{
                 notificationFavSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationFavSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationFavSwitch
                 break
-            case 3:
+            case 2:
                 cellTitle = NSLocalizedString("RetweetNotification", tableName: "Settings", comment: "")
                 let notificationRTSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
@@ -276,7 +245,7 @@ class SettingsTableViewController: UITableViewController{
                 notificationRTSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedNotificationRTSwitch), for: UIControlEvents.touchUpInside)
                 cell.accessoryView = notificationRTSwitch
                 break
-            case 4:
+            case 3:
                 cellTitle = NSLocalizedString("DMNotification", tableName: "Settings", comment: "")
                 let notificationDMSwitch = UISwitch(frame: CGRect.zero)
                 let userDefault = UserDefaults.standard
@@ -435,8 +404,6 @@ class SettingsTableViewController: UITableViewController{
             switch((indexPath as NSIndexPath).row) {
             case 0:
                 break
-            case 1:
-                break
             default:
                 break
             }
@@ -444,7 +411,6 @@ class SettingsTableViewController: UITableViewController{
         case 2:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                self.stackNotificationType()
                 break
             default:
                 break
@@ -497,27 +463,6 @@ class SettingsTableViewController: UITableViewController{
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    
-    func stackNotificationType() {
-        
-        let notificationTypeSheet = UIAlertController(title: NSLocalizedString("NotificationMethod", tableName: "Settings", comment: ""), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        let alertAction = UIAlertAction(title: NSLocalizedString("NotificationTypeAlert", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
-            let userDefault = UserDefaults.standard
-            userDefault.set(1, forKey: "notificationType")
-            self.tableView.reloadData()
-        }
-        let headerAction = UIAlertAction(title: NSLocalizedString("NotificationTypeHeader", tableName: "Settings", comment: ""), style: UIAlertActionStyle.default) { (action) -> Void in
-            let userDefault = UserDefaults.standard
-            userDefault.set(2, forKey: "notificationType")
-            self.tableView.reloadData()
-        }
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
-        }
-        notificationTypeSheet.addAction(alertAction)
-        notificationTypeSheet.addAction(headerAction)
-        notificationTypeSheet.addAction(cancelAction)
-        self.present(notificationTypeSheet, animated: true, completion: nil)
-    }
     
     func stackDisplayNameType() {
         
@@ -637,24 +582,11 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    @objc func tappedNotificationForegroundSwitch() {
-        let userDefault = UserDefaults.standard
-        userDefault.set(!self.notificationForegroundFlag, forKey: "notificationForegroundFlag")
-        self.notificationForegroundFlag = !self.notificationForegroundFlag
-    }
-    
     @objc func tappedNotificationBackgroundSwitch() {
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
-        
-        // 通知がオフのときはforegroundの通知も不可能になる
-        userDefault.set(false, forKey: "notificationForegroundFlag")
+
         self.notificationBackgroundFlag = !self.notificationBackgroundFlag
-        if (!self.notificationBackgroundFlag) {
-            self.notificationForegroundSwitch?.isEnabled = false
-        } else {
-            self.notificationForegroundSwitch?.isEnabled = true
-        }
         SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
