@@ -17,12 +17,8 @@
 
 "NotificationSetting" = "Notification Setting";
 "BackgroundNotification" = "Background Notification";
-"ForegroundNotification" = "Foreground Notification";
 
 "DetailNotificationSetting" = "Detail Notification Setting";
-"NotificationMethod" = "Notification Method";
-"NotificationTypeAlert" = "Alert";
-"NotificationTypeHeader" = "Header";
 "ReplyNotification" = "Reply Notification";
 "FavoriteNotification" = "Favorite Notification";
 "RetweetNotification" = "Retweet Notification";

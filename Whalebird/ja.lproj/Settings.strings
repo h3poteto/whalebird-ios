@@ -17,12 +17,8 @@
 
 "NotificationSetting" = "通知設定";
 "BackgroundNotification" = "バックグラウンド時の通知";
-"ForegroundNotification" = "起動中の通知";
 
 "DetailNotificationSetting" = "通知詳細設定";
-"NotificationMethod" = "起動中の通知方法";
-"NotificationTypeAlert" = "アラート表示";
-"NotificationTypeHeader" = "ヘッダー表示";
 "ReplyNotification" = "リプライ通知";
 "FavoriteNotification" = "Fav通知";
 "RetweetNotification" = "RT通知";
