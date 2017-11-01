@@ -1285,7 +1285,7 @@
 				BUNDLE_NAME = Whalebird;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Whalebird/Whalebird.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Akira Fukushima (HB4N6B2YVM)";
 				DEVELOPMENT_TEAM = HB4N6B2YVM;
 				ENABLE_BITCODE = YES;
@@ -1303,8 +1303,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: org.whalebird";
+				PROVISIONING_PROFILE = "bb40436f-5da0-4353-aec8-b146d5dc726a";
+				PROVISIONING_PROFILE_SPECIFIER = WhalebirdAdhoc;
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
