@@ -50,7 +50,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.loginWebView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.loginWebView.delegate = self
         let request = NSMutableURLRequest(url: URL(string: self.whalebirdAPIWithKey)!)
-        if Reachability()!.isReachable {
+        if Reachability()?.connection != .none {
             self.loginWebView.loadRequest(request as URLRequest)
             self.view.addSubview(self.loginWebView)
         } else {
