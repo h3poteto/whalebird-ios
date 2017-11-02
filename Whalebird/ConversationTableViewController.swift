@@ -120,7 +120,7 @@ class ConversationTableViewController: UITableViewController {
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         self.timelineModel.updateTimelineOnlyNew("users/apis/conversations.json", requestParameter: parameter,
             completed: { (count, currentRowIndex) -> Void in
                 self.tableView.reloadData()

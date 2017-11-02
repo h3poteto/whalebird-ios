@@ -1,5 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, "9.3"
+platform :ios, "11.0"
+swift_version = '4.0'
 use_frameworks!
 
 target "Whalebird" do
@@ -24,12 +25,6 @@ target "Whalebird" do
   post_install do | installer |
     require 'fileutils'
     FileUtils.cp_r('Pods/Target Support Files/Pods-Whalebird/Pods-Whalebird-acknowledgements.plist', 'Whalebird/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
-
-    # installer.pods_project.targets.each do |target|
-    #   target.build_configurations.each do |config|
-    #     config.build_settings['SWIFT_VERSION'] = '3.0'
-    #   end
-    # end
   end
 
   target "WhalebirdTests" do

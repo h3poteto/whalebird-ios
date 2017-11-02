@@ -587,7 +587,7 @@ class SettingsTableViewController: UITableViewController{
         userDefault.set(!self.notificationBackgroundFlag, forKey: "notificationBackgroundFlag")
 
         self.notificationBackgroundFlag = !self.notificationBackgroundFlag
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -597,7 +597,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationReplyFlag, forKey: "notificationReplyFlag")
         self.notificationReplyFlag = !self.notificationReplyFlag
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -607,7 +607,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationFavFlag, forKey: "notificationFavFlag")
         self.notificationFavFlag = !self.notificationFavFlag
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -617,7 +617,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationRTFlag, forKey: "notificationRTFlag")
         self.notificationRTFlag = !self.notificationRTFlag
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }
@@ -627,7 +627,7 @@ class SettingsTableViewController: UITableViewController{
         let userDefault = UserDefaults.standard
         userDefault.set(!self.notificationDMFlag, forKey: "notificationDMFlag")
         self.notificationDMFlag = !self.notificationDMFlag
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.syncPushSettings { (operation) -> Void in
             SVProgressHUD.dismiss()
         }

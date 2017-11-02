@@ -25,7 +25,7 @@ class BigInteger: NSObject {
     init(string: String) {
         super.init()
         var first = true
-        for c in string.characters {
+        for c in string {
             if first {
                 first = false
                 if c == "-" {

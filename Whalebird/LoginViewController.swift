@@ -50,7 +50,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.loginWebView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.loginWebView.delegate = self
         let request = NSMutableURLRequest(url: URL(string: self.whalebirdAPIWithKey)!)
-        if Reachability()!.isReachable {
+        if Reachability()?.connection != .none {
             self.loginWebView.loadRequest(request as URLRequest)
             self.view.addSubview(self.loginWebView)
         } else {
@@ -71,7 +71,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
@@ -82,7 +82,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if (self.redirectedTwitter && request.url!.host == self.whalebirdAPIURL.host && (request.url!.absoluteString as NSString!).range(of: "callback").location == NSNotFound) {
             WhalebirdAPIClient.sharedClient.initAPISession({ () -> Void in
-                SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+                SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
                 WhalebirdAPIClient.sharedClient.syncPushSettings({ (result) -> Void in
                     SVProgressHUD.dismiss()
                 })

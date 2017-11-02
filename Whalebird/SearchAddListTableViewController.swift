@@ -48,7 +48,7 @@ class SearchAddListTableViewController: SearchTableViewController {
 
 
     @objc func saveResult() {
-        if (self.tweetSearchBar.text!.characters.count > 0) {
+        if (self.tweetSearchBar.text!.count > 0) {
             self.streamList?.addNewStream(
                 "",
                 name: self.tweetSearchBar.text!,

@@ -62,7 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         if let barButtonFont: UIFont = UIFont(name: TimelineViewCell.NormalFont, size: 16) {
             UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.font: barButtonFont], for: UIControlState())
         }
-        
+
+        // SVProgressHUDの表示スタイル設定
+        SVProgressHUD.setBackgroundColor(UIColor.black)
+        SVProgressHUD.setForegroundColor(UIColor.white)
+
         // tabBar設定
         self.rootController = UITabBarController()
         self.rootController.delegate = self
@@ -97,12 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
                 selectedController.pushViewController(loginSettingsView, animated: true)
             }
         }
-        
-        
-        // SVProgressHUDの表示スタイル設定
-        NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.hudTapped(_:)), name: NSNotification.Name.SVProgressHUDDidReceiveTouchEvent, object: nil)
-        SVProgressHUD.setBackgroundColor(UIColor.black)
-        SVProgressHUD.setForegroundColor(UIColor.white)
+
         
         FriendsList.sharedClient.requestFriends()
         return true
@@ -197,8 +196,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
         }
         completionHandler()
     }
-    
-    @objc func hudTapped(_ notification: Notification) {
+}
+
+extension SVProgressHUD {
+    public static func showDismissableLoad(with status: String) {
+        let nc = NotificationCenter.default
+        nc.addObserver(
+            self, selector: #selector(hudTapped(_:)),
+            name: NSNotification.Name.SVProgressHUDDidTouchDownInside,
+            object: nil
+        )
+        SVProgressHUD.show(withStatus: status)
+        SVProgressHUD.setDefaultMaskType(.clear)
+    }
+
+    @objc static func hudTapped(_ notification: Notification) {
         WhalebirdAPIClient.sharedClient.cancelRequest()
         SVProgressHUD.dismiss()
     }

@@ -25,7 +25,7 @@ class NewTweetModel: NSObject {
         if self.tagRange != nil {
             self.tagRange!.length = range.location - self.tagRange!.location
             let tag = ((viewText as NSString).substring(with: self.tagRange!) + text)
-            if tag.characters.count > 0 {
+            if tag.count > 0 {
                 // 頭の#を切り捨てる
                 let tag_name = (tag as NSString).substring(from: 1)
                 // ここでリスト取得＆テーブル更新
@@ -53,7 +53,7 @@ class NewTweetModel: NSObject {
         if self.screenNameRange != nil {
             self.screenNameRange!.length = range.location - self.screenNameRange!.location
             let name = ((viewText as NSString).substring(with: self.screenNameRange!) + text)
-            if name.characters.count > 0 {
+            if name.count > 0 {
                 // 頭の@を切り捨てる
                 let screen_name = (name as NSString).substring(from: 1)
                 // ここでリスト取得＆テーブル更新

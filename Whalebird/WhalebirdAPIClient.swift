@@ -131,16 +131,16 @@ class WhalebirdAPIClient: NSObject {
         self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
         let requestURL = self.whalebirdAPIURL + "users/apis.json"
         self.sessionManager.get(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
-            print(responseObject ?? "")
+            print(responseObject)
             self.saveCookie()
             let userDefault = UserDefaults.standard
             userDefault.set((responseObject as! [String: Any])["screen_name"], forKey: "username")
             success()
         }) { (operation, error) -> Void in
-            print(error ?? "")
-            self.displayErrorMessage(operation!, error: error as! NSError)
+            print(error)
+            self.displayErrorMessage(operation!, error: error as NSError)
             SVProgressHUD.dismiss()
-            failure(error as! NSError)
+            failure(error as NSError)
         }
         
     }
@@ -160,9 +160,9 @@ class WhalebirdAPIClient: NSObject {
                     print("blank response")
                 }
             }, failure: { (operation, error) -> Void in
-                print(error ?? "")
+                print(error)
                 if displayError {
-                    self.displayErrorMessage(operation!, error: error as! NSError)
+                    self.displayErrorMessage(operation!, error: error as NSError)
                 }
                 failed()
                 SVProgressHUD.dismiss()
@@ -191,8 +191,8 @@ class WhalebirdAPIClient: NSObject {
                     notice?.show()
                 }
             }, failure: { (operation, error) -> Void in
-                print(error ?? "")
-                self.displayErrorMessage(operation!, error: error as! NSError)
+                print(error)
+                self.displayErrorMessage(operation!, error: error as NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -209,14 +209,10 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.post(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil) {
-                    callback(operation)
-                } else {
-                    print("blank response")
-                }
+                callback(operation)
             }, failure: { (operation, error) -> Void in
-                print(error ?? "")
-                self.displayErrorMessage(operation!, error: error as! NSError)
+                print(error)
+                self.displayErrorMessage(operation!, error: error as NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -232,46 +228,40 @@ class WhalebirdAPIClient: NSObject {
         self.loadCookie()
         if (self.sessionManager != nil) {
             self.sessionManager.responseSerializer = AFHTTPResponseSerializer()
-            do {
-                let request = try self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
-                    urlString: self.whalebirdAPIURL + "users/apis/upload.json",
-                    parameters: [:],
-                    constructingBodyWith: { (formData: AFMultipartFormData?) -> Void in
-                        formData?.appendPart(
-                            withFileData: NSData(data: UIImagePNGRepresentation(image)!) as Data,
-                            name: "media",
-                            fileName: "test.png",
-                            mimeType: "image/png")
+            let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
+                urlString: self.whalebirdAPIURL + "users/apis/upload.json",
+                parameters: [:],
+                constructingBodyWith: { (formData: AFMultipartFormData?) -> Void in
+                    formData?.appendPart(
+                        withFileData: NSData(data: UIImagePNGRepresentation(image)!) as Data,
+                        name: "media",
+                        fileName: "test.png",
+                        mimeType: "image/png")
                     
-                }, error: nil)
+            }, error: nil)
                 
-                let operation = self.sessionManager.httpRequestOperation(with: request as URLRequest!, success: { (operation, responseObject) -> Void in
-                    if (responseObject != nil) {
-                        print(responseObject ?? "")
-                        if let object = responseObject as? Data {
-                            do {
-                                let jsonData = try JSONSerialization.jsonObject(with: object, options: JSONSerialization.ReadingOptions.allowFragments)
-                                complete(jsonData as! NSDictionary)
-                            } catch {
-                                failed(nil)
-                            }
-                        }
+            let operation = self.sessionManager.httpRequestOperation(with: request as URLRequest!, success: { (operation, responseObject) -> Void in
+                print(responseObject)
+                if let object = responseObject as? Data {
+                    do {
+                        let jsonData = try JSONSerialization.jsonObject(with: object, options:JSONSerialization.ReadingOptions.allowFragments)
+                            complete(jsonData as! NSDictionary)
+                    } catch {
+                        failed(nil)
                     }
-                    }) { (operation, error) -> Void in
-                        print(error ?? "")
-                        self.displayErrorMessage(operation, error: error as! NSError)
-                        failed(error as NSError?)
                 }
-                
-                operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
-                    let written = Float(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
-                    progress(written)
-                }
-                
-                self.sessionManager.operationQueue.addOperation(operation)
-            } catch {
-                failed(nil)
+            }) { (operation, error) -> Void in
+                print(error)
+                self.displayErrorMessage(operation, error: error as NSError)
+                failed(error as NSError)
             }
+                
+            operation.setUploadProgressBlock { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
+                let written = Float(Float(totalBytesWritten) / Float(totalBytesExpectedToWrite))
+                progress(written)
+            }
+                
+            self.sessionManager.operationQueue.addOperation(operation)
         } else {
             self.regenerateSession()
         }
@@ -329,15 +319,10 @@ class WhalebirdAPIClient: NSObject {
         if (self.sessionManager != nil) {
             let requestURL = self.whalebirdAPIURL + path
             self.sessionManager.delete(requestURL, parameters: params, success: { (operation, responseObject) -> Void in
-                if (responseObject != nil) {
-                    callback(operation)
-                } else {
-                    print("blank response")
-                    callback(operation)
-                }
+                callback(operation)
             }, failure: { (operation, error) -> Void in
-                print(error ?? "")
-                self.displayErrorMessage(operation!, error: error as! NSError)
+                print(error)
+                self.displayErrorMessage(operation!, error: error as NSError)
                 SVProgressHUD.dismiss()
             })
         } else {
@@ -413,7 +398,7 @@ class WhalebirdAPIClient: NSObject {
     }
     
     func confirmConnectedNetwork() ->Bool {
-        if !(Reachability()?.isReachable)! {
+        if Reachability()?.connection == .none {
             let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "API", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition

@@ -192,7 +192,7 @@ class UserstreamAPIClient: NSURLConnection, NSURLConnectionDataDelegate {
         }
     }
     func confirmConnectedNetwork() ->Bool {
-        if !Reachability()!.isReachable {
+        if Reachability()?.connection == .none {
             let notice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title: NSLocalizedString("NetworkErrorTitle", tableName: "API", comment: ""), message: NSLocalizedString("NetworkErrorMessage", tableName: "API", comment: ""))
             notice?.alpha = 0.8
             notice?.originY = (UIApplication.shared.delegate as! AppDelegate).alertPosition

@@ -44,7 +44,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         self.webView.scalesPageToFit = true
         self.webView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.webView.delegate = self
-        if Reachability()!.isReachable {
+        if Reachability()?.connection != .none {
             if let requestURL = URL(string: self.whalebirdURL + self.openURL) {
                 self.webView.loadRequest(URLRequest(url: requestURL))
             }
@@ -67,7 +67,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
     func webViewDidStartLoad(_ webView: UIWebView) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {

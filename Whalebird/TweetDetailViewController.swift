@@ -314,7 +314,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     //  memo: favDeleteアクションもここで実装
     //-------------------------------------------------
     @objc func tappedFavorite() {
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         self.tweetModel.favoriteTweet({ () -> Void in
             SVProgressHUD.dismiss()
             let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("AddFav",  tableName: "TweetDetail",comment: ""))
@@ -363,7 +363,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
     @objc func tappedDelete() {
         let alertController = UIAlertController(title: NSLocalizedString("TweetDeleteTitle",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("TweetDeleteMessage",  tableName: "TweetDetail",comment: ""), preferredStyle: .alert)
         let cOkAction = UIAlertAction(title: NSLocalizedString("TweetDeleteOK",  tableName: "TweetDetail",comment: ""), style: .default, handler: {action in
-            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
             self.tweetModel.deleteTweet({ () -> Void in
                 SVProgressHUD.dismiss()
                 let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("TweetDeleteComplete",  tableName: "TweetDetail",comment: ""))
@@ -394,7 +394,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
                 // 公式RTの処理．直接POSTしちゃって構わない
                 let alertController = UIAlertController(title: NSLocalizedString("RTOfficial",  tableName: "TweetDetail",comment: ""), message: NSLocalizedString("RTConfirm",  tableName: "TweetDetail",comment: ""), preferredStyle: .alert)
                 let cOkAction = UIAlertAction(title: NSLocalizedString("RTPost",  tableName: "TweetDetail",comment: ""), style: .default, handler: {action in
-                    SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+                    SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
                     self.tweetModel.retweetTweet({ () -> Void in
                         SVProgressHUD.dismiss()
                         let notice = WBSuccessNoticeView.successNotice(in: self.navigationController!.view, title: NSLocalizedString("RTComplete",  tableName: "TweetDetail",comment: ""))
@@ -457,7 +457,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.navigationController?.pushViewController(searchView, animated: true)
             return false
         } else {
-            UIApplication.shared.openURL(URL)
+            UIApplication.shared.open(URL, options: ["": true], completionHandler: nil)
             return false
         }
     }
@@ -469,7 +469,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let index = button.tag
             var mediaView: MediaViewController!
             if let url = self.tweetModel.video?[index] {
-                if url.characters.count > 0 {
+                if url.count > 0 {
                     mediaView = MediaViewController(aGifImageURL: URL(string: url)!)
                 } else {
                     mediaView = MediaViewController(aMediaImage: mediaImage)                    

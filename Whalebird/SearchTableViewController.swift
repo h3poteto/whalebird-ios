@@ -150,7 +150,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
             "settings" : params as AnyObject,
             "q" : self.tweetSearchBar.text! as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         self.timelineModel.updateTimelineWitoutMoreAndSince("users/apis/search.json", requestParameter: cParameter,
             completed: { (count, currentRowIndex) -> Void in
                 SVProgressHUD.dismiss()

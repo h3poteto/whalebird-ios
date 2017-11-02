@@ -100,7 +100,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (self.fTopCursor) {
             self.newTweetText.selectedTextRange = self.newTweetText.textRange(from: self.newTweetText.beginningOfDocument, to: self.newTweetText.beginningOfDocument)
         }
-        self.currentCharacters = 140 - self.newTweetText.text.characters.count
+        self.currentCharacters = 140 - self.newTweetText.text.count
         
         self.minuteTableView = MinuteTableViewController()
         self.minuteTableView?.delegate = self
@@ -120,7 +120,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        self.currentCharacters = 140 - (textView.text.characters.count - range.length + text.characters.count)
+        self.currentCharacters = 140 - (textView.text.count - range.length + text.count)
         if (self.currentCharactersView != nil) {
             self.currentCharactersView?.title = String(self.currentCharacters)
         }
@@ -381,7 +381,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
             
             return false
         }
-        if ((newTweetText.text as String).characters.count > 0 || self.newTweetMedias.count > 0) {
+        if ((newTweetText.text as String).count > 0 || self.newTweetMedias.count > 0) {
             postTweet(newTweetText.text as NSString)
             return true
         } else {
@@ -413,7 +413,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (params.count != 0) {
             parameter["settings"] = params as AnyObject?
         }
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in

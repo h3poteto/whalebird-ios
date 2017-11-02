@@ -85,7 +85,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func onSendTapped() {
-        if ((self.newMessageText.text as String).characters.count > 0 && self.replyToUser != nil) {
+        if ((self.newMessageText.text as String).count > 0 && self.replyToUser != nil) {
             self.postDirectMessage(self.newMessageText.text)
         }
     }
@@ -100,7 +100,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
             "settings" : params as AnyObject
         ]
         
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/direct_message_create.json", params: cParameter) { (aOperation) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: { () -> Void in

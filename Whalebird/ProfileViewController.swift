@@ -121,7 +121,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cParameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         //-------------------------
         //  header
         //-------------------------
@@ -458,7 +458,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params as AnyObject,
             "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         self.timelineModel.updateTimelineWithoutMoreCell("users/apis/user_timeline.json",
             requestParameter: cParameter,
             moreIndex: aMoreIndex,
@@ -486,7 +486,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let parameter: Dictionary<String, AnyObject> = [
             "settings" : params as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/friends.json", params: parameter) { (aFollows) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
@@ -513,7 +513,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             "settings" : params as AnyObject,
             "screen_name" : self.twitterScreenName as AnyObject
         ]
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.getDictionaryAPI("users/apis/followers.json", params: cParameter) { (aFollows) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in
@@ -621,7 +621,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let params: Dictionary<String, AnyObject> = [
                 "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/follow.json", params: params) { (response) -> Void in
                 let q_main = DispatchQueue.main
                 q_main.async(execute: {()->Void in
@@ -653,7 +653,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             let params: Dictionary<String, AnyObject> = [
                 "settings" : parameter as AnyObject
             ]
-            SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+            SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
             WhalebirdAPIClient.sharedClient.postAnyObjectAPI("/users/apis/unfollow.json", params: params) { (response) -> Void in
                 let q_main = DispatchQueue.main
                 q_main.async(execute: {()->Void in
