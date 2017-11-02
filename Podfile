@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, "11.1"
+platform :ios, "11.0"
 swift_version = '4.0'
 use_frameworks!
 
