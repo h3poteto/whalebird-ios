@@ -113,7 +113,7 @@ class FriendsList: NSObject {
     }
     
     func searchFriends(_ screen_name: String, callback:(Array<String>) -> Void) {
-        if screen_name.characters.count > 0 {
+        if screen_name.count > 0 {
             if let list = self.friendsList {
                 var matchFriends:Array<String> = []
                 for name in list {

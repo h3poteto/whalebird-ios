@@ -85,7 +85,7 @@ class NewDirectMessageViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func onSendTapped() {
-        if ((self.newMessageText.text as String).characters.count > 0 && self.replyToUser != nil) {
+        if ((self.newMessageText.text as String).count > 0 && self.replyToUser != nil) {
             self.postDirectMessage(self.newMessageText.text)
         }
     }

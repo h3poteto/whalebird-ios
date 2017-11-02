@@ -35,7 +35,7 @@ class TagsList: NSObject {
     func findAndAddtag(_ rawString: String) {
         for tag in TweetModel.listUpSentence(rawString, startCharacter: "#", fScreenName: false) {
             let tagString = tag.replacingOccurrences(of: "#", with: "", options: [], range: nil)
-            if tagString.characters.count > 0 {
+            if tagString.count > 0 {
                 self.addTag(tagString)
             }
         }
@@ -68,7 +68,7 @@ class TagsList: NSObject {
     }
     
     func searchTags(_ tag: String, callback: (Array<String>)-> Void) {
-        if tag.characters.count > 0 {
+        if tag.count > 0 {
             if let list = self.getTagsList() {
                 var matchTags:Array<String> = []
                 for name in list {

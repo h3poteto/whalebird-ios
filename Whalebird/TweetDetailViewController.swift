@@ -457,7 +457,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             self.navigationController?.pushViewController(searchView, animated: true)
             return false
         } else {
-            UIApplication.shared.openURL(URL)
+            UIApplication.shared.open(URL, options: ["": true], completionHandler: nil)
             return false
         }
     }
@@ -469,7 +469,7 @@ class TweetDetailViewController: UIViewController, UIActionSheetDelegate, UIText
             let index = button.tag
             var mediaView: MediaViewController!
             if let url = self.tweetModel.video?[index] {
-                if url.characters.count > 0 {
+                if url.count > 0 {
                     mediaView = MediaViewController(aGifImageURL: URL(string: url)!)
                 } else {
                     mediaView = MediaViewController(aMediaImage: mediaImage)                    

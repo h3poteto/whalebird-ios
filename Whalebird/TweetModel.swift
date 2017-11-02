@@ -50,7 +50,7 @@ class TweetModel: NSObject {
         var targetStringList: Array<String> = []
         var tTargetString = ""
         var fFindString = false
-        for char in rawString.characters {
+        for char in rawString {
             if (fFindString) {
                 if (char == " " || char == "　" || (fScreenName && !TweetModel.checkScreenName(char))) {
                     targetStringList.append(tTargetString)
