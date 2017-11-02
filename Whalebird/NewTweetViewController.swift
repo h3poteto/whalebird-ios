@@ -413,7 +413,7 @@ class NewTweetViewController: UIViewController, UITextViewDelegate, UIImagePicke
         if (params.count != 0) {
             parameter["settings"] = params as AnyObject?
         }
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
         WhalebirdAPIClient.sharedClient.postAnyObjectAPI("users/apis/tweet.json", params: parameter) { (aOperation) -> Void in
             let q_main = DispatchQueue.main
             q_main.async(execute: {()->Void in

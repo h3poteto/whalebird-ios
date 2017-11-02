@@ -67,7 +67,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
 
     func webViewDidStartLoad(_ webView: UIWebView) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        SVProgressHUD.show(withStatus: NSLocalizedString("Cancel", comment: ""), maskType: SVProgressHUDMaskType.clear)
+        SVProgressHUD.showDismissableLoad(with: NSLocalizedString("Cancel", comment: ""))
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {

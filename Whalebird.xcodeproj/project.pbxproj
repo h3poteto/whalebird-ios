@@ -1117,7 +1117,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = WhalebirdDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				WebURL = "http://192.168.99.100:3001/";
 			};
@@ -1155,7 +1155,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = WhalebirdAppStore;
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				WebURL = "https://whalebird.org/";
 			};
@@ -1306,7 +1306,7 @@
 				PROVISIONING_PROFILE = "bb40436f-5da0-4353-aec8-b146d5dc726a";
 				PROVISIONING_PROFILE_SPECIFIER = WhalebirdAdhoc;
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				WebURL = "https://whalebird.org/";
 			};
