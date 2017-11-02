@@ -1087,7 +1087,7 @@
 			baseConfigurationReference = 0C756EA81D6D16F5124613C0 /* Pods-Whalebird.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				APIURL = "https://908f5ccc.ngrok.io/";
+				APIURL = "https://0ea0bed8.ngrok.io/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUNDLE_IDENTIFIER = org.whalebird.dev;
