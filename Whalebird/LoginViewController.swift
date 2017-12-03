@@ -14,7 +14,7 @@ import NoticeView
 class ExWebView: UIWebView {
     override func loadRequest(_ request: URLRequest) {
         if let mRequest = (request as NSURLRequest).mutableCopy() as? NSMutableURLRequest {
-            mRequest.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
+            mRequest.setValue(ApplicationSecrets.Token(), forHTTPHeaderField: "Whalebird-Key")
             super.loadRequest(mRequest as URLRequest)
         }
     }

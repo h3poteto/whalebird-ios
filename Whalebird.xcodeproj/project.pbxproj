@@ -21,6 +21,7 @@
 		E91CC5F21A01CC0300FE5BDF /* WhalebirdAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */; };
 		E91CC5F41A027D3100FE5BDF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */; };
 		E9221CF819FBBD35002FF3E0 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */; };
+		E927609F1FD3F34E0064A0A8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E927609E1FD3F34E0064A0A8 /* Secrets.swift */; };
 		E92C49E31A9C6BBB006BD492 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B1B199526F6000FC13C /* Social.framework */; };
 		E92C49E41A9C6BC3006BD492 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9797B19199526EF000FC13C /* Accounts.framework */; };
 		E92C49F11A9C6D03006BD492 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9869EE719AE370F009DD99D /* QuartzCore.framework */; };
@@ -127,6 +128,7 @@
 		E91CC5F11A01CC0300FE5BDF /* WhalebirdAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhalebirdAPIClient.swift; sourceTree = "<group>"; };
 		E91CC5F31A027D3100FE5BDF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E9221CF719FBBD35002FF3E0 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		E927609E1FD3F34E0064A0A8 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		E92C49DD1A9C6B0E006BD492 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E92C49E01A9C6BA7006BD492 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		E92D4C75199CF2B80017B751 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 			children = (
 				E97522811B667E7C00AEB430 /* API */,
 				E9BC3E621A408E5700D2D6BD /* ApplicationSecrets.swift */,
+				E927609E1FD3F34E0064A0A8 /* Secrets.swift */,
 				E9514A761A9AF39700BC4811 /* BigInteger.swift */,
 			);
 			name = Service;
@@ -751,6 +754,7 @@
 				E9A33A2E19AEAFFF0077B673 /* UserstreamAPIClient.swift in Sources */,
 				E977A7FA19B4C8C500892005 /* TweetDetailViewController.swift in Sources */,
 				E91B203E1A13AABA008BF1ED /* NewDirectMessageViewController.swift in Sources */,
+				E927609F1FD3F34E0064A0A8 /* Secrets.swift in Sources */,
 				E9FD20AB19C8808D00A3184C /* StackListTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
