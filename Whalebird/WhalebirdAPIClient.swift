@@ -128,7 +128,7 @@ class WhalebirdAPIClient: NSObject {
             return
         }
         self.sessionManager = AFHTTPRequestOperationManager()
-        self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
+        self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Token(), forHTTPHeaderField: "Whalebird-Key")
         let requestURL = self.whalebirdAPIURL + "users/apis.json"
         self.sessionManager.get(requestURL, parameters: nil, success: { (operation, responseObject) -> Void in
             print(responseObject)
@@ -351,7 +351,7 @@ class WhalebirdAPIClient: NSObject {
                     HTTPCookieStorage.shared.setCookie(cookie)
                 }
                 self.sessionManager = AFHTTPRequestOperationManager()
-                self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Secret(), forHTTPHeaderField: "Whalebird-Key")
+                self.sessionManager.requestSerializer.setValue(ApplicationSecrets.Token(), forHTTPHeaderField: "Whalebird-Key")
             }
         }
     }
