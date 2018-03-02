@@ -34,14 +34,6 @@
 "DisplayTimeTypeRelative" = "相対時刻";
 "AfterRestart" = "※再起動後に反映されます";
 
-"UserstreamSetting" = "Userstream";
-"Userstream" = "Userstream";
-"UserstreamErrorTitle" = "エラー";
-"UserstreamErrorMessage" = "アカウントへのアクセス権がありません";
-"AccountErrorTitle" = "エラー";
-"AccountErrorMessage" = "iPhoneの設定からtwitterアカウントを登録してください";
-"WifiRecommend" = "※Wifi推奨";
-
 "UpdateTweetSetting" = "ツイート更新設定";
 "Position" = "新着更新後の位置";
 "PositionTypeTop" = "トップ";

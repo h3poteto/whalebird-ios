@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
 
                 if granted {
                     // デバイストークンを発行
+                    // TODO: ここテストが落ちる
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             }
