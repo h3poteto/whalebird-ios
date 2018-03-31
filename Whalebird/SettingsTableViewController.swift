@@ -89,7 +89,7 @@ class SettingsTableViewController: UITableViewController{
             cellCount = 1
             break
         case 5:
-            cellCount = 3
+            cellCount = 2
             break
         default:
             break
@@ -323,10 +323,6 @@ class SettingsTableViewController: UITableViewController{
                 cellTitle = NSLocalizedString("Help", tableName: "Settings", comment: "")
                 cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                 break
-            case 2:
-                cellTitle = NSLocalizedString("@whalebirdorg", tableName: "Settings", comment: "")
-                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-                break
             default:
                 break
             }
@@ -419,10 +415,6 @@ class SettingsTableViewController: UITableViewController{
             case 1:
                 let helpView = WebViewController(aOpenURL: "helps", aTitle: NSLocalizedString("Help", tableName: "Settings", comment: ""))
                 self.navigationController?.pushViewController(helpView, animated: true)
-                break
-            case 2:
-                let reply = NewTweetViewController(aTweetBody: "@whalebirdorg ", aReplyToID: nil, aTopCursor: nil)
-                self.navigationController?.pushViewController(reply, animated: true)
                 break
             default:
                 break
