@@ -16,7 +16,6 @@ class SettingsTableViewController: UITableViewController{
     //  instance variables
     //============================================
     var twitterAccounts = NSArray()
-    var userstreamFlag: Bool = false
     var notificationBackgroundFlag: Bool = true
     var notificationReplyFlag: Bool = true
     var notificationFavFlag: Bool = true
@@ -68,7 +67,7 @@ class SettingsTableViewController: UITableViewController{
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 7
+        return 6
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,9 +89,6 @@ class SettingsTableViewController: UITableViewController{
             cellCount = 1
             break
         case 5:
-            cellCount = 1
-            break
-        case 6:
             cellCount = 3
             break
         default:
@@ -116,12 +112,9 @@ class SettingsTableViewController: UITableViewController{
             sectionTitle = NSLocalizedString("DisplaySetting", tableName: "Settings", comment: "")
             break
         case 4:
-            sectionTitle = NSLocalizedString("UserstreamSetting", tableName: "Settings", comment: "")
-            break
-        case 5:
             sectionTitle = NSLocalizedString("UpdateTweetSetting", tableName: "Settings", comment: "")
             break
-        case 6:
+        case 5:
             sectionTitle = NSLocalizedString("About", tableName: "Settings", comment: "")
             break
         default:
@@ -151,11 +144,8 @@ class SettingsTableViewController: UITableViewController{
             sectionTitle = NSLocalizedString("AfterRestart", tableName: "Settings", comment: "")
             break
         case 4:
-            sectionTitle = NSLocalizedString("WifiRecommend", tableName: "Settings", comment: "")
             break
         case 5:
-            break
-        case 6:
             break
         default:
             sectionTitle = ""
@@ -304,23 +294,6 @@ class SettingsTableViewController: UITableViewController{
         case 4:
             switch((indexPath as NSIndexPath).row) {
             case 0:
-                cellTitle = NSLocalizedString("Userstream", tableName: "Settings", comment: "")
-                let userstreamSwitch = UISwitch(frame: CGRect.zero)
-                let userDefault = UserDefaults.standard
-                if (userDefault.object(forKey: "userstreamFlag") != nil) {
-                    self.userstreamFlag = userDefault.bool(forKey: "userstreamFlag")
-                }
-                userstreamSwitch.isOn = self.userstreamFlag
-                userstreamSwitch.addTarget(self, action: #selector(SettingsTableViewController.tappedUserstreamSwitch), for: UIControlEvents.touchUpInside)
-                cell.accessoryView = userstreamSwitch
-                break
-            default:
-                break
-            }
-            break
-        case 5:
-            switch((indexPath as NSIndexPath).row) {
-            case 0:
                 cellTitle = NSLocalizedString("Position", tableName: "Settings", comment: "")
                 let userDefault = UserDefaults.standard
                 let timeType = userDefault.integer(forKey: "afterUpdatePosition") as Int
@@ -340,7 +313,7 @@ class SettingsTableViewController: UITableViewController{
                 break
             }
             break
-        case 6:
+        case 5:
             switch((indexPath as NSIndexPath).row) {
             case 0:
                 cellTitle = NSLocalizedString("Contact", tableName: "Settings", comment: "")
@@ -429,8 +402,6 @@ class SettingsTableViewController: UITableViewController{
             }
             break
         case 4:
-            break
-        case 5:
             switch((indexPath as NSIndexPath).row) {
             case 0:
                 self.stackAfterUpdateType()
@@ -439,7 +410,7 @@ class SettingsTableViewController: UITableViewController{
                 break
             }
             break
-        case 6:
+        case 5:
             switch((indexPath as NSIndexPath).row) {
             case 0:
                 let inquiryView = WebViewController(aOpenURL: "inquiries/new", aTitle: NSLocalizedString("Contact", tableName: "Settings", comment: ""))
@@ -532,55 +503,6 @@ class SettingsTableViewController: UITableViewController{
         self.present(updateTypeSheet, animated: true, completion: nil)
     }
 
-
-    @objc func tappedUserstreamSwitch() {
-        let userDefault = UserDefaults.standard
-        if (self.userstreamFlag) {
-            // trueだった場合は問答無用で切る
-            userDefault.set(!self.userstreamFlag, forKey: "userstreamFlag")
-            self.userstreamFlag = !self.userstreamFlag
-            UserstreamAPIClient.sharedClient.stopStreaming({ () -> Void in
-            })
-        } else {
-            // userdefaultに保存してあるusernameと同じ名前のaccountsを発掘してきてuserstreamを発火
-            self.accountStore = ACAccountStore()
-            if let twitterAccountType: ACAccountType = self.accountStore?.accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter) {
-                self.accountStore?.requestAccessToAccounts(with: twitterAccountType, options: nil) { (granted, error) -> Void in
-                    if (error != nil) {
-                        print(error ?? "")
-                    }
-                    if (!granted) {
-                        let alertController = UIAlertController(title: NSLocalizedString("UserstreamErrorTitle", tableName: "Settings", comment: ""), message: NSLocalizedString("UserstreamErrorMessage", tableName: "Settings", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-                        let closeAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.cancel, handler: nil)
-                        alertController.addAction(closeAction)
-                        self.present(alertController, animated: true, completion: nil)
-                        return
-                    }
-                    if let twitterAccounts: NSArray = self.accountStore?.accounts(with: twitterAccountType) as NSArray? {
-                        if twitterAccounts.count > 0 {
-                            let cUsername = userDefault.string(forKey: "username")
-                            var selectedAccount: ACAccount?
-                            for aclist in twitterAccounts {
-                                if (cUsername == (aclist as AnyObject).username) {
-                                    selectedAccount = aclist as? ACAccount
-                                }
-                            }
-                            if (selectedAccount) == nil {
-                                self.tableView.reloadData()
-                                self.accountAlert()
-                            } else {
-                                userDefault.set(!self.userstreamFlag, forKey: "userstreamFlag")
-                                self.userstreamFlag = !self.userstreamFlag
-                            }
-                        } else {
-                            self.tableView.reloadData()
-                            self.accountAlert()
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     @objc func tappedNotificationBackgroundSwitch() {
         let userDefault = UserDefaults.standard
@@ -632,14 +554,6 @@ class SettingsTableViewController: UITableViewController{
             SVProgressHUD.dismiss()
         }
     }
-
-    func accountAlert() {
-        let alertController = UIAlertController(title: NSLocalizedString("AccountErrorTitle", tableName: "Settings",comment: ""), message: NSLocalizedString("AccountErrorMessage", tableName: "Settings",comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-        let closeAction = UIAlertAction(title: NSLocalizedString("Close", comment: ""), style: UIAlertActionStyle.cancel) { (action) -> Void in
-        }
-        alertController.addAction(closeAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
     
     func removeAccountInfo() {
         let userDefault = UserDefaults.standard
@@ -649,11 +563,6 @@ class SettingsTableViewController: UITableViewController{
         WhalebirdAPIClient.sharedClient.deleteSsessionAPI("users/sign_out.json", params: params) { (operation) -> Void in
             // sessionの削除
             WhalebirdAPIClient.sharedClient.removeSession()
-            // userstream停止
-            if (UserstreamAPIClient.sharedClient.livingStream()) {
-                UserstreamAPIClient.sharedClient.stopStreaming({ () -> Void in
-                })
-            }
             
             // timelineやlist情報もすべて削除する必要がある
             userDefault.set(nil, forKey: "username")

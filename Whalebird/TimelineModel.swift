@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol TimelineModelDelegate {
-    func updateTimelineFromUserstream(_ timelineModel: TimelineModel)
-}
-
 class TimelineModel: NSObject {
     //=============================================
     //  instance variables
@@ -21,9 +17,6 @@ class TimelineModel: NSObject {
     var currentTimeline: Array<AnyObject> = []
     
     var sinceId: String?
-    var userstreamApiClient: UserstreamAPIClient?
-    
-    var delegate: TimelineModelDelegate!
     
     // class methods
     class func selectMoreIdCell(_ tweetData: NSDictionary)-> Bool {
@@ -315,33 +308,4 @@ class TimelineModel: NSObject {
             self.setTweetAtIndex(index, object: object)
         }
     }
-    
-    //----------------------------------------------
-    // userstream用
-    //----------------------------------------------
-    func prepareUserstream() {
-        let userDefault = UserDefaults.standard
-        if (userDefault.bool(forKey: "userstreamFlag") && !UserstreamAPIClient.sharedClient.livingStream()) {
-            let cStreamURL = URL(string: "https://userstream.twitter.com/1.1/user.json")
-            let cParams: Dictionary<String,String> = [
-                "with" : "followings"
-            ]
-            UserstreamAPIClient.sharedClient.timeline = self
-            UserstreamAPIClient.sharedClient.startStreaming(cStreamURL!, params: cParams, callback: {data in
-            })
-        }
-    }
-    
-    func realtimeUpdate(_ object: NSMutableDictionary) {
-        self.currentTimeline.insert(object, at: 0)
-        self.sinceId = object.object(forKey: "id_str") as? String
-        // hometimelineの更新
-        self.delegate.updateTimelineFromUserstream(self)
-    }
-    
-    func stopUserstream() {
-        UserstreamAPIClient.sharedClient.stopStreaming { () -> Void in
-        }
-    }
-    //------------------------------------------------
 }

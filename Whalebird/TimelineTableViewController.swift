@@ -12,7 +12,7 @@ import ODRefreshControl
 import SVProgressHUD
 import NoticeView
 
-class TimelineTableViewController: UITableViewController, TimelineModelDelegate {
+class TimelineTableViewController: UITableViewController {
 
     //=============================================
     //  instance variables
@@ -49,7 +49,6 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         let homeTimeline = userDefaults.array(forKey: saveKeyTimeline) as Array?
         
         self.timelineModel = TimelineModel(initSinceId: sinceId, initTimeline: homeTimeline as Array<AnyObject>?)
-        self.timelineModel.delegate = self
     }
     
     
@@ -70,30 +69,11 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
         self.navigationItem.leftBarButtonItem = self.searchItemButton
 
         self.tableView.register(TimelineViewCell.classForCoder(), forCellReuseIdentifier: "TimelineViewCell")
-        
-        // userstream発火のために必要
-        NotificationCenter.default.addObserver(self, selector: #selector(TimelineTableViewController.appDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TimelineTableViewController.appWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Home用のUserstream
-        self.timelineModel.prepareUserstream()
-    }
-    
-    func prepareUserstream() {
-        self.timelineModel.prepareUserstream()
-    }
-    
-    @objc func appDidBecomeActive(_ notification: Notification) {
-        self.timelineModel.prepareUserstream()
-    }
-    
-    @objc func appWillResignActive(_ notification: Notification) {
-        self.timelineModel.stopUserstream()
     }
 
     override func didReceiveMemoryWarning() {
@@ -207,10 +187,6 @@ class TimelineTableViewController: UITableViewController, TimelineModelDelegate 
     @objc func tappedNewTweet() {
         let newTweetView = NewTweetViewController()
         self.navigationController?.pushViewController(newTweetView, animated: true)
-    }
-    
-    func updateTimelineFromUserstream(_ timelineModel: TimelineModel) {
-        self.tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
