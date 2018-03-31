@@ -1153,7 +1153,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				WebURL = "https://whalebird.org/";
+				WebURL = "https://whalebird.org/ios/";
 			};
 			name = Release;
 		};
@@ -1304,7 +1304,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Whalebird/Whalebird-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				WebURL = "https://whalebird.org/";
+				WebURL = "https://whalebird.org/ios/";
 			};
 			name = AdHoc;
 		};
