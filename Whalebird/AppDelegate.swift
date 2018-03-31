@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             self.alertPosition = navigationController.navigationBar.frame.origin.y + navigationController.navigationBar.frame.size.height
         }
 
+
         // 認証前なら設定画面に飛ばす
         let userDefault = UserDefaults.standard
         if ( userDefault.object(forKey: "username") == nil) {
@@ -100,6 +101,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UITabBarControllerDelegat
             let loginSettingsView = SettingsTableViewController()
             if let selectedController = self.rootController.selectedViewController as? UINavigationController {
                 selectedController.pushViewController(loginSettingsView, animated: true)
+            }
+        } else {
+             let endNotice = WBErrorNoticeView.errorNotice(in: UIApplication.shared.delegate?.window!, title:
+             NSLocalizedString("EndNoticeTitle", tableName: "AppDelegate", comment: ""), message:
+             NSLocalizedString("EndNoticeMessage", tableName: "AppDelegate", comment: ""))
+             endNotice?.alpha = 0.8
+             endNotice?.originY = self.alertPosition
+             endNotice?.show()
+
+            if (userDefault.object(forKey: "EndNotice") == nil) {
+                let alertController = UIAlertController(title: NSLocalizedString("EndNoticeTitle", tableName: "AppDelegate", comment: ""), message: NSLocalizedString("EndNoticeMessage", tableName: "AppDelegate", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                let cOkAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: UIAlertActionStyle.default, handler: { (aAction) -> Void in
+                    userDefault.set(true, forKey: "EndNotice")
+                })
+                alertController.addAction(cOkAction)
+                self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
             }
         }
 

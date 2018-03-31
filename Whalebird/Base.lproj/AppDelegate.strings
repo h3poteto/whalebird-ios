@@ -16,3 +16,6 @@
 "DirectMessageAlert" = "DirectMessage";
 "DirectMessageOpen" = "Open";
 "DirectMessageClose" = "Close";
+
+"EndNoticeTitle" = "This app will close at 20th June 2018";
+"EndNoticeMessage" = "Maybe I will not be able to continue to development this application, due to the update of Twitter API which will come on June 20. There is a possiblity to change the schedule according to Twitter's response, but now I will close. Thank you for using.";

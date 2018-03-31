@@ -16,3 +16,6 @@
 "DirectMessageAlert" = "ダイレクトメッセージ";
 "DirectMessageOpen" = "開く";
 "DirectMessageClose" = "閉じる";
+
+"EndNoticeTitle" = "Whalebirdは2018年6月20日を持ってサービスを終了します";
+"EndNoticeMessage" = "6月20日にアップデートされるTwitter側APIの仕様変更により、現状の機能を維持して開発していくことが不可能になる見込みです。Twitter側の対応状況により予定が変更になる可能性はありますが、今のところは終了予定です。ご利用ありがとうございました。";
