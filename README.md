@@ -1,10 +1,6 @@
-# Whalebird
+# [EOL]Whalebird
 
-This is a twitter client for iOS.
-
-[Whalebird AppStore](https://itunes.apple.com/jp/app/whalebird/id955717062)
-
-The software is written by swift.
+This application end of life. I stopped development of this application. Thank you for using.
 
 ## API Server
 
